@@ -17,9 +17,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>20</y>
+     <y>10</y>
      <width>321</width>
-     <height>161</height>
+     <height>171</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -32,7 +32,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>60</y>
+      <y>70</y>
       <width>261</width>
       <height>80</height>
      </rect>
@@ -53,10 +53,10 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="lineEdit_email"/>
      </item>
      <item row="0" column="1">
-      <widget class="QComboBox" name="comboBox"/>
+      <widget class="QComboBox" name="comboBox_project_name"/>
      </item>
     </layout>
    </widget>
@@ -64,7 +64,7 @@
     <property name="geometry">
      <rect>
       <x>110</x>
-      <y>10</y>
+      <y>20</y>
       <width>91</width>
       <height>41</height>
      </rect>
