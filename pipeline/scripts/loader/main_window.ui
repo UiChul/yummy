@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1155</width>
+    <width>1100</width>
     <height>883</height>
    </rect>
   </property>
@@ -177,7 +177,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="usesScrollButtons">
       <bool>true</bool>
@@ -714,7 +714,7 @@
     <rect>
      <x>50</x>
      <y>30</y>
-     <width>441</width>
+     <width>221</width>
      <height>51</height>
     </rect>
    </property>
@@ -739,27 +739,6 @@
     </item>
     <item>
      <widget class="QComboBox" name="comboBox_seq"/>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_2">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="font">
-       <font>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>  SCENE  </string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QComboBox" name="comboBox_scene"/>
     </item>
    </layout>
   </widget>

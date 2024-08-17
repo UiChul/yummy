@@ -10,6 +10,13 @@ class Mainloader(QWidget):
         super().__init__()
         self.set_up()
         
+    def input_scene_comboBox(self):
+        
+        project_name = main.ui.label_projectname.text()
+        scene = self.ui.comboBox_seq.currentText()
+        file_path = f"/home/rapa/YUMMY/project/{project_name}/seq/{scene}"
+        scene_list = os.listdir(file_path)
+        
         
     def set_up(self):
         ui_file_path = "/home/rapa/yummy/pipeline/scripts/loader/main_window.ui"
@@ -27,7 +34,7 @@ class Signin(QWidget):
         self.ui.lineEdit_email.returnPressed.connect(self.check_login)
     
     def input_project(self):
-        project_name = ["yummy", "baked", "Marvelous", "Moomins", "phoenix"]
+        project_name = ["YUMMY", "Marvelous"]
         self.ui.comboBox_project_name.addItems(project_name)
         
     def check_login(self):
@@ -40,6 +47,8 @@ class Signin(QWidget):
                         3 : {"name" : "Wooin"  , "email" : "woo@" , "job" :  "artist"},
                         4 : {"name" : "Hyogi"  , "email" : "hyo@" , "job" :  "artist"},
                         5 : {"name" : "Suyeon" , "email" : "su@"  , "job" :  "artist"}}
+        
+        
         
         user_email = self.ui.lineEdit_email.text()
         
@@ -54,6 +63,7 @@ class Signin(QWidget):
                 self.user_info = info
                 self.close()
                 self.set_main_laoder()
+                self.input_seq_comboBox()
                 main.show()
                 
         if not self.user_name:
@@ -65,13 +75,17 @@ class Signin(QWidget):
         main.ui.label_projectname.setText(f"{project}")
         main.ui.label_username.setText(f"{self.user_name}")
         
+    def input_seq_comboBox(self):
+        project_name = main.ui.label_projectname.text()
+        file_path = f"/home/rapa/YUMMY/project/{project_name}/seq"
+        seq_list = os.listdir(file_path)
+        main.ui.comboBox_seq.addItems(seq_list)
           
     def set_messagebox(self, text, title = "Error"):
         msg_box = QMessageBox()
         msg_box.setWindowTitle(title)
         msg_box.setText(text)
         msg_box.exec()
-    
     
     def set_up(self):
         ui_file_path = "/home/rapa/yummy/pipeline/scripts/loader/singin_window.ui"
