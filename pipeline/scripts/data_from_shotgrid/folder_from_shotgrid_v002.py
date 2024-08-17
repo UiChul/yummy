@@ -113,6 +113,9 @@ def generate_project_folders(project_name, sequences, steps):
     exr_folder = "exr"
     mov_folder = "mov"
     IO_folder = "I_O"
+    tem_folder = "template"
+    clip_lib_foler = "clip_lib"
+    node_tem_foler = "node_tem"
     input_folder = "input"
     output_folder = "output"
     plate_folder = "plate"
@@ -144,6 +147,9 @@ def generate_project_folders(project_name, sequences, steps):
         f"project/{project_name}/{IO_folder}/{input_folder}/{plate_folder}/{mov_folder}",
         f"project/{project_name}/{IO_folder}/{output_folder}/{plate_folder}/{exr_folder}",
         f"project/{project_name}/{IO_folder}/{output_folder}/{plate_folder}/{mov_folder}",
+        f"project/{project_name}/{tem_folder}/{asset_folder}",
+        f"project/{project_name}/{tem_folder}/{shot_folder}/{clip_lib_foler}",
+        f"project/{project_name}/{tem_folder}/{shot_folder}/{node_tem_foler}",
 
         f"project/{project_name}/{asset_folder}/{cha_folder}/{dev_folder}",
         f"project/{project_name}/{asset_folder}/{cha_folder}/{pub_folder}",
