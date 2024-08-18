@@ -3,7 +3,11 @@
 ################################################################################
 ## Form generated from reading UI file 'main_window.ui'
 ##
+<<<<<<< HEAD
 ## Created by: Qt User Interface Compiler version 6.2.4
+=======
+## Created by: Qt User Interface Compiler version 6.7.2
+>>>>>>> merge_test_branch
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -26,7 +30,11 @@ class Ui_Form(object):
         if not Form.objectName():
             Form.setObjectName(u"Form")
         Form.resize(1155, 889)
+<<<<<<< HEAD
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
+=======
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
+>>>>>>> merge_test_branch
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
@@ -85,7 +93,11 @@ class Ui_Form(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.label = QLabel(self.horizontalLayoutWidget)
         self.label.setObjectName(u"label")
+<<<<<<< HEAD
         sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+=======
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+>>>>>>> merge_test_branch
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
@@ -98,7 +110,11 @@ class Ui_Form(object):
 
         self.comboBox_shot_shotname = QComboBox(self.horizontalLayoutWidget)
         self.comboBox_shot_shotname.setObjectName(u"comboBox_shot_shotname")
+<<<<<<< HEAD
         sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
+=======
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+>>>>>>> merge_test_branch
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.comboBox_shot_shotname.sizePolicy().hasHeightForWidth())
@@ -436,8 +452,13 @@ class Ui_Form(object):
         self.line = QFrame(self.groupBox_asset_file_info)
         self.line.setObjectName(u"line")
         self.line.setGeometry(QRect(0, 175, 231, 31))
+<<<<<<< HEAD
         self.line.setFrameShape(QFrame.HLine)
         self.line.setFrameShadow(QFrame.Sunken)
+=======
+        self.line.setFrameShape(QFrame.Shape.HLine)
+        self.line.setFrameShadow(QFrame.Shadow.Sunken)
+>>>>>>> merge_test_branch
         self.verticalLayoutWidget_11 = QWidget(self.groupBox_asset_file_info)
         self.verticalLayoutWidget_11.setObjectName(u"verticalLayoutWidget_11")
         self.verticalLayoutWidget_11.setGeometry(QRect(10, 200, 80, 42))
@@ -501,7 +522,11 @@ class Ui_Form(object):
         self.horizontalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.label_29 = QLabel(self.horizontalLayoutWidget_8)
         self.label_29.setObjectName(u"label_29")
+<<<<<<< HEAD
         sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+=======
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
+>>>>>>> merge_test_branch
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.label_29.sizePolicy().hasHeightForWidth())
@@ -724,8 +749,13 @@ class Ui_Form(object):
         self.line_4 = QFrame(self.groupBox_nodes_file_info)
         self.line_4.setObjectName(u"line_4")
         self.line_4.setGeometry(QRect(0, 175, 231, 31))
+<<<<<<< HEAD
         self.line_4.setFrameShape(QFrame.HLine)
         self.line_4.setFrameShadow(QFrame.Sunken)
+=======
+        self.line_4.setFrameShape(QFrame.Shape.HLine)
+        self.line_4.setFrameShadow(QFrame.Shadow.Sunken)
+>>>>>>> merge_test_branch
         self.listWidget_nodes_info = QListWidget(self.groupBox_nodes_file_info)
         self.listWidget_nodes_info.setObjectName(u"listWidget_nodes_info")
         self.listWidget_nodes_info.setGeometry(QRect(10, 221, 211, 171))
