@@ -1,28 +1,8 @@
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt,Signal
 from PySide6.QtWidgets import QWidget,QApplication,QMessageBox
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
 import os
-
-class Mainloader(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.set_up()
-        
-    def input_scene_comboBox(self):
-        
-        project_name = main.ui.label_projectname.text()
-        scene = self.ui.comboBox_seq.currentText()
-        file_path = f"/home/rapa/YUMMY/project/{project_name}/seq/{scene}"
-        scene_list = os.listdir(file_path)
-        
-        
-    def set_up(self):
-        ui_file_path = "/home/rapa/yummy/pipeline/scripts/loader/main_window.ui"
-        ui_file = QFile(ui_file_path)
-        ui_file.open(QFile.ReadOnly)
-        loader = QUiLoader()
-        self.ui = loader.load(ui_file,self)
 
 class Signin(QWidget):
     
@@ -59,26 +39,16 @@ class Signin(QWidget):
             if info["email"] == user_email:
                 self.user_name = info["name"]
                 self.set_messagebox(f"{self.user_name}님 로그인 되었습니다.","로그인 성공")
-                self.user_info = info
+                project = self.ui.comboBox_project_name.currentText()
+                info["project"] = project
                 self.close()
-                self.set_main_laoder()
-                self.input_seq_comboBox()
-                main.show()
+                from main import Mainloader
+                self.main = Mainloader(info)
+                self.main.show()
                 
         if not self.user_name:
             self.set_messagebox("email 정보가 정확하지 않습니다","로그인 실패")
             return
-        
-    def set_main_laoder(self):
-        project = self.ui.comboBox_project_name.currentText()
-        main.ui.label_projectname.setText(f"{project}")
-        main.ui.label_username.setText(f"{self.user_name}")
-        
-    def input_seq_comboBox(self):
-        project_name = main.ui.label_projectname.text()
-        file_path = f"/home/rapa/YUMMY/project/{project_name}/seq"
-        seq_list = os.listdir(file_path)
-        main.ui.comboBox_seq.addItems(seq_list)
           
     def set_messagebox(self, text, title = "Error"):
         msg_box = QMessageBox()
@@ -87,15 +57,17 @@ class Signin(QWidget):
         msg_box.exec()
     
     def set_up(self):
-        ui_file_path = "/home/rapa/yummy/pipeline/scripts/loader/singin_window.ui"
-        ui_file = QFile(ui_file_path)
-        ui_file.open(QFile.ReadOnly)
-        loader = QUiLoader()
-        self.ui = loader.load(ui_file,self)
+        from singin_window_ui import Ui_Form
+        # ui_file_path = "singin_window.ui"
+        # ui_file = QFile(ui_file_path)
+        # ui_file.open(QFile.ReadOnly)
+        # loader = QUiLoader()
+        # self.ui = loader.load(ui_file,self)
+        self.ui = Ui_Form()
+        self.ui.setupUi(self)
     
 if __name__ == "__main__":
     app = QApplication()
     sign = Signin()
-    main = Mainloader()
     sign.show()
     app.exec()
