@@ -28,7 +28,6 @@ class Signin(QWidget):
                         5 : {"name" : "Suyeon" , "email" : "su@"  , "job" :  "artist"}}
         
         
-        
         user_email = self.ui.lineEdit_email.text()
         
         if not user_email:
