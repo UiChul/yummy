@@ -39,6 +39,7 @@ class Ui_Form(object):
         font.setBold(True)
         self.tabWidget_all.setFont(font)
         self.tabWidget_all.setStyleSheet(u"")
+        self.tabWidget_all.setInputMethodHints(Qt.ImhNone)
         self.tabWidget_all.setTabPosition(QTabWidget.North)
         self.tabWidget_all.setTabShape(QTabWidget.Rounded)
         self.tabWidget_all.setUsesScrollButtons(True)
@@ -62,6 +63,16 @@ class Ui_Form(object):
         self.tableWidget_shot_work = QTableWidget(self.tab_work)
         self.tableWidget_shot_work.setObjectName(u"tableWidget_shot_work")
         self.tableWidget_shot_work.setGeometry(QRect(10, 10, 496, 378))
+        font1 = QFont()
+        font1.setBold(False)
+        self.tableWidget_shot_work.setFont(font1)
+        self.tableWidget_shot_work.horizontalHeader().setVisible(False)
+        self.tableWidget_shot_work.horizontalHeader().setMinimumSectionSize(175)
+        self.tableWidget_shot_work.horizontalHeader().setDefaultSectionSize(175)
+        self.tableWidget_shot_work.horizontalHeader().setHighlightSections(False)
+        self.tableWidget_shot_work.horizontalHeader().setProperty("showSortIndicator", False)
+        self.tableWidget_shot_work.verticalHeader().setVisible(False)
+        self.tableWidget_shot_work.verticalHeader().setDefaultSectionSize(175)
         self.tabWidget_shot_task.addTab(self.tab_work, "")
         self.tab_5 = QWidget()
         self.tab_5.setObjectName(u"tab_5")
@@ -81,14 +92,18 @@ class Ui_Form(object):
         self.label_shot_filepath = QLabel(self.tab_shot)
         self.label_shot_filepath.setObjectName(u"label_shot_filepath")
         self.label_shot_filepath.setGeometry(QRect(290, 20, 521, 19))
+        font2 = QFont()
+        font2.setPointSize(9)
+        font2.setBold(False)
+        self.label_shot_filepath.setFont(font2)
         self.groupBox_shot_comment = QGroupBox(self.tab_shot)
         self.groupBox_shot_comment.setObjectName(u"groupBox_shot_comment")
         self.groupBox_shot_comment.setGeometry(QRect(820, 250, 231, 181))
-        font1 = QFont()
-        font1.setBold(True)
-        font1.setUnderline(False)
-        font1.setStrikeOut(False)
-        self.groupBox_shot_comment.setFont(font1)
+        font3 = QFont()
+        font3.setBold(True)
+        font3.setUnderline(False)
+        font3.setStrikeOut(False)
+        self.groupBox_shot_comment.setFont(font3)
         self.groupBox_shot_comment.setFlat(False)
         self.groupBox_shot_comment.setCheckable(False)
         self.label_shot_comment = QLabel(self.groupBox_shot_comment)
@@ -135,7 +150,7 @@ class Ui_Form(object):
         self.groupBox_shot_file_info = QGroupBox(self.tab_shot)
         self.groupBox_shot_file_info.setObjectName(u"groupBox_shot_file_info")
         self.groupBox_shot_file_info.setGeometry(QRect(820, 50, 231, 191))
-        self.groupBox_shot_file_info.setFont(font1)
+        self.groupBox_shot_file_info.setFont(font3)
         self.groupBox_shot_file_info.setFlat(False)
         self.groupBox_shot_file_info.setCheckable(False)
         self.verticalLayoutWidget = QWidget(self.groupBox_shot_file_info)
@@ -146,42 +161,42 @@ class Ui_Form(object):
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.label_16 = QLabel(self.verticalLayoutWidget)
         self.label_16.setObjectName(u"label_16")
-        font2 = QFont()
-        font2.setPointSize(10)
-        font2.setBold(False)
-        font2.setUnderline(False)
-        font2.setStrikeOut(False)
-        self.label_16.setFont(font2)
+        font4 = QFont()
+        font4.setPointSize(10)
+        font4.setBold(False)
+        font4.setUnderline(False)
+        font4.setStrikeOut(False)
+        self.label_16.setFont(font4)
 
         self.verticalLayout_3.addWidget(self.label_16)
 
         self.label_14 = QLabel(self.verticalLayoutWidget)
         self.label_14.setObjectName(u"label_14")
-        self.label_14.setFont(font2)
+        self.label_14.setFont(font4)
 
         self.verticalLayout_3.addWidget(self.label_14)
 
         self.label_10 = QLabel(self.verticalLayoutWidget)
         self.label_10.setObjectName(u"label_10")
-        self.label_10.setFont(font2)
+        self.label_10.setFont(font4)
 
         self.verticalLayout_3.addWidget(self.label_10)
 
         self.label_6 = QLabel(self.verticalLayoutWidget)
         self.label_6.setObjectName(u"label_6")
-        self.label_6.setFont(font2)
+        self.label_6.setFont(font4)
 
         self.verticalLayout_3.addWidget(self.label_6)
 
         self.label_9 = QLabel(self.verticalLayoutWidget)
         self.label_9.setObjectName(u"label_9")
-        self.label_9.setFont(font2)
+        self.label_9.setFont(font4)
 
         self.verticalLayout_3.addWidget(self.label_9)
 
         self.label_20 = QLabel(self.verticalLayoutWidget)
         self.label_20.setObjectName(u"label_20")
-        self.label_20.setFont(font2)
+        self.label_20.setFont(font4)
 
         self.verticalLayout_3.addWidget(self.label_20)
 
@@ -193,37 +208,37 @@ class Ui_Form(object):
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.label_shot_filename = QLabel(self.verticalLayoutWidget_2)
         self.label_shot_filename.setObjectName(u"label_shot_filename")
-        self.label_shot_filename.setFont(font2)
+        self.label_shot_filename.setFont(font4)
 
         self.verticalLayout_4.addWidget(self.label_shot_filename)
 
         self.label_shot_filetype = QLabel(self.verticalLayoutWidget_2)
         self.label_shot_filetype.setObjectName(u"label_shot_filetype")
-        self.label_shot_filetype.setFont(font2)
+        self.label_shot_filetype.setFont(font4)
 
         self.verticalLayout_4.addWidget(self.label_shot_filetype)
 
         self.label_shot_framerange = QLabel(self.verticalLayoutWidget_2)
         self.label_shot_framerange.setObjectName(u"label_shot_framerange")
-        self.label_shot_framerange.setFont(font2)
+        self.label_shot_framerange.setFont(font4)
 
         self.verticalLayout_4.addWidget(self.label_shot_framerange)
 
         self.label_shot_resolution = QLabel(self.verticalLayoutWidget_2)
         self.label_shot_resolution.setObjectName(u"label_shot_resolution")
-        self.label_shot_resolution.setFont(font2)
+        self.label_shot_resolution.setFont(font4)
 
         self.verticalLayout_4.addWidget(self.label_shot_resolution)
 
         self.label_shot_savedtime = QLabel(self.verticalLayoutWidget_2)
         self.label_shot_savedtime.setObjectName(u"label_shot_savedtime")
-        self.label_shot_savedtime.setFont(font2)
+        self.label_shot_savedtime.setFont(font4)
 
         self.verticalLayout_4.addWidget(self.label_shot_savedtime)
 
         self.label_shot_filesize = QLabel(self.verticalLayoutWidget_2)
         self.label_shot_filesize.setObjectName(u"label_shot_filesize")
-        self.label_shot_filesize.setFont(font2)
+        self.label_shot_filesize.setFont(font4)
 
         self.verticalLayout_4.addWidget(self.label_shot_filesize)
 
@@ -236,6 +251,7 @@ class Ui_Form(object):
         self.treeWidget.setHeaderItem(__qtreewidgetitem)
         self.treeWidget.setObjectName(u"treeWidget")
         self.treeWidget.setGeometry(QRect(10, 20, 271, 461))
+        self.treeWidget.setFont(font1)
         self.tabWidget_all.addTab(self.tab_shot, "")
         self.tab_my_task = QWidget()
         self.tab_my_task.setObjectName(u"tab_my_task")
@@ -280,7 +296,7 @@ class Ui_Form(object):
         self.groupBox_shot_comment_2 = QGroupBox(self.tab_my_task)
         self.groupBox_shot_comment_2.setObjectName(u"groupBox_shot_comment_2")
         self.groupBox_shot_comment_2.setGeometry(QRect(820, 50, 231, 331))
-        self.groupBox_shot_comment_2.setFont(font1)
+        self.groupBox_shot_comment_2.setFont(font3)
         self.groupBox_shot_comment_2.setFlat(False)
         self.groupBox_shot_comment_2.setCheckable(False)
         self.plainTextEdit_mytask_comment = QPlainTextEdit(self.groupBox_shot_comment_2)
@@ -292,16 +308,119 @@ class Ui_Form(object):
         self.label_mytask_filepath = QLabel(self.tab_my_task)
         self.label_mytask_filepath.setObjectName(u"label_mytask_filepath")
         self.label_mytask_filepath.setGeometry(QRect(10, 8, 521, 41))
-        font3 = QFont()
-        font3.setPointSize(18)
-        font3.setBold(True)
-        self.label_mytask_filepath.setFont(font3)
+        font5 = QFont()
+        font5.setPointSize(18)
+        font5.setBold(True)
+        self.label_mytask_filepath.setFont(font5)
         self.pushButton_mytask_newfileopen = QPushButton(self.tab_my_task)
         self.pushButton_mytask_newfileopen.setObjectName(u"pushButton_mytask_newfileopen")
         self.pushButton_mytask_newfileopen.setGeometry(QRect(820, 390, 231, 41))
         self.tableWidget_recent_files = QTableWidget(self.tab_my_task)
         self.tableWidget_recent_files.setObjectName(u"tableWidget_recent_files")
-        self.tableWidget_recent_files.setGeometry(QRect(10, 50, 801, 431))
+        self.tableWidget_recent_files.setGeometry(QRect(10, 50, 500, 431))
+        self.tableWidget_recent_files.horizontalHeader().setVisible(False)
+        self.groupBox_shot_comment_3 = QGroupBox(self.tab_my_task)
+        self.groupBox_shot_comment_3.setObjectName(u"groupBox_shot_comment_3")
+        self.groupBox_shot_comment_3.setGeometry(QRect(530, 50, 271, 220))
+        self.groupBox_shot_comment_3.setFont(font3)
+        self.groupBox_shot_comment_3.setFlat(False)
+        self.groupBox_shot_comment_3.setCheckable(False)
+        self.label_shot_comment_2 = QLabel(self.groupBox_shot_comment_3)
+        self.label_shot_comment_2.setObjectName(u"label_shot_comment_2")
+        self.label_shot_comment_2.setGeometry(QRect(10, 30, 211, 141))
+        self.label_mytask_thumbnail = QLabel(self.groupBox_shot_comment_3)
+        self.label_mytask_thumbnail.setObjectName(u"label_mytask_thumbnail")
+        self.label_mytask_thumbnail.setGeometry(QRect(10, 30, 250, 180))
+        self.groupBox_shot_file_info_2 = QGroupBox(self.tab_my_task)
+        self.groupBox_shot_file_info_2.setObjectName(u"groupBox_shot_file_info_2")
+        self.groupBox_shot_file_info_2.setGeometry(QRect(530, 290, 271, 191))
+        self.groupBox_shot_file_info_2.setFont(font3)
+        self.groupBox_shot_file_info_2.setFlat(False)
+        self.groupBox_shot_file_info_2.setCheckable(False)
+        self.verticalLayoutWidget_3 = QWidget(self.groupBox_shot_file_info_2)
+        self.verticalLayoutWidget_3.setObjectName(u"verticalLayoutWidget_3")
+        self.verticalLayoutWidget_3.setGeometry(QRect(10, 30, 80, 151))
+        self.verticalLayout_5 = QVBoxLayout(self.verticalLayoutWidget_3)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.label_17 = QLabel(self.verticalLayoutWidget_3)
+        self.label_17.setObjectName(u"label_17")
+        self.label_17.setFont(font4)
+
+        self.verticalLayout_5.addWidget(self.label_17)
+
+        self.label_15 = QLabel(self.verticalLayoutWidget_3)
+        self.label_15.setObjectName(u"label_15")
+        self.label_15.setFont(font4)
+
+        self.verticalLayout_5.addWidget(self.label_15)
+
+        self.label_11 = QLabel(self.verticalLayoutWidget_3)
+        self.label_11.setObjectName(u"label_11")
+        self.label_11.setFont(font4)
+
+        self.verticalLayout_5.addWidget(self.label_11)
+
+        self.label_12 = QLabel(self.verticalLayoutWidget_3)
+        self.label_12.setObjectName(u"label_12")
+        self.label_12.setFont(font4)
+
+        self.verticalLayout_5.addWidget(self.label_12)
+
+        self.label_13 = QLabel(self.verticalLayoutWidget_3)
+        self.label_13.setObjectName(u"label_13")
+        self.label_13.setFont(font4)
+
+        self.verticalLayout_5.addWidget(self.label_13)
+
+        self.label_21 = QLabel(self.verticalLayoutWidget_3)
+        self.label_21.setObjectName(u"label_21")
+        self.label_21.setFont(font4)
+
+        self.verticalLayout_5.addWidget(self.label_21)
+
+        self.verticalLayoutWidget_4 = QWidget(self.groupBox_shot_file_info_2)
+        self.verticalLayoutWidget_4.setObjectName(u"verticalLayoutWidget_4")
+        self.verticalLayoutWidget_4.setGeometry(QRect(100, 30, 161, 151))
+        self.verticalLayout_6 = QVBoxLayout(self.verticalLayoutWidget_4)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.label_mytask_filename = QLabel(self.verticalLayoutWidget_4)
+        self.label_mytask_filename.setObjectName(u"label_mytask_filename")
+        self.label_mytask_filename.setFont(font4)
+
+        self.verticalLayout_6.addWidget(self.label_mytask_filename)
+
+        self.label_mytask_filetype = QLabel(self.verticalLayoutWidget_4)
+        self.label_mytask_filetype.setObjectName(u"label_mytask_filetype")
+        self.label_mytask_filetype.setFont(font4)
+
+        self.verticalLayout_6.addWidget(self.label_mytask_filetype)
+
+        self.label_mytask_framerange = QLabel(self.verticalLayoutWidget_4)
+        self.label_mytask_framerange.setObjectName(u"label_mytask_framerange")
+        self.label_mytask_framerange.setFont(font4)
+
+        self.verticalLayout_6.addWidget(self.label_mytask_framerange)
+
+        self.label_mytask_resolution = QLabel(self.verticalLayoutWidget_4)
+        self.label_mytask_resolution.setObjectName(u"label_mytask_resolution")
+        self.label_mytask_resolution.setFont(font4)
+
+        self.verticalLayout_6.addWidget(self.label_mytask_resolution)
+
+        self.label_mytask_savedtime = QLabel(self.verticalLayoutWidget_4)
+        self.label_mytask_savedtime.setObjectName(u"label_mytask_savedtime")
+        self.label_mytask_savedtime.setFont(font4)
+
+        self.verticalLayout_6.addWidget(self.label_mytask_savedtime)
+
+        self.label_mytask_filesize = QLabel(self.verticalLayoutWidget_4)
+        self.label_mytask_filesize.setObjectName(u"label_mytask_filesize")
+        self.label_mytask_filesize.setFont(font4)
+
+        self.verticalLayout_6.addWidget(self.label_mytask_filesize)
+
         self.tabWidget_all.addTab(self.tab_my_task, "")
         self.tab_clip = QWidget()
         self.tab_clip.setObjectName(u"tab_clip")
@@ -322,7 +441,7 @@ class Ui_Form(object):
         self.groupBox_asset_comment = QGroupBox(self.tab_asset)
         self.groupBox_asset_comment.setObjectName(u"groupBox_asset_comment")
         self.groupBox_asset_comment.setGeometry(QRect(520, 420, 231, 181))
-        self.groupBox_asset_comment.setFont(font1)
+        self.groupBox_asset_comment.setFont(font3)
         self.groupBox_asset_comment.setFlat(False)
         self.groupBox_asset_comment.setCheckable(False)
         self.label_asset_comment = QLabel(self.groupBox_asset_comment)
@@ -331,7 +450,7 @@ class Ui_Form(object):
         self.groupBox_asset_file_info = QGroupBox(self.tab_asset)
         self.groupBox_asset_file_info.setObjectName(u"groupBox_asset_file_info")
         self.groupBox_asset_file_info.setGeometry(QRect(520, 10, 231, 401))
-        self.groupBox_asset_file_info.setFont(font1)
+        self.groupBox_asset_file_info.setFont(font3)
         self.groupBox_asset_file_info.setFlat(False)
         self.groupBox_asset_file_info.setCheckable(False)
         self.verticalLayoutWidget_5 = QWidget(self.groupBox_asset_file_info)
@@ -342,37 +461,37 @@ class Ui_Form(object):
         self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
         self.label_23 = QLabel(self.verticalLayoutWidget_5)
         self.label_23.setObjectName(u"label_23")
-        self.label_23.setFont(font2)
+        self.label_23.setFont(font4)
 
         self.verticalLayout_7.addWidget(self.label_23)
 
         self.label_24 = QLabel(self.verticalLayoutWidget_5)
         self.label_24.setObjectName(u"label_24")
-        self.label_24.setFont(font2)
+        self.label_24.setFont(font4)
 
         self.verticalLayout_7.addWidget(self.label_24)
 
         self.label_25 = QLabel(self.verticalLayoutWidget_5)
         self.label_25.setObjectName(u"label_25")
-        self.label_25.setFont(font2)
+        self.label_25.setFont(font4)
 
         self.verticalLayout_7.addWidget(self.label_25)
 
         self.label_26 = QLabel(self.verticalLayoutWidget_5)
         self.label_26.setObjectName(u"label_26")
-        self.label_26.setFont(font2)
+        self.label_26.setFont(font4)
 
         self.verticalLayout_7.addWidget(self.label_26)
 
         self.label_27 = QLabel(self.verticalLayoutWidget_5)
         self.label_27.setObjectName(u"label_27")
-        self.label_27.setFont(font2)
+        self.label_27.setFont(font4)
 
         self.verticalLayout_7.addWidget(self.label_27)
 
         self.label_28 = QLabel(self.verticalLayoutWidget_5)
         self.label_28.setObjectName(u"label_28")
-        self.label_28.setFont(font2)
+        self.label_28.setFont(font4)
 
         self.verticalLayout_7.addWidget(self.label_28)
 
@@ -384,37 +503,37 @@ class Ui_Form(object):
         self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.label_asset_filename = QLabel(self.verticalLayoutWidget_6)
         self.label_asset_filename.setObjectName(u"label_asset_filename")
-        self.label_asset_filename.setFont(font2)
+        self.label_asset_filename.setFont(font4)
 
         self.verticalLayout_8.addWidget(self.label_asset_filename)
 
         self.label_asset_filetype = QLabel(self.verticalLayoutWidget_6)
         self.label_asset_filetype.setObjectName(u"label_asset_filetype")
-        self.label_asset_filetype.setFont(font2)
+        self.label_asset_filetype.setFont(font4)
 
         self.verticalLayout_8.addWidget(self.label_asset_filetype)
 
         self.label_asset_framerange = QLabel(self.verticalLayoutWidget_6)
         self.label_asset_framerange.setObjectName(u"label_asset_framerange")
-        self.label_asset_framerange.setFont(font2)
+        self.label_asset_framerange.setFont(font4)
 
         self.verticalLayout_8.addWidget(self.label_asset_framerange)
 
         self.label_asset_resolution = QLabel(self.verticalLayoutWidget_6)
         self.label_asset_resolution.setObjectName(u"label_asset_resolution")
-        self.label_asset_resolution.setFont(font2)
+        self.label_asset_resolution.setFont(font4)
 
         self.verticalLayout_8.addWidget(self.label_asset_resolution)
 
         self.label_asset_savedtime = QLabel(self.verticalLayoutWidget_6)
         self.label_asset_savedtime.setObjectName(u"label_asset_savedtime")
-        self.label_asset_savedtime.setFont(font2)
+        self.label_asset_savedtime.setFont(font4)
 
         self.verticalLayout_8.addWidget(self.label_asset_savedtime)
 
         self.label_asset_filesize = QLabel(self.verticalLayoutWidget_6)
         self.label_asset_filesize.setObjectName(u"label_asset_filesize")
-        self.label_asset_filesize.setFont(font2)
+        self.label_asset_filesize.setFont(font4)
 
         self.verticalLayout_8.addWidget(self.label_asset_filesize)
 
@@ -431,13 +550,13 @@ class Ui_Form(object):
         self.verticalLayout_13.setContentsMargins(0, 0, 0, 0)
         self.label_47 = QLabel(self.verticalLayoutWidget_11)
         self.label_47.setObjectName(u"label_47")
-        self.label_47.setFont(font2)
+        self.label_47.setFont(font4)
 
         self.verticalLayout_13.addWidget(self.label_47)
 
         self.label_48 = QLabel(self.verticalLayoutWidget_11)
         self.label_48.setObjectName(u"label_48")
-        self.label_48.setFont(font2)
+        self.label_48.setFont(font4)
 
         self.verticalLayout_13.addWidget(self.label_48)
 
@@ -449,13 +568,13 @@ class Ui_Form(object):
         self.verticalLayout_14.setContentsMargins(0, 0, 0, 0)
         self.label_asset_version = QLabel(self.verticalLayoutWidget_12)
         self.label_asset_version.setObjectName(u"label_asset_version")
-        self.label_asset_version.setFont(font2)
+        self.label_asset_version.setFont(font4)
 
         self.verticalLayout_14.addWidget(self.label_asset_version)
 
         self.label_asset_pubdate = QLabel(self.verticalLayoutWidget_12)
         self.label_asset_pubdate.setObjectName(u"label_asset_pubdate")
-        self.label_asset_pubdate.setFont(font2)
+        self.label_asset_pubdate.setFont(font4)
 
         self.verticalLayout_14.addWidget(self.label_asset_pubdate)
 
@@ -465,14 +584,14 @@ class Ui_Form(object):
         self.toolBox_asset_task.setFont(font)
         self.page_5 = QWidget()
         self.page_5.setObjectName(u"page_5")
-        self.page_5.setGeometry(QRect(0, 0, 98, 28))
+        self.page_5.setGeometry(QRect(0, 0, 501, 525))
         self.tableWidget_asset_mdl_asset = QTableWidget(self.page_5)
         self.tableWidget_asset_mdl_asset.setObjectName(u"tableWidget_asset_mdl_asset")
         self.tableWidget_asset_mdl_asset.setGeometry(QRect(0, 0, 501, 525))
         self.toolBox_asset_task.addItem(self.page_5, u"MDL")
         self.page_6 = QWidget()
         self.page_6.setObjectName(u"page_6")
-        self.page_6.setGeometry(QRect(0, 0, 98, 28))
+        self.page_6.setGeometry(QRect(0, 0, 100, 30))
         self.tableWidget_asset_ani_asset = QTableWidget(self.page_6)
         self.tableWidget_asset_ani_asset.setObjectName(u"tableWidget_asset_ani_asset")
         self.tableWidget_asset_ani_asset.setGeometry(QRect(0, 1, 501, 524))
@@ -506,7 +625,7 @@ class Ui_Form(object):
         self.groupBox_asset_file_info_2 = QGroupBox(self.tab_clip1)
         self.groupBox_asset_file_info_2.setObjectName(u"groupBox_asset_file_info_2")
         self.groupBox_asset_file_info_2.setGeometry(QRect(520, 10, 231, 401))
-        self.groupBox_asset_file_info_2.setFont(font1)
+        self.groupBox_asset_file_info_2.setFont(font3)
         self.groupBox_asset_file_info_2.setFlat(False)
         self.groupBox_asset_file_info_2.setCheckable(False)
         self.verticalLayoutWidget_13 = QWidget(self.groupBox_asset_file_info_2)
@@ -517,37 +636,37 @@ class Ui_Form(object):
         self.verticalLayout_15.setContentsMargins(0, 0, 0, 0)
         self.label_51 = QLabel(self.verticalLayoutWidget_13)
         self.label_51.setObjectName(u"label_51")
-        self.label_51.setFont(font2)
+        self.label_51.setFont(font4)
 
         self.verticalLayout_15.addWidget(self.label_51)
 
         self.label_52 = QLabel(self.verticalLayoutWidget_13)
         self.label_52.setObjectName(u"label_52")
-        self.label_52.setFont(font2)
+        self.label_52.setFont(font4)
 
         self.verticalLayout_15.addWidget(self.label_52)
 
         self.label_53 = QLabel(self.verticalLayoutWidget_13)
         self.label_53.setObjectName(u"label_53")
-        self.label_53.setFont(font2)
+        self.label_53.setFont(font4)
 
         self.verticalLayout_15.addWidget(self.label_53)
 
         self.label_54 = QLabel(self.verticalLayoutWidget_13)
         self.label_54.setObjectName(u"label_54")
-        self.label_54.setFont(font2)
+        self.label_54.setFont(font4)
 
         self.verticalLayout_15.addWidget(self.label_54)
 
         self.label_55 = QLabel(self.verticalLayoutWidget_13)
         self.label_55.setObjectName(u"label_55")
-        self.label_55.setFont(font2)
+        self.label_55.setFont(font4)
 
         self.verticalLayout_15.addWidget(self.label_55)
 
         self.label_56 = QLabel(self.verticalLayoutWidget_13)
         self.label_56.setObjectName(u"label_56")
-        self.label_56.setFont(font2)
+        self.label_56.setFont(font4)
 
         self.verticalLayout_15.addWidget(self.label_56)
 
@@ -559,37 +678,37 @@ class Ui_Form(object):
         self.verticalLayout_16.setContentsMargins(0, 0, 0, 0)
         self.label_clip_filename = QLabel(self.verticalLayoutWidget_14)
         self.label_clip_filename.setObjectName(u"label_clip_filename")
-        self.label_clip_filename.setFont(font2)
+        self.label_clip_filename.setFont(font4)
 
         self.verticalLayout_16.addWidget(self.label_clip_filename)
 
         self.label_clip_filetype = QLabel(self.verticalLayoutWidget_14)
         self.label_clip_filetype.setObjectName(u"label_clip_filetype")
-        self.label_clip_filetype.setFont(font2)
+        self.label_clip_filetype.setFont(font4)
 
         self.verticalLayout_16.addWidget(self.label_clip_filetype)
 
         self.label_clip_framerange = QLabel(self.verticalLayoutWidget_14)
         self.label_clip_framerange.setObjectName(u"label_clip_framerange")
-        self.label_clip_framerange.setFont(font2)
+        self.label_clip_framerange.setFont(font4)
 
         self.verticalLayout_16.addWidget(self.label_clip_framerange)
 
         self.label_clip_resolution = QLabel(self.verticalLayoutWidget_14)
         self.label_clip_resolution.setObjectName(u"label_clip_resolution")
-        self.label_clip_resolution.setFont(font2)
+        self.label_clip_resolution.setFont(font4)
 
         self.verticalLayout_16.addWidget(self.label_clip_resolution)
 
         self.label_clip_savedtime = QLabel(self.verticalLayoutWidget_14)
         self.label_clip_savedtime.setObjectName(u"label_clip_savedtime")
-        self.label_clip_savedtime.setFont(font2)
+        self.label_clip_savedtime.setFont(font4)
 
         self.verticalLayout_16.addWidget(self.label_clip_savedtime)
 
         self.label_clip_filesize = QLabel(self.verticalLayoutWidget_14)
         self.label_clip_filesize.setObjectName(u"label_clip_filesize")
-        self.label_clip_filesize.setFont(font2)
+        self.label_clip_filesize.setFont(font4)
 
         self.verticalLayout_16.addWidget(self.label_clip_filesize)
 
@@ -599,17 +718,17 @@ class Ui_Form(object):
         self.groupBox_clip_comment = QGroupBox(self.tab_clip1)
         self.groupBox_clip_comment.setObjectName(u"groupBox_clip_comment")
         self.groupBox_clip_comment.setGeometry(QRect(520, 420, 231, 181))
-        self.groupBox_clip_comment.setFont(font1)
+        self.groupBox_clip_comment.setFont(font3)
         self.groupBox_clip_comment.setFlat(False)
         self.groupBox_clip_comment.setCheckable(False)
         self.label_clip_comment = QLabel(self.groupBox_clip_comment)
         self.label_clip_comment.setObjectName(u"label_clip_comment")
         self.label_clip_comment.setGeometry(QRect(10, 30, 211, 141))
-        font4 = QFont()
-        font4.setBold(False)
-        font4.setUnderline(False)
-        font4.setStrikeOut(False)
-        self.label_clip_comment.setFont(font4)
+        font6 = QFont()
+        font6.setBold(False)
+        font6.setUnderline(False)
+        font6.setStrikeOut(False)
+        self.label_clip_comment.setFont(font6)
         self.tableWidget_clip_files = QTableWidget(self.tab_clip1)
         self.tableWidget_clip_files.setObjectName(u"tableWidget_clip_files")
         self.tableWidget_clip_files.setGeometry(QRect(10, 10, 501, 641))
@@ -619,7 +738,7 @@ class Ui_Form(object):
         self.groupBox_nodes_file_info = QGroupBox(self.tab_nodes)
         self.groupBox_nodes_file_info.setObjectName(u"groupBox_nodes_file_info")
         self.groupBox_nodes_file_info.setGeometry(QRect(520, 10, 231, 401))
-        self.groupBox_nodes_file_info.setFont(font1)
+        self.groupBox_nodes_file_info.setFont(font3)
         self.groupBox_nodes_file_info.setFlat(False)
         self.groupBox_nodes_file_info.setCheckable(False)
         self.verticalLayoutWidget_21 = QWidget(self.groupBox_nodes_file_info)
@@ -630,37 +749,37 @@ class Ui_Form(object):
         self.verticalLayout_23.setContentsMargins(0, 0, 0, 0)
         self.label_59 = QLabel(self.verticalLayoutWidget_21)
         self.label_59.setObjectName(u"label_59")
-        self.label_59.setFont(font2)
+        self.label_59.setFont(font4)
 
         self.verticalLayout_23.addWidget(self.label_59)
 
         self.label_60 = QLabel(self.verticalLayoutWidget_21)
         self.label_60.setObjectName(u"label_60")
-        self.label_60.setFont(font2)
+        self.label_60.setFont(font4)
 
         self.verticalLayout_23.addWidget(self.label_60)
 
         self.label_75 = QLabel(self.verticalLayoutWidget_21)
         self.label_75.setObjectName(u"label_75")
-        self.label_75.setFont(font2)
+        self.label_75.setFont(font4)
 
         self.verticalLayout_23.addWidget(self.label_75)
 
         self.label_76 = QLabel(self.verticalLayoutWidget_21)
         self.label_76.setObjectName(u"label_76")
-        self.label_76.setFont(font2)
+        self.label_76.setFont(font4)
 
         self.verticalLayout_23.addWidget(self.label_76)
 
         self.label_77 = QLabel(self.verticalLayoutWidget_21)
         self.label_77.setObjectName(u"label_77")
-        self.label_77.setFont(font2)
+        self.label_77.setFont(font4)
 
         self.verticalLayout_23.addWidget(self.label_77)
 
         self.label_78 = QLabel(self.verticalLayoutWidget_21)
         self.label_78.setObjectName(u"label_78")
-        self.label_78.setFont(font2)
+        self.label_78.setFont(font4)
 
         self.verticalLayout_23.addWidget(self.label_78)
 
@@ -672,37 +791,37 @@ class Ui_Form(object):
         self.verticalLayout_24.setContentsMargins(0, 0, 0, 0)
         self.label_nodes_filename = QLabel(self.verticalLayoutWidget_22)
         self.label_nodes_filename.setObjectName(u"label_nodes_filename")
-        self.label_nodes_filename.setFont(font2)
+        self.label_nodes_filename.setFont(font4)
 
         self.verticalLayout_24.addWidget(self.label_nodes_filename)
 
         self.label_nodes_filetype = QLabel(self.verticalLayoutWidget_22)
         self.label_nodes_filetype.setObjectName(u"label_nodes_filetype")
-        self.label_nodes_filetype.setFont(font2)
+        self.label_nodes_filetype.setFont(font4)
 
         self.verticalLayout_24.addWidget(self.label_nodes_filetype)
 
         self.label_nodes_framerange = QLabel(self.verticalLayoutWidget_22)
         self.label_nodes_framerange.setObjectName(u"label_nodes_framerange")
-        self.label_nodes_framerange.setFont(font2)
+        self.label_nodes_framerange.setFont(font4)
 
         self.verticalLayout_24.addWidget(self.label_nodes_framerange)
 
         self.label_nodes_resolution = QLabel(self.verticalLayoutWidget_22)
         self.label_nodes_resolution.setObjectName(u"label_nodes_resolution")
-        self.label_nodes_resolution.setFont(font2)
+        self.label_nodes_resolution.setFont(font4)
 
         self.verticalLayout_24.addWidget(self.label_nodes_resolution)
 
         self.label_nodes_savedtime = QLabel(self.verticalLayoutWidget_22)
         self.label_nodes_savedtime.setObjectName(u"label_nodes_savedtime")
-        self.label_nodes_savedtime.setFont(font2)
+        self.label_nodes_savedtime.setFont(font4)
 
         self.verticalLayout_24.addWidget(self.label_nodes_savedtime)
 
         self.label_nodes_filesize = QLabel(self.verticalLayoutWidget_22)
         self.label_nodes_filesize.setObjectName(u"label_nodes_filesize")
-        self.label_nodes_filesize.setFont(font2)
+        self.label_nodes_filesize.setFont(font4)
 
         self.verticalLayout_24.addWidget(self.label_nodes_filesize)
 
@@ -723,13 +842,13 @@ class Ui_Form(object):
         self.groupBox_clip_comment_3 = QGroupBox(self.tab_nodes)
         self.groupBox_clip_comment_3.setObjectName(u"groupBox_clip_comment_3")
         self.groupBox_clip_comment_3.setGeometry(QRect(520, 420, 231, 181))
-        self.groupBox_clip_comment_3.setFont(font1)
+        self.groupBox_clip_comment_3.setFont(font3)
         self.groupBox_clip_comment_3.setFlat(False)
         self.groupBox_clip_comment_3.setCheckable(False)
         self.label_82 = QLabel(self.groupBox_clip_comment_3)
         self.label_82.setObjectName(u"label_82")
         self.label_82.setGeometry(QRect(10, 30, 211, 141))
-        self.label_82.setFont(font4)
+        self.label_82.setFont(font6)
         self.tableWidget_nodes_files = QTableWidget(self.tab_nodes)
         self.tableWidget_nodes_files.setObjectName(u"tableWidget_nodes_files")
         self.tableWidget_nodes_files.setGeometry(QRect(10, 10, 501, 641))
@@ -750,9 +869,7 @@ class Ui_Form(object):
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
         self.label_5.setSizePolicy(sizePolicy2)
-        font5 = QFont()
-        font5.setBold(False)
-        self.label_5.setFont(font5)
+        self.label_5.setFont(font1)
 
         self.horizontalLayout_3.addWidget(self.label_5)
 
@@ -773,6 +890,130 @@ class Ui_Form(object):
         self.treeWidget_lib_file_sturc.setObjectName(u"treeWidget_lib_file_sturc")
         self.treeWidget_lib_file_sturc.setGeometry(QRect(10, 50, 271, 661))
         self.tabWidget_all.addTab(self.tab_clip, "")
+        self.tab_pub = QWidget()
+        self.tab_pub.setObjectName(u"tab_pub")
+        self.groupBox_shot_file_info_3 = QGroupBox(self.tab_pub)
+        self.groupBox_shot_file_info_3.setObjectName(u"groupBox_shot_file_info_3")
+        self.groupBox_shot_file_info_3.setGeometry(QRect(780, 470, 271, 191))
+        self.groupBox_shot_file_info_3.setFont(font3)
+        self.groupBox_shot_file_info_3.setFlat(False)
+        self.groupBox_shot_file_info_3.setCheckable(False)
+        self.verticalLayoutWidget_9 = QWidget(self.groupBox_shot_file_info_3)
+        self.verticalLayoutWidget_9.setObjectName(u"verticalLayoutWidget_9")
+        self.verticalLayoutWidget_9.setGeometry(QRect(10, 30, 80, 151))
+        self.verticalLayout_11 = QVBoxLayout(self.verticalLayoutWidget_9)
+        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
+        self.verticalLayout_11.setContentsMargins(0, 0, 0, 0)
+        self.label_34 = QLabel(self.verticalLayoutWidget_9)
+        self.label_34.setObjectName(u"label_34")
+        self.label_34.setFont(font4)
+
+        self.verticalLayout_11.addWidget(self.label_34)
+
+        self.label_35 = QLabel(self.verticalLayoutWidget_9)
+        self.label_35.setObjectName(u"label_35")
+        self.label_35.setFont(font4)
+
+        self.verticalLayout_11.addWidget(self.label_35)
+
+        self.label_36 = QLabel(self.verticalLayoutWidget_9)
+        self.label_36.setObjectName(u"label_36")
+        self.label_36.setFont(font4)
+
+        self.verticalLayout_11.addWidget(self.label_36)
+
+        self.label_37 = QLabel(self.verticalLayoutWidget_9)
+        self.label_37.setObjectName(u"label_37")
+        self.label_37.setFont(font4)
+
+        self.verticalLayout_11.addWidget(self.label_37)
+
+        self.label_38 = QLabel(self.verticalLayoutWidget_9)
+        self.label_38.setObjectName(u"label_38")
+        self.label_38.setFont(font4)
+
+        self.verticalLayout_11.addWidget(self.label_38)
+
+        self.label_39 = QLabel(self.verticalLayoutWidget_9)
+        self.label_39.setObjectName(u"label_39")
+        self.label_39.setFont(font4)
+
+        self.verticalLayout_11.addWidget(self.label_39)
+
+        self.verticalLayoutWidget_10 = QWidget(self.groupBox_shot_file_info_3)
+        self.verticalLayoutWidget_10.setObjectName(u"verticalLayoutWidget_10")
+        self.verticalLayoutWidget_10.setGeometry(QRect(100, 30, 161, 151))
+        self.verticalLayout_12 = QVBoxLayout(self.verticalLayoutWidget_10)
+        self.verticalLayout_12.setObjectName(u"verticalLayout_12")
+        self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
+        self.label_pub_filename = QLabel(self.verticalLayoutWidget_10)
+        self.label_pub_filename.setObjectName(u"label_pub_filename")
+        self.label_pub_filename.setFont(font4)
+
+        self.verticalLayout_12.addWidget(self.label_pub_filename)
+
+        self.label_pub_filetype = QLabel(self.verticalLayoutWidget_10)
+        self.label_pub_filetype.setObjectName(u"label_pub_filetype")
+        self.label_pub_filetype.setFont(font4)
+
+        self.verticalLayout_12.addWidget(self.label_pub_filetype)
+
+        self.label_pub_framerange = QLabel(self.verticalLayoutWidget_10)
+        self.label_pub_framerange.setObjectName(u"label_pub_framerange")
+        self.label_pub_framerange.setFont(font4)
+
+        self.verticalLayout_12.addWidget(self.label_pub_framerange)
+
+        self.label_pub_resolution = QLabel(self.verticalLayoutWidget_10)
+        self.label_pub_resolution.setObjectName(u"label_pub_resolution")
+        self.label_pub_resolution.setFont(font4)
+
+        self.verticalLayout_12.addWidget(self.label_pub_resolution)
+
+        self.label_pub_savedtime = QLabel(self.verticalLayoutWidget_10)
+        self.label_pub_savedtime.setObjectName(u"label_pub_savedtime")
+        self.label_pub_savedtime.setFont(font4)
+
+        self.verticalLayout_12.addWidget(self.label_pub_savedtime)
+
+        self.label_pub_filesize = QLabel(self.verticalLayoutWidget_10)
+        self.label_pub_filesize.setObjectName(u"label_pub_filesize")
+        self.label_pub_filesize.setFont(font4)
+
+        self.verticalLayout_12.addWidget(self.label_pub_filesize)
+
+        self.pushButton_mytask_selectedopen_2 = QPushButton(self.tab_pub)
+        self.pushButton_mytask_selectedopen_2.setObjectName(u"pushButton_mytask_selectedopen_2")
+        self.pushButton_mytask_selectedopen_2.setGeometry(QRect(780, 670, 271, 41))
+        self.groupBox_shot_comment_4 = QGroupBox(self.tab_pub)
+        self.groupBox_shot_comment_4.setObjectName(u"groupBox_shot_comment_4")
+        self.groupBox_shot_comment_4.setGeometry(QRect(420, 470, 341, 241))
+        self.groupBox_shot_comment_4.setFont(font3)
+        self.groupBox_shot_comment_4.setFlat(False)
+        self.groupBox_shot_comment_4.setCheckable(False)
+        self.plainTextEdit_pub_comment = QPlainTextEdit(self.groupBox_shot_comment_4)
+        self.plainTextEdit_pub_comment.setObjectName(u"plainTextEdit_pub_comment")
+        self.plainTextEdit_pub_comment.setGeometry(QRect(0, 20, 341, 221))
+        self.groupBox_shot_comment_5 = QGroupBox(self.tab_pub)
+        self.groupBox_shot_comment_5.setObjectName(u"groupBox_shot_comment_5")
+        self.groupBox_shot_comment_5.setGeometry(QRect(420, 50, 631, 411))
+        self.groupBox_shot_comment_5.setFont(font3)
+        self.groupBox_shot_comment_5.setFlat(False)
+        self.groupBox_shot_comment_5.setCheckable(False)
+        self.label_shot_comment_4 = QLabel(self.groupBox_shot_comment_5)
+        self.label_shot_comment_4.setObjectName(u"label_shot_comment_4")
+        self.label_shot_comment_4.setGeometry(QRect(10, 30, 211, 141))
+        self.label_pub_thumbnail = QLabel(self.groupBox_shot_comment_5)
+        self.label_pub_thumbnail.setObjectName(u"label_pub_thumbnail")
+        self.label_pub_thumbnail.setGeometry(QRect(10, 30, 611, 371))
+        self.label_mytask_filepath_2 = QLabel(self.tab_pub)
+        self.label_mytask_filepath_2.setObjectName(u"label_mytask_filepath_2")
+        self.label_mytask_filepath_2.setGeometry(QRect(10, 8, 521, 41))
+        self.label_mytask_filepath_2.setFont(font5)
+        self.listWidget_pub_list = QListWidget(self.tab_pub)
+        self.listWidget_pub_list.setObjectName(u"listWidget_pub_list")
+        self.listWidget_pub_list.setGeometry(QRect(10, 50, 391, 661))
+        self.tabWidget_all.addTab(self.tab_pub, "")
         self.horizontalLayoutWidget_2 = QWidget(Form)
         self.horizontalLayoutWidget_2.setObjectName(u"horizontalLayoutWidget_2")
         self.horizontalLayoutWidget_2.setGeometry(QRect(50, 30, 191, 51))
@@ -783,7 +1024,7 @@ class Ui_Form(object):
         self.label_3.setObjectName(u"label_3")
         sizePolicy2.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
         self.label_3.setSizePolicy(sizePolicy2)
-        self.label_3.setFont(font5)
+        self.label_3.setFont(font1)
 
         self.horizontalLayout_2.addWidget(self.label_3)
 
@@ -794,21 +1035,10 @@ class Ui_Form(object):
 
         self.gridLayoutWidget_3 = QWidget(Form)
         self.gridLayoutWidget_3.setObjectName(u"gridLayoutWidget_3")
-        self.gridLayoutWidget_3.setGeometry(QRect(900, 59, 211, 51))
+        self.gridLayoutWidget_3.setGeometry(QRect(900, 30, 211, 81))
         self.gridLayout_4 = QGridLayout(self.gridLayoutWidget_3)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
-        self.label_7 = QLabel(self.gridLayoutWidget_3)
-        self.label_7.setObjectName(u"label_7")
-        sizePolicy1.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
-        self.label_7.setSizePolicy(sizePolicy1)
-        font6 = QFont()
-        font6.setPointSize(8)
-        font6.setBold(True)
-        self.label_7.setFont(font6)
-
-        self.gridLayout_4.addWidget(self.label_7, 0, 0, 1, 1)
-
         self.frame = QFrame(self.gridLayoutWidget_3)
         self.frame.setObjectName(u"frame")
         self.frame.setFrameShape(QFrame.StyledPanel)
@@ -820,15 +1050,18 @@ class Ui_Form(object):
         font7.setPointSize(8)
         self.label_username.setFont(font7)
 
-        self.gridLayout_4.addWidget(self.frame, 0, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.frame, 0, 3, 1, 1)
 
-        self.label_8 = QLabel(self.gridLayoutWidget_3)
-        self.label_8.setObjectName(u"label_8")
-        sizePolicy1.setHeightForWidth(self.label_8.sizePolicy().hasHeightForWidth())
-        self.label_8.setSizePolicy(sizePolicy1)
-        self.label_8.setFont(font6)
+        self.frame_3 = QFrame(self.gridLayoutWidget_3)
+        self.frame_3.setObjectName(u"frame_3")
+        self.frame_3.setFrameShape(QFrame.StyledPanel)
+        self.frame_3.setFrameShadow(QFrame.Raised)
+        self.label_rank = QLabel(self.frame_3)
+        self.label_rank.setObjectName(u"label_rank")
+        self.label_rank.setGeometry(QRect(5, 1, 151, 20))
+        self.label_rank.setFont(font7)
 
-        self.gridLayout_4.addWidget(self.label_8, 1, 0, 1, 1)
+        self.gridLayout_4.addWidget(self.frame_3, 1, 3, 1, 1)
 
         self.frame_2 = QFrame(self.gridLayoutWidget_3)
         self.frame_2.setObjectName(u"frame_2")
@@ -839,7 +1072,34 @@ class Ui_Form(object):
         self.label_projectname.setGeometry(QRect(5, 0, 151, 21))
         self.label_projectname.setFont(font7)
 
-        self.gridLayout_4.addWidget(self.frame_2, 1, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.frame_2, 2, 3, 1, 1)
+
+        self.label_8 = QLabel(self.gridLayoutWidget_3)
+        self.label_8.setObjectName(u"label_8")
+        sizePolicy1.setHeightForWidth(self.label_8.sizePolicy().hasHeightForWidth())
+        self.label_8.setSizePolicy(sizePolicy1)
+        font8 = QFont()
+        font8.setPointSize(8)
+        font8.setBold(True)
+        self.label_8.setFont(font8)
+
+        self.gridLayout_4.addWidget(self.label_8, 2, 1, 1, 1)
+
+        self.label_7 = QLabel(self.gridLayoutWidget_3)
+        self.label_7.setObjectName(u"label_7")
+        sizePolicy1.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
+        self.label_7.setSizePolicy(sizePolicy1)
+        self.label_7.setFont(font8)
+
+        self.gridLayout_4.addWidget(self.label_7, 0, 1, 1, 1)
+
+        self.label_19 = QLabel(self.gridLayoutWidget_3)
+        self.label_19.setObjectName(u"label_19")
+        sizePolicy1.setHeightForWidth(self.label_19.sizePolicy().hasHeightForWidth())
+        self.label_19.setSizePolicy(sizePolicy1)
+        self.label_19.setFont(font8)
+
+        self.gridLayout_4.addWidget(self.label_19, 1, 1, 1, 1)
 
 
         self.retranslateUi(Form)
@@ -860,7 +1120,7 @@ class Ui_Form(object):
         self.tabWidget_shot_task.setTabText(self.tabWidget_shot_task.indexOf(self.tab_work), QCoreApplication.translate("Form", u"WORK", None))
         self.tabWidget_shot_task.setTabText(self.tabWidget_shot_task.indexOf(self.tab_5), QCoreApplication.translate("Form", u"MOV", None))
         self.tabWidget_shot_task.setTabText(self.tabWidget_shot_task.indexOf(self.tab_exr), QCoreApplication.translate("Form", u"EXR", None))
-        self.label_shot_filepath.setText(QCoreApplication.translate("Form", u"Task Name > File Path", None))
+        self.label_shot_filepath.setText("")
         self.groupBox_shot_comment.setTitle(QCoreApplication.translate("Form", u"Comment", None))
         self.label_shot_comment.setText("")
         self.tabWidget_shot_status.setTabText(self.tabWidget_shot_status.indexOf(self.tab_shot_mm), QCoreApplication.translate("Form", u"MM", None))
@@ -889,9 +1149,26 @@ class Ui_Form(object):
         self.tableWidget_mytask_status.setTabText(self.tableWidget_mytask_status.indexOf(self.tab_mt_fx), QCoreApplication.translate("Form", u"FX", None))
         self.tableWidget_mytask_status.setTabText(self.tableWidget_mytask_status.indexOf(self.tab_mt_comp), QCoreApplication.translate("Form", u"COMP", None))
         self.groupBox_shot_comment_2.setTitle(QCoreApplication.translate("Form", u"Comment", None))
+        self.plainTextEdit_mytask_comment.setPlainText("")
         self.pushButton_mytask_selectedopen.setText(QCoreApplication.translate("Form", u"OPEN", None))
         self.label_mytask_filepath.setText(QCoreApplication.translate("Form", u"RECENT", None))
         self.pushButton_mytask_newfileopen.setText(QCoreApplication.translate("Form", u"NEW", None))
+        self.groupBox_shot_comment_3.setTitle(QCoreApplication.translate("Form", u"Thumbnail", None))
+        self.label_shot_comment_2.setText("")
+        self.label_mytask_thumbnail.setText("")
+        self.groupBox_shot_file_info_2.setTitle(QCoreApplication.translate("Form", u"File information", None))
+        self.label_17.setText(QCoreApplication.translate("Form", u"Name", None))
+        self.label_15.setText(QCoreApplication.translate("Form", u"File type", None))
+        self.label_11.setText(QCoreApplication.translate("Form", u"Frame Range ", None))
+        self.label_12.setText(QCoreApplication.translate("Form", u"Resolution", None))
+        self.label_13.setText(QCoreApplication.translate("Form", u"Saved time", None))
+        self.label_21.setText(QCoreApplication.translate("Form", u"File size", None))
+        self.label_mytask_filename.setText("")
+        self.label_mytask_filetype.setText("")
+        self.label_mytask_framerange.setText("")
+        self.label_mytask_resolution.setText("")
+        self.label_mytask_savedtime.setText("")
+        self.label_mytask_filesize.setText("")
         self.tabWidget_all.setTabText(self.tabWidget_all.indexOf(self.tab_my_task), QCoreApplication.translate("Form", u"MY TASK", None))
         self.pushButton_asset_nuke.setText(QCoreApplication.translate("Form", u"IMPORT", None))
         self.groupBox_asset_comment.setTitle(QCoreApplication.translate("Form", u"Comment", None))
@@ -954,10 +1231,33 @@ class Ui_Form(object):
         self.tabWidget_template.setTabText(self.tabWidget_template.indexOf(self.tab_nodes), QCoreApplication.translate("Form", u"NODES", None))
         self.label_5.setText(QCoreApplication.translate("Form", u" shot code ", None))
         self.tabWidget_all.setTabText(self.tabWidget_all.indexOf(self.tab_clip), QCoreApplication.translate("Form", u"LIB", None))
+        self.groupBox_shot_file_info_3.setTitle(QCoreApplication.translate("Form", u"File information", None))
+        self.label_34.setText(QCoreApplication.translate("Form", u"Name", None))
+        self.label_35.setText(QCoreApplication.translate("Form", u"File type", None))
+        self.label_36.setText(QCoreApplication.translate("Form", u"Frame Range ", None))
+        self.label_37.setText(QCoreApplication.translate("Form", u"Resolution", None))
+        self.label_38.setText(QCoreApplication.translate("Form", u"Saved time", None))
+        self.label_39.setText(QCoreApplication.translate("Form", u"File size", None))
+        self.label_pub_filename.setText("")
+        self.label_pub_filetype.setText("")
+        self.label_pub_framerange.setText("")
+        self.label_pub_resolution.setText("")
+        self.label_pub_savedtime.setText("")
+        self.label_pub_filesize.setText("")
+        self.pushButton_mytask_selectedopen_2.setText(QCoreApplication.translate("Form", u"OPEN", None))
+        self.groupBox_shot_comment_4.setTitle(QCoreApplication.translate("Form", u"Comment", None))
+        self.plainTextEdit_pub_comment.setPlainText("")
+        self.groupBox_shot_comment_5.setTitle(QCoreApplication.translate("Form", u"Thumbnail", None))
+        self.label_shot_comment_4.setText("")
+        self.label_pub_thumbnail.setText("")
+        self.label_mytask_filepath_2.setText(QCoreApplication.translate("Form", u"PUBLISH (Manager)", None))
+        self.tabWidget_all.setTabText(self.tabWidget_all.indexOf(self.tab_pub), QCoreApplication.translate("Form", u"PUB", None))
         self.label_3.setText(QCoreApplication.translate("Form", u"SEQ ", None))
-        self.label_7.setText(QCoreApplication.translate("Form", u"User Name", None))
         self.label_username.setText("")
-        self.label_8.setText(QCoreApplication.translate("Form", u"Project Name", None))
+        self.label_rank.setText("")
         self.label_projectname.setText("")
+        self.label_8.setText(QCoreApplication.translate("Form", u"Project Name", None))
+        self.label_7.setText(QCoreApplication.translate("Form", u"User Name", None))
+        self.label_19.setText(QCoreApplication.translate("Form", u"Rank", None))
     # retranslateUi
 

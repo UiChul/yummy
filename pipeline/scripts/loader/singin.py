@@ -13,7 +13,7 @@ class Signin(QWidget):
         self.ui.lineEdit_email.returnPressed.connect(self.check_login)
     
     def input_project(self):
-        project_name = ["YUMMY", "Marvelous"]
+        project_name = ["Marvelous"]
         self.ui.comboBox_project_name.addItems(project_name)
         
     def check_login(self):
