@@ -34,7 +34,7 @@
     <string notr="true">background-color: rgb(54, 54, 54);</string>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="page_nk">
     <property name="geometry">
@@ -48,24 +48,6 @@
     <attribute name="label">
      <string>.nk</string>
     </attribute>
-    <widget class="QListWidget" name="listWidget_nk">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>331</width>
-       <height>221</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(54, 54, 54);</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QWidget" name="page_exr">
     <property name="geometry">
@@ -79,24 +61,6 @@
     <attribute name="label">
      <string>.exr</string>
     </attribute>
-    <widget class="QListWidget" name="listWidget_exr">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>331</width>
-       <height>221</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(54, 54, 54);</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QWidget" name="page_mov">
     <property name="geometry">
@@ -110,24 +74,6 @@
     <attribute name="label">
      <string>.mov</string>
     </attribute>
-    <widget class="QListWidget" name="listWidget_mov">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>331</width>
-       <height>221</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(54, 54, 54);</string>
-     </property>
-    </widget>
    </widget>
   </widget>
   <widget class="QWidget" name="horizontalLayoutWidget">
