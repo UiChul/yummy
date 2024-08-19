@@ -39,7 +39,7 @@ class Mainloader(QWidget):
         self.ui.label_username.setText(f"{self.user}")
         
     def set_up(self):
-        from main_window_ui import Ui_Form
+        from main_window_v002_ui import Ui_Form
         # ui_file_path = "/home/rapa/yummy/pipeline/scripts/loader/main_window.ui"
         # ui_file = QFile(ui_file_path)
         # ui_file.open(QFile.ReadOnly)
