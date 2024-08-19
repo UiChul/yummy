@@ -1,0 +1,209 @@
+Entity : Project
+
+
+Field Name: tank_name, Type: text
+Field Name: end_date, Type: date
+Field Name: duration, Type: number
+Field Name: tracking_settings, Type: serializable
+Field Name: color, Type: color
+Field Name: users, Type: multi_entity
+Field Name: layout_project, Type: entity
+Field Name: client_site_settings_saved, Type: checkbox
+Field Name: last_accessed_by_current_user, Type: date_time
+Field Name: start_date, Type: date
+Field Name: phases, Type: multi_entity
+Field Name: cached_display_name, Type: text
+Field Name: billboard, Type: url
+Field Name: filmstrip_image, Type: image
+Field Name: is_template, Type: checkbox
+Field Name: is_demo, Type: checkbox
+Field Name: current_user_favorite, Type: checkbox
+Field Name: landing_page_url, Type: url
+Field Name: archived, Type: checkbox
+Field Name: id, Type: number
+Field Name: task_templates, Type: multi_entity
+Field Name: image, Type: image
+Field Name: image_source_entity, Type: entity
+Field Name: image_blur_hash, Type: text
+Field Name: asset_linked_projects_assets, Type: multi_entity
+Field Name: is_template_project, Type: checkbox
+Field Name: sg_description, Type: text
+Field Name: name, Type: text
+Field Name: sg_status, Type: list
+Field Name: updated_at, Type: date_time
+Field Name: code, Type: text
+Field Name: created_by, Type: entity
+Field Name: updated_by, Type: entity
+Field Name: tags, Type: multi_entity
+Field Name: sg_type, Type: list
+Field Name: created_at, Type: date_time
+Field Name: sg_resolutin_width, Type: text
+Field Name: sg_resolution_height, Type: text
+Field Name: sg_undistortion_height, Type: text
+Field Name: sg_undistortion_width, Type: text
+
+
+##########################################################################################################################################################
+
+Entity : Sequence
+
+
+Field Name: shots, Type: multi_entity
+Field Name: addressings_cc, Type: multi_entity
+Field Name: cached_display_name, Type: text
+Field Name: filmstrip_image, Type: image
+Field Name: sg_versions, Type: multi_entity
+Field Name: task_template, Type: entity
+Field Name: tasks, Type: multi_entity
+Field Name: step_0, Type: pivot_column
+Field Name: cuts, Type: multi_entity
+Field Name: sg_published_files, Type: multi_entity
+Field Name: episode, Type: entity
+Field Name: id, Type: number
+Field Name: image_source_entity, Type: entity
+Field Name: sg_vendor_groups, Type: multi_entity
+Field Name: sg_scenes, Type: multi_entity
+Field Name: image_blur_hash, Type: text
+Field Name: notes, Type: multi_entity
+Field Name: open_notes, Type: multi_entity
+Field Name: open_notes_count, Type: summary
+Field Name: updated_at, Type: date_time
+Field Name: code, Type: text
+Field Name: sg_sequence_type, Type: list
+Field Name: assets, Type: multi_entity
+Field Name: created_by, Type: entity
+Field Name: project, Type: entity
+Field Name: sg_status_list, Type: status_list
+Field Name: updated_by, Type: entity
+Field Name: description, Type: text
+Field Name: tags, Type: multi_entity
+Field Name: image, Type: image
+Field Name: created_at, Type: date_time
+
+
+##########################################################################################################################################################
+
+Entity : Shot
+
+Field Name: task_template, Type: entity
+Field Name: parent_shots, Type: multi_entity
+Field Name: shots, Type: multi_entity
+Field Name: step_0, Type: pivot_column
+Field Name: addressings_cc, Type: multi_entity
+Field Name: cached_display_name, Type: text
+Field Name: sg_cut_order, Type: number
+Field Name: filmstrip_image, Type: image
+Field Name: sg_head_in, Type: number
+Field Name: sg_tail_out, Type: number
+Field Name: sg_working_duration, Type: number
+Field Name: sg_published_files, Type: multi_entity
+Field Name: id, Type: number
+Field Name: image_source_entity, Type: entity
+Field Name: sg_vendor_groups, Type: multi_entity
+Field Name: mocap_take_ranges, Type: multi_entity
+Field Name: image_blur_hash, Type: text
+Field Name: notes, Type: multi_entity
+Field Name: open_notes, Type: multi_entity
+Field Name: open_notes_count, Type: summary
+Field Name: smart_cut_duration, Type: number
+Field Name: smart_tail_in, Type: number
+Field Name: updated_at, Type: date_time
+Field Name: smart_duration_summary_display, Type: text
+Field Name: smart_tail_duration, Type: number
+Field Name: smart_cut_in, Type: number
+Field Name: tail_duration, Type: number
+Field Name: smart_head_in, Type: number
+Field Name: assets, Type: multi_entity
+Field Name: created_by, Type: entity
+Field Name: project, Type: entity
+Field Name: smart_cut_summary_display, Type: text
+Field Name: head_out, Type: number
+Field Name: smart_head_out, Type: number
+Field Name: updated_by, Type: entity
+Field Name: smart_working_duration, Type: number
+Field Name: cut_duration, Type: number
+Field Name: cut_out, Type: number
+Field Name: cut_in, Type: number
+Field Name: description, Type: text
+Field Name: sg_cut_out, Type: number
+Field Name: sg_cut_in, Type: number
+Field Name: sg_cut_duration, Type: number
+Field Name: tags, Type: multi_entity
+Field Name: smart_head_duration, Type: number
+Field Name: tasks, Type: multi_entity
+Field Name: head_duration, Type: number
+Field Name: head_in, Type: number
+Field Name: tail_out, Type: number
+Field Name: tail_in, Type: number
+Field Name: smart_cut_out, Type: number
+Field Name: image, Type: image
+Field Name: smart_tail_out, Type: number
+Field Name: created_at, Type: date_time
+Field Name: step_106, Type: pivot_column
+Field Name: step_35, Type: pivot_column
+Field Name: step_8, Type: pivot_column
+Field Name: step_7, Type: pivot_column
+Field Name: step_6, Type: pivot_column
+Field Name: step_142, Type: pivot_column
+Field Name: sg_shot_type, Type: list
+Field Name: code, Type: text
+Field Name: sg_sequence, Type: entity
+Field Name: sg_versions, Type: multi_entity
+Field Name: sg_status_list, Type: status_list
+
+##########################################################################################################################################################
+
+Entity : Task
+
+Field Name: pinned, Type: checkbox
+Field Name: time_logs_sum, Type: duration
+Field Name: step, Type: entity
+Field Name: inventory_date, Type: date
+Field Name: notes, Type: multi_entity
+Field Name: implicit, Type: checkbox
+Field Name: upstream_tasks, Type: multi_entity
+Field Name: downstream_tasks, Type: multi_entity
+Field Name: dependency_violation, Type: checkbox
+Field Name: task_template, Type: entity
+Field Name: time_percent_of_est, Type: percent
+Field Name: time_vs_est, Type: duration
+Field Name: splits, Type: serializable
+Field Name: template_task, Type: entity
+Field Name: addressings_cc, Type: multi_entity
+Field Name: sibling_tasks, Type: multi_entity
+Field Name: split_durations, Type: serializable
+Field Name: cached_display_name, Type: text
+Field Name: sg_priority_1, Type: list
+Field Name: sg_description, Type: text
+Field Name: sg_sort_order, Type: number
+Field Name: filmstrip_image, Type: image
+Field Name: open_notes, Type: multi_entity
+Field Name: open_notes_count, Type: summary
+Field Name: image_source_entity, Type: entity
+Field Name: image_blur_hash, Type: text
+Field Name: workload, Type: calculated
+Field Name: workload_per_day, Type: calculated
+Field Name: workload_assignee_count, Type: number
+Field Name: workload_per_day_per_assignee, Type: calculated
+Field Name: sg_versions, Type: multi_entity
+Field Name: proposed_start_date, Type: date
+Field Name: start_date, Type: date
+Field Name: updated_at, Type: date_time
+Field Name: project, Type: entity
+Field Name: entity, Type: entity
+Field Name: created_by, Type: entity
+Field Name: sg_status_list, Type: status_list
+Field Name: updated_by, Type: entity
+Field Name: est_in_mins, Type: duration
+Field Name: tags, Type: multi_entity
+Field Name: color, Type: color
+Field Name: due_date, Type: date
+Field Name: content, Type: text
+Field Name: duration, Type: duration
+Field Name: milestone, Type: checkbox
+Field Name: image, Type: image
+Field Name: task_assignees, Type: multi_entity
+Field Name: created_at, Type: date_time
+Field Name: task_reviewers, Type: multi_entity
+Field Name: sg_shots, Type: multi_entity
+Field Name: id, Type: number
