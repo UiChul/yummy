@@ -2,6 +2,7 @@ from PySide6.QtCore import Qt,Signal
 from PySide6.QtWidgets import QWidget,QApplication,QMessageBox
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
+from shotgun_api3 import shotgun
 import os
 
 class Signin(QWidget):
@@ -16,7 +17,7 @@ class Signin(QWidget):
         project_name = ["YUMMY", "Marvelous"]
         self.ui.comboBox_project_name.addItems(project_name)
         
-    def check_login(self):
+    def check_login1(self):
         
         self.user_name = ""
         
@@ -54,6 +55,47 @@ class Signin(QWidget):
         msg_box.setWindowTitle(title)
         msg_box.setText(text)
         msg_box.exec()
+        
+    #=====================================================================================
+    def check_login(self):
+        sg = self.connect_sg()
+        
+        user_email = self.ui.lineEdit_email.text()
+
+        user= self.get_user_by_email(sg, user_email)
+        
+        if not user_email:
+            self.set_messagebox("email을 입력해주세요" , "로그인 실패")
+            return
+
+        if user:
+            from get_datas_for_login import Signinfo
+            self.set_messagebox("로그인 되었습니다.","로그인 성공")
+            Signinfo(user_email)    
+            
+        else:
+            self.set_messagebox("email 정보가 정확하지 않습니다","로그인 실패")
+    
+    def connect_sg(self):
+        URL = "https://4thacademy.shotgrid.autodesk.com"
+        SCRIPT_NAME = "test_hyo"
+        API_KEY = "ljbgffxqg@cejveci5dQebhdx"
+        """
+        샷그리드 연결
+        """
+        sg = shotgun.Shotgun(URL, SCRIPT_NAME, API_KEY)
+
+        return sg
+
+    def get_user_by_email(self,sg, email):
+        """
+        입력된 이메일 정보로 유저 정보 가져오기
+        """
+        filters = [["email", "is", email]]
+        fields = ["id", "name", "email", "permission_rule_set"]
+        users = sg.find("HumanUser", filters=filters, fields=fields)
+        
+        return users[0]
     
     def set_up(self):
         from singin_window_ui import Ui_Form
