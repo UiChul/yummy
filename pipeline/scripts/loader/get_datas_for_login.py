@@ -16,7 +16,7 @@ class Signinfo():
         if user_id:
             projects = self.get_projects_by_userID(sg, user_id)
             user_data = self.arrange_user_data_for_json(user, projects)
-            self.save_user_data_to_json(user_data, "login_user_data.json")
+            self.save_user_data_to_json(user_data, "/home/rapa/yummy/pipeline/json/login_user_data.json")
             print (user_data)
 
     def connect_sg(self):

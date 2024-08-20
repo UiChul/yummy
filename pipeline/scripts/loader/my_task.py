@@ -14,8 +14,6 @@ class My_task(QWidget):
         self.ui.pushButton_mytask_selectedopen.clicked.connect(self.set_open_btn)
         self.ui.pushButton_mytask_newfileopen.clicked.connect(self.set_new_btn)
         
-        
-        
     def check_file_info(self,item):
         index = item.row()
         file_info  = []
