@@ -36,6 +36,9 @@
    <property name="styleSheet">
     <string notr="true"/>
    </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhNone</set>
+   </property>
    <property name="tabPosition">
     <enum>QTabWidget::North</enum>
    </property>
@@ -97,6 +100,32 @@
             <height>378</height>
            </rect>
           </property>
+          <property name="font">
+           <font>
+            <bold>false</bold>
+           </font>
+          </property>
+          <attribute name="horizontalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="horizontalHeaderMinimumSectionSize">
+           <number>175</number>
+          </attribute>
+          <attribute name="horizontalHeaderDefaultSectionSize">
+           <number>175</number>
+          </attribute>
+          <attribute name="horizontalHeaderHighlightSections">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderDefaultSectionSize">
+           <number>175</number>
+          </attribute>
          </widget>
         </widget>
         <widget class="QWidget" name="tab_5">
@@ -142,8 +171,14 @@
        <height>19</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+       <bold>false</bold>
+      </font>
+     </property>
      <property name="text">
-      <string>Task Name &gt; File Path</string>
+      <string/>
      </property>
     </widget>
     <widget class="QGroupBox" name="groupBox_shot_comment">
@@ -540,11 +575,505 @@
        <height>461</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <bold>false</bold>
+      </font>
+     </property>
      <column>
       <property name="text">
        <string notr="true">1</string>
       </property>
      </column>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_my_task">
+    <attribute name="title">
+     <string>MY TASK</string>
+    </attribute>
+    <widget class="QTabWidget" name="tableWidget_mytask_status">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>490</y>
+       <width>1041</width>
+       <height>221</height>
+      </rect>
+     </property>
+     <property name="currentIndex">
+      <number>4</number>
+     </property>
+     <property name="usesScrollButtons">
+      <bool>true</bool>
+     </property>
+     <property name="documentMode">
+      <bool>true</bool>
+     </property>
+     <property name="tabsClosable">
+      <bool>false</bool>
+     </property>
+     <property name="movable">
+      <bool>true</bool>
+     </property>
+     <property name="tabBarAutoHide">
+      <bool>false</bool>
+     </property>
+     <widget class="QWidget" name="tab_mt_mm">
+      <attribute name="title">
+       <string>MM</string>
+      </attribute>
+      <widget class="QTableWidget" name="tableWidget_mytask_mm">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>10</y>
+         <width>1041</width>
+         <height>181</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_mt_ldv">
+      <attribute name="title">
+       <string>LDV</string>
+      </attribute>
+      <widget class="QTableWidget" name="tableWidget_mytask_ldv">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>10</y>
+         <width>1041</width>
+         <height>181</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_mt_lit">
+      <attribute name="title">
+       <string>LIT</string>
+      </attribute>
+      <widget class="QTableWidget" name="tableWidget_mytask_lit">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>10</y>
+         <width>1041</width>
+         <height>181</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_mt_fx">
+      <attribute name="title">
+       <string>FX</string>
+      </attribute>
+      <widget class="QTableWidget" name="tableWidget_mytask_fx">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>10</y>
+         <width>1041</width>
+         <height>181</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_mt_comp">
+      <attribute name="title">
+       <string>COMP</string>
+      </attribute>
+      <widget class="QTableWidget" name="tableWidget_mytask_comp">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>10</y>
+         <width>1041</width>
+         <height>181</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_shot_comment_2">
+     <property name="geometry">
+      <rect>
+       <x>820</x>
+       <y>50</y>
+       <width>231</width>
+       <height>331</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <bold>true</bold>
+       <underline>false</underline>
+       <strikeout>false</strikeout>
+      </font>
+     </property>
+     <property name="title">
+      <string>Comment</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <widget class="QPlainTextEdit" name="plainTextEdit_mytask_comment">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>20</y>
+        <width>231</width>
+        <height>311</height>
+       </rect>
+      </property>
+      <property name="plainText">
+       <string>
+
+</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QPushButton" name="pushButton_mytask_selectedopen">
+     <property name="geometry">
+      <rect>
+       <x>820</x>
+       <y>440</y>
+       <width>231</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>OPEN</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_mytask_filepath">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>8</y>
+       <width>521</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>18</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>RECENT</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_mytask_newfileopen">
+     <property name="geometry">
+      <rect>
+       <x>820</x>
+       <y>390</y>
+       <width>231</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>NEW</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="tableWidget_recent_files">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>500</width>
+       <height>431</height>
+      </rect>
+     </property>
+     <attribute name="horizontalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_shot_comment_3">
+     <property name="geometry">
+      <rect>
+       <x>530</x>
+       <y>50</y>
+       <width>271</width>
+       <height>220</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <bold>true</bold>
+       <underline>false</underline>
+       <strikeout>false</strikeout>
+      </font>
+     </property>
+     <property name="title">
+      <string>Thumbnail</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <widget class="QLabel" name="label_shot_comment_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>211</width>
+        <height>141</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_mytask_thumbnail">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>250</width>
+        <height>180</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_shot_file_info_2">
+     <property name="geometry">
+      <rect>
+       <x>530</x>
+       <y>290</y>
+       <width>271</width>
+       <height>191</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <bold>true</bold>
+       <underline>false</underline>
+       <strikeout>false</strikeout>
+      </font>
+     </property>
+     <property name="title">
+      <string>File information</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <widget class="QWidget" name="verticalLayoutWidget_3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>80</width>
+        <height>151</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QLabel" name="label_17">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="text">
+          <string>Name</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_15">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="text">
+          <string>File type</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_11">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="text">
+          <string>Frame Range </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_12">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="text">
+          <string>Resolution</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_13">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="text">
+          <string>Saved time</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_21">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="text">
+          <string>File size</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="verticalLayoutWidget_4">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>30</y>
+        <width>161</width>
+        <height>151</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QLabel" name="label_mytask_filename">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_mytask_filetype">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_mytask_framerange">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_mytask_resolution">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_mytask_savedtime">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_mytask_filesize">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_clip">
@@ -1759,242 +2288,17 @@
      </column>
     </widget>
    </widget>
-   <widget class="QWidget" name="tab_my_task">
+   <widget class="QWidget" name="tab_pub">
     <attribute name="title">
-     <string>MY TASK</string>
+     <string>PUB</string>
     </attribute>
-    <widget class="QTabWidget" name="tableWidget_mytask_status">
+    <widget class="QGroupBox" name="groupBox_shot_file_info_3">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>490</y>
-       <width>1041</width>
-       <height>221</height>
-      </rect>
-     </property>
-     <property name="currentIndex">
-      <number>2</number>
-     </property>
-     <property name="usesScrollButtons">
-      <bool>true</bool>
-     </property>
-     <property name="documentMode">
-      <bool>true</bool>
-     </property>
-     <property name="tabsClosable">
-      <bool>false</bool>
-     </property>
-     <property name="movable">
-      <bool>true</bool>
-     </property>
-     <property name="tabBarAutoHide">
-      <bool>false</bool>
-     </property>
-     <widget class="QWidget" name="tab_mt_mm">
-      <attribute name="title">
-       <string>MM</string>
-      </attribute>
-      <widget class="QTableWidget" name="tableWidget_mytask_mm">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>10</y>
-         <width>1041</width>
-         <height>181</height>
-        </rect>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="tab_mt_ldv">
-      <attribute name="title">
-       <string>LDV</string>
-      </attribute>
-      <widget class="QTableWidget" name="tableWidget_mytask_ldv">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>10</y>
-         <width>1041</width>
-         <height>181</height>
-        </rect>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="tab_mt_lit">
-      <attribute name="title">
-       <string>LIT</string>
-      </attribute>
-      <widget class="QTableWidget" name="tableWidget_mytask_lit">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>10</y>
-         <width>1041</width>
-         <height>181</height>
-        </rect>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="tab_mt_fx">
-      <attribute name="title">
-       <string>FX</string>
-      </attribute>
-      <widget class="QTableWidget" name="tableWidget_mytask_fx">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>10</y>
-         <width>1041</width>
-         <height>181</height>
-        </rect>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="tab_mt_comp">
-      <attribute name="title">
-       <string>COMP</string>
-      </attribute>
-      <widget class="QTableWidget" name="tableWidget_mytask_comp">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>10</y>
-         <width>1041</width>
-         <height>181</height>
-        </rect>
-       </property>
-      </widget>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_shot_comment_2">
-     <property name="geometry">
-      <rect>
-       <x>870</x>
-       <y>50</y>
-       <width>181</width>
-       <height>331</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <bold>true</bold>
-       <underline>false</underline>
-       <strikeout>false</strikeout>
-      </font>
-     </property>
-     <property name="title">
-      <string>Comment</string>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-     <property name="checkable">
-      <bool>false</bool>
-     </property>
-     <widget class="QPlainTextEdit" name="plainTextEdit_mytask_comment">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>20</y>
-        <width>181</width>
-        <height>311</height>
-       </rect>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QPushButton" name="pushButton_mytask_selectedopen">
-     <property name="geometry">
-      <rect>
-       <x>870</x>
-       <y>440</y>
-       <width>181</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>OPEN</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_mytask_filepath">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>8</y>
-       <width>521</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>18</pointsize>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>RECENT</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_mytask_newfileopen">
-     <property name="geometry">
-      <rect>
-       <x>870</x>
-       <y>390</y>
-       <width>181</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>NEW</string>
-     </property>
-    </widget>
-    <widget class="QTableWidget" name="tableWidget_recent_files">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>60</y>
-       <width>500</width>
-       <height>431</height>
-      </rect>
-     </property>
-     <property name="showGrid">
-      <bool>false</bool>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <attribute name="horizontalHeaderVisible">
-      <bool>true</bool>
-     </attribute>
-     <attribute name="horizontalHeaderHighlightSections">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderHighlightSections">
-      <bool>false</bool>
-     </attribute>
-    </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>540</x>
-       <y>60</y>
-       <width>300</width>
-       <height>180</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_shot_file_info_2">
-     <property name="geometry">
-      <rect>
-       <x>540</x>
-       <y>250</y>
-       <width>301</width>
-       <height>231</height>
+       <x>780</x>
+       <y>470</y>
+       <width>271</width>
+       <height>191</height>
       </rect>
      </property>
      <property name="font">
@@ -2013,18 +2317,18 @@
      <property name="checkable">
       <bool>false</bool>
      </property>
-     <widget class="QWidget" name="verticalLayoutWidget_3">
+     <widget class="QWidget" name="verticalLayoutWidget_9">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>30</y>
         <width>80</width>
-        <height>181</height>
+        <height>151</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_5">
+      <layout class="QVBoxLayout" name="verticalLayout_11">
        <item>
-        <widget class="QLabel" name="label_17">
+        <widget class="QLabel" name="label_34">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
@@ -2039,7 +2343,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_15">
+        <widget class="QLabel" name="label_35">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
@@ -2054,7 +2358,22 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_12">
+        <widget class="QLabel" name="label_36">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="text">
+          <string>Frame Range </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_37">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
@@ -2069,7 +2388,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_13">
+        <widget class="QLabel" name="label_38">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
@@ -2084,7 +2403,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_21">
+        <widget class="QLabel" name="label_39">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
@@ -2100,18 +2419,18 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="verticalLayoutWidget_4">
+     <widget class="QWidget" name="verticalLayoutWidget_10">
       <property name="geometry">
        <rect>
         <x>100</x>
         <y>30</y>
-        <width>191</width>
-        <height>181</height>
+        <width>161</width>
+        <height>151</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_6">
+      <layout class="QVBoxLayout" name="verticalLayout_12">
        <item>
-        <widget class="QLabel" name="label_shot_filename_2">
+        <widget class="QLabel" name="label_pub_filename">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
@@ -2126,7 +2445,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_shot_filetype_2">
+        <widget class="QLabel" name="label_pub_filetype">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
@@ -2141,7 +2460,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_shot_resolution_2">
+        <widget class="QLabel" name="label_pub_framerange">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
@@ -2156,7 +2475,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_shot_savedtime_2">
+        <widget class="QLabel" name="label_pub_resolution">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
@@ -2171,7 +2490,22 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_shot_filesize_2">
+        <widget class="QLabel" name="label_pub_savedtime">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <bold>false</bold>
+           <underline>false</underline>
+           <strikeout>false</strikeout>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_pub_filesize">
          <property name="font">
           <font>
            <pointsize>10</pointsize>
@@ -2188,13 +2522,146 @@
       </layout>
      </widget>
     </widget>
+    <widget class="QPushButton" name="pushButton_mytask_selectedopen_2">
+     <property name="geometry">
+      <rect>
+       <x>780</x>
+       <y>670</y>
+       <width>271</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>OPEN</string>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_shot_comment_4">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>470</y>
+       <width>341</width>
+       <height>241</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <bold>true</bold>
+       <underline>false</underline>
+       <strikeout>false</strikeout>
+      </font>
+     </property>
+     <property name="title">
+      <string>Comment</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <widget class="QPlainTextEdit" name="plainTextEdit_pub_comment">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>20</y>
+        <width>341</width>
+        <height>221</height>
+       </rect>
+      </property>
+      <property name="plainText">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox_shot_comment_5">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>50</y>
+       <width>631</width>
+       <height>411</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <bold>true</bold>
+       <underline>false</underline>
+       <strikeout>false</strikeout>
+      </font>
+     </property>
+     <property name="title">
+      <string>Thumbnail</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <widget class="QLabel" name="label_shot_comment_4">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>211</width>
+        <height>141</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_pub_thumbnail">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>611</width>
+        <height>371</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLabel" name="label_mytask_filepath_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>8</y>
+       <width>521</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>18</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>PUBLISH (Manager)</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="listWidget_pub_list">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>391</width>
+       <height>661</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QWidget" name="horizontalLayoutWidget_2">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>40</y>
+     <x>50</x>
+     <y>30</y>
      <width>191</width>
      <height>51</height>
     </rect>
@@ -2227,32 +2694,13 @@
    <property name="geometry">
     <rect>
      <x>900</x>
-     <y>59</y>
+     <y>30</y>
      <width>211</width>
-     <height>51</height>
+     <height>81</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_4">
-    <item row="0" column="0">
-     <widget class="QLabel" name="label_7">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>8</pointsize>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>User Name</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
+    <item row="0" column="3">
      <widget class="QFrame" name="frame">
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
@@ -2280,26 +2728,35 @@
       </widget>
      </widget>
     </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_8">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
+    <item row="1" column="3">
+     <widget class="QFrame" name="frame_3">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
       </property>
-      <property name="font">
-       <font>
-        <pointsize>8</pointsize>
-        <bold>true</bold>
-       </font>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
       </property>
-      <property name="text">
-       <string>Project Name</string>
-      </property>
+      <widget class="QLabel" name="label_rank">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>1</y>
+         <width>151</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
      </widget>
     </item>
-    <item row="1" column="1">
+    <item row="2" column="3">
      <widget class="QFrame" name="frame_2">
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
@@ -2325,6 +2782,63 @@
         <string/>
        </property>
       </widget>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLabel" name="label_8">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Project Name</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="label_7">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>User Name</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLabel" name="label_19">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Rank</string>
+      </property>
      </widget>
     </item>
    </layout>

@@ -17,8 +17,8 @@
         {
             "name": "Test_phoenix",
             "step": [
-                "lighting",
-                "LKD"
+                "LKD",
+                "lighting"
             ],
             "id": 254,
             "resolution_width": null,
