@@ -107,20 +107,19 @@ def get_sequences_by_task(sg, user_id):
 
 def get_projects_by_userID(sg, user_id, project_entities):
     """
-    userID로 할당된 프로젝트 가져오기
+    userID로 할당된 프로젝트 가져오기 및 각 shot_code에 step을 할당하기
     """
     filters = [["task_assignees", "is", {"type": "HumanUser", "id": user_id}]]
-    fields = ["project", "step", "sg_sequence"]
+    fields = ["project", "step", "entity"]
     tasks = sg.find("Task", filters=filters, fields=fields)
 
     project_data = {}
-    sequences_dict = get_sequences_by_task(sg, user_id)
+    # sequences_dict = get_sequences_by_task(sg, user_id)
 
     for task in tasks:
         project = task.get("project")
-        sequence = task.get("sg_sequence")
-        step = task.get("step")
         entity = task.get("entity")
+        step = task.get("step")
         
         # Entity 이름 가져오기
         entity_name = entity.get("name") if entity else "Unknown Entity"
@@ -136,29 +135,30 @@ def get_projects_by_userID(sg, user_id, project_entities):
                     "id": project_id,
                     "name": project_name,
                     **project_details,
-                    "shot_code": project_entities,  # 사용자에게 할당된 시퀀스
-                    "steps": set()
+                    "shot_code": {}, 
                 }
 
-            if step:
-                step_name = step.get("name")
-                if step_name:
-                    project_data[project_id]["steps"].add(step_name)
+            # shot code에 맞는 step 추가
+            if entity_name:
+                if entity_name not in project_data[project_id]["shot_code"]:
+                    project_data[project_id]["shot_code"][entity_name] = {
+                        "steps": []  # Initialize steps as a list for each shot_code
+                    }
 
-            if sequence:
-                sequence_id = sequence.get("id")
-                if sequence_id:
-                    sequence_code = sequences_dict.get(sequence_id, "Unknown Code")
-                    project_data[project_id]["shot_code"][sequence_id] = sequence_code
-            
-            # Entity 이름 추가
-            # project_data[project_id]["entities"].append(entity_name)
+                # step 리스트에 step 추가
+                if step:
+                    step_name = step.get("name")
+                    if step_name and step_name not in project_data[project_id]["shot_code"][entity_name]["steps"]:
+                        project_data[project_id]["shot_code"][entity_name]["steps"].append(step_name)
 
     for project_id in project_data:
-        project_data[project_id]["steps"] = list(project_data[project_id]["steps"])
-
         if project_id in project_entities:
-                project_data[project_id]["shot_code"] = project_entities[project_id]["entities"]
+            
+            for entity_name in project_entities[project_id]["entities"]:
+                if entity_name not in project_data[project_id]["shot_code"]:
+                    project_data[project_id]["shot_code"][entity_name] = {
+                        "steps": []
+                    }
 
     return list(project_data.values())
 
