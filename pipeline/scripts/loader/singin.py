@@ -36,6 +36,7 @@ class Signin(QWidget):
           
     def check_login(self):
         user_email = self.ui.lineEdit_email.text()
+        user_email = "dgim81766@gmail.com"
 
         if not user_email:
             self.set_messagebox("email을 입력해주세요" , "로그인 실패")
@@ -74,9 +75,12 @@ class Signin(QWidget):
     def connect_loader(self):
         if self.email_vaildate >= 2:
             project = self.ui.comboBox_project_name.currentText()
-            info = {"project" : project , "name" : self.user_name,"Rank": self.rank}
+            info = {"project" : project , "name" : self.user_name,"rank": self.rank}
             from main import Mainloader
             self.load = Mainloader(info)
+            
+            import my_task
+            self.mt = my_task.My_task()
             self.load.show()            
         
     #=====================================================================================

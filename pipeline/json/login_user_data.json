@@ -5,45 +5,66 @@
     "permission_group": "Admin",
     "projects": [
         {
-            "name": "Marvelous",
-            "step": [
-                "Modeling"
-            ],
             "id": 122,
+            "name": "Marvelous",
             "resolution_width": "1920",
             "resolution_height": "1080",
-            "status": "Active"
+            "status": "Active",
+            "shot_code": {
+                "dami": {
+                    "steps": [
+                        "Modeling"
+                    ]
+                }
+            }
         },
         {
-            "name": "Moomins",
-            "step": [
-                "Modeling",
-                "LookDev"
-            ],
             "id": 188,
+            "name": "Moomins",
             "resolution_width": "1920",
             "resolution_height": "1080",
-            "status": "Active"
+            "status": "Active",
+            "shot_code": {
+                "car": {
+                    "steps": [
+                        "Modeling"
+                    ]
+                },
+                "joker": {
+                    "steps": [
+                        "Modeling",
+                        "LookDev"
+                    ]
+                }
+            }
         },
         {
-            "name": "phoenix",
-            "step": [
-                "Animation"
-            ],
             "id": 191,
+            "name": "phoenix",
             "resolution_width": "2048",
             "resolution_height": "858",
-            "status": null
+            "status": null,
+            "shot_code": {
+                "Unknown Entity": {
+                    "steps": [
+                        "Animation"
+                    ]
+                }
+            }
         },
         {
-            "name": "Test_phoenix",
-            "step": [
-                "Animation"
-            ],
             "id": 254,
+            "name": "Test_phoenix",
             "resolution_width": null,
             "resolution_height": null,
-            "status": null
+            "status": null,
+            "shot_code": {
+                "SHOT_001": {
+                    "steps": [
+                        "Animation"
+                    ]
+                }
+            }
         }
     ]
 }

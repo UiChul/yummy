@@ -15,7 +15,11 @@ class Mainloader(QWidget):
         
         self.project = info["project"]
         self.user = info["name"]
-
+        self.rank = info["rank"]
+        
+        import my_task
+        self.mt = my_task.My_task()
+        self.mt.show()
         
         self.set_main_laoder()
         self.set_comboBox_seq()
@@ -128,31 +132,13 @@ class Mainloader(QWidget):
             item.setIcon(img)
             self.work_table.setItem(row,col,item)
             col +=1
-
-
-
-    # def set_file_information(self):
-        
-
-
-
-
-
-
-
-
-
-        
-
-
-
-
-        
     
     def set_main_laoder(self):
     
         self.ui.label_projectname.setText(f"{self.project}")
         self.ui.label_username.setText(f"{self.user}")
+        self.ui.label_rank.setText(f"{self.rank}")
+        
         
     def set_up(self):
         from main_window_v002_ui import Ui_Form
@@ -166,7 +152,7 @@ class Mainloader(QWidget):
 
     
 
-info = {"project" : "Marvelous" , "name" : "su"}
+info = {"project" : "Marvelous" , "name" : "su","rank":"Artist"}
 
 if __name__ == "__main__":
     app = QApplication()

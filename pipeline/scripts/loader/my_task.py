@@ -17,6 +17,7 @@ class My_task(QWidget):
     def check_file_info(self,item):
         index = item.row()
         file_info  = []
+        
         for col in range(3):
             info = self.table.item(index,col)
             file_info.append(info.text())
@@ -61,8 +62,6 @@ class My_task(QWidget):
     def set_new_btn(self):
         os.system('source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc')
         
-        
-             
     def set_mytask_table(self):
         self.table.setColumnCount(3)
         self.table.setRowCount(10)
@@ -106,7 +105,8 @@ class My_task(QWidget):
         self.ui.setupUi(self)
         self.table = self.ui.tableWidget_recent_files
         
-app = QApplication()
-my = My_task()
-my.show()
-app.exec()
+if __name__ == "__main__":
+    app = QApplication()
+    my = My_task()
+    my.show()
+    app.exec()
