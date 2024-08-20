@@ -23,7 +23,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(347, 226)
+        Form.resize(342, 230)
         self.frame = QFrame(Form)
         self.frame.setObjectName(u"frame")
         self.frame.setGeometry(QRect(10, 10, 321, 201))
@@ -61,7 +61,7 @@ class Ui_Form(object):
         self.label_3.setTextFormat(Qt.AutoText)
         self.pushButton = QPushButton(self.frame)
         self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setGeometry(QRect(120, 160, 81, 27))
+        self.pushButton.setGeometry(QRect(100, 160, 111, 27))
 
         self.retranslateUi(Form)
 

@@ -50,7 +50,7 @@ class My_task(QWidget):
         temp , ext=os.path.splitext(file_name)
         img_path = temp.split("_")
         self.nuke_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc' + f" /home/rapa/YUMMY/project/Marvelous/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/work/{file_name}"
-        
+        os.system(self.nuke_path)
     
     def set_open_btn(self):
         try:

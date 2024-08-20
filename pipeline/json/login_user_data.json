@@ -1,29 +1,7 @@
 {
-    "user_id": 88,
-    "name": "seonil hong",
-    "email": "apen1112@gmail.com",
-    "permission_group": "Admin",
-    "projects": [
-        {
-            "name": "Marvelous",
-            "step": [
-                "comp"
-            ],
-            "id": 122,
-            "resolution_width": "1920",
-            "resolution_height": "1080",
-            "status": "Active"
-        },
-        {
-            "name": "Test_phoenix",
-            "step": [
-                "LKD",
-                "lighting"
-            ],
-            "id": 254,
-            "resolution_width": null,
-            "resolution_height": null,
-            "status": null
-        }
-    ]
+    "user_id": 107,
+    "name": "UICHUL SHIN",
+    "email": "suc708@naver.com",
+    "permission_group": "Yummy_manager",
+    "projects": []
 }

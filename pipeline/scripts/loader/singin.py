@@ -15,6 +15,7 @@ class Signin(QWidget):
     def __init__(self):
         super().__init__()
         self.set_up()
+        self.email_vaildate = False
         self.ui.lineEdit_email.returnPressed.connect(self.check_login)
         self.ui.pushButton.clicked.connect(self.connect_loader)
         
@@ -26,6 +27,14 @@ class Signin(QWidget):
             project_name.append(pro["name"])
         self.user_name = user_dic["name"]
         self.ui.comboBox_project_name.addItems(project_name)
+        
+    def keyPressEvent(self, event):
+        if self.email_vaildate:
+            if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
+                print("Enter key pressed!")
+                self.connect_loader()
+        else:
+            print("no vaildate")
         
     def set_messagebox(self, text, title = "Error"):
         msg_box = QMessageBox()
@@ -52,11 +61,15 @@ class Signin(QWidget):
             Signinfo(user_email)    
             self.set_messagebox("프로젝트를 선택해주세요.","이메일 인증 성공")
             self.input_project()
+            
+            self.ui.lineEdit_email.setEnabled(False)
+            self.ui.label.setEnabled(False)
+            
             self.ui.comboBox_project_name.setVisible(True)
             self.ui.label_2.setVisible(True)
-            self.ui.pushButton.setVisible(True)
             
     def connect_loader(self):
+        print("커넥트")
         project = self.ui.comboBox_project_name.currentText()
         info = {"project" : project , "name" : self.user_name }
         from main import Mainloader

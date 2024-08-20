@@ -17,7 +17,7 @@ class Mainloader(QWidget):
         self.user = info["name"]
         
         self.set_main_laoder()
-        # self.set_comboBox_seq()
+        self.set_comboBox_seq()
         
         self.shot_treeWidget = self.ui.treeWidget
         self.work_table = self.ui.tableWidget_shot_work
