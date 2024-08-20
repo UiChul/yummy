@@ -5,10 +5,12 @@ from PySide6.QtGui import QPixmap
 import os
 
 
-class My_task(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.set_up()
+class My_task:
+    def __init__(self,Ui_Form):
+        self.ui = Ui_Form
+        self.table = self.ui.tableWidget_recent_files
+        # self.set_up(Ui_Form)
+        
         self.set_mytask_table()
         self.table.itemClicked.connect(self.check_file_info)
         self.ui.pushButton_mytask_selectedopen.clicked.connect(self.set_open_btn)
@@ -17,7 +19,6 @@ class My_task(QWidget):
     def check_file_info(self,item):
         index = item.row()
         file_info  = []
-        
         for col in range(3):
             info = self.table.item(index,col)
             file_info.append(info.text())
@@ -34,33 +35,34 @@ class My_task(QWidget):
 
         pixmap = QPixmap(image_path)
         scaled_pixmap = pixmap.scaled(300,168)
-        self.ui.label.setPixmap(scaled_pixmap)
+        self.ui.label_mytask_thumbnail.setPixmap(scaled_pixmap)
         
         file_info = [temp,ext,"1920 X 1080",file_info[1],file_info[2]]
         self.set_file_information(file_info)
     
     def set_file_information(self,file_info):
-        self.ui.label_shot_filename_2.setText(f"{file_info[0]}")
-        self.ui.label_shot_filetype_2.setText(f"{file_info[1]}")
-        self.ui.label_shot_resolution_2.setText(f"{file_info[2]}")
-        self.ui.label_shot_savedtime_2.setText(f"{file_info[3]}")
-        self.ui.label_shot_filesize_2.setText(f"{file_info[4]}")
+        self.ui.label_mytask_filename.setText(f"{file_info[0]}")
+        self.ui.label_mytask_filetype.setText(f"{file_info[1]}")
+        self.ui.label_mytask_resolution.setText(f"{file_info[2]}")
+        self.ui.label_mytask_savedtime.setText(f"{file_info[3]}")
+        self.ui.label_mytask_filesize.setText(f"{file_info[4]}")
         
     def make_path(self,file_info):
         file_name = file_info[0]
         temp , ext=os.path.splitext(file_name)
-        img_path = temp.split("_")
+        img_path = temp.split("_")    
         self.nuke_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc' + f" /home/rapa/YUMMY/project/Marvelous/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/work/{file_name}"
-        os.system(self.nuke_path)
     
     def set_open_btn(self):
         try:
             os.system(self.nuke_path)
         except:
             self.set_messagebox("파일을 먼저 선택해주세요") 
+        pass
             
     def set_new_btn(self):
         os.system('source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc')
+        pass
         
     def set_mytask_table(self):
         self.table.setColumnCount(3)
@@ -99,9 +101,9 @@ class My_task(QWidget):
         msg_box.exec()
         
     
-    def set_up(self):
-        from main_window_v002_ui import Ui_Form
-        self.ui = Ui_Form()
+    def set_up(self,Ui_Form):
+        self.ui = Ui_Form
+        print(self.ui)
         self.ui.setupUi(self)
         self.table = self.ui.tableWidget_recent_files
         

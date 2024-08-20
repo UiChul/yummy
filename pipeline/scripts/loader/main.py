@@ -8,18 +8,17 @@ import os
 
 # from functools import partial
 
-class Mainloader(QWidget):
-    def __init__(self,info):
-        super().__init__()
-        self.set_up()
+class Mainloader():
+    def __init__(self,info,Ui_Form):
+        self.ui = Ui_Form
+        # self.set_up(Ui_Form)
         
         self.project = info["project"]
-        self.user = info["name"]
-        self.rank = info["rank"]
+        self.user    = info["name"]
+        self.rank    = info["rank"]
         
-        import my_task
-        self.mt = my_task.My_task()
-        self.mt.show()
+        # import my_task
+        # self.mt = my_task.My_task(Ui_Form)
         
         self.set_main_laoder()
         self.set_comboBox_seq()
@@ -140,14 +139,14 @@ class Mainloader(QWidget):
         self.ui.label_rank.setText(f"{self.rank}")
         
         
-    def set_up(self):
-        from main_window_v002_ui import Ui_Form
+    def set_up(self,Ui_Form):
         # ui_file_path = "/home/rapa/yummy/pipeline/scripts/loader/main_window.ui"
         # ui_file = QFile(ui_file_path)
         # ui_file.open(QFile.ReadOnly)
         # loader = QUiLoader()
         # self.ui = loader.load(ui_file,self)
-        self.ui = Ui_Form()
+        self.ui = Ui_Form
+        print(self.ui)
         self.ui.setupUi(self)
 
     

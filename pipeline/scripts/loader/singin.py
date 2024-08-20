@@ -76,11 +76,8 @@ class Signin(QWidget):
         if self.email_vaildate >= 2:
             project = self.ui.comboBox_project_name.currentText()
             info = {"project" : project , "name" : self.user_name,"rank": self.rank}
-            from main import Mainloader
-            self.load = Mainloader(info)
-            
-            import my_task
-            self.mt = my_task.My_task()
+            from loader_merge import Merge
+            self.load = Merge(info)
             self.load.show()            
         
     #=====================================================================================

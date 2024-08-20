@@ -355,17 +355,11 @@ class Ui_Form(object):
 
         self.verticalLayout_5.addWidget(self.label_15)
 
-        self.label_11 = QLabel(self.verticalLayoutWidget_3)
-        self.label_11.setObjectName(u"label_11")
-        self.label_11.setFont(font4)
+        self.label_mytask_filetype_2 = QLabel(self.verticalLayoutWidget_3)
+        self.label_mytask_filetype_2.setObjectName(u"label_mytask_filetype_2")
+        self.label_mytask_filetype_2.setFont(font4)
 
-        self.verticalLayout_5.addWidget(self.label_11)
-
-        self.label_12 = QLabel(self.verticalLayoutWidget_3)
-        self.label_12.setObjectName(u"label_12")
-        self.label_12.setFont(font4)
-
-        self.verticalLayout_5.addWidget(self.label_12)
+        self.verticalLayout_5.addWidget(self.label_mytask_filetype_2)
 
         self.label_13 = QLabel(self.verticalLayoutWidget_3)
         self.label_13.setObjectName(u"label_13")
@@ -396,12 +390,6 @@ class Ui_Form(object):
         self.label_mytask_filetype.setFont(font4)
 
         self.verticalLayout_6.addWidget(self.label_mytask_filetype)
-
-        self.label_mytask_framerange = QLabel(self.verticalLayoutWidget_4)
-        self.label_mytask_framerange.setObjectName(u"label_mytask_framerange")
-        self.label_mytask_framerange.setFont(font4)
-
-        self.verticalLayout_6.addWidget(self.label_mytask_framerange)
 
         self.label_mytask_resolution = QLabel(self.verticalLayoutWidget_4)
         self.label_mytask_resolution.setObjectName(u"label_mytask_resolution")
@@ -1159,13 +1147,11 @@ class Ui_Form(object):
         self.groupBox_shot_file_info_2.setTitle(QCoreApplication.translate("Form", u"File information", None))
         self.label_17.setText(QCoreApplication.translate("Form", u"Name", None))
         self.label_15.setText(QCoreApplication.translate("Form", u"File type", None))
-        self.label_11.setText(QCoreApplication.translate("Form", u"Frame Range ", None))
-        self.label_12.setText(QCoreApplication.translate("Form", u"Resolution", None))
+        self.label_mytask_filetype_2.setText(QCoreApplication.translate("Form", u"Resolution", None))
         self.label_13.setText(QCoreApplication.translate("Form", u"Saved time", None))
         self.label_21.setText(QCoreApplication.translate("Form", u"File size", None))
         self.label_mytask_filename.setText("")
         self.label_mytask_filetype.setText("")
-        self.label_mytask_framerange.setText("")
         self.label_mytask_resolution.setText("")
         self.label_mytask_savedtime.setText("")
         self.label_mytask_filesize.setText("")

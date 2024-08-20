@@ -30,6 +30,12 @@
                         "Modeling"
                     ]
                 },
+                "bat": {
+                    "steps": [
+                        "Modeling",
+                        "LookDev"
+                    ]
+                },
                 "joker": {
                     "steps": [
                         "Modeling",
