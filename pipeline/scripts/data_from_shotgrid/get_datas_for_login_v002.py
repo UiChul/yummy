@@ -40,39 +40,6 @@ def get_project_details(sg, project_id):
         }
     return None
 
-# def get_sequences_by_task(sg, user_id):
-#     """
-#     사용자에게 할당된 태스크에서 시퀀스와 그 시퀀스의 코드 가져오기
-#     """
-#     filters = [["task_assignees", "is", {"type": "HumanUser", "id": user_id}]]
-#     fields = ["entity"]
-#     tasks = sg.find("Task", filters=filters, fields=fields)
-
-#     # 태스크에서 할당된 시퀀스 ID를 수집
-#     sequence_ids = set()
-#     for task in tasks:
-#         entity = task.get("entity")
-#         if entity:
-#             entity_name = entity.get("name")
-#             sequence_ids.add(entity_name)
-
-#     print (list(sequence_ids))
-#     # 시퀀스 ID로 시퀀스 코드 조회
-#     sequences_dict = {}
-#     if sequence_ids:
-#         filters = [["id", "in", list(sequence_ids)]]
-#         fields = ["id", "code"]
-#         sequences = sg.find("Sequence", filters=filters, fields=fields)
-#         for seq in sequences:
-#             seq_id = seq.get("id")
-#             seq_code = seq.get("code", "Unnamed Sequence")
-#             if seq_id:
-#                 sequences_dict[seq_id] = seq_code
-
-#     print(f"Sequences found: {sequences_dict}")  # 디버깅을 위한 출력
-
-#     return sequences_dict
-
 def get_sequences_by_task(sg, user_id):
     """
     사용자에게 할당된 태스크에서 시퀀스와 그 시퀀스의 코드 가져오기
