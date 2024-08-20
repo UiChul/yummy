@@ -35,9 +35,9 @@ class Publish(QWidget):
         self.set_exr_file_list()
         self.make_tablewidget_basket()
         self.bring_info_for_validation()
-        self.create_listwidget()
+        # self.create_listwidget()
 
-        self.setItemWidget(self.create_listwidget("item"))
+        # self.setItemWidget(self.create_listwidget("item"))
 
     # def create_listwidget(self, text):
     #     widget = QWidget()
