@@ -1,7 +1,49 @@
 {
-    "user_id": 107,
-    "name": "UICHUL SHIN",
-    "email": "suc708@naver.com",
-    "permission_group": "Yummy_manager",
-    "projects": []
+    "user_id": 105,
+    "name": "다미 김",
+    "email": "dgim81766@gmail.com",
+    "permission_group": "Admin",
+    "projects": [
+        {
+            "name": "Marvelous",
+            "step": [
+                "Modeling"
+            ],
+            "id": 122,
+            "resolution_width": "1920",
+            "resolution_height": "1080",
+            "status": "Active"
+        },
+        {
+            "name": "Moomins",
+            "step": [
+                "Modeling",
+                "LookDev"
+            ],
+            "id": 188,
+            "resolution_width": "1920",
+            "resolution_height": "1080",
+            "status": "Active"
+        },
+        {
+            "name": "phoenix",
+            "step": [
+                "Animation"
+            ],
+            "id": 191,
+            "resolution_width": "2048",
+            "resolution_height": "858",
+            "status": null
+        },
+        {
+            "name": "Test_phoenix",
+            "step": [
+                "Animation"
+            ],
+            "id": 254,
+            "resolution_width": null,
+            "resolution_height": null,
+            "status": null
+        }
+    ]
 }

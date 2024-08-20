@@ -16,17 +16,16 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
-    QWidget)
+    QLabel, QLineEdit, QSizePolicy, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(342, 230)
+        Form.resize(347, 199)
         self.frame = QFrame(Form)
         self.frame.setObjectName(u"frame")
-        self.frame.setGeometry(QRect(10, 10, 321, 201))
+        self.frame.setGeometry(QRect(10, 10, 321, 171))
         self.frame.setFrameShape(QFrame.StyledPanel)
         self.frame.setFrameShadow(QFrame.Raised)
         self.gridLayoutWidget = QWidget(self.frame)
@@ -59,9 +58,6 @@ class Ui_Form(object):
         self.label_3.setObjectName(u"label_3")
         self.label_3.setGeometry(QRect(110, 20, 91, 41))
         self.label_3.setTextFormat(Qt.AutoText)
-        self.pushButton = QPushButton(self.frame)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setGeometry(QRect(100, 160, 111, 27))
 
         self.retranslateUi(Form)
 
@@ -73,6 +69,5 @@ class Ui_Form(object):
         self.label.setText(QCoreApplication.translate("Form", u"E-mail      ", None))
         self.label_2.setText(QCoreApplication.translate("Form", u"Project", None))
         self.label_3.setText(QCoreApplication.translate("Form", u"<html><head/><body><p align=\"center\"><span style=\" font-size:20pt; font-weight:700;\">Sign in</span></p></body></html>", None))
-        self.pushButton.setText(QCoreApplication.translate("Form", u"Check", None))
     # retranslateUi
 

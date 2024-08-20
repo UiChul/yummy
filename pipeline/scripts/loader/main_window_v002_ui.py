@@ -26,7 +26,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(1258, 947)
+        Form.resize(1256, 921)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -1106,7 +1106,7 @@ class Ui_Form(object):
 
         self.tabWidget_all.setCurrentIndex(1)
         self.tabWidget_shot_task.setCurrentIndex(1)
-        self.tabWidget_shot_status.setCurrentIndex(4)
+        self.tabWidget_shot_status.setCurrentIndex(1)
         self.tableWidget_mytask_status.setCurrentIndex(4)
         self.tabWidget_template.setCurrentIndex(2)
         self.toolBox_asset_task.setCurrentIndex(0)

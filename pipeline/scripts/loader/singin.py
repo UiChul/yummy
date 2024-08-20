@@ -15,9 +15,8 @@ class Signin(QWidget):
     def __init__(self):
         super().__init__()
         self.set_up()
-        self.email_vaildate = False
+        self.email_vaildate = 0
         self.ui.lineEdit_email.returnPressed.connect(self.check_login)
-        self.ui.pushButton.clicked.connect(self.connect_loader)
         
     def input_project(self):
         with open("/home/rapa/yummy/pipeline/json/login_user_data.json","rt",encoding="utf-8") as r:
@@ -26,24 +25,16 @@ class Signin(QWidget):
         for pro in user_dic["projects"]:
             project_name.append(pro["name"])
         self.user_name = user_dic["name"]
+        self.rank = user_dic["permission_group"]
         self.ui.comboBox_project_name.addItems(project_name)
-        
-    def keyPressEvent(self, event):
-        if self.email_vaildate:
-            if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
-                print("Enter key pressed!")
-                self.connect_loader()
-        else:
-            print("no vaildate")
         
     def set_messagebox(self, text, title = "Error"):
         msg_box = QMessageBox()
         msg_box.setWindowTitle(title)
         msg_box.setText(text)
         msg_box.exec()
-        
+          
     def check_login(self):
-        
         user_email = self.ui.lineEdit_email.text()
 
         if not user_email:
@@ -68,13 +59,25 @@ class Signin(QWidget):
             self.ui.comboBox_project_name.setVisible(True)
             self.ui.label_2.setVisible(True)
             
+        self.email_vaildate += 1
+        print(self.email_vaildate)
+            
+    def keyPressEvent(self, event):
+        if self.email_vaildate >= 1:
+            if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
+                self.connect_loader()
+                self.email_vaildate += 1
+        else:
+            print("no vaildate")
+            
+            
     def connect_loader(self):
-        print("커넥트")
-        project = self.ui.comboBox_project_name.currentText()
-        info = {"project" : project , "name" : self.user_name }
-        from main import Mainloader
-        self.load = Mainloader(info)
-        self.load.show()            
+        if self.email_vaildate >= 2:
+            project = self.ui.comboBox_project_name.currentText()
+            info = {"project" : project , "name" : self.user_name,"Rank": self.rank}
+            from main import Mainloader
+            self.load = Mainloader(info)
+            self.load.show()            
         
     #=====================================================================================
         
@@ -112,7 +115,6 @@ class Signin(QWidget):
         self.ui.setupUi(self)
         self.ui.comboBox_project_name.setVisible(False)
         self.ui.label_2.setVisible(False)
-        self.ui.pushButton.setVisible(False)
         
         
     

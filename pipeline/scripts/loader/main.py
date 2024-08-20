@@ -15,6 +15,7 @@ class Mainloader(QWidget):
         
         self.project = info["project"]
         self.user = info["name"]
+
         
         self.set_main_laoder()
         self.set_comboBox_seq()
