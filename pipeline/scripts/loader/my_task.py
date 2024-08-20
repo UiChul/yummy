@@ -34,7 +34,7 @@ class My_task:
         image_path = f"/home/rapa/YUMMY/project/Marvelous/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/exr/{temp}/{temp}.1010.png"
 
         pixmap = QPixmap(image_path)
-        scaled_pixmap = pixmap.scaled(300,168)
+        scaled_pixmap = pixmap.scaled(570,320)
         self.ui.label_mytask_thumbnail.setPixmap(scaled_pixmap)
         
         file_info = [temp,ext,"1920 X 1080",file_info[1],file_info[2]]

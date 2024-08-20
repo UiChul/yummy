@@ -1,9 +1,28 @@
 {
-    "user_id": 105,
-    "name": "다미 김",
-    "email": "dgim81766@gmail.com",
-    "permission_group": "Admin",
+    "user_id": 109,
+    "name": "수연 박",
+    "email": "sooyeonp26@gmail.com",
+    "permission_group": "Yummy_manager",
     "projects": [
+        {
+            "id": 192,
+            "name": "Yummy",
+            "resolution_width": "1920",
+            "resolution_height": "1920",
+            "status": null,
+            "shot_code": {
+                "gamja": {
+                    "steps": [
+                        "Comp"
+                    ]
+                },
+                "Dogs": {
+                    "steps": [
+                        "Rigging"
+                    ]
+                }
+            }
+        },
         {
             "id": 122,
             "name": "Marvelous",
@@ -11,63 +30,9 @@
             "resolution_height": "1080",
             "status": "Active",
             "shot_code": {
-                "dami": {
+                "hyo_010": {
                     "steps": [
-                        "Modeling"
-                    ]
-                }
-            }
-        },
-        {
-            "id": 188,
-            "name": "Moomins",
-            "resolution_width": "1920",
-            "resolution_height": "1080",
-            "status": "Active",
-            "shot_code": {
-                "car": {
-                    "steps": [
-                        "Modeling"
-                    ]
-                },
-                "bat": {
-                    "steps": [
-                        "Modeling",
-                        "LookDev"
-                    ]
-                },
-                "joker": {
-                    "steps": [
-                        "Modeling",
-                        "LookDev"
-                    ]
-                }
-            }
-        },
-        {
-            "id": 191,
-            "name": "phoenix",
-            "resolution_width": "2048",
-            "resolution_height": "858",
-            "status": null,
-            "shot_code": {
-                "Unknown Entity": {
-                    "steps": [
-                        "Animation"
-                    ]
-                }
-            }
-        },
-        {
-            "id": 254,
-            "name": "Test_phoenix",
-            "resolution_width": null,
-            "resolution_height": null,
-            "status": null,
-            "shot_code": {
-                "SHOT_001": {
-                    "steps": [
-                        "Animation"
+                        "Comp"
                     ]
                 }
             }

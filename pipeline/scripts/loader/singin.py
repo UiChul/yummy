@@ -6,15 +6,12 @@ from shotgun_api3 import shotgun
 import os
 import json
 
-# apen1112@gmail.com
-# MOTIONDESIGN310@GMAIL.COM
-# stellalee969@gmail.com
-
 class Signin(QWidget):
     
     def __init__(self):
         super().__init__()
         self.set_up()
+        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.email_vaildate = 0
         self.ui.lineEdit_email.returnPressed.connect(self.check_login)
         
@@ -36,7 +33,8 @@ class Signin(QWidget):
           
     def check_login(self):
         user_email = self.ui.lineEdit_email.text()
-        user_email = "dgim81766@gmail.com"
+        # stellalee969@gmail.com
+        # sooyeonp26@gmail.com
 
         if not user_email:
             self.set_messagebox("email을 입력해주세요" , "로그인 실패")
@@ -117,8 +115,7 @@ class Signin(QWidget):
         self.ui.comboBox_project_name.setVisible(False)
         self.ui.label_2.setVisible(False)
         
-        
-    
+
 if __name__ == "__main__":
     app = QApplication()
     sign = Signin()
