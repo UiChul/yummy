@@ -580,6 +580,9 @@
        <bold>false</bold>
       </font>
      </property>
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
      <column>
       <property name="text">
        <string notr="true">1</string>
@@ -1069,7 +1072,7 @@
          </font>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab_asset">
          <attribute name="title">
@@ -1469,7 +1472,7 @@
            </font>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="page_5">
            <property name="geometry">
@@ -1499,8 +1502,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>100</width>
-             <height>30</height>
+             <width>501</width>
+             <height>525</height>
             </rect>
            </property>
            <attribute name="label">
@@ -2252,6 +2255,9 @@
        <height>661</height>
       </rect>
      </property>
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
      <column>
       <property name="text">
        <string notr="true">1</string>
@@ -2267,9 +2273,9 @@
      <property name="geometry">
       <rect>
        <x>780</x>
-       <y>470</y>
+       <y>440</y>
        <width>271</width>
-       <height>191</height>
+       <height>221</height>
       </rect>
      </property>
      <property name="font">
@@ -2294,7 +2300,7 @@
         <x>10</x>
         <y>30</y>
         <width>80</width>
-        <height>151</height>
+        <height>181</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -2396,7 +2402,7 @@
         <x>100</x>
         <y>30</y>
         <width>161</width>
-        <height>151</height>
+        <height>181</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -2493,7 +2499,7 @@
       </layout>
      </widget>
     </widget>
-    <widget class="QPushButton" name="pushButton_mytask_selectedopen_2">
+    <widget class="QPushButton" name="pushButton_pub_pubbtn">
      <property name="geometry">
       <rect>
        <x>780</x>
@@ -2510,9 +2516,9 @@
      <property name="geometry">
       <rect>
        <x>420</x>
-       <y>470</y>
+       <y>440</y>
        <width>341</width>
-       <height>241</height>
+       <height>271</height>
       </rect>
      </property>
      <property name="font">
@@ -2537,7 +2543,7 @@
         <x>0</x>
         <y>20</y>
         <width>341</width>
-        <height>221</height>
+        <height>251</height>
        </rect>
       </property>
       <property name="plainText">
@@ -2551,7 +2557,7 @@
        <x>420</x>
        <y>50</y>
        <width>631</width>
-       <height>411</height>
+       <height>371</height>
       </rect>
      </property>
      <property name="font">
@@ -2586,14 +2592,20 @@
      <widget class="QLabel" name="label_pub_thumbnail">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>611</width>
-        <height>371</height>
+        <x>0</x>
+        <y>20</y>
+        <width>631</width>
+        <height>351</height>
        </rect>
+      </property>
+      <property name="tabletTracking">
+       <bool>true</bool>
       </property>
       <property name="text">
        <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </widget>
@@ -2616,7 +2628,10 @@
       <string>PUBLISH (Manager)</string>
      </property>
     </widget>
-    <widget class="QListWidget" name="listWidget_pub_list">
+    <widget class="QTreeWidget" name="treeWidget_pub_list">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -2625,6 +2640,25 @@
        <height>661</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+       <bold>true</bold>
+       <underline>false</underline>
+       <strikeout>false</strikeout>
+      </font>
+     </property>
+     <property name="showDropIndicator" stdset="0">
+      <bool>true</bool>
+     </property>
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
     </widget>
    </widget>
   </widget>
@@ -2664,7 +2698,7 @@
   <widget class="QWidget" name="gridLayoutWidget_3">
    <property name="geometry">
     <rect>
-     <x>900</x>
+     <x>910</x>
      <y>30</y>
      <width>211</width>
      <height>81</height>

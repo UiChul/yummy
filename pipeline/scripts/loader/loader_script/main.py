@@ -4,7 +4,10 @@ from PySide6.QtWidgets import QTreeWidgetItem, QTableWidgetItem, QLabel
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
 from PySide6.QtGui import QPixmap
+from pipeline.scripts.loader.loader_module.project_data import project_data
 import os
+import sys
+sys.path.append("/home/rapa/yummy")
 
 # from functools import partial
 
@@ -12,21 +15,20 @@ class Mainloader():
     def __init__(self,info,Ui_Form):
         self.ui = Ui_Form
         # self.set_up(Ui_Form)
+        print(info)
         
         self.project = info["project"]
         self.user    = info["name"]
         self.rank    = info["rank"]
         
-        # import my_task
-        # self.mt = my_task.My_task(Ui_Form)
         
-        self.set_main_laoder()
         self.set_comboBox_seq()
         
         self.shot_treeWidget = self.ui.treeWidget
         self.work_table = self.ui.tableWidget_shot_work
 
         self.set_treeWidget_shot("OPN")
+        
         #Signal
         self.ui.comboBox_seq.currentTextChanged.connect(self.set_treeWidget_shot)
         self.shot_treeWidget.itemClicked.connect(self.get_clicked_treeWidget_shot_item)
@@ -132,11 +134,6 @@ class Mainloader():
             self.work_table.setItem(row,col,item)
             col +=1
     
-    def set_main_laoder(self):
-    
-        self.ui.label_projectname.setText(f"{self.project}")
-        self.ui.label_username.setText(f"{self.user}")
-        self.ui.label_rank.setText(f"{self.rank}")
         
         
     def set_up(self,Ui_Form):
