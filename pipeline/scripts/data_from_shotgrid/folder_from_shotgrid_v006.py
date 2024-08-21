@@ -301,6 +301,13 @@ def create_folders(base_path, project_names, project_asset_types, project_sequen
                             shot_pub_path = os.path.join(step_path, pub_folder)
                             folders.append(shot_dev_path)
                             folders.append(shot_pub_path)
+
+                            step_dev_exr_path = os.path.join(shot_dev_path, exr_folder)
+                            step_dev_mov_path = os.path.join(shot_dev_path, mov_folder)
+                            step_dev_work_path = os.path.join(shot_dev_path, work_folder)
+                            folders.append(step_dev_exr_path)
+                            folders.append(step_dev_mov_path)
+                            folders.append(step_dev_work_path)
                             
         
         
