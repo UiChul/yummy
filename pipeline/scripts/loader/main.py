@@ -1,6 +1,7 @@
 from PySide6.QtCore import Qt, QUrl
 from PySide6.QtWidgets import QWidget,QApplication,QHeaderView
 from PySide6.QtWidgets import QTreeWidgetItem, QTableWidgetItem, QLabel
+from PySide6.QtWidgets import QListWidgetItem
 from PySide6.QtWidgets import QAbstractItemView, QVBoxLayout
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
@@ -40,7 +41,7 @@ class Mainloader(QWidget):
         self.work_table.itemClicked.connect(self.get_clicked_nuke_file_path)
         self.exr_table.itemClicked.connect(self.get_exr_file_information)
         self.mov_table.itemClicked.connect(self.get_work_mov_file_information)
-        self.mov_table.itemClicked.connect(self.play_mov)
+        self.mov_table.itemClicked.connect(self.set_mov_files)
 
         # tab - PUB 숨기기
         # self.ui.tabWidget_all.tabBar().setTabVisible(3, False)
@@ -135,7 +136,8 @@ class Mainloader(QWidget):
 
         elif tabIndex == 2 :
             self.tab_name = "mov"
-            self.set_shot_mov_files_tableWidget()
+            self.set_mov_text_files()
+
 
 
         else :
@@ -260,9 +262,10 @@ class Mainloader(QWidget):
     
 
     """
-    mov
+    mov 영상파일 수정해야함 ::::::::::::;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     """
-    def set_shot_mov_files_tableWidget(self):
+    def set_mov_text_files(self):
         """
         mov file setting
         """
@@ -272,7 +275,7 @@ class Mainloader(QWidget):
         # print (mov_files_path)
 
         image_path = [
-            "/home/rapa/xgen/images1.png"
+            "/home/rapa/xgen/MOV_File.png.png"
         ]
 
         row = 0
@@ -283,23 +286,21 @@ class Mainloader(QWidget):
         for i, mov in enumerate(movs):
 
             version = image_path[i % len(image_path)]
-            print (version)
-
+            # print (version)
 
             item = QTableWidgetItem()
             item.setText(mov)
             self.mov_table.setItem(row+1,col,item)
             item.setTextAlignment(Qt.AlignCenter)
 
-            # if col + 1 < self.mov_table.columnCount():
+            if col + 1 < self.mov_table.columnCount():
             
-            #     label_img = QLabel()
-            #     pixmap = QPixmap(version)
-            #     label_img.setPixmap(pixmap) 
-            #     label_img.setAlignment(Qt.AlignCenter)
-            #     label_img.setScaledContents(True)
-            #     self.mov_table.setCellWidget(row,col+1,label_img)
-
+                label_img = QLabel()
+                pixmap = QPixmap(version)
+                label_img.setPixmap(pixmap) 
+                label_img.setAlignment(Qt.AlignCenter)
+                label_img.setScaledContents(True)
+                self.mov_table.setCellWidget(row,col+1,label_img)
 
             col +=1
             
@@ -312,26 +313,19 @@ class Mainloader(QWidget):
         for i in range(1, self.mov_table.rowCount(), 2):
             self.mov_table.setRowHeight(i,50)        
 
-    def play_mov(self):
+    def set_mov_files(self):
         """
         mov file setting
         """
         mov_files_path = self.task_path + "/" + "dev" + "/" f"{self.tab_name}"
         movs = os.listdir(mov_files_path)
 
-        image_path = [
-            "/home/rapa/xgen/images1.png"
-        ]
-        
         row = 0
         col = 0
         for i, mov in enumerate(movs):
             mov_path = os.path.join(mov_files_path, mov)
             mov_play_path = 'vlc --repeat ' + f"{mov_path}"
             os.system(mov_play_path)
-
-            version = image_path[i % len(image_path)]
-            print (version)
 
             video_widget = QVideoWidget()
             media_player = QMediaPlayer(video_widget)
@@ -373,6 +367,12 @@ class Mainloader(QWidget):
 
 
         print (work_files, mov_files)
+
+
+        item = QTableWidgetItem()
+        item.setText(exr_folder_path)
+        # self.exr_table.setItem(row+1,col,item)
+        # item.setTextAlignment(Qt.AlignCenter)
 
 
 
