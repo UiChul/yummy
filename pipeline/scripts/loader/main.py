@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QTreeWidgetItem, QTableWidgetItem, QLabel
 from PySide6.QtWidgets import QAbstractItemView, QVBoxLayout
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QPixmap, QColor
 from PySide6.QtMultimedia import QMediaPlayer
 from PySide6.QtMultimediaWidgets import QVideoWidget
 import os
@@ -19,7 +19,7 @@ class Mainloader(QWidget):
         self.project = info["project"]
         self.user = info["name"]
         
-        self.set_main_laoder()
+        self.set_user_information()
         self.set_comboBox_seq()
         
         self.shot_treeWidget = self.ui.treeWidget
@@ -35,12 +35,20 @@ class Mainloader(QWidget):
         self.shot_treeWidget.itemClicked.connect(self.get_clicked_treeWidget_shot_item)
         self.ui.pushButton_shot_nuke.clicked.connect(self.load_nuke)
         self.ui.tabWidget_shot_task.tabBarClicked.connect(self.get_tab_name)
+        self.ui.pushButton_search.clicked.connect(self.search_file_in_alllist)
+        self.ui.lineEdit_alllist_search.returnPressed.connect(self.search_file_in_alllist)
 
         self.work_table.itemClicked.connect(self.get_work_mov_file_information)
         self.work_table.itemClicked.connect(self.get_clicked_nuke_file_path)
+
         self.exr_table.itemClicked.connect(self.get_exr_file_information)
+        self.exr_table.itemClicked.connect(self.get_clicked_nuke_file_path)
+
         self.mov_table.itemClicked.connect(self.get_work_mov_file_information)
         self.mov_table.itemClicked.connect(self.set_mov_files)
+        self.mov_table.itemClicked.connect(self.get_clicked_nuke_file_path)
+
+        self.all_list.itemClicked.connect(self.get_all_file_information)
 
         # tab - PUB 숨기기
         # self.ui.tabWidget_all.tabBar().setTabVisible(3, False)
@@ -104,7 +112,7 @@ class Mainloader(QWidget):
 
         self.set_shot_tableWidgets()
         self.set_shot_work_files_tableWidget()
-        # self.set_shot_exr_files_tableWidget()
+        self.set_shot_all_files_listWidget()
 
     def set_shot_tableWidgets(self):
         """
@@ -135,13 +143,11 @@ class Mainloader(QWidget):
 
         elif tabIndex == 2 :
             self.tab_name = "mov"
-            self.set_mov_text_files()
-
-
+            self.set_mov_text_files_tableWidget()
 
         else :
             self.tab_name = "all"
-            self.set_all_files_listWidget()
+
         # print (self.tab_name)
 
     
@@ -192,17 +198,6 @@ class Mainloader(QWidget):
         # 홀수 row 행 높이 조절
         for i in range(1, self.work_table.rowCount(), 2):
             self.work_table.setRowHeight(i,50)
-
-    def get_clicked_nuke_file_path (self,item):
-        """
-        shot_tableWidget에서 클릭한 파일 path 획득
-        """
-        selected_file = item.text()
-        front_path = self.ui.label_shot_filepath.text()
-        split_front_path = front_path.split(" ")[1]
-        
-        self.nuke_file_path = " /home/rapa/" + split_front_path + "/dev/" + f"{self.tab_name}" + "/" + selected_file
-        # print (self.nuke_file_path)
 
         
     """
@@ -263,7 +258,7 @@ class Mainloader(QWidget):
     """
     mov
     """
-    def set_mov_text_files(self):
+    def set_mov_text_files_tableWidget(self):
         """
         mov file setting
         """
@@ -342,9 +337,9 @@ class Mainloader(QWidget):
     """
     all
     """
-    def set_all_files_listWidget(self):
+    def set_shot_all_files_listWidget(self):
         """
-        dev 파일 다 긁어와서 list에 한번에 다 넣어주기
+        dev 파일 다 긁어와서 list에 한번에 다 넣어주기 (중복 항목 제외)
         """
         # print(self.task_path)
         dev_work_path = self.task_path + "/dev/work"
@@ -354,21 +349,56 @@ class Mainloader(QWidget):
         work_files = os.listdir(dev_work_path)
         exr_folders = os.listdir(dev_exr_path)
         mov_files = os.listdir(dev_mov_path)
+
+        all_files = work_files + mov_files + exr_folders
+        a = ",".join(all_files)
         
-        for exr_folder in exr_folders:
+        existing_all_items = self.all_list.findItems(a, Qt.MatchExactly)
 
-
-            exr_folder_path = dev_exr_path + "/" + exr_folder
-            print (exr_folder_path)
-
-
-
-        print (work_files, mov_files)
-
-
-
+        if work_files not in existing_all_items:
+            self.all_list.addItems(work_files)
+        if exr_folders not in existing_all_items:
+            self.all_list.addItems(exr_folders)
+        if mov_files not in existing_all_items:
+            self.all_list.addItems(mov_files)                    
+            
+        return work_files,mov_files
         
+    def search_file_in_alllist(self): 
+        
+        searching_item = self.ui.lineEdit_alllist_search.text()
 
+        for i in range(self.all_list.count()):
+            item = self.all_list.item(i)
+            item.setBackground(QColor('#ffffff'))
+
+        # 검색어가 비어있을때는 함수 종료 
+        if not searching_item.strip():
+            return
+
+        find_items = self.all_list.findItems(searching_item, Qt.MatchContains)
+        
+        for item in find_items:
+            item.setBackground(QColor('#f7e345'))
+        
+    def get_all_file_information (self,item):
+        """
+        listWidget에서 클릭한 파일 정보 출력.
+        """
+        selected_file = item.text()
+
+        file_name, _ = os.path.splitext(selected_file)
+        _ , file_type = os.path.splitext(selected_file)
+        
+        if not file_type :
+            self.ui.label_shot_filetype.setText(".exr")
+        else:
+            self.ui.label_shot_filetype.setText(file_type)
+
+        if file_name == ".nknc":
+            self.ui.label_shot_filetype.setText(".nknc")
+
+        self.ui.label_shot_filename.setText(file_name)
 
 
 
@@ -385,15 +415,37 @@ class Mainloader(QWidget):
 
         self.ui.label_shot_filename.setText(file_name)
         self.ui.label_shot_filetype.setText(file_type)
-     
+
+
+
+    """
+    NUKE
+    """
+    def get_clicked_nuke_file_path (self,item):
+        """
+        shot_tableWidget에서 클릭한 파일 path 획득
+        """
+        selected_file = item.text()
+        front_path = self.ui.label_shot_filepath.text()
+        split_front_path = front_path.split(" ")[1]
+        
+        self.nuke_file_path = " /home/rapa/" + split_front_path + "/dev/" + f"{self.tab_name}" + "/" + selected_file
+        print (self.nuke_file_path)
+
+    def import_exrs_to_nuke(self) :
+        pass
+        # if self.tab_name == 1:
+
+
+        
     def load_nuke (self):
+        self.import_exrs_to_nuke()
+
         nuke_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc' + f"{self.nuke_file_path}"
         os.system(nuke_path)
 
 
-        
-    
-    def set_main_laoder(self):
+    def set_user_information(self):
     
         self.ui.label_projectname.setText(f"{self.project}")
         self.ui.label_username.setText(f"{self.user}")

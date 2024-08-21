@@ -9,7 +9,7 @@ import os
 
 # from functools import partial
 
-class Mainloader(QWidget):
+class LibraryLoader(QWidget):
     def __init__(self,info):
         super().__init__()
         self.set_up()
@@ -17,13 +17,39 @@ class Mainloader(QWidget):
         self.project = info["project"]
         self.user = info["name"]
         
-        self.set_main_laoder()
-        self.set_comboBox_seq()
 
-    def set_comboBox_seq(self):
-        file_path = f"/home/rapa/YUMMY/project/{self.project}/seq"
-        seq_list = os.listdir(file_path)
-        self.ui.comboBox_seq.addItems(seq_list)
+        # self.asset_tree = self.ui.treeWidget_asset_file_path
+        
+        self.set_user_information()
+        self.set_asset_treeWidget()
+
+        # comboBox 일단 비활성화 해놓음
+        self.ui.comboBox_seq.setEnabled(False)
+        
+        #Signal
+
+    def set_asset_treeWidget(self):
+        self.asset_tree.clear()
+        file_path = f"/home/rapa/YUMMY/project/{self.project}/asset"
+        asset_list = os.listdir(file_path)
+    
+        # Headerlabel setting
+        self.asset_tree.setHeaderLabels([" Asset"])
+
+        # shot code setting
+        for asset_item in asset_list:
+            parent_item = QTreeWidgetItem(self.asset_tree)
+            parent_item.setText(0, asset_item)
+
+        # task setting
+            self.task_path = f"/home/rapa/YUMMY/project/{self.project}/asset/{asset_item}"
+            tasks = os.listdir(self.task_path)
+
+            for task in tasks :
+                task_item = QTreeWidgetItem(parent_item)
+                task_item.setText(0,task)
+
+    # def set_asset_type
     
 
 
@@ -38,7 +64,7 @@ class Mainloader(QWidget):
 
 
 
-    def set_main_laoder(self):
+    def set_user_information(self):
     
         self.ui.label_projectname.setText(f"{self.project}")
         self.ui.label_username.setText(f"{self.user}")
@@ -59,6 +85,6 @@ info = {"project" : "Marvelous" , "name" : "su"}
 
 if __name__ == "__main__":
     app = QApplication()
-    my  = Mainloader(info)
+    my  = LibraryLoader(info)
     my.show()
     app.exec()
