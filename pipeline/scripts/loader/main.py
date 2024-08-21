@@ -370,7 +370,7 @@ class Mainloader(QWidget):
 
 
         item = QTableWidgetItem()
-        item.setText(exr_folder_path)
+        item.setText()
         # self.exr_table.setItem(row+1,col,item)
         # item.setTextAlignment(Qt.AlignCenter)
 
