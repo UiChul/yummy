@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1256</width>
-    <height>921</height>
+    <width>1173</width>
+    <height>895</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,8 +22,8 @@
   <widget class="QTabWidget" name="tabWidget_all">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>150</y>
+     <x>50</x>
+     <y>120</y>
      <width>1071</width>
      <height>761</height>
     </rect>
@@ -46,7 +46,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>3</number>
    </property>
    <property name="usesScrollButtons">
     <bool>true</bool>
@@ -877,7 +877,7 @@
         <x>10</x>
         <y>30</y>
         <width>80</width>
-        <height>101</height>
+        <height>111</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -964,7 +964,7 @@
         <x>100</x>
         <y>30</y>
         <width>121</width>
-        <height>101</height>
+        <height>111</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_6">

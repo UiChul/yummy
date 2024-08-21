@@ -26,7 +26,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(1256, 921)
+        Form.resize(1173, 895)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -34,7 +34,7 @@ class Ui_Form(object):
         Form.setSizePolicy(sizePolicy)
         self.tabWidget_all = QTabWidget(Form)
         self.tabWidget_all.setObjectName(u"tabWidget_all")
-        self.tabWidget_all.setGeometry(QRect(120, 150, 1071, 761))
+        self.tabWidget_all.setGeometry(QRect(50, 120, 1071, 761))
         font = QFont()
         font.setBold(True)
         self.tabWidget_all.setFont(font)
@@ -340,7 +340,7 @@ class Ui_Form(object):
         self.groupBox_shot_file_info_2.setCheckable(False)
         self.verticalLayoutWidget_3 = QWidget(self.groupBox_shot_file_info_2)
         self.verticalLayoutWidget_3.setObjectName(u"verticalLayoutWidget_3")
-        self.verticalLayoutWidget_3.setGeometry(QRect(10, 30, 80, 101))
+        self.verticalLayoutWidget_3.setGeometry(QRect(10, 30, 80, 111))
         self.verticalLayout_5 = QVBoxLayout(self.verticalLayoutWidget_3)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
@@ -376,7 +376,7 @@ class Ui_Form(object):
 
         self.verticalLayoutWidget_4 = QWidget(self.groupBox_shot_file_info_2)
         self.verticalLayoutWidget_4.setObjectName(u"verticalLayoutWidget_4")
-        self.verticalLayoutWidget_4.setGeometry(QRect(100, 30, 121, 101))
+        self.verticalLayoutWidget_4.setGeometry(QRect(100, 30, 121, 111))
         self.verticalLayout_6 = QVBoxLayout(self.verticalLayoutWidget_4)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
@@ -1093,7 +1093,7 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
 
-        self.tabWidget_all.setCurrentIndex(1)
+        self.tabWidget_all.setCurrentIndex(3)
         self.tabWidget_shot_task.setCurrentIndex(1)
         self.tabWidget_shot_status.setCurrentIndex(1)
         self.tableWidget_mytask_status.setCurrentIndex(4)
