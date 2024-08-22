@@ -85,7 +85,7 @@
          </font>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>3</number>
         </property>
         <property name="movable">
          <bool>false</bool>
@@ -1224,7 +1224,7 @@
          </font>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tab_asset">
          <attribute name="title">
@@ -1612,10 +1612,10 @@
          <widget class="QToolBox" name="toolBox_asset_task">
           <property name="geometry">
            <rect>
-            <x>300</x>
-            <y>17</y>
-            <width>501</width>
-            <height>631</height>
+            <x>10</x>
+            <y>57</y>
+            <width>791</width>
+            <height>591</height>
            </rect>
           </property>
           <property name="font">
@@ -1631,8 +1631,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>501</width>
-             <height>565</height>
+             <width>791</width>
+             <height>525</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1641,10 +1641,20 @@
            <widget class="QTableWidget" name="tableWidget_asset_mdl_asset">
             <property name="geometry">
              <rect>
+              <x>240</x>
+              <y>0</y>
+              <width>551</width>
+              <height>525</height>
+             </rect>
+            </property>
+           </widget>
+           <widget class="QListWidget" name="listWidget_cache_name">
+            <property name="geometry">
+             <rect>
               <x>0</x>
               <y>0</y>
-              <width>501</width>
-              <height>564</height>
+              <width>231</width>
+              <height>525</height>
              </rect>
             </property>
            </widget>
@@ -1654,8 +1664,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>501</width>
-             <height>565</height>
+             <width>100</width>
+             <height>30</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1673,15 +1683,38 @@
            </widget>
           </widget>
          </widget>
-         <widget class="QListWidget" name="listWidget_asset_name">
+         <widget class="QWidget" name="horizontalLayoutWidget_3">
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>20</y>
-            <width>201</width>
-            <height>631</height>
+            <y>0</y>
+            <width>291</width>
+            <height>61</height>
            </rect>
           </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string> Asset type</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboBox_asset_type"/>
+           </item>
+          </layout>
          </widget>
         </widget>
         <widget class="QWidget" name="tab_clip">
@@ -1694,7 +1727,7 @@
             <x>800</x>
             <y>10</y>
             <width>231</width>
-            <height>401</height>
+            <height>641</height>
            </rect>
           </property>
           <property name="font">
@@ -1918,65 +1951,6 @@
            </layout>
           </widget>
          </widget>
-         <widget class="QPushButton" name="pushButton_clip_nuke">
-          <property name="geometry">
-           <rect>
-            <x>800</x>
-            <y>610</y>
-            <width>231</width>
-            <height>41</height>
-           </rect>
-          </property>
-          <property name="text">
-           <string>IMPORT</string>
-          </property>
-         </widget>
-         <widget class="QGroupBox" name="groupBox_clip_comment">
-          <property name="geometry">
-           <rect>
-            <x>800</x>
-            <y>420</y>
-            <width>231</width>
-            <height>181</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <bold>true</bold>
-            <underline>false</underline>
-            <strikeout>false</strikeout>
-           </font>
-          </property>
-          <property name="title">
-           <string>Comment</string>
-          </property>
-          <property name="flat">
-           <bool>false</bool>
-          </property>
-          <property name="checkable">
-           <bool>false</bool>
-          </property>
-          <widget class="QLabel" name="label_clip_comment">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>30</y>
-             <width>211</width>
-             <height>141</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <bold>false</bold>
-             <underline>false</underline>
-             <strikeout>false</strikeout>
-            </font>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </widget>
          <widget class="QTableWidget" name="tableWidget_clip_files">
           <property name="geometry">
            <rect>
@@ -1986,6 +1960,30 @@
             <height>641</height>
            </rect>
           </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <bold>false</bold>
+           </font>
+          </property>
+          <attribute name="horizontalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="horizontalHeaderMinimumSectionSize">
+           <number>50</number>
+          </attribute>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderMinimumSectionSize">
+           <number>50</number>
+          </attribute>
+          <attribute name="verticalHeaderDefaultSectionSize">
+           <number>100</number>
+          </attribute>
          </widget>
         </widget>
         <widget class="QWidget" name="tab_nodes">

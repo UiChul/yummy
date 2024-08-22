@@ -7,21 +7,34 @@
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
-
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
-    QGroupBox, QHBoxLayout, QHeaderView, QLabel,
-    QLineEdit, QListView, QListWidget, QListWidgetItem,
-    QPlainTextEdit, QPushButton, QSizePolicy, QTabWidget,
-    QTableWidget, QTableWidgetItem, QToolBox, QTreeWidget,
-    QTreeWidgetItem, QVBoxLayout, QWidget)
-
+try:
+    from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+        QMetaObject, QObject, QPoint, QRect,
+        QSize, QTime, QUrl, Qt)
+    from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+        QFont, QFontDatabase, QGradient, QIcon,
+        QImage, QKeySequence, QLinearGradient, QPainter,
+        QPalette, QPixmap, QRadialGradient, QTransform)
+    from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
+        QGroupBox, QHBoxLayout, QHeaderView, QLabel,
+        QLineEdit, QListView, QListWidget, QListWidgetItem,
+        QPlainTextEdit, QPushButton, QSizePolicy, QTabWidget,
+        QTableWidget, QTableWidgetItem, QToolBox, QTreeWidget,
+        QTreeWidgetItem, QVBoxLayout, QWidget)
+except:
+    from PySide2.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+        QMetaObject, QObject, QPoint, QRect,
+        QSize, QTime, QUrl, Qt)
+    from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+        QFont, QFontDatabase, QGradient, QIcon,
+        QImage, QKeySequence, QLinearGradient, QPainter,
+        QPalette, QPixmap, QRadialGradient, QTransform)
+    from PySide2.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
+        QGroupBox, QHBoxLayout, QHeaderView, QLabel,
+        QLineEdit, QListView, QListWidget, QListWidgetItem,
+        QPlainTextEdit, QPushButton, QSizePolicy, QTabWidget,
+        QTableWidget, QTableWidgetItem, QToolBox, QTreeWidget,
+        QTreeWidgetItem, QVBoxLayout, QWidget)
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
@@ -621,31 +634,53 @@ class Ui_Form(object):
 
         self.toolBox_asset_task = QToolBox(self.tab_asset)
         self.toolBox_asset_task.setObjectName(u"toolBox_asset_task")
-        self.toolBox_asset_task.setGeometry(QRect(300, 17, 501, 631))
+        self.toolBox_asset_task.setGeometry(QRect(10, 57, 791, 591))
         self.toolBox_asset_task.setFont(font)
         self.page_5 = QWidget()
         self.page_5.setObjectName(u"page_5")
-        self.page_5.setGeometry(QRect(0, 0, 501, 565))
+        self.page_5.setGeometry(QRect(0, 0, 791, 525))
         self.tableWidget_asset_mdl_asset = QTableWidget(self.page_5)
         self.tableWidget_asset_mdl_asset.setObjectName(u"tableWidget_asset_mdl_asset")
-        self.tableWidget_asset_mdl_asset.setGeometry(QRect(0, 0, 501, 564))
+        self.tableWidget_asset_mdl_asset.setGeometry(QRect(240, 0, 551, 525))
+        self.listWidget_cache_name = QListWidget(self.page_5)
+        self.listWidget_cache_name.setObjectName(u"listWidget_cache_name")
+        self.listWidget_cache_name.setGeometry(QRect(0, 0, 231, 525))
         self.toolBox_asset_task.addItem(self.page_5, u"MDL")
         self.page_6 = QWidget()
         self.page_6.setObjectName(u"page_6")
-        self.page_6.setGeometry(QRect(0, 0, 501, 565))
+        self.page_6.setGeometry(QRect(0, 0, 100, 30))
         self.tableWidget_asset_ani_asset = QTableWidget(self.page_6)
         self.tableWidget_asset_ani_asset.setObjectName(u"tableWidget_asset_ani_asset")
         self.tableWidget_asset_ani_asset.setGeometry(QRect(0, 1, 501, 564))
         self.toolBox_asset_task.addItem(self.page_6, u"ANI")
-        self.listWidget_asset_name = QListWidget(self.tab_asset)
-        self.listWidget_asset_name.setObjectName(u"listWidget_asset_name")
-        self.listWidget_asset_name.setGeometry(QRect(10, 20, 201, 631))
+        self.horizontalLayoutWidget_3 = QWidget(self.tab_asset)
+        self.horizontalLayoutWidget_3.setObjectName(u"horizontalLayoutWidget_3")
+        self.horizontalLayoutWidget_3.setGeometry(QRect(10, 0, 291, 61))
+        self.horizontalLayout_3 = QHBoxLayout(self.horizontalLayoutWidget_3)
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.label_4 = QLabel(self.horizontalLayoutWidget_3)
+        self.label_4.setObjectName(u"label_4")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
+        self.label_4.setSizePolicy(sizePolicy1)
+        self.label_4.setFont(font3)
+
+        self.horizontalLayout_3.addWidget(self.label_4)
+
+        self.comboBox_asset_type = QComboBox(self.horizontalLayoutWidget_3)
+        self.comboBox_asset_type.setObjectName(u"comboBox_asset_type")
+
+        self.horizontalLayout_3.addWidget(self.comboBox_asset_type)
+
         self.tabWidget_template.addTab(self.tab_asset, "")
         self.tab_clip1 = QWidget()
         self.tab_clip1.setObjectName(u"tab_clip1")
         self.groupBox_asset_file_info_2 = QGroupBox(self.tab_clip1)
         self.groupBox_asset_file_info_2.setObjectName(u"groupBox_asset_file_info_2")
-        self.groupBox_asset_file_info_2.setGeometry(QRect(800, 10, 231, 401))
+        self.groupBox_asset_file_info_2.setGeometry(QRect(800, 10, 231, 641))
         self.groupBox_asset_file_info_2.setFont(font4)
         self.groupBox_asset_file_info_2.setFlat(False)
         self.groupBox_asset_file_info_2.setCheckable(False)
@@ -733,26 +768,19 @@ class Ui_Form(object):
 
         self.verticalLayout_16.addWidget(self.label_clip_filesize)
 
-        self.pushButton_clip_nuke = QPushButton(self.tab_clip1)
-        self.pushButton_clip_nuke.setObjectName(u"pushButton_clip_nuke")
-        self.pushButton_clip_nuke.setGeometry(QRect(800, 610, 231, 41))
-        self.groupBox_clip_comment = QGroupBox(self.tab_clip1)
-        self.groupBox_clip_comment.setObjectName(u"groupBox_clip_comment")
-        self.groupBox_clip_comment.setGeometry(QRect(800, 420, 231, 181))
-        self.groupBox_clip_comment.setFont(font4)
-        self.groupBox_clip_comment.setFlat(False)
-        self.groupBox_clip_comment.setCheckable(False)
-        self.label_clip_comment = QLabel(self.groupBox_clip_comment)
-        self.label_clip_comment.setObjectName(u"label_clip_comment")
-        self.label_clip_comment.setGeometry(QRect(10, 30, 211, 141))
-        font7 = QFont()
-        font7.setBold(False)
-        font7.setUnderline(False)
-        font7.setStrikeOut(False)
-        self.label_clip_comment.setFont(font7)
         self.tableWidget_clip_files = QTableWidget(self.tab_clip1)
         self.tableWidget_clip_files.setObjectName(u"tableWidget_clip_files")
         self.tableWidget_clip_files.setGeometry(QRect(10, 10, 781, 641))
+        font7 = QFont()
+        font7.setPointSize(10)
+        font7.setBold(False)
+        self.tableWidget_clip_files.setFont(font7)
+        self.tableWidget_clip_files.horizontalHeader().setVisible(False)
+        self.tableWidget_clip_files.horizontalHeader().setMinimumSectionSize(50)
+        self.tableWidget_clip_files.horizontalHeader().setStretchLastSection(False)
+        self.tableWidget_clip_files.verticalHeader().setVisible(False)
+        self.tableWidget_clip_files.verticalHeader().setMinimumSectionSize(50)
+        self.tableWidget_clip_files.verticalHeader().setDefaultSectionSize(100)
         self.tabWidget_template.addTab(self.tab_clip1, "")
         self.tab_nodes = QWidget()
         self.tab_nodes.setObjectName(u"tab_nodes")
@@ -869,7 +897,11 @@ class Ui_Form(object):
         self.label_82 = QLabel(self.groupBox_clip_comment_3)
         self.label_82.setObjectName(u"label_82")
         self.label_82.setGeometry(QRect(10, 30, 211, 141))
-        self.label_82.setFont(font7)
+        font8 = QFont()
+        font8.setBold(False)
+        font8.setUnderline(False)
+        font8.setStrikeOut(False)
+        self.label_82.setFont(font8)
         self.tableWidget_nodes_files = QTableWidget(self.tab_nodes)
         self.tableWidget_nodes_files.setObjectName(u"tableWidget_nodes_files")
         self.tableWidget_nodes_files.setGeometry(QRect(240, 10, 551, 641))
@@ -1010,9 +1042,6 @@ class Ui_Form(object):
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.label_3 = QLabel(self.horizontalLayoutWidget_2)
         self.label_3.setObjectName(u"label_3")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
         self.label_3.setSizePolicy(sizePolicy1)
         self.label_3.setFont(font3)
@@ -1037,9 +1066,9 @@ class Ui_Form(object):
         self.label_username = QLabel(self.frame)
         self.label_username.setObjectName(u"label_username")
         self.label_username.setGeometry(QRect(5, 1, 151, 20))
-        font8 = QFont()
-        font8.setPointSize(8)
-        self.label_username.setFont(font8)
+        font9 = QFont()
+        font9.setPointSize(8)
+        self.label_username.setFont(font9)
 
         self.gridLayout_4.addWidget(self.frame, 0, 3, 1, 1)
 
@@ -1050,7 +1079,7 @@ class Ui_Form(object):
         self.label_rank = QLabel(self.frame_3)
         self.label_rank.setObjectName(u"label_rank")
         self.label_rank.setGeometry(QRect(5, 1, 151, 20))
-        self.label_rank.setFont(font8)
+        self.label_rank.setFont(font9)
 
         self.gridLayout_4.addWidget(self.frame_3, 1, 3, 1, 1)
 
@@ -1061,7 +1090,7 @@ class Ui_Form(object):
         self.label_projectname = QLabel(self.frame_2)
         self.label_projectname.setObjectName(u"label_projectname")
         self.label_projectname.setGeometry(QRect(5, 0, 151, 21))
-        self.label_projectname.setFont(font8)
+        self.label_projectname.setFont(font9)
 
         self.gridLayout_4.addWidget(self.frame_2, 2, 3, 1, 1)
 
@@ -1072,10 +1101,10 @@ class Ui_Form(object):
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.label_8.sizePolicy().hasHeightForWidth())
         self.label_8.setSizePolicy(sizePolicy2)
-        font9 = QFont()
-        font9.setPointSize(8)
-        font9.setBold(True)
-        self.label_8.setFont(font9)
+        font10 = QFont()
+        font10.setPointSize(8)
+        font10.setBold(True)
+        self.label_8.setFont(font10)
 
         self.gridLayout_4.addWidget(self.label_8, 2, 1, 1, 1)
 
@@ -1083,7 +1112,7 @@ class Ui_Form(object):
         self.label_7.setObjectName(u"label_7")
         sizePolicy2.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
         self.label_7.setSizePolicy(sizePolicy2)
-        self.label_7.setFont(font9)
+        self.label_7.setFont(font10)
 
         self.gridLayout_4.addWidget(self.label_7, 0, 1, 1, 1)
 
@@ -1091,7 +1120,7 @@ class Ui_Form(object):
         self.label_19.setObjectName(u"label_19")
         sizePolicy2.setHeightForWidth(self.label_19.sizePolicy().hasHeightForWidth())
         self.label_19.setSizePolicy(sizePolicy2)
-        self.label_19.setFont(font9)
+        self.label_19.setFont(font10)
 
         self.gridLayout_4.addWidget(self.label_19, 1, 1, 1, 1)
 
@@ -1099,10 +1128,10 @@ class Ui_Form(object):
         self.retranslateUi(Form)
 
         self.tabWidget_all.setCurrentIndex(2)
-        self.tabWidget_shot_task.setCurrentIndex(0)
+        self.tabWidget_shot_task.setCurrentIndex(3)
         self.tabWidget_shot_status.setCurrentIndex(0)
         self.tableWidget_mytask_status.setCurrentIndex(0)
-        self.tabWidget_template.setCurrentIndex(2)
+        self.tabWidget_template.setCurrentIndex(1)
         self.toolBox_asset_task.setCurrentIndex(0)
 
 
@@ -1188,6 +1217,7 @@ class Ui_Form(object):
         self.label_asset_pubdate.setText("")
         self.toolBox_asset_task.setItemText(self.toolBox_asset_task.indexOf(self.page_5), QCoreApplication.translate("Form", u"MDL", None))
         self.toolBox_asset_task.setItemText(self.toolBox_asset_task.indexOf(self.page_6), QCoreApplication.translate("Form", u"ANI", None))
+        self.label_4.setText(QCoreApplication.translate("Form", u" Asset type", None))
         self.tabWidget_template.setTabText(self.tabWidget_template.indexOf(self.tab_asset), QCoreApplication.translate("Form", u"ASSET (cache)", None))
         self.groupBox_asset_file_info_2.setTitle(QCoreApplication.translate("Form", u"Clip information", None))
         self.label_51.setText(QCoreApplication.translate("Form", u"Name", None))
@@ -1202,9 +1232,6 @@ class Ui_Form(object):
         self.label_clip_resolution.setText("")
         self.label_clip_savedtime.setText("")
         self.label_clip_filesize.setText("")
-        self.pushButton_clip_nuke.setText(QCoreApplication.translate("Form", u"IMPORT", None))
-        self.groupBox_clip_comment.setTitle(QCoreApplication.translate("Form", u"Comment", None))
-        self.label_clip_comment.setText("")
         self.tabWidget_template.setTabText(self.tabWidget_template.indexOf(self.tab_clip1), QCoreApplication.translate("Form", u"CLIP", None))
         self.groupBox_nodes_file_info.setTitle(QCoreApplication.translate("Form", u"File information", None))
         self.label_59.setText(QCoreApplication.translate("Form", u"Name", None))
