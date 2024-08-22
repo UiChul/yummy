@@ -11,7 +11,7 @@ except:
     from PySide2.QtGui import  Qt, QPixmap
 
 import os
-import ffmpeg
+# import ffmpeg
 import nuke
 
 class Publish(QWidget):
@@ -38,8 +38,8 @@ class Publish(QWidget):
 
         self.setup_tablewidget_basket()
         self.add_item_tablewidget_basket()
-        self.bring_validation_info()
-        self._get_exr_and_mov_validation_info("/home/rapa/YUMMY/project/Marvelous/seq/OPN/OPN_0010/cmp/dev/source/exr/test_1001.mov")
+        # self.bring_validation_info()
+        # self._get_exr_and_mov_validation_info("/home/rapa/YUMMY/project/Marvelous/seq/OPN/OPN_0010/cmp/dev/source/mov/test_v001.mov")
 
     def make_toolbox(self):
         
@@ -115,18 +115,23 @@ class Publish(QWidget):
 
         self.exr_file_list = self.ui.toolBox.findChild(QListWidget, "exr_file_list")
         if self.exr_file_list:
-            exr_file_names = os.listdir(exr_file_path)
-            for exr_file_name in exr_file_names:
-                exr_item = QListWidgetItem(exr_file_name)
+            exr_folder_names = os.listdir(exr_file_path)
+            for exr_folder_name in exr_folder_names:
+                exr_item = QListWidgetItem()
+                exr_item.setText(exr_folder_name)
                 exr_item.setFlags(exr_item.flags() | Qt.ItemIsUserCheckable)
                 exr_item.setCheckState(Qt.Unchecked)
                 self.exr_file_list.addItem(exr_item)
 
+                # exr_file_names = os.listdir(f"{exr_file_path}/{exr_folder_name}")    # exr 폴더 안에 파일들 >> 제이쓴으로 뽑아서 pub 할때 필요할 듯
+                # print(exr_file_names)
+
+
         # Signal
         self.exr_file_list.itemClicked.connect(self._handle_checkbox_state)
 
-        full_path = f"{exr_file_path}{exr_item}"
-        print(full_path)
+        # full_path = f"{exr_file_path}{exr_item}"
+        # print(full_path)
         # return full_path
 
     def setup_mov_file_list(self):
@@ -151,9 +156,9 @@ class Publish(QWidget):
         # Signal
         self.mov_file_list.itemClicked.connect(self._handle_checkbox_state)
 
-        full_path = f"{mov_file_path}{mov_item}"
-        print(full_path)
-        # return full_path
+        full_path = f"{mov_file_path}{mov_file_name}"
+        # print(full_path)
+        return full_path
 
     def _handle_checkbox_state(self, item):
 
@@ -170,12 +175,15 @@ class Publish(QWidget):
         self.ui.tableWidget_basket.setVerticalHeaderLabels(["nk", "mov", "exr"])
 
     def add_item_tablewidget_basket(self):
+        # nk_info, mov_info = self.bring_validation_info()
+
         nk_items = self.nk_file_list.selectedItems()
         for nk_item in nk_items:
             item = QTableWidgetItem()
             item_name = nk_item.text()
             item.setText(item_name)
             self.ui.tableWidget_basket.setItem(0, 0, item)
+            # self.ui.tableWidget_basket.setItem(0, 1, nk_info)
 
         exr_items = self.exr_file_list.selectedItems()
         for exr_item in exr_items:
@@ -190,68 +198,71 @@ class Publish(QWidget):
             item_name = mov_item.text()
             item.setText(item_name)
             self.ui.tableWidget_basket.setItem(2, 0, item)
+            # self.ui.tableWidget_basket.setItem(2, 1, mov_info)
 
-    def bring_validation_info(self):
+    # def bring_validation_info(self):
 
-        # nk_file_validation_info
-        nk_file_validation = {}
-        root = nuke.root()
-        path = root["name"].value()                     # file path
-        extend = path.split(".")[-1]                    # extendation
-        colorspace = root["colorManagement"].value()    # colorspace
-        nuke_version = nuke.NUKE_VERSION_STRING         # nk version
+    #     # nk_file_validation_info
+    #     nk_file_validation = {}
+    #     root = nuke.root()
+    #     path = root["name"].value()                     # file path
+    #     extend = path.split(".")[-1]                    # extendation
+    #     colorspace = root["colorManagement"].value()    # colorspace
+    #     nuke_version = nuke.NUKE_VERSION_STRING         # nk version
         
-        nk_file_validation["file_path"] = path
-        nk_file_validation["extend"] = extend
-        nk_file_validation["colorspace"] = colorspace
-        nk_file_validation["nuke_version"] = nuke_version
+    #     nk_file_validation["file_path"] = path
+    #     nk_file_validation["extend"] = extend
+    #     nk_file_validation["colorspace"] = colorspace
+    #     nk_file_validation["nuke_version"] = nuke_version
 
-        # exr_file_validation_info
-        # exr_file_path = self.setup_exr_file_list()
-        # exr_file_validation = self._get_exr_and_mov_validation_info(exr_file_path)
-        # print(exr_file_validation)
+    #     # exr_file_validation_info
+    #     # exr_file_path = self.setup_exr_file_list()
+    #     # exr_file_validation = self._get_exr_and_mov_validation_info(exr_file_path)
+    #     # print(exr_file_validation)
 
-        # # mov_file_validation_info
-        # mov_file_path = self.setup_mov_file_list()
-        # print(mov_file_path)
-        # mov_file_validation = self._get_exr_and_mov_validation_info(mov_file_path)
-        # print(mov_file_validation)
+    #     # mov_file_validation_info
+    #     mov_file_path = self.setup_mov_file_list()
+    #     mov_file_validation = self._get_exr_and_mov_validation_info(mov_file_path)
+    #     return nk_file_validation, mov_file_validation
 
-    def _get_exr_and_mov_validation_info(self, file_path):
+    # def _get_exr_and_mov_validation_info(self, file_path):
 
-            file_validation_info = {}
-            probe = ffmpeg.probe(file_path)
+    #         file_validation_info = {}
+    #         probe = ffmpeg.probe(file_path)
 
-            # extract video_stream
-            video_stream = next((stream for stream in probe['streams']if stream['codec_type'] == 'video'),None)
-            codec_name = video_stream['codec_name']
-            colorspace = video_stream['color_space']
-            width = int(video_stream['width'])
-            height = int(video_stream['height'])
-            # colorspace = video_stream.get('color_space')
-            # print(colorspace)
-            a = video_stream.keys()
-            print(a)
+    #         # extract video_stream
+    #         video_stream = next((stream for stream in probe['streams']if stream['codec_type'] == 'video'),None)
+    #         codec_name = video_stream['codec_name']
+    #         width = int(video_stream['width'])
+    #         height = int(video_stream['height'])
+    #         # a = video_stream.keys()
+    #         # print(a)
 
-            resolution = f"{width}x{height}"
+    #         resolution = f"{width}x{height}"
 
-            if file_path.split(".")[-1] == "mov":
-                frame = int(video_stream['nb_frames'])
-            else:
-                frame = 1
-                # print(frame)
+    #         if file_path.split(".")[-1] == "mov":
+    #             frame = int(video_stream['nb_frames'])
+    #             colorspace = video_stream['color_space']
 
-            # file_validation dictionary
-            file_validation_info["file_path"] = file_path
-            file_validation_info["codec_name"] = codec_name
-            file_validation_info["colorspace"] = colorspace
-            file_validation_info["resolution"] = resolution
-            file_validation_info["frame"] = frame
-            print(file_validation_info)
+    #         elif file_path.split(".")[-1] == "exr":
+    #             frame = 1
+    #             colorspace = video_stream.get('color_space', "N/A")
 
-            return file_validation_info
+    #         # file_validation dictionary
+    #         file_validation_info = {
+    #             "file_path": file_path,
+    #             "codec_name": codec_name,
+    #             "colorspace": colorspace,
+    #             "resolution": resolution,
+    #             "frame": frame
+    #         }
+    #         # print(file_validation_info)
+
+    #         return file_validation_info
 
     def display_thumbnail(self):
+
+        self.ui.label_thumbnail.clear()
 
         current_file_path = nuke.scriptName()
         nk_file_name = os.path.basename(current_file_path)
@@ -265,7 +276,6 @@ class Publish(QWidget):
             self.ui.label_thumbnail.setPixmap(scaled_thumbnail)
             return
 
-        # self.ui.label_thumbnail.setPixmap(scaled_thumbnail)
         self.save_frame_as_thumbnail(image_path, 1001)
 
     def save_frame_as_thumbnail(self, file_path, frame_number):
