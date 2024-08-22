@@ -7,7 +7,7 @@ class File_data:
         size = os.path.getsize(path)
         timestamp = os.path.getmtime(path)
         mod_time = datetime.fromtimestamp(timestamp)
-        mod_time = mod_time.strftime('%Y-%m-%d %H:%M:%S')
+        mod_time = mod_time.strftime('%Y-%m-%d %H:%M')
 
         if size >= 1000000000:
             size /= 1000000000
@@ -39,7 +39,7 @@ class File_data:
             
         timestamp = os.path.getmtime(path)
         mod_time = datetime.fromtimestamp(timestamp)
-        mod_time = mod_time.strftime('%Y-%m-%d %H:%M:%S')
+        mod_time = mod_time.strftime('%Y-%m-%d %H:%M')
         
         if size >= 1000000000:
             size /= 1000000000
@@ -60,9 +60,8 @@ class File_data:
         else:
             size
             output = f"{size} Byte"
-            
-                
-        
+
+
         return output,mod_time
         
 if __name__ == "__main__":

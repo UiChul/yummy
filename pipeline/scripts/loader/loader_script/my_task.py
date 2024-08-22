@@ -2,14 +2,16 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget,QApplication,QVBoxLayout,QTableWidgetItem
 from PySide6.QtWidgets import QTableWidgetItem, QAbstractItemView,QMessageBox
 from PySide6.QtGui import QPixmap
+from pipeline.scripts.loader.loader_module.find_time_size import File_data
 import os
 
 
 class My_task:
-    def __init__(self,Ui_Form):
+    def __init__(self,info,Ui_Form):
         self.ui = Ui_Form
         self.table = self.ui.tableWidget_recent_files
         # self.set_up(Ui_Form)
+        self.info = info
         
         self.set_mytask_table()
         self.table.itemClicked.connect(self.check_file_info)
@@ -26,17 +28,22 @@ class My_task:
         self.set_img(file_info)
         self.make_path(file_info)
         
+        
     def set_img(self,file_info):
         file_name = file_info[0]
         temp , ext=os.path.splitext(file_name)
         img_path = temp.split("_")
+
+        image_path = f"/home/rapa/YUMMY/project/Marvelous/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/exr/{temp}/{temp}.1001.png"
         
-        image_path = f"/home/rapa/YUMMY/project/Marvelous/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/exr/{temp}/{temp}.1010.png"
+        
+        nuke_path = f"/home/rapa/YUMMY/project/Marvelous/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/work/{file_name}"
         pixmap = QPixmap(image_path)
         scaled_pixmap = pixmap.scaled(570,320)
         self.ui.label_mytask_thumbnail.setPixmap(scaled_pixmap)
         
-        file_info = [temp,ext,"1920 X 1080",file_info[1],file_info[2]]
+        file_size,save_time  =  File_data.file_info(nuke_path)
+        file_info = [temp,ext,self.info["resolution"],save_time,file_size]
         self.set_file_information(file_info)
     
     def set_file_information(self,file_info):
@@ -64,7 +71,7 @@ class My_task:
         pass
         
     def set_mytask_table(self):
-        self.table.setColumnCount(3)
+        self.table.setColumnCount(1)
         self.table.setRowCount(10)
         
         self.table.setColumnWidth(0, 250)  # 첫 번째 열의 너비를 100 픽셀로 설정
@@ -73,14 +80,12 @@ class My_task:
         self.table.setSelectionMode(QAbstractItemView.SingleSelection)
         self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
         
-        self.table.setHorizontalHeaderLabels(["Name","Last Modified","Size"])
         self.input_mytask_table()
         
-    
     def input_mytask_table(self):
-        example = {1:{"name" :"OPN_0010_ani_v001.nknc" ,"time" : "08-15 16:00", "Size" : "16KB" },
-                   2:{"name" :"OPN_0010_ani_v002.nknc" ,"time" : "08-16 16:00", "Size" : "10KB" },
-                   3:{"name" :"OPN_0010_ani_v003.nknc" ,"time" : "08-17 16:00", "Size" : "30KB" }}
+        example = {1:{"name" :"OPN_0010_ani_v001.nknc"},
+                   2:{"name" :"OPN_0010_ani_v002.nknc"},
+                   3:{"name" :"OPN_0010_ani_v003.nknc"}}
         
         i = 0
         for ex in example.values():
@@ -102,7 +107,6 @@ class My_task:
     
     def set_up(self,Ui_Form):
         self.ui = Ui_Form
-        print(self.ui)
         self.ui.setupUi(self)
         self.table = self.ui.tableWidget_recent_files
         

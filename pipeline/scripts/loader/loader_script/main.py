@@ -20,7 +20,7 @@ class Mainloader():
         self.project = info["project"]
         self.user    = info["name"]
         self.rank    = info["rank"]
-        
+        self.resolution = info["resolution"]
         
         self.set_comboBox_seq()
         
