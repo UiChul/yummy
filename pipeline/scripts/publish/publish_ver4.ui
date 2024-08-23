@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>901</width>
-    <height>793</height>
+    <width>819</width>
+    <height>782</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,8 +21,8 @@
     <rect>
      <x>22</x>
      <y>50</y>
-     <width>871</width>
-     <height>341</height>
+     <width>781</width>
+     <height>291</height>
     </rect>
    </property>
    <property name="font">
@@ -41,8 +41,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>871</width>
-      <height>305</height>
+      <width>781</width>
+      <height>255</height>
      </rect>
     </property>
     <attribute name="label">
@@ -51,10 +51,10 @@
     <widget class="QWidget" name="gridLayoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>600</x>
+       <x>540</x>
        <y>0</y>
        <width>241</width>
-       <height>301</height>
+       <height>251</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
@@ -77,22 +77,22 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_thumbnail">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>110</height>
-         </size>
-        </property>
+      <item row="3" column="0" colspan="2">
+       <widget class="QLabel" name="label_description_txt">
         <property name="maximumSize">
          <size>
-          <width>240</width>
-          <height>110</height>
+          <width>16777215</width>
+          <height>20</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
-         <string/>
+         <string>Description:</string>
         </property>
        </widget>
       </item>
@@ -115,22 +115,22 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="2">
-       <widget class="QLabel" name="label_description_txt">
-        <property name="maximumSize">
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_thumbnail">
+        <property name="minimumSize">
          <size>
-          <width>16777215</width>
-          <height>20</height>
+          <width>0</width>
+          <height>80</height>
          </size>
         </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-          <bold>true</bold>
-         </font>
+        <property name="maximumSize">
+         <size>
+          <width>240</width>
+          <height>110</height>
+         </size>
         </property>
         <property name="text">
-         <string>Description:</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -243,8 +243,8 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>442</y>
-     <width>871</width>
+     <y>392</y>
+     <width>781</width>
      <height>41</height>
     </rect>
    </property>
@@ -284,9 +284,9 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>487</y>
-     <width>871</width>
-     <height>251</height>
+     <y>440</y>
+     <width>781</width>
+     <height>291</height>
     </rect>
    </property>
    <property name="rowCount">
@@ -329,7 +329,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>430</y>
+     <y>380</y>
      <width>871</width>
      <height>16</height>
     </rect>
@@ -342,8 +342,8 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>750</y>
-     <width>871</width>
+     <y>740</y>
+     <width>781</width>
      <height>31</height>
     </rect>
    </property>
@@ -398,8 +398,8 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>400</y>
-     <width>871</width>
+     <y>350</y>
+     <width>781</width>
      <height>27</height>
     </rect>
    </property>
