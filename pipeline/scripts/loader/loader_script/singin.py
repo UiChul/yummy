@@ -1,5 +1,7 @@
 from PySide6.QtCore import Qt,Signal
 from PySide6.QtWidgets import QWidget,QApplication,QMessageBox
+from PySide6.QtWidgets import QFileDialog
+
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
 from shotgun_api3 import shotgun

@@ -3,7 +3,7 @@ from PySide6.QtGui import QFont,QPixmap
 import sys
 sys.path.append("/home/rapa/yummy")
 from functools import partial
-from pipeline.scripts.loader.loader_module.exr_to_jpg import change_to_png,find_resolution_frame
+from pipeline.scripts.loader.loader_module.ffmpeg_module import change_to_png,find_resolution_frame
 from pipeline.scripts.loader.loader_module.find_time_size import File_data
 import os
 
