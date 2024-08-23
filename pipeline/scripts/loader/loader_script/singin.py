@@ -72,7 +72,6 @@ class Signin(QWidget):
         else:
             print("no vaildate")
             
-            
     def connect_loader(self):
         if self.email_vaildate >= 2:
             project = self.ui.comboBox_project_name.currentText()
