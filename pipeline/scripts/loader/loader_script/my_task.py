@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget,QApplication,QVBoxLayout,QTableWidgetItem
+from PySide6.QtWidgets import QApplication,QTableWidgetItem
 from PySide6.QtWidgets import QTableWidgetItem, QAbstractItemView,QMessageBox
 from PySide6.QtGui import QPixmap
 from pipeline.scripts.loader.loader_module.find_time_size import File_data
@@ -36,7 +36,6 @@ class My_task:
 
         image_path = f"/home/rapa/YUMMY/project/Marvelous/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/exr/{temp}/{temp}.1001.png"
         
-        
         nuke_path = f"/home/rapa/YUMMY/project/Marvelous/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/work/{file_name}"
         pixmap = QPixmap(image_path)
         scaled_pixmap = pixmap.scaled(570,320)
@@ -71,14 +70,14 @@ class My_task:
         pass
         
     def set_mytask_table(self):
-        self.table.setColumnCount(1)
+        self.table.setColumnCount(3)
         self.table.setRowCount(10)
         
-        self.table.setColumnWidth(0, 250)  # 첫 번째 열의 너비를 100 픽셀로 설정
-        self.table.setColumnWidth(1, 150)  # 두 번째 열의 너비를 200 픽셀로 설정
-        self.table.setColumnWidth(2, 96)  # 세 번째 열의 너비를 150 픽셀로 설정
-        self.table.setSelectionMode(QAbstractItemView.SingleSelection)
-        self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.table.setHorizontalHeaderLabels(["Name", "Save_time", "Size"])
+        
+        self.table.setColumnWidth(0, 490 * 0.5)
+        self.table.setColumnWidth(1, 490 * 0.3)
+        self.table.setColumnWidth(2, 490 * 0.2)
         
         self.input_mytask_table()
         
@@ -109,7 +108,8 @@ class My_task:
         self.ui = Ui_Form
         self.ui.setupUi(self)
         self.table = self.ui.tableWidget_recent_files
-        
+
+
 if __name__ == "__main__":
     app = QApplication()
     my = My_task()

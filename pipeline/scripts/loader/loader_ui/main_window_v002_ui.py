@@ -359,7 +359,8 @@ class Ui_Form(object):
         self.tableWidget_recent_files = QTableWidget(self.tab_my_task)
         self.tableWidget_recent_files.setObjectName(u"tableWidget_recent_files")
         self.tableWidget_recent_files.setGeometry(QRect(10, 50, 500, 431))
-        self.tableWidget_recent_files.horizontalHeader().setVisible(False)
+        self.tableWidget_recent_files.horizontalHeader().setVisible(True)
+        self.tableWidget_recent_files.verticalHeader().setVisible(False)
         self.groupBox_shot_comment_3 = QGroupBox(self.tab_my_task)
         self.groupBox_shot_comment_3.setObjectName(u"groupBox_shot_comment_3")
         self.groupBox_shot_comment_3.setGeometry(QRect(530, 50, 271, 220))
@@ -1017,9 +1018,13 @@ class Ui_Form(object):
         self.label_mytask_filepath_2.setObjectName(u"label_mytask_filepath_2")
         self.label_mytask_filepath_2.setGeometry(QRect(10, 8, 521, 41))
         self.label_mytask_filepath_2.setFont(font6)
-        self.listWidget_pub_list = QListWidget(self.tab_pub)
-        self.listWidget_pub_list.setObjectName(u"listWidget_pub_list")
-        self.listWidget_pub_list.setGeometry(QRect(10, 50, 391, 661))
+        self.treeWidget_pub_list = QTreeWidget(self.tab_pub)
+        __qtreewidgetitem1 = QTreeWidgetItem()
+        __qtreewidgetitem1.setText(0, u"1");
+        self.treeWidget_pub_list.setHeaderItem(__qtreewidgetitem1)
+        self.treeWidget_pub_list.setObjectName(u"treeWidget_pub_list")
+        self.treeWidget_pub_list.setGeometry(QRect(10, 70, 391, 641))
+        self.treeWidget_pub_list.header().setVisible(False)
         self.tabWidget_all.addTab(self.tab_pub, "")
         self.horizontalLayoutWidget_2 = QWidget(Form)
         self.horizontalLayoutWidget_2.setObjectName(u"horizontalLayoutWidget_2")
@@ -1114,11 +1119,11 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
 
-        self.tabWidget_all.setCurrentIndex(2)
+        self.tabWidget_all.setCurrentIndex(1)
         self.tabWidget_shot_task.setCurrentIndex(3)
         self.tabWidget_shot_status.setCurrentIndex(0)
         self.tableWidget_mytask_status.setCurrentIndex(0)
-        self.tabWidget_template.setCurrentIndex(1)
+        self.tabWidget_template.setCurrentIndex(0)
         self.toolBox_asset_task.setCurrentIndex(0)
 
 

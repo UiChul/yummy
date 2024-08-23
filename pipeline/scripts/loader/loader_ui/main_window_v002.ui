@@ -46,7 +46,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>1</number>
    </property>
    <property name="usesScrollButtons">
     <bool>true</bool>
@@ -916,6 +916,9 @@
       </rect>
      </property>
      <attribute name="horizontalHeaderVisible">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
     </widget>
@@ -1224,7 +1227,7 @@
          </font>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab_asset">
          <attribute name="title">
@@ -2688,15 +2691,23 @@
       <string>PUBLISH (Manager)</string>
      </property>
     </widget>
-    <widget class="QListWidget" name="listWidget_pub_list">
+    <widget class="QTreeWidget" name="treeWidget_pub_list">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>50</y>
+       <y>70</y>
        <width>391</width>
-       <height>661</height>
+       <height>641</height>
       </rect>
      </property>
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
     </widget>
    </widget>
   </widget>

@@ -338,7 +338,6 @@ class Mainloader():
             self.mov_table.setCellWidget(row,col,video_container)
             media_player.play()
 
-    
     """
     all
     """
@@ -421,8 +420,6 @@ class Mainloader():
         self.ui.label_shot_filename.setText(file_name)
         self.ui.label_shot_filetype.setText(file_type)
 
-
-
     """
     NUKE
     """
@@ -442,7 +439,6 @@ class Mainloader():
         # if self.tab_name == 1:
 
 
-        
     def load_nuke (self):
         self.import_exrs_to_nuke()
 
@@ -455,16 +451,15 @@ class Mainloader():
         self.ui.label_projectname.setText(f"{self.project}")
         self.ui.label_username.setText(f"{self.user}")
         
-    def set_up(self):
-        from main_window_v002_ui import Ui_Form
-        # ui_file_path = "/home/rapa/yummy/pipeline/scripts/loader/main_window.ui"
-        # ui_file = QFile(ui_file_path)
-        # ui_file.open(QFile.ReadOnly)
-        # loader = QUiLoader()
-        # self.ui = loader.load(ui_file,self)
-        self.ui = Ui_Form
-        print(self.ui)
-        self.ui.setupUi(self)
+    # def set_up(self):
+    #     # ui_file_path = "/home/rapa/yummy/pipeline/scripts/loader/main_window.ui"
+    #     # ui_file = QFile(ui_file_path)
+    #     # ui_file.open(QFile.ReadOnly)
+    #     # loader = QUiLoader()
+    #     # self.ui = loader.load(ui_file,self)
+    #     self.ui = Ui_Form
+    #     print(self.ui)
+    #     self.ui.setupUi(self)
 
     
 
