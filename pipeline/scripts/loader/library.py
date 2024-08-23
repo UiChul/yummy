@@ -1,27 +1,31 @@
 
 try:
     # from PySide6.QtCore import Qt
-    from PySide6.QtWidgets import QWidget,QApplication,QHeaderView
-    from PySide6.QtWidgets import QTreeWidgetItem, QTableWidgetItem, QLabel
+    from PySide6.QtWidgets import QWidget,QHeaderView,QFileDialog
+    from PySide6.QtWidgets import QVBoxLayout, QTableWidgetItem, QLabel, QApplication
     from PySide6.QtWidgets import QAbstractItemView
     from PySide6.QtUiTools import QUiLoader
-    from PySide6.QtCore import QFile
-    from PySide6.QtGui import QPixmap, Qt
+    from PySide6.QtCore import QFile, QMimeData, QUrl
+    from PySide6.QtGui import QPixmap, Qt, QDrag
 
 except:
     # from PySide2.QtCore import Qt
-    from PySide2.QtWidgets import QWidget,QApplication,QHeaderView
-    from PySide2.QtWidgets import QTreeWidgetItem, QTableWidgetItem, QLabel
+    from PySide2.QtWidgets import QWidget,QHeaderView,QFileDialog
+    from PySide2.QtWidgets import QVBoxLayout, QTableWidgetItem, QLabel, QApplication
     from PySide2.QtWidgets import QAbstractItemView
     from PySide2.QtUiTools import QUiLoader
-    from PySide2.QtCore import QFile
-    from PySide2.QtGui import QPixmap, Qt
+    from PySide2.QtCore import QFile, QMimeData, QUrl
+    from PySide2.QtGui import QPixmap, Qt, QDrag
     # from PySide2.QtCore import (QCoreApplication, QDate, QDateTime, QLocale, ...)
 
+    import nuke
 
 import os, sys
+
 import ffmpeg
-import nuke
+import ffmpeg_change_codec
+
+import subprocess
 
 class LibraryLoader(QWidget):
     def __init__(self):
@@ -37,14 +41,20 @@ class LibraryLoader(QWidget):
         self.set_user_information()
         # self.set_asset_treeWidget()
         self.set_clip_files_text_table()
-        self.render_for_thumbnails()
+
 
         # comboBox 일단 비활성화 해놓음
         self.ui.comboBox_seq.setEnabled(False)
         
         #Signal
+        self.clip_table.itemClicked.connect(self.set_clip_files_text_table)
         self.clip_table.itemClicked.connect(self.import_clip_file_to_nuke)
+        self.ui.pushButton_clip_file_nuke.clicked.connect(self.open_file_window)
+        # self.clip_table.itemClicked.connect(self.open_file_window)
 
+        # self.clip_table.setAcceptDrops(True)
+        # self.clip_table.setDragEnabled(True) 
+        # self.clip_table.setDropIndicatorShown(True)  
 
     
     """
@@ -76,52 +86,74 @@ class LibraryLoader(QWidget):
     """
     clip
     """
+    def drag_drop(self):
+        pass
+
+
     def set_clip_files_text_table (self):
-        self.clip_table.clear()
-        file_path = f"/home/rapa/YUMMY/project/{self.project}/template/shot/clip_lib"
+        """
+        이미지와 텍스트를 함께 포함하는 커스텀 QWidget생성.
+        """
+
+
+        # self.clip_table.clear()
+        file_path = f"/home/rapa/YUMMY/project/{self.project}/template/shot/clip_lib/"
         clip_lists = os.listdir(file_path)
 
+        image_path = "/home/rapa/xgen/clip_thumbnail"
+        images = os.listdir(image_path)
+
         count = (len(clip_lists) / 3)
-        # print (count)
 
         h_header = self.clip_table.horizontalHeader()
         h_header.setSectionResizeMode(QHeaderView.ResizeToContents)
         h_header.setSectionResizeMode(QHeaderView.Stretch)
         self.clip_table.setEditTriggers(QAbstractItemView.NoEditTriggers) 
         self.clip_table.setColumnCount(3)
+        self.clip_table.setRowCount(count+1)
 
-        if not count / 2 == 0 :
-            self.clip_table.setRowCount((count+1) *2)
-        else:
-            self.clip_table.setRowCount(count+1)
-
-        row = 1
+        row = 0
         col = 0
-        for clip_list in clip_lists:
-            # print (clip_list)
-            item = QTableWidgetItem()
-            item.setText(clip_list)
-            item.setTextAlignment(Qt.AlignCenter)
-            self.clip_table.setItem(row,col,item)
+        for image, clip_list in zip(images, clip_lists):
+            cell_widget = QWidget()
+            layout = QVBoxLayout()
 
-            col += 1
+            path = os.path.join(image_path,image)
+            label_image = QLabel()
+            pixmap = QPixmap(path)
+            label_image.setPixmap(pixmap)
+            label_image.setAlignment(Qt.AlignCenter)
+            label_image.setScaledContents(True)
 
-            if col >= self.clip_table.columnCount():            
+            label_text = QLabel()
+            label_text.setText(clip_list)
+            label_text.setStyleSheet(''' font-size: 9px; ''')
+            label_text.setAlignment(Qt.AlignCenter)
+            label_text.setWordWrap(True)
+
+            layout.addWidget(label_image)
+            layout.addWidget(label_text)
+            layout.setContentsMargins(20,5,20,10)
+            layout.setAlignment(Qt.AlignCenter)
+
+            cell_widget.setLayout(layout)
+
+            self.clip_table.setCellWidget(row,col,cell_widget)  
+
+            col += 1  
+
+            if col >= 3:
                 col = 0
-                row += 2
-
-        # 홀수 row 행 높이 조절
-        for i in range(1, self.clip_table.rowCount(), 2):
-            self.clip_table.setRowHeight(i,50)        
+                row += 1
 
         return clip_lists
 
+
     def import_clip_file_to_nuke (self,item):
-        a = self.set_clip_files_text_table
 
         # make read node in nuke
-        selected_item = item.text()
-        file_path = f"/home/rapa/YUMMY/project/{self.project}/template/shot/clip_lib/{selected_item}"
+        self.selected_item = item.text()
+        file_path = f"/home/rapa/YUMMY/project/{self.project}/template/shot/clip_lib/{self.selected_item}"
         read_node = nuke.createNode('Read')
         nuke.connectViewer(0,read_node)
         read_node['file'].setValue(file_path)
@@ -131,51 +163,17 @@ class LibraryLoader(QWidget):
         read_node['last'].setValue(frame)
 
         read_node['selected'].setValue(True)
+ 
+    def open_file_window(self):
 
+        file_tuple = QFileDialog.getOpenFileName(self, "import nuke file", f"/home/rapa/YUMMY/project/{self.project}/seq/OPN/OPN_0010") 
+        self.selected_nuke_file_path = file_tuple[0]
+        print (self.selected_nuke_file_path)
 
-    def render_for_thumbnails(self):
-        # 테이블에 있는 모든 파일을 노드로 만들기
-        file_path = f"/home/rapa/YUMMY/project/{self.project}/template/shot/clip_lib"
-        clip_files = os.listdir(file_path)
-        # print (clip_files)
-
-        for clip_file in clip_files:
-            clip_file_path = f"/home/rapa/YUMMY/project/{self.project}/template/shot/clip_lib/{clip_file}"
-            read_node = nuke.createNode('Read')
-            nuke.connectViewer(0,read_node)
-            read_node['file'].setValue(clip_file_path)
-
-            frame = self.get_frame_info(file_path)
-            read_node['last'].setValue(frame)
-            middle_frame = int(frame/2)
-
-            read_node['selected'].setValue(True)
-
-            read_node = nuke.toNode() 
-            #render center_frame
-
-            read_node.setInput(0,write_node)
-            png_path = clip_file_path + f"/{clip_file}.png"
-            write_node = nuke.createNode('Write')
-            write_node['file'].setValue(png_path)
-            write_node['first'].setValue(middle_frame)
-            write_node['last'].setValue(middle_frame)
-
-            write_node['selected'].setValue(True)
-            nuke.execute(write_node,middle_frame,middle_frame)
-
-            
-
-
-        # read_node['selected'].setValue(True)
-        # read_node['']
-
-
-
-                
-
-
-
+        if self.selected_nuke_file_path:
+            nuke_path = "/mnt/project/Nuke15.1v1/Nuke15.1"
+            command = f'source /home/rapa/env/nuke.env && {nuke_path} --nc "{self.selected_nuke_file_path}"'
+            os.system(command)
 
 
     def get_frame_info(self,input):
@@ -188,24 +186,6 @@ class LibraryLoader(QWidget):
             frame = 0
 
         return frame
-
-
-
-        
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
 
 
 
@@ -225,12 +205,41 @@ class LibraryLoader(QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 
-    
+    # def startDrag(self, supportedActions):
+    #     # 선택된 아이템 가져오기
+    #     item = self.tableWidget.currentItem()
+    #     if item:
+    #         drag = QDrag(self)
+    #         mimeData = QMimeData()
+
+    #         # 드래그할 파일 생성
+    #         file_path = "/home/rapa/YUMMY/project/Marvelous/template/shot/clip_lib/OpenfootageNET_00268_Fluid_lowres.mov"
+    #         mimeData.setUrls([QUrl.fromLocalFile(file_path)])
+    #         drag.setMimeData(mimeData)
+
+    #         # 드래그 시작
+    #         drag.exec_(supportedActions)
+
+    # def dragEnterEvent(self, event):
+    #     if event.mimeData().hasUrls():
+    #         event.acceptProposedAction()
+    #     else:
+    #         event.ignore()
+
+    # def dropEvent(self, event):
+    #     if event.mimeData().hasUrls():
+    #         urls = event.mimeData().urls()
+    #         for url in urls:
+    #             print(f"Dropped file: {url.toLocalFile()}")
+    #         event.acceptProposedAction()
+    #     else:
+    #         event.ignore()
+        
 
 info = {"project" : "Marvelous" , "name" : "su"}
 
 if __name__ == "__main__":
-    app = QApplication(sys)
+    app = QApplication(sys.argv)
     win  = LibraryLoader()
     win.show()
     app.exec()

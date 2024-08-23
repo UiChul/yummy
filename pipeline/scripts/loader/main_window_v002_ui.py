@@ -7,39 +7,26 @@
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
-try:
-    from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-        QMetaObject, QObject, QPoint, QRect,
-        QSize, QTime, QUrl, Qt)
-    from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-        QFont, QFontDatabase, QGradient, QIcon,
-        QImage, QKeySequence, QLinearGradient, QPainter,
-        QPalette, QPixmap, QRadialGradient, QTransform)
-    from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
-        QGroupBox, QHBoxLayout, QHeaderView, QLabel,
-        QLineEdit, QListView, QListWidget, QListWidgetItem,
-        QPlainTextEdit, QPushButton, QSizePolicy, QTabWidget,
-        QTableWidget, QTableWidgetItem, QToolBox, QTreeWidget,
-        QTreeWidgetItem, QVBoxLayout, QWidget)
-except:
-    from PySide2.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-        QMetaObject, QObject, QPoint, QRect,
-        QSize, QTime, QUrl, Qt)
-    from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-        QFont, QFontDatabase, QGradient, QIcon,
-        QImage, QKeySequence, QLinearGradient, QPainter,
-        QPalette, QPixmap, QRadialGradient, QTransform)
-    from PySide2.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
-        QGroupBox, QHBoxLayout, QHeaderView, QLabel,
-        QLineEdit, QListView, QListWidget, QListWidgetItem,
-        QPlainTextEdit, QPushButton, QSizePolicy, QTabWidget,
-        QTableWidget, QTableWidgetItem, QToolBox, QTreeWidget,
-        QTreeWidgetItem, QVBoxLayout, QWidget)
+
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFrame,
+    QGridLayout, QGroupBox, QHBoxLayout, QHeaderView,
+    QLabel, QLineEdit, QListView, QListWidget,
+    QListWidgetItem, QPlainTextEdit, QPushButton, QSizePolicy,
+    QTabWidget, QTableWidget, QTableWidgetItem, QToolBox,
+    QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
+
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(1155, 889)
+        Form.resize(1155, 904)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -47,7 +34,7 @@ class Ui_Form(object):
         Form.setSizePolicy(sizePolicy)
         self.tabWidget_all = QTabWidget(Form)
         self.tabWidget_all.setObjectName(u"tabWidget_all")
-        self.tabWidget_all.setGeometry(QRect(40, 90, 1071, 761))
+        self.tabWidget_all.setGeometry(QRect(40, 100, 1071, 761))
         font = QFont()
         font.setBold(True)
         self.tabWidget_all.setFont(font)
@@ -639,19 +626,22 @@ class Ui_Form(object):
         self.page_5 = QWidget()
         self.page_5.setObjectName(u"page_5")
         self.page_5.setGeometry(QRect(0, 0, 791, 525))
-        self.tableWidget_asset_mdl_asset = QTableWidget(self.page_5)
-        self.tableWidget_asset_mdl_asset.setObjectName(u"tableWidget_asset_mdl_asset")
-        self.tableWidget_asset_mdl_asset.setGeometry(QRect(240, 0, 551, 525))
-        self.listWidget_cache_name = QListWidget(self.page_5)
-        self.listWidget_cache_name.setObjectName(u"listWidget_cache_name")
-        self.listWidget_cache_name.setGeometry(QRect(0, 0, 231, 525))
+        self.listWidget_mdl_cache_files = QTableWidget(self.page_5)
+        self.listWidget_mdl_cache_files.setObjectName(u"listWidget_mdl_cache_files")
+        self.listWidget_mdl_cache_files.setGeometry(QRect(230, 0, 561, 525))
+        self.listWidget_mdl_cache_name = QListWidget(self.page_5)
+        self.listWidget_mdl_cache_name.setObjectName(u"listWidget_mdl_cache_name")
+        self.listWidget_mdl_cache_name.setGeometry(QRect(0, 0, 231, 525))
         self.toolBox_asset_task.addItem(self.page_5, u"MDL")
         self.page_6 = QWidget()
         self.page_6.setObjectName(u"page_6")
-        self.page_6.setGeometry(QRect(0, 0, 100, 30))
-        self.tableWidget_asset_ani_asset = QTableWidget(self.page_6)
-        self.tableWidget_asset_ani_asset.setObjectName(u"tableWidget_asset_ani_asset")
-        self.tableWidget_asset_ani_asset.setGeometry(QRect(0, 1, 501, 564))
+        self.page_6.setGeometry(QRect(0, 0, 791, 525))
+        self.listWidget_ani_cache_name = QListWidget(self.page_6)
+        self.listWidget_ani_cache_name.setObjectName(u"listWidget_ani_cache_name")
+        self.listWidget_ani_cache_name.setGeometry(QRect(0, 0, 231, 525))
+        self.listWidget_ani_cache_files = QTableWidget(self.page_6)
+        self.listWidget_ani_cache_files.setObjectName(u"listWidget_ani_cache_files")
+        self.listWidget_ani_cache_files.setGeometry(QRect(230, 0, 561, 525))
         self.toolBox_asset_task.addItem(self.page_6, u"ANI")
         self.horizontalLayoutWidget_3 = QWidget(self.tab_asset)
         self.horizontalLayoutWidget_3.setObjectName(u"horizontalLayoutWidget_3")
@@ -680,7 +670,7 @@ class Ui_Form(object):
         self.tab_clip1.setObjectName(u"tab_clip1")
         self.groupBox_asset_file_info_2 = QGroupBox(self.tab_clip1)
         self.groupBox_asset_file_info_2.setObjectName(u"groupBox_asset_file_info_2")
-        self.groupBox_asset_file_info_2.setGeometry(QRect(800, 10, 231, 641))
+        self.groupBox_asset_file_info_2.setGeometry(QRect(800, 10, 231, 191))
         self.groupBox_asset_file_info_2.setFont(font4)
         self.groupBox_asset_file_info_2.setFlat(False)
         self.groupBox_asset_file_info_2.setCheckable(False)
@@ -775,12 +765,26 @@ class Ui_Form(object):
         font7.setPointSize(10)
         font7.setBold(False)
         self.tableWidget_clip_files.setFont(font7)
+        self.tableWidget_clip_files.setDragEnabled(True)
+        self.tableWidget_clip_files.setDragDropMode(QAbstractItemView.DragDrop)
         self.tableWidget_clip_files.horizontalHeader().setVisible(False)
         self.tableWidget_clip_files.horizontalHeader().setMinimumSectionSize(50)
         self.tableWidget_clip_files.horizontalHeader().setStretchLastSection(False)
         self.tableWidget_clip_files.verticalHeader().setVisible(False)
         self.tableWidget_clip_files.verticalHeader().setMinimumSectionSize(50)
-        self.tableWidget_clip_files.verticalHeader().setDefaultSectionSize(100)
+        self.tableWidget_clip_files.verticalHeader().setDefaultSectionSize(150)
+        self.groupBox_clip_comment_4 = QGroupBox(self.tab_clip1)
+        self.groupBox_clip_comment_4.setObjectName(u"groupBox_clip_comment_4")
+        self.groupBox_clip_comment_4.setGeometry(QRect(800, 210, 231, 181))
+        self.groupBox_clip_comment_4.setFont(font4)
+        self.groupBox_clip_comment_4.setFlat(False)
+        self.groupBox_clip_comment_4.setCheckable(False)
+        self.plainTextEdit_clip_comment = QPlainTextEdit(self.groupBox_clip_comment_4)
+        self.plainTextEdit_clip_comment.setObjectName(u"plainTextEdit_clip_comment")
+        self.plainTextEdit_clip_comment.setGeometry(QRect(10, 30, 211, 141))
+        self.pushButton_clip_file_nuke = QPushButton(self.tab_clip1)
+        self.pushButton_clip_file_nuke.setObjectName(u"pushButton_clip_file_nuke")
+        self.pushButton_clip_file_nuke.setGeometry(QRect(800, 606, 231, 41))
         self.tabWidget_template.addTab(self.tab_clip1, "")
         self.tab_nodes = QWidget()
         self.tab_nodes.setObjectName(u"tab_nodes")
@@ -885,9 +889,9 @@ class Ui_Form(object):
         self.label_49 = QLabel(self.groupBox_nodes_file_info)
         self.label_49.setObjectName(u"label_49")
         self.label_49.setGeometry(QRect(10, 200, 63, 19))
-        self.pushButton_clip_nuke_2 = QPushButton(self.tab_nodes)
-        self.pushButton_clip_nuke_2.setObjectName(u"pushButton_clip_nuke_2")
-        self.pushButton_clip_nuke_2.setGeometry(QRect(800, 610, 231, 41))
+        self.pushButton_nodes_nuke = QPushButton(self.tab_nodes)
+        self.pushButton_nodes_nuke.setObjectName(u"pushButton_nodes_nuke")
+        self.pushButton_nodes_nuke.setGeometry(QRect(800, 610, 231, 41))
         self.groupBox_clip_comment_3 = QGroupBox(self.tab_nodes)
         self.groupBox_clip_comment_3.setObjectName(u"groupBox_clip_comment_3")
         self.groupBox_clip_comment_3.setGeometry(QRect(800, 420, 231, 181))
@@ -1055,7 +1059,7 @@ class Ui_Form(object):
 
         self.gridLayoutWidget_3 = QWidget(Form)
         self.gridLayoutWidget_3.setObjectName(u"gridLayoutWidget_3")
-        self.gridLayoutWidget_3.setGeometry(QRect(900, 30, 211, 81))
+        self.gridLayoutWidget_3.setGeometry(QRect(900, 30, 211, 71))
         self.gridLayout_4 = QGridLayout(self.gridLayoutWidget_3)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -1128,7 +1132,7 @@ class Ui_Form(object):
         self.retranslateUi(Form)
 
         self.tabWidget_all.setCurrentIndex(2)
-        self.tabWidget_shot_task.setCurrentIndex(3)
+        self.tabWidget_shot_task.setCurrentIndex(0)
         self.tabWidget_shot_status.setCurrentIndex(0)
         self.tableWidget_mytask_status.setCurrentIndex(0)
         self.tabWidget_template.setCurrentIndex(1)
@@ -1232,6 +1236,8 @@ class Ui_Form(object):
         self.label_clip_resolution.setText("")
         self.label_clip_savedtime.setText("")
         self.label_clip_filesize.setText("")
+        self.groupBox_clip_comment_4.setTitle(QCoreApplication.translate("Form", u"Comment", None))
+        self.pushButton_clip_file_nuke.setText(QCoreApplication.translate("Form", u"Import", None))
         self.tabWidget_template.setTabText(self.tabWidget_template.indexOf(self.tab_clip1), QCoreApplication.translate("Form", u"CLIP", None))
         self.groupBox_nodes_file_info.setTitle(QCoreApplication.translate("Form", u"File information", None))
         self.label_59.setText(QCoreApplication.translate("Form", u"Name", None))
@@ -1247,7 +1253,7 @@ class Ui_Form(object):
         self.label_nodes_savedtime.setText("")
         self.label_nodes_filesize.setText("")
         self.label_49.setText(QCoreApplication.translate("Form", u"Nodes", None))
-        self.pushButton_clip_nuke_2.setText(QCoreApplication.translate("Form", u"IMPORT", None))
+        self.pushButton_nodes_nuke.setText(QCoreApplication.translate("Form", u"IMPORT", None))
         self.groupBox_clip_comment_3.setTitle(QCoreApplication.translate("Form", u"Comment", None))
         self.label_82.setText("")
         self.tabWidget_template.setTabText(self.tabWidget_template.indexOf(self.tab_nodes), QCoreApplication.translate("Form", u"NODES", None))

@@ -1,5 +1,6 @@
 import ffmpeg
 import os
+import subprocess
 
 def change_to_png(input,output):
     (
@@ -32,8 +33,37 @@ def change_codec(input,output):
     
 def auto_change(path):
     clip_list = os.listdir(path)
-    print(clip_list)
-    clip_path = path + "/" + clip_list[0]
-    print(clip_path)
-    change_codec(clip_path,clip_path)
+    # print(clip_list)
+    for clip in clip_list:
+        clip_path = path + "/" + clip
+        out_path = path +"/new"+ "/" + clip
+    # print(clip_path)
+        if "H264" in clip_path :
+            change_codec(clip_path,out_path)
+        
+
+def extract_thumbnail_ffmpeg(video_path, thumbnail_path, time="00:00:01"):
+    command = [
+        'ffmpeg',
+        '-i', video_path,
+        '-ss', time,
+        '-vframes', '1',
+        '-q:v', '2', 
+        thumbnail_path 
+    ]
+
+    subprocess.run(command, check = True)
+
+def auto_extract(path):
+    clip_list = os.listdir(path)
     
+    numb = 0
+    for clip in clip_list:
+        
+        clip_path = path + "/" + clip
+        
+        extract_thumbnail_ffmpeg(clip_path, f'/home/rapa/xgen/thumbnail{numb}.jpg')
+        numb += 1
+
+
+
