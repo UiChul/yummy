@@ -39,8 +39,6 @@ class Publish(QWidget):
 
         self.setup_tablewidget_basket()
         self.add_item_tablewidget_basket()
-        # self.bring_validation_info()
-        # self._get_exr_and_mov_validation_info("/home/rapa/YUMMY/project/Marvelous/seq/OPN/OPN_0010/cmp/dev/source/mov/test_v001.mov")
 
     def make_toolbox(self):
         
@@ -108,7 +106,7 @@ class Publish(QWidget):
         
         nk_file_path = nuke.scriptName()                # full_path
         dev_file_path = nk_file_path.split("work")[0]   # dev_dir path
-        exr_folder_path = f"{dev_file_path}source/exr/"
+        self.exr_folder_path = f"{dev_file_path}source/exr/"
         # if os.path.isdir(exr_file_path):
         #     pass
         # else:
@@ -116,7 +114,7 @@ class Publish(QWidget):
 
         self.exr_file_listwidget = self.ui.toolBox.findChild(QListWidget, "exr_file_listwidget")
         if self.exr_file_listwidget:
-            exr_folders = os.listdir(exr_folder_path)         # exr은 폴더기준으로
+            exr_folders = os.listdir(self.exr_folder_path)         # exr은 폴더기준으로
             # print(exr_folder_names)
             for exr_folder in exr_folders:
                 exr_item = QListWidgetItem()
@@ -124,11 +122,6 @@ class Publish(QWidget):
                 exr_item.setFlags(exr_item.flags() | Qt.ItemIsUserCheckable)
                 exr_item.setCheckState(Qt.Unchecked)
                 self.exr_file_listwidget.addItem(exr_item)
-
-        exr_version_folders = self.exr_file_listwidget.selectedItems()
-        for exr_version_folder in exr_version_folders:
-            exr_version_folder_path = f"{exr_folder_path}{exr_version_folder}"
-            print(exr_version_folder_path)
 
         # Signal
         self.exr_file_listwidget.itemClicked.connect(self._handle_checkbox_state)
@@ -150,8 +143,6 @@ class Publish(QWidget):
                 mov_item.setCheckState(Qt.Unchecked)
                 self.mov_file_listwidget.addItem(mov_item)
 
-        # self.mov_full_path = f"{mov_file_path}{mov_file_name}"
-
         # Signal
         self.mov_file_listwidget.itemClicked.connect(self._handle_checkbox_state)
 
@@ -171,9 +162,7 @@ class Publish(QWidget):
 
     def add_item_tablewidget_basket(self):
 
-        nk_info_dict = self.bring_validation_info()
-        # print(exr_info)
-
+        ### nk item ###
         nk_items = self.nk_file_listwidget.selectedItems()
         for nk_item in nk_items:
             nk_file_name = QTableWidgetItem()
@@ -181,23 +170,29 @@ class Publish(QWidget):
             nk_file_name.setText(item_name)
             self.ui.tableWidget_basket.setItem(0, 0, nk_file_name)
 
+            nk_info_dict = self._get_nk_validation_info()
             nk_info_text = "\n".join(f"{key} : {value}" for key, value in nk_info_dict.items())
             nk_validation_info = QTableWidgetItem(nk_info_text)
             nk_validation_info.setTextAlignment(Qt.AlignLeft | Qt.AlignTop) # 왼쪽 정렬, 위쪽 정렬
             self.ui.tableWidget_basket.setItem(0, 1, nk_validation_info)
 
-        exr_items = self.exr_file_listwidget.selectedItems()
-        for exr_item in exr_items:
+        ### exr item ###
+        exr_selected_folders = self.exr_file_listwidget.selectedItems()
+        for exr_selected_folder in exr_selected_folders:
             item = QTableWidgetItem()
-            item_name = exr_item.text()
+            item_name = exr_selected_folder.text()
             item.setText(item_name)
             self.ui.tableWidget_basket.setItem(1, 0, item)
 
-            # exr_info_text = "\n".join(f"{key} : {value}" for key, value in exr_info_dict.items())
-            # exr_validation_info = QTableWidgetItem(exr_info_text)
-            # exr_validation_info.setTextAlignment(Qt.AlignLeft | Qt.AlignTop) # 왼쪽 정렬, 위쪽 정렬
-            # self.ui.tableWidget_basket.setItem(1, 1, exr_validation_info)
+            self.exr_full_path = f"{self.exr_folder_path}{item_name}"
 
+            exr_validation_info_dict = self._get_exr_and_mov_validation_info(self.exr_full_path)
+            exr_info_text = "\n".join(f"{key} : {value}" for key, value in exr_validation_info_dict.items())
+            exr_validation_info = QTableWidgetItem(exr_info_text)
+            exr_validation_info.setTextAlignment(Qt.AlignLeft | Qt.AlignTop) # 왼쪽 정렬, 위쪽 정렬
+            self.ui.tableWidget_basket.setItem(1, 1, exr_validation_info)
+
+        ### mov item ###
         mov_selected_files = self.mov_file_listwidget.selectedItems()
         for mov_selected_file in mov_selected_files:
             item = QTableWidgetItem()
@@ -205,43 +200,33 @@ class Publish(QWidget):
             item.setText(item_name)
             self.ui.tableWidget_basket.setItem(2, 0, item)
 
-            mov_full_path = f"{self.mov_file_path}{item_name}"
-            print(mov_full_path)
-            mov_file_validation_info = self._get_exr_and_mov_validation_info(mov_full_path)
-            print(mov_file_validation_info)
-            # mov_info_text = "\n".join(f"{key} : {value}" for key, value in mov_info_dict.items())
-            # mov_validation_info = QTableWidgetItem(mov_info_text)
-            # mov_validation_info.setTextAlignment(Qt.AlignLeft | Qt.AlignTop) # 왼쪽 정렬, 위쪽 정렬
-            # self.ui.tableWidget_basket.setItem(2, 1, mov_validation_info)
+            self.mov_full_path = f"{self.mov_file_path}{item_name}"
 
-    def bring_validation_info(self):
+            mov_validation_info_dict = self._get_exr_and_mov_validation_info(self.mov_full_path)
+            mov_info_item = "\n".join(f"{key} : {value}" for key, value in mov_validation_info_dict.items())
+            mov_validation_info = QTableWidgetItem(mov_info_item)
+            mov_validation_info.setTextAlignment(Qt.AlignLeft | Qt.AlignTop) # 왼쪽 정렬, 위쪽 정렬
+            self.ui.tableWidget_basket.setItem(2, 1, mov_validation_info)
 
-        # nk_file_validation_info
-        nk_file_validation = {}
+    def _get_nk_validation_info(self):
+
+        nk_file_validation_dict = {}
         root = nuke.root()
         path = root["name"].value()                     # file path
         extend = path.split(".")[-1]                    # extendation
         colorspace = root["colorManagement"].value()    # colorspace
         nuke_version = nuke.NUKE_VERSION_STRING         # nk version
         
-        nk_file_validation["file_path"] = path
-        nk_file_validation["extend"] = extend
-        nk_file_validation["colorspace"] = colorspace
-        nk_file_validation["nuke_version"] = nuke_version
+        nk_file_validation_dict["file_path"] = path
+        nk_file_validation_dict["extend"] = extend
+        nk_file_validation_dict["colorspace"] = colorspace
+        nk_file_validation_dict["nuke_version"] = nuke_version
 
-        # exr_file_validation_info
-        # exr_file_validation = self._get_exr_and_mov_validation_info(self.exr_full_path)
-        # print(exr_file_validation)
-
-        # mov_file_validation_info
-        # mov_file_validation = self._get_exr_and_mov_validation_info(self.mov_full_path)
-
-        return nk_file_validation
-        # return nk_file_validation, mov_file_validation
+        return nk_file_validation_dict
 
     def _get_exr_and_mov_validation_info(self, file_path):
 
-            file_validation_info = {}
+            file_validation_info_dict = {}
             probe = ffmpeg.probe(file_path)
 
             # extract video_stream
@@ -262,16 +247,15 @@ class Publish(QWidget):
                 frame = 1
 
             # file_validation dictionary
-            file_validation_info = {
+            file_validation_info_dict = {
                 "file_path": file_path,
                 "codec_name": codec_name,
                 "colorspace": colorspace,
                 "resolution": resolution,
                 "frame": frame
             }
-            # print(file_validation_info)
-
-            return file_validation_info
+            # print(file_validation_info_dict)
+            return file_validation_info_dict
 
     def display_thumbnail(self):
 
