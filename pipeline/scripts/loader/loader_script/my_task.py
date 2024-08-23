@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication,QTableWidgetItem
+from PySide6.QtWidgets import QApplication,QTableWidgetItem,QTableWidget
 from PySide6.QtWidgets import QTableWidgetItem, QAbstractItemView,QMessageBox
 from PySide6.QtGui import QPixmap
 from pipeline.scripts.loader.loader_module.find_time_size import File_data
@@ -38,7 +38,7 @@ class My_task:
         
         nuke_path = f"/home/rapa/YUMMY/project/Marvelous/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/work/{file_name}"
         pixmap = QPixmap(image_path)
-        scaled_pixmap = pixmap.scaled(570,320)
+        scaled_pixmap = pixmap.scaled(270,152)
         self.ui.label_mytask_thumbnail.setPixmap(scaled_pixmap)
         
         file_size,save_time  =  File_data.file_info(nuke_path)
@@ -75,16 +75,24 @@ class My_task:
         
         self.table.setHorizontalHeaderLabels(["Name", "Save_time", "Size"])
         
-        self.table.setColumnWidth(0, 490 * 0.5)
-        self.table.setColumnWidth(1, 490 * 0.3)
-        self.table.setColumnWidth(2, 490 * 0.2)
+        self.table.setColumnWidth(0, 495 * 0.5)
+        self.table.setColumnWidth(1, 495 * 0.3)
+        self.table.setColumnWidth(2, 495 * 0.2)
+        self.table.setSelectionBehavior(QTableWidget.SelectRows)
+        
         
         self.input_mytask_table()
         
     def input_mytask_table(self):
-        example = {1:{"name" :"OPN_0010_ani_v001.nknc"},
-                   2:{"name" :"OPN_0010_ani_v002.nknc"},
-                   3:{"name" :"OPN_0010_ani_v003.nknc"}}
+        
+        # 여기도 손을 보긴해야겠네
+        # 우선 project 선택을 하면 자기 shot을 가지고 오고 거기서 어떤 버전을 사용했는지
+        # 가져오고 이걸 시간순으로 정렬을 해서 my task에 띄운다.
+        # nuke_path = f"/home/rapa/YUMMY/project/Marvelous/seq/OPN/OPN_0010/dev/work/"
+         
+        example = {1:{"name" :"OPN_0010_ani_v001.nknc","save":"08-20-15:00","size":"4KB"},
+                   2:{"name" :"OPN_0010_ani_v002.nknc","save":"08-20-15:00","size":"4KB"},
+                   3:{"name" :"OPN_0010_ani_v003.nknc","save":"08-20-15:00","size":"4KB"}}
         
         i = 0
         for ex in example.values():

@@ -80,7 +80,8 @@ class Signin(QWidget):
             info = {"project" : project , "name" : self.user_name,"rank": self.rank}
             from pipeline.scripts.loader.loader_script.loader_merge import Merge
             self.load = Merge(info)
-            self.load.show()            
+            self.load.show()       
+            self.close()     
         
     #=====================================================================================
         

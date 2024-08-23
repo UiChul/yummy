@@ -372,7 +372,7 @@ class Ui_Form(object):
         self.label_shot_comment_2.setGeometry(QRect(10, 30, 211, 141))
         self.label_mytask_thumbnail = QLabel(self.groupBox_shot_comment_3)
         self.label_mytask_thumbnail.setObjectName(u"label_mytask_thumbnail")
-        self.label_mytask_thumbnail.setGeometry(QRect(10, 30, 250, 180))
+        self.label_mytask_thumbnail.setGeometry(QRect(-1, 19, 271, 201))
         self.groupBox_shot_file_info_2 = QGroupBox(self.tab_my_task)
         self.groupBox_shot_file_info_2.setObjectName(u"groupBox_shot_file_info_2")
         self.groupBox_shot_file_info_2.setGeometry(QRect(530, 290, 271, 191))

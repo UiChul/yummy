@@ -1,8 +1,8 @@
 {
-    "user_id": 109,
-    "name": "수연 박",
-    "email": "sooyeonp26@gmail.com",
-    "permission_group": "Yummy_manager",
+    "user_id": 97,
+    "name": "지연 이",
+    "email": "stellalee969@gmail.com",
+    "permission_group": "Admin",
     "projects": [
         {
             "id": 192,
@@ -13,12 +13,17 @@
             "shot_code": {
                 "gamja": {
                     "steps": [
-                        "cmp"
+                        "ani"
                     ]
                 },
-                "Dogs": {
+                "Cats": {
                     "steps": [
-                        "rig"
+                        "lkd"
+                    ]
+                },
+                "fights": {
+                    "steps": [
+                        "cmp"
                     ]
                 }
             }
@@ -33,6 +38,40 @@
                 "hyo_010": {
                     "steps": [
                         "cmp"
+                    ]
+                }
+            }
+        },
+        {
+            "id": 222,
+            "name": "YUMMIE",
+            "resolution_width": "1920",
+            "resolution_height": "1080",
+            "status": "Active",
+            "shot_code": {
+                "mid010": {
+                    "steps": [
+                        "ani"
+                    ]
+                },
+                "pkg030": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "pkg010": {
+                    "steps": [
+                        "ani"
+                    ]
+                },
+                "flb020": {
+                    "steps": [
+                        "lgt"
+                    ]
+                },
+                "brk010": {
+                    "steps": [
+                        "lgt"
                     ]
                 }
             }

@@ -28,7 +28,7 @@ class Merge(QWidget,My_task,Mainloader,project_data,Loader_pub):
         
     
     def tab_enable(self,info):
-        if not info["rank"] == "Yummy_manager":
+        if not info["rank"] == "Admin":
             self.ui.tabWidget_all.removeTab(3)
     
     def set_up(self,info):

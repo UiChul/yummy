@@ -31,6 +31,7 @@ class Loader_pub:
             item1.setText(0,f"{i}")
     
     def set_thumbnail(self,item,column):
+        
         pub_name =item.text(column)
         pub_len = pub_name.split(".")
         self.set_file_info(pub_name)
@@ -67,7 +68,6 @@ class Loader_pub:
             
             open_path = f"/home/rapa/YUMMY/project/Marvelous/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/"
             w,h,frame = find_resolution_frame(open_path+"mov"+f"/{nuke_name}.mov")
-            print(ext)
             if ext == ".nknc":
                 nuke_path = open_path + f"work/{pub_name}"
                 size,time=File_data.file_info(nuke_path)
@@ -123,6 +123,7 @@ class Loader_pub:
             
             elif ext == ".exr":
                 exr_path = "xdg-open " + open_path + "/exr"
+                print("exr")
                 os.system(exr_path)
                 
     # def find_file_size_date(self,path):

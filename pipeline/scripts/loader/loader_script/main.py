@@ -11,6 +11,10 @@ import os
 import sys
 sys.path.append("/home/rapa/yummy")
 
+from pipeline.scripts.loader.loader_module.find_path import find_file_path
+from pipeline.scripts.loader.loader_module.find_time_size import File_data
+from pipeline.scripts.loader.loader_module import ffmpeg_module
+
 # from functools import partial
 
 class Mainloader():
@@ -35,6 +39,7 @@ class Mainloader():
 
         self.set_treeWidget_shot("OPN")
         self.tab_name = "work"
+        
         #Signal
         self.ui.comboBox_seq.currentTextChanged.connect(self.set_treeWidget_shot)
         self.shot_treeWidget.itemClicked.connect(self.get_clicked_treeWidget_shot_item)
@@ -43,33 +48,41 @@ class Mainloader():
         self.ui.pushButton_search.clicked.connect(self.search_file_in_alllist)
         self.ui.lineEdit_alllist_search.returnPressed.connect(self.search_file_in_alllist)
 
-        self.work_table.itemClicked.connect(self.get_work_mov_file_information)
-        self.work_table.itemClicked.connect(self.get_clicked_nuke_file_path)
+        self.work_table.itemClicked.connect(self.get_work_file_information)
 
         self.exr_table.itemClicked.connect(self.get_exr_file_information)
-        self.exr_table.itemClicked.connect(self.get_clicked_nuke_file_path)
 
-        self.mov_table.itemClicked.connect(self.get_work_mov_file_information)
+        self.mov_table.itemClicked.connect(self.get_mov_file_information)
         self.mov_table.itemClicked.connect(self.set_mov_files)
-        self.mov_table.itemClicked.connect(self.get_clicked_nuke_file_path)
 
         self.all_list.itemClicked.connect(self.get_all_file_information)
 
+        self.set_mov_thumbnail()
         # tab - PUB 숨기기
         # self.ui.tabWidget_all.tabBar().setTabVisible(3, False)
+        
+        
+        
+        
+        
+        
+    #==========================================================================================
+    # 트리 위젯 세팅 
+    #==========================================================================================
         
     """
     seq
     """    
     def set_comboBox_seq(self):
-        file_path = f"/home/rapa/YUMMY/project/{self.project}/seq"
-        seq_list = os.listdir(file_path)
-        self.ui.comboBox_seq.addItems(seq_list)
-    
+        self.project_path = f"/home/rapa/YUMMY/project/{self.project}/seq"
+        seq_list = os.listdir(self.project_path)
+        self.ui.comboBox_seq.addItems(seq_list)  
     """
     shot
     """
-    def set_treeWidget_shot(self,seq):
+    def set_treeWidget_shot(self,seq = ""):
+        if not seq:
+            seq = self.ui.comboBox_seq.currentText()
         self.shot_treeWidget.clear()
         self.file_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{seq}"
         shot_codes = os.listdir(self.file_path)
@@ -118,6 +131,12 @@ class Mainloader():
         self.set_shot_tableWidgets()
         self.set_shot_work_files_tableWidget()
         self.set_shot_all_files_listWidget()
+        
+        
+    #=======================================================================================
+    # 테이블 위젯 세팅 work,mov,exr별로
+    #==========================================================================================
+    
 
     def set_shot_tableWidgets(self):
         """
@@ -134,13 +153,12 @@ class Mainloader():
             i.setEditTriggers(QAbstractItemView.NoEditTriggers) 
             i.setColumnCount(3)
             i.setRowCount(8)
-
+            
     def get_tab_name (self,tabIndex):
         if tabIndex == 0 :
             self.tab_name = "work"
             self.set_shot_work_files_tableWidget()
 
-            
         elif tabIndex == 1 :
             self.tab_name = "exr"
             self.set_shot_exr_files_tableWidget()
@@ -151,11 +169,8 @@ class Mainloader():
             self.set_mov_text_files_tableWidget()
 
         else :
-            self.tab_name = "all"
+            self.tab_name = "all"     
 
-        # print (self.tab_name)
-
-    
     """
     work
     """
@@ -247,19 +262,100 @@ class Mainloader():
 
         # 홀수 row 행 높이 조절
         for i in range(1, self.exr_table.rowCount(), 2):
-            self.exr_table.setRowHeight(i,50)        
+            self.exr_table.setRowHeight(i,50) 
+              
+#==========================================================================================
+# File Information Setting
+#==========================================================================================
 
     def get_exr_file_information(self, item):
+        
         """
         tableWidget에서 클릭한 exr 폴더의 파일의 정보 출력.
         """
+        
         selected_file = item.text()
         file_name, _ = os.path.splitext(selected_file)
+        
+        selected_file = self.get_clicked_nuke_file_path(selected_file)
 
+        file_path = selected_file
+        
+        size,time= File_data.dir_info(selected_file)
+        start,last,frame = ffmpeg_module.get_frame_count_from_directory(selected_file)
+        
+        frame_range = f"{start}-{last} {frame}"
+    
         self.ui.label_shot_filename.setText(file_name)
         self.ui.label_shot_filetype.setText(".exr")
-    
+        self.ui.label_shot_framerange.setText(frame_range)
+        self.ui.label_shot_resolution.setText(self.resolution)
+        self.ui.label_shot_savedtime.setText(time)
+        self.ui.label_shot_filesize.setText(size)
+        
 
+    def get_work_file_information(self, item):
+        """
+        tableWidget에서 클릭한 파일의 정보 출력.
+        """
+        selected_file = item.text()
+
+        file_name,file_type = os.path.splitext(selected_file)
+        
+        selected_file = self.get_clicked_nuke_file_path(selected_file)
+        size,time= File_data.file_info(selected_file)
+        
+        self.ui.label_shot_filename.setText(file_name)
+        self.ui.label_shot_filetype.setText(".nknc")
+        self.ui.label_shot_framerange.setText("-")
+        self.ui.label_shot_resolution.setText(self.resolution)
+        self.ui.label_shot_savedtime.setText(time)
+        self.ui.label_shot_filesize.setText(size)
+        
+        
+    def get_mov_file_information(self, item):
+        """
+        tableWidget에서 클릭한 파일의 정보 출력.
+        """
+        selected_file = item.text()
+        # print (selected_file)
+
+        file_name,  file_type = os.path.splitext(selected_file)
+        selected_file = item.text()
+
+        file_name,file_type = os.path.splitext(selected_file)
+        
+        selected_file = self.get_clicked_nuke_file_path(selected_file)
+        size,time= File_data.file_info(selected_file)
+        w,h,frame_range = ffmpeg_module.find_resolution_frame(selected_file)
+
+        self.ui.label_shot_filename.setText(file_name)
+        self.ui.label_shot_filetype.setText(file_type)
+        self.ui.label_shot_framerange.setText(frame_range)
+        self.ui.label_shot_resolution.setText(self.resolution)
+        self.ui.label_shot_savedtime.setText(time)
+        self.ui.label_shot_filesize.setText(size)
+        
+
+    def get_all_file_information (self,item):
+        """
+        listWidget에서 클릭한 파일 정보 출력.
+        """
+        selected_file = item.text()
+
+        file_name, file_type = os.path.splitext(selected_file)
+        
+        if not file_type :
+            self.ui.label_shot_filetype.setText(".exr")
+        else:
+            self.ui.label_shot_filetype.setText(file_type)
+
+        if file_name == ".nknc":
+            self.ui.label_shot_filetype.setText(".nknc")
+
+        self.ui.label_shot_filename.setText(file_name)
+        
+        
     """
     mov
     """
@@ -310,35 +406,35 @@ class Mainloader():
         for i in range(1, self.mov_table.rowCount(), 2):
             self.mov_table.setRowHeight(i,50)        
 
-    def set_mov_files(self):
+    def set_mov_files(self,item):
         """
         mov file setting
         """
         mov_files_path = self.task_path + "/" + "dev" + "/" f"{self.tab_name}"
+        movs = item.text()
+
+        mov_path = os.path.join(mov_files_path, movs)
+        mov_play_path = 'vlc --repeat ' + f"{mov_path}"
+        os.system(mov_play_path)
+
+    def set_mov_thumbnail(self):
+        mov_files_path = "/home/rapa/YUMMY/project/Marvelous/seq/OPN/OPN_0010/ani/dev/mov" 
         movs = os.listdir(mov_files_path)
-
-        row = 0
         col = 0
-        for i, mov in enumerate(movs):
-            mov_path = os.path.join(mov_files_path, mov)
-            mov_play_path = 'vlc --repeat ' + f"{mov_path}"
-            os.system(mov_play_path)
-
+        for mov in movs:
+            mov_play_path = mov_files_path + mov
             video_widget = QVideoWidget()
             media_player = QMediaPlayer(video_widget)
             media_player.setSource(QUrl.fromLocalFile(mov_play_path))
             media_player.setVideoOutput(video_widget)
-
             video_layout = QVBoxLayout()
             video_layout.addWidget(video_widget)
-
             video_container = QWidget()
             video_container.setLayout(video_layout)
-
-            self.mov_table.setCellWidget(row,col,video_container)
-            media_player.play()
-
-    """
+            self.mov_table.setCellWidget(0,col,video_container)
+            col += 1
+            # media_player.play()
+    """ 
     all
     """
     def set_shot_all_files_listWidget(self):
@@ -385,54 +481,18 @@ class Mainloader():
         for item in find_items:
             item.setBackground(QColor('#f7e345'))
         
-    def get_all_file_information (self,item):
-        """
-        listWidget에서 클릭한 파일 정보 출력.
-        """
-        selected_file = item.text()
-
-        file_name, _ = os.path.splitext(selected_file)
-        _ , file_type = os.path.splitext(selected_file)
-        
-        if not file_type :
-            self.ui.label_shot_filetype.setText(".exr")
-        else:
-            self.ui.label_shot_filetype.setText(file_type)
-
-        if file_name == ".nknc":
-            self.ui.label_shot_filetype.setText(".nknc")
-
-        self.ui.label_shot_filename.setText(file_name)
-
-
-
-    def get_work_mov_file_information(self, item):
-        """
-        tableWidget에서 클릭한 파일의 정보 출력.
-        """
-        selected_file = item.text()
-        # print (selected_file)
-
-        file_name, _ = os.path.splitext(selected_file)
-        _ , file_type = os.path.splitext(selected_file)
-        # print(file_type)
-
-        self.ui.label_shot_filename.setText(file_name)
-        self.ui.label_shot_filetype.setText(file_type)
-
     """
     NUKE
     """
-    def get_clicked_nuke_file_path (self,item):
+    def get_clicked_nuke_file_path (self,selected_file):
         """
         shot_tableWidget에서 클릭한 파일 path 획득
         """
-        selected_file = item.text()
         front_path = self.ui.label_shot_filepath.text()
         split_front_path = front_path.split(" ")[1]
-        
-        self.nuke_file_path = " /home/rapa/" + split_front_path + "/dev/" + f"{self.tab_name}" + "/" + selected_file
-        print (self.nuke_file_path)
+            
+        self.nuke_file_path = "/home/rapa/" + split_front_path + "/dev/" + f"{self.tab_name}" + "/" + selected_file
+        return self.nuke_file_path
 
     def import_exrs_to_nuke(self) :
         pass
@@ -441,7 +501,6 @@ class Mainloader():
 
     def load_nuke (self):
         self.import_exrs_to_nuke()
-
         nuke_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc' + f"{self.nuke_file_path}"
         os.system(nuke_path)
 
@@ -460,8 +519,6 @@ class Mainloader():
     #     self.ui = Ui_Form
     #     print(self.ui)
     #     self.ui.setupUi(self)
-
-    
 
 info = {"project" : "Marvelous" , "name" : "su","rank":"Artist"}
 

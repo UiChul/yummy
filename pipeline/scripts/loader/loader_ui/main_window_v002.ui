@@ -963,10 +963,10 @@
      <widget class="QLabel" name="label_mytask_thumbnail">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>250</width>
-        <height>180</height>
+        <x>-1</x>
+        <y>19</y>
+        <width>271</width>
+        <height>201</height>
        </rect>
       </property>
       <property name="text">
