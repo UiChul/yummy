@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>627</width>
-    <height>857</height>
+    <width>901</width>
+    <height>793</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,8 +21,8 @@
     <rect>
      <x>22</x>
      <y>50</y>
-     <width>591</width>
-     <height>321</height>
+     <width>871</width>
+     <height>341</height>
     </rect>
    </property>
    <property name="font">
@@ -41,8 +41,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>591</width>
-      <height>285</height>
+      <width>871</width>
+      <height>305</height>
      </rect>
     </property>
     <attribute name="label">
@@ -51,15 +51,15 @@
     <widget class="QWidget" name="gridLayoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>350</x>
+       <x>600</x>
        <y>0</y>
        <width>241</width>
-       <height>341</height>
+       <height>301</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="3" column="0" colspan="2">
-       <widget class="QLabel" name="label_description_txt">
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="label_thumbnail_txt">
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -73,7 +73,26 @@
          </font>
         </property>
         <property name="text">
-         <string>Description:</string>
+         <string>Thumbnail:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_thumbnail">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>110</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>240</width>
+          <height>110</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
         </property>
        </widget>
       </item>
@@ -96,8 +115,8 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QLabel" name="label_thumbnail_txt">
+      <item row="3" column="0" colspan="2">
+       <widget class="QLabel" name="label_description_txt">
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -111,33 +130,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Thumbnail:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0" colspan="2">
-       <widget class="QPushButton" name="pushButton_add_to_basket">
-        <property name="text">
-         <string>add</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_thumbnail">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>110</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>240</width>
-          <height>110</height>
-         </size>
-        </property>
-        <property name="text">
-         <string/>
+         <string>Description:</string>
         </property>
        </widget>
       </item>
@@ -250,9 +243,9 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>502</y>
-     <width>591</width>
-     <height>29</height>
+     <y>442</y>
+     <width>871</width>
+     <height>41</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -277,6 +270,9 @@
         <height>30</height>
        </size>
       </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
       <property name="text">
        <string>D</string>
       </property>
@@ -288,8 +284,8 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>537</y>
-     <width>591</width>
+     <y>487</y>
+     <width>871</width>
      <height>251</height>
     </rect>
    </property>
@@ -329,35 +325,89 @@
    <column/>
    <column/>
   </widget>
-  <widget class="QPushButton" name="pushButton_upload_to_shotgrid">
-   <property name="geometry">
-    <rect>
-     <x>22</x>
-     <y>800</y>
-     <width>591</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Upload</string>
-   </property>
-  </widget>
   <widget class="Line" name="line">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>480</y>
-     <width>591</width>
+     <y>430</y>
+     <width>871</width>
      <height>16</height>
     </rect>
    </property>
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>750</y>
+     <width>871</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <widget class="QPushButton" name="pushButton">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>Validate</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="Line" name="line_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_version">
+      <property name="font">
+       <font>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Version upload</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_publish">
+      <property name="font">
+       <font>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>Publish upload</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="pushButton_add_to_basket">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>400</y>
+     <width>871</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string>add</string>
    </property>
   </widget>
  </widget>

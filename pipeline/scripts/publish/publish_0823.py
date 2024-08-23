@@ -19,7 +19,7 @@ class Publish(QWidget):
     def __init__(self):
         super().__init__()         
 
-        ui_file_path = "/home/rapa/yummy/pipeline/scripts/publish/publish_ver3.ui"
+        ui_file_path = "/home/rapa/yummy/pipeline/scripts/publish/publish_ver4.ui"
         ui_file = QFile(ui_file_path)
         ui_file.open(QFile.ReadOnly)
         loader = QUiLoader()                                      
@@ -136,6 +136,9 @@ class Publish(QWidget):
 
     def setup_mov_file_list(self):
         
+        # Signal
+        self.mov_file_list.itemClicked.connect(self._handle_checkbox_state)
+        
         nk_file_path = nuke.scriptName()                # full_path
         dev_file_path = nk_file_path.split("work")[0]   # dev_dir path
         mov_file_path = f"{dev_file_path}source/mov/"
@@ -153,10 +156,9 @@ class Publish(QWidget):
                 mov_item.setCheckState(Qt.Unchecked)
                 self.mov_file_list.addItem(mov_item)
 
-        # Signal
-        self.mov_file_list.itemClicked.connect(self._handle_checkbox_state)
-
         full_path = f"{mov_file_path}{mov_file_name}"
+
+
         # print(full_path)
         return full_path
 
@@ -174,16 +176,27 @@ class Publish(QWidget):
         self.ui.tableWidget_basket.setHorizontalHeaderLabels(["Publish File", "File Info"])
         self.ui.tableWidget_basket.setVerticalHeaderLabels(["nk", "mov", "exr"])
 
+        # multiline_text = "Line 1\nLine 2\nLine 3"
+        # item = QTableWidgetItem(multiline_text)
+        # item.setTextAlignment(0x0004)  # 수평 중앙 정렬
+        # self.ui.tableWidget_basket.setItem(0, 1, item)
+
     def add_item_tablewidget_basket(self):
-        # nk_info, mov_info = self.bring_validation_info()
+
+        nk_info_dict, mov_info_dict = self.bring_validation_info()
+        # print(exr_info)
 
         nk_items = self.nk_file_list.selectedItems()
         for nk_item in nk_items:
-            item = QTableWidgetItem()
+            nk_file_name = QTableWidgetItem()
             item_name = nk_item.text()
-            item.setText(item_name)
-            self.ui.tableWidget_basket.setItem(0, 0, item)
-            # self.ui.tableWidget_basket.setItem(0, 1, nk_info)
+            nk_file_name.setText(item_name)
+            self.ui.tableWidget_basket.setItem(0, 0, nk_file_name)
+
+            nk_info_text = "\n".join(f"{key} : {value}" for key, value in nk_info_dict.items())
+            nk_validation_info = QTableWidgetItem(nk_info_text)
+            nk_validation_info.setTextAlignment(Qt.AlignLeft | Qt.AlignTop) # 왼쪽 정렬, 위쪽 정렬
+            self.ui.tableWidget_basket.setItem(0, 1, nk_validation_info)
 
         exr_items = self.exr_file_list.selectedItems()
         for exr_item in exr_items:
@@ -198,7 +211,11 @@ class Publish(QWidget):
             item_name = mov_item.text()
             item.setText(item_name)
             self.ui.tableWidget_basket.setItem(2, 0, item)
-            # self.ui.tableWidget_basket.setItem(2, 1, mov_info)
+
+            mov_info_text = "\n".join(f"{key} : {value}" for key, value in mov_info_dict.items())
+            mov_validation_info = QTableWidgetItem(mov_info_text)
+            mov_validation_info.setTextAlignment(Qt.AlignLeft | Qt.AlignTop) # 왼쪽 정렬, 위쪽 정렬
+            self.ui.tableWidget_basket.setItem(2, 1, mov_validation_info)
 
     def bring_validation_info(self):
 
@@ -223,6 +240,7 @@ class Publish(QWidget):
         # mov_file_validation_info
         mov_file_path = self.setup_mov_file_list()
         mov_file_validation = self._get_exr_and_mov_validation_info(mov_file_path)
+
         return nk_file_validation, mov_file_validation
 
     def _get_exr_and_mov_validation_info(self, file_path):
