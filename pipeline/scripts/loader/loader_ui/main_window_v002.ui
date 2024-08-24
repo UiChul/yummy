@@ -46,7 +46,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <property name="usesScrollButtons">
     <bool>true</bool>
@@ -1041,21 +1041,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_11">
-         <property name="font">
-          <font>
-           <pointsize>9</pointsize>
-           <bold>false</bold>
-           <underline>false</underline>
-           <strikeout>false</strikeout>
-          </font>
-         </property>
-         <property name="text">
-          <string>Frame Range </string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QLabel" name="label_12">
          <property name="font">
           <font>
@@ -1129,21 +1114,6 @@
        </item>
        <item>
         <widget class="QLabel" name="label_mytask_filetype">
-         <property name="font">
-          <font>
-           <pointsize>9</pointsize>
-           <bold>false</bold>
-           <underline>false</underline>
-           <strikeout>false</strikeout>
-          </font>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_mytask_framerange">
          <property name="font">
           <font>
            <pointsize>9</pointsize>
@@ -1668,8 +1638,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>98</width>
-             <height>28</height>
+             <width>100</width>
+             <height>30</height>
             </rect>
            </property>
            <attribute name="label">
@@ -2569,17 +2539,17 @@
       </layout>
      </widget>
     </widget>
-    <widget class="QPushButton" name="pushButton_mytask_selectedopen_2">
+    <widget class="QPushButton" name="pushButton_pub_publish">
      <property name="geometry">
       <rect>
-       <x>780</x>
+       <x>920</x>
        <y>670</y>
-       <width>271</width>
+       <width>131</width>
        <height>41</height>
       </rect>
      </property>
      <property name="text">
-      <string>OPEN</string>
+      <string>Publish</string>
      </property>
     </widget>
     <widget class="QGroupBox" name="groupBox_shot_comment_4">
@@ -2709,6 +2679,19 @@
        <string notr="true">1</string>
       </property>
      </column>
+    </widget>
+    <widget class="QPushButton" name="pushButton_pub_retake">
+     <property name="geometry">
+      <rect>
+       <x>780</x>
+       <y>670</y>
+       <width>131</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Retake</string>
+     </property>
     </widget>
    </widget>
   </widget>

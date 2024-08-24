@@ -12,10 +12,10 @@ files = os.listdir(folder_path)
 for filename in files:
     file_path = os.path.join(folder_path, filename)
     
-    if filename.startswith('OPN_0010_ani_v003.') and filename.endswith('.exr'):
+    if filename.startswith('INS_0010_lgt_v003.') and filename.endswith('.exr'):
         # 기존 파일 번호 추출
         file_number = filename.split('.')[1]
-        new_filename = f'INS_0010_lgt_v003.{file_number}.exr'
+        new_filename = f'INS_010_lgt_v003.{file_number}.exr'
         
         # 새로운 파일 경로 생성
         new_file_path = os.path.join(folder_path, new_filename)

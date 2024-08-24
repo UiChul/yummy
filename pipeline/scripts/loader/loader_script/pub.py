@@ -7,12 +7,17 @@ from pipeline.scripts.loader.loader_module.ffmpeg_module import change_to_png,fi
 from pipeline.scripts.loader.loader_module.find_time_size import File_data
 import os
 
-class Loader_pub:
-    def __init__(self,Ui_Form):
-        self.ui = Ui_Form
-        self.tree = self.ui.treeWidget_pub_list
-        self.ui.groupBox_shot_file_info_3.setVisible(False)
-        # self.set_up(Ui_Form)
+class Loader_pub(QWidget):
+    def __init__(self,info):
+        super().__init__()
+        # self.ui = Ui_Form
+        self.set_up()
+        # self.tree = self.ui.treeWidget_pub_list
+        # self.ui.groupBox_shot_file_info_3.setVisible(False)
+        
+        self.project = info["project"]
+        self.name = info["name"]
+        
         self.set_listwidget()
         self.set_vlc_mov()
         
@@ -128,13 +133,17 @@ class Loader_pub:
                 
     # def find_file_size_date(self,path):
         
-    def set_up(self,Ui_Form):
-        self.ui = Ui_Form
+    def set_up(self):
+        from pipeline.scripts.loader.loader_ui.main_window_v002_ui import Ui_Form
+        self.ui = Ui_Form()
+        self.ui.setupUi(self)
         self.tree = self.ui.treeWidget_pub_list
         self.ui.groupBox_shot_file_info_3.setVisible(False)
+        
+info = {"project" : "YUMMIE" , "name" : "UICHUL SHIN","rank":"Artist","resolution" : "1920 X 1080"}
 
 if __name__ == "__main__":
     app = QApplication()
-    my = Loader_pub()
+    my = Loader_pub(info)
     my.show()
     app.exec()

@@ -400,12 +400,6 @@ class Ui_Form(object):
 
         self.verticalLayout_5.addWidget(self.label_15)
 
-        self.label_11 = QLabel(self.verticalLayoutWidget_3)
-        self.label_11.setObjectName(u"label_11")
-        self.label_11.setFont(font5)
-
-        self.verticalLayout_5.addWidget(self.label_11)
-
         self.label_12 = QLabel(self.verticalLayoutWidget_3)
         self.label_12.setObjectName(u"label_12")
         self.label_12.setFont(font5)
@@ -441,12 +435,6 @@ class Ui_Form(object):
         self.label_mytask_filetype.setFont(font5)
 
         self.verticalLayout_6.addWidget(self.label_mytask_filetype)
-
-        self.label_mytask_framerange = QLabel(self.verticalLayoutWidget_4)
-        self.label_mytask_framerange.setObjectName(u"label_mytask_framerange")
-        self.label_mytask_framerange.setFont(font5)
-
-        self.verticalLayout_6.addWidget(self.label_mytask_framerange)
 
         self.label_mytask_resolution = QLabel(self.verticalLayoutWidget_4)
         self.label_mytask_resolution.setObjectName(u"label_mytask_resolution")
@@ -639,7 +627,7 @@ class Ui_Form(object):
         self.toolBox_asset_task.addItem(self.page_5, u"MDL")
         self.page_6 = QWidget()
         self.page_6.setObjectName(u"page_6")
-        self.page_6.setGeometry(QRect(0, 0, 98, 28))
+        self.page_6.setGeometry(QRect(0, 0, 100, 30))
         self.tableWidget_asset_ani_asset = QTableWidget(self.page_6)
         self.tableWidget_asset_ani_asset.setObjectName(u"tableWidget_asset_ani_asset")
         self.tableWidget_asset_ani_asset.setGeometry(QRect(0, 1, 501, 564))
@@ -993,9 +981,9 @@ class Ui_Form(object):
 
         self.verticalLayout_12.addWidget(self.label_pub_filesize)
 
-        self.pushButton_mytask_selectedopen_2 = QPushButton(self.tab_pub)
-        self.pushButton_mytask_selectedopen_2.setObjectName(u"pushButton_mytask_selectedopen_2")
-        self.pushButton_mytask_selectedopen_2.setGeometry(QRect(780, 670, 271, 41))
+        self.pushButton_pub_publish = QPushButton(self.tab_pub)
+        self.pushButton_pub_publish.setObjectName(u"pushButton_pub_publish")
+        self.pushButton_pub_publish.setGeometry(QRect(920, 670, 131, 41))
         self.groupBox_shot_comment_4 = QGroupBox(self.tab_pub)
         self.groupBox_shot_comment_4.setObjectName(u"groupBox_shot_comment_4")
         self.groupBox_shot_comment_4.setGeometry(QRect(420, 470, 341, 241))
@@ -1028,6 +1016,9 @@ class Ui_Form(object):
         self.treeWidget_pub_list.setObjectName(u"treeWidget_pub_list")
         self.treeWidget_pub_list.setGeometry(QRect(10, 70, 391, 641))
         self.treeWidget_pub_list.header().setVisible(False)
+        self.pushButton_pub_retake = QPushButton(self.tab_pub)
+        self.pushButton_pub_retake.setObjectName(u"pushButton_pub_retake")
+        self.pushButton_pub_retake.setGeometry(QRect(780, 670, 131, 41))
         self.tabWidget_all.addTab(self.tab_pub, "")
         self.horizontalLayoutWidget_2 = QWidget(Form)
         self.horizontalLayoutWidget_2.setObjectName(u"horizontalLayoutWidget_2")
@@ -1122,7 +1113,7 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
 
-        self.tabWidget_all.setCurrentIndex(0)
+        self.tabWidget_all.setCurrentIndex(3)
         self.tabWidget_shot_task.setCurrentIndex(3)
         self.tabWidget_shot_status.setCurrentIndex(0)
         self.tableWidget_mytask_status.setCurrentIndex(0)
@@ -1179,13 +1170,11 @@ class Ui_Form(object):
         self.groupBox_shot_file_info_2.setTitle(QCoreApplication.translate("Form", u"File information", None))
         self.label_17.setText(QCoreApplication.translate("Form", u"Name", None))
         self.label_15.setText(QCoreApplication.translate("Form", u"File type", None))
-        self.label_11.setText(QCoreApplication.translate("Form", u"Frame Range ", None))
         self.label_12.setText(QCoreApplication.translate("Form", u"Resolution", None))
         self.label_13.setText(QCoreApplication.translate("Form", u"Saved time", None))
         self.label_21.setText(QCoreApplication.translate("Form", u"File size", None))
         self.label_mytask_filename.setText("")
         self.label_mytask_filetype.setText("")
-        self.label_mytask_framerange.setText("")
         self.label_mytask_resolution.setText("")
         self.label_mytask_savedtime.setText("")
         self.label_mytask_filesize.setText("")
@@ -1260,13 +1249,14 @@ class Ui_Form(object):
         self.label_pub_resolution.setText("")
         self.label_pub_savedtime.setText("")
         self.label_pub_filesize.setText("")
-        self.pushButton_mytask_selectedopen_2.setText(QCoreApplication.translate("Form", u"OPEN", None))
+        self.pushButton_pub_publish.setText(QCoreApplication.translate("Form", u"Publish", None))
         self.groupBox_shot_comment_4.setTitle(QCoreApplication.translate("Form", u"Comment", None))
         self.plainTextEdit_pub_comment.setPlainText("")
         self.groupBox_shot_comment_5.setTitle(QCoreApplication.translate("Form", u"Thumbnail", None))
         self.label_shot_comment_4.setText("")
         self.label_pub_thumbnail.setText("")
         self.label_mytask_filepath_2.setText(QCoreApplication.translate("Form", u"PUBLISH (Manager)", None))
+        self.pushButton_pub_retake.setText(QCoreApplication.translate("Form", u"Retake", None))
         self.tabWidget_all.setTabText(self.tabWidget_all.indexOf(self.tab_pub), QCoreApplication.translate("Form", u"PUB", None))
         self.label_3.setText(QCoreApplication.translate("Form", u"SEQ ", None))
         self.label_username.setText("")

@@ -38,7 +38,7 @@ class Merge(QWidget,My_task,Mainloader,project_data,Loader_pub):
         info = project_data.__init__(self,info,self.ui)
         Mainloader.__init__(self,info,self.ui)
         My_task.__init__(self,info,self.ui)
-        Loader_pub.__init__(self,self.ui)
+        Loader_pub.__init__(self,info,self.ui)
          
 if __name__ == "__main__":
     app  = QApplication()
