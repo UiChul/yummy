@@ -1,0 +1,96 @@
+{
+    "assets": [
+        [
+            "asset_name:",
+            "box",
+            "asset_path:",
+            "/home/rapa/YUMMY/project/YUMMIE/template/asset"
+        ],
+        [
+            "asset_name:",
+            "lamp",
+            "asset_path:",
+            "/home/rapa/YUMMY/project/YUMMIE/template/asset"
+        ],
+        [
+            "asset_name:",
+            "car",
+            "asset_path:",
+            "/home/rapa/YUMMY/project/YUMMIE/template/asset"
+        ],
+        [
+            "asset_name:",
+            "green",
+            "asset_path:",
+            "/home/rapa/YUMMY/project/YUMMIE/template/asset"
+        ],
+        [
+            "asset_name:",
+            "man",
+            "asset_path:",
+            "/home/rapa/YUMMY/project/YUMMIE/template/asset"
+        ],
+        [
+            "asset_name:",
+            "tower",
+            "asset_path:",
+            "/home/rapa/YUMMY/project/YUMMIE/template/asset"
+        ]
+    ],
+    "versions": [
+        {
+            "version_code": "box_v001",
+            "entity_name": "man",
+            "version_type": "abc",
+            "created_by": "지연 이",
+            "updated_by": "hyogi lee",
+            "updated_at": "2024-08-23 18:01:53",
+            "description": "testing"
+        },
+        {
+            "version_code": "lamp_mod_v001",
+            "entity_name": "man",
+            "version_type": null,
+            "created_by": "지연 이",
+            "updated_by": "지연 이",
+            "updated_at": "2024-08-20 13:48:19",
+            "description": "testing"
+        },
+        {
+            "version_code": "test_1001",
+            "entity_name": "pkg030",
+            "version_type": null,
+            "created_by": "지연 이",
+            "updated_by": "지연 이",
+            "updated_at": "2024-08-20 13:55:38",
+            "description": "test"
+        },
+        {
+            "version_code": "test_1002",
+            "entity_name": "pkg030",
+            "version_type": null,
+            "created_by": "지연 이",
+            "updated_by": "지연 이",
+            "updated_at": "2024-08-20 13:52:03",
+            "description": "test"
+        },
+        {
+            "version_code": "test_1003",
+            "entity_name": "pkg030",
+            "version_type": null,
+            "created_by": "지연 이",
+            "updated_by": "test_park 1.0",
+            "updated_at": "2024-08-23 16:28:31",
+            "description": "test"
+        },
+        {
+            "version_code": "ins010_lgt_v001",
+            "entity_name": "ins010",
+            "version_type": null,
+            "created_by": "UICHUL SHIN",
+            "updated_by": "UICHUL SHIN",
+            "updated_at": "2024-08-24 12:35:32",
+            "description": "TEST"
+        }
+    ]
+}
