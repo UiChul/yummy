@@ -9,18 +9,20 @@ from PySide6.QtMultimedia import QMediaPlayer
 from PySide6.QtMultimediaWidgets import QVideoWidget
 import os
 import sys
+import json
 sys.path.append("/home/rapa/yummy")
 
-from pipeline.scripts.loader.loader_module.find_path import find_file_path
+
+from pipeline.scripts.loader.loader_module.set_thumbnail import find_file_path
 from pipeline.scripts.loader.loader_module.find_time_size import File_data
 from pipeline.scripts.loader.loader_module import ffmpeg_module
 
 # from functools import partial
 
-class Mainloader():
-    def __init__(self,info,Ui_Form):
-        self.ui = Ui_Form
-        # self.set_up(Ui_Form)
+class Mainloader(QWidget):
+    def __init__(self,info):
+        super().__init__()
+        self.set_up()
         print(info)
         
         self.project = info["project"]
@@ -29,6 +31,7 @@ class Mainloader():
         self.resolution = info["resolution"]
         
         self.set_user_information()
+        self.input_project()
         self.set_comboBox_seq()
         
         self.shot_treeWidget = self.ui.treeWidget
@@ -37,7 +40,7 @@ class Mainloader():
         self.mov_table = self.ui.tableWidget_shot_mov
         self.all_list = self.ui.listWidget_shot_allfile
 
-        self.set_treeWidget_shot("OPN")
+        self.set_treeWidget_shot(self.seq_list[0])
         self.tab_name = "work"
         
         #Signal
@@ -61,8 +64,33 @@ class Mainloader():
         # tab - PUB 숨기기
         # self.ui.tabWidget_all.tabBar().setTabVisible(3, False)
         
+    
+    #==========================================================================================
+    # seq 세팅
+    #==========================================================================================
+    
+    
+    def input_project(self):
+        with open("/home/rapa/yummy/pipeline/json/login_user_data.json","rt",encoding="utf-8") as r:
+            user_dic = json.load(r)
+            
+        for projects in user_dic["projects"]:
+            if projects["name"] == self.project:
+                self.transform_json_data(projects["shot_code"])
+            
         
+    def transform_json_data(self,data):
+        self.transformed_data = {}
+
+        for key, value in data.items():
+            prefix = key.split('_')[0]  # 접두사 추출 (예: 'INS', 'BRK', 'FLB')
+
+            if prefix not in self.transformed_data:
+                self.transformed_data[prefix] = []
+
+            self.transformed_data[prefix].append([key, value['steps']])
         
+        print(self.transformed_data)
         
         
         
@@ -75,8 +103,11 @@ class Mainloader():
     """    
     def set_comboBox_seq(self):
         self.project_path = f"/home/rapa/YUMMY/project/{self.project}/seq"
-        seq_list = os.listdir(self.project_path)
-        self.ui.comboBox_seq.addItems(seq_list)  
+        self.seq_list = []
+        
+        for key in self.transformed_data.keys():
+            self.seq_list.append(key)
+        self.ui.comboBox_seq.addItems(self.seq_list)  
     """
     shot
     """
@@ -90,18 +121,50 @@ class Mainloader():
         # Headerlabel setting
         self.shot_treeWidget.setHeaderLabels(["Shot Code"])
 
+        shot_info = self.transformed_data[seq]
+        
+        task_shot_code = []
+            
+        for shot_detail in shot_info:
+            task_shot_code.append(shot_detail[0])
+            
         # shot code setting
         for shot_code in shot_codes:
             parent_item = QTreeWidgetItem(self.shot_treeWidget)
-            parent_item.setText(0, shot_code)
+            if shot_code in task_shot_code:
+                parent_item.setText(0, shot_code)
+                parent_item.setForeground(0,QColor("Green"))
+                
+                self.task_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{seq}/{shot_code}"
+                tasks = os.listdir(self.task_path)
 
-        # task setting
-            self.task_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{seq}/{shot_code}"
-            tasks = os.listdir(self.task_path)
-
-            for task in tasks :
-                task_item = QTreeWidgetItem(parent_item)
-                task_item.setText(0,task)
+                my_task = []
+                for shot_detail in shot_info:
+                    if shot_detail[0] == shot_code:
+                        for i in shot_detail[1]:
+                            my_task.append(i)
+                                  
+                for task in tasks :
+                    task_item = QTreeWidgetItem(parent_item)
+                    if task in my_task:
+                        task_item.setText(0,task)
+                        task_item.setForeground(0,QColor("Green"))
+                    else:
+                        task_item.setText(0,task)
+                        task_item.setForeground(0,QColor("lightgray"))
+                        
+            else:
+                parent_item.setText(0, shot_code)
+                parent_item.setForeground(0,QColor("lightgray"))
+                
+                self.task_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{seq}/{shot_code}"
+                tasks = os.listdir(self.task_path)
+    
+                for task in tasks :
+                    task_item = QTreeWidgetItem(parent_item)
+                    task_item.setText(0,task)
+                    task_item.setForeground(0,QColor("lightgray"))
+                
 
     def get_clicked_treeWidget_shot_item (self,item,column):
         """
@@ -116,14 +179,10 @@ class Mainloader():
             return
         else : 
             parent_text = parent_item.text(0)
-            # print (parent_text)
 
         self.task_path = self.file_path + "/" + parent_text + "/" + selected_task
-        # print (self.task_path)
         split = self.task_path.split("/", 3)
-        # print (split)
         splited_work_path = split[3]
-        # print ("splited_work_path =",splited_work_path)
         label_work_path = "▶" + " " + splited_work_path 
 
         self.ui.label_shot_filepath.setText(label_work_path)
@@ -132,11 +191,15 @@ class Mainloader():
         self.set_shot_work_files_tableWidget()
         self.set_shot_all_files_listWidget()
         
+    def find_project_task(self,project):
+        for project_info in self.user_dic["projects"]:
+            if project_info["name"] == project:
+                print(project)
+                return project_info["shot_code"]
         
     #=======================================================================================
     # 테이블 위젯 세팅 work,mov,exr별로
     #==========================================================================================
-    
 
     def set_shot_tableWidgets(self):
         """
@@ -178,7 +241,7 @@ class Mainloader():
         """
         work file setting
         """
-        work_files_path = self.task_path + "/" + "dev" + "/" f"{self.tab_name}"
+        work_files_path = self.task_path + "/dev/" + f"{self.tab_name}"
         works = os.listdir(work_files_path)
         # print (works)
 
@@ -509,18 +572,19 @@ class Mainloader():
     
         self.ui.label_projectname.setText(f"{self.project}")
         self.ui.label_username.setText(f"{self.user}")
+        self.ui.label_rank.setText(f"{self.rank}")
         
-    # def set_up(self):
-    #     # ui_file_path = "/home/rapa/yummy/pipeline/scripts/loader/main_window.ui"
-    #     # ui_file = QFile(ui_file_path)
-    #     # ui_file.open(QFile.ReadOnly)
-    #     # loader = QUiLoader()
-    #     # self.ui = loader.load(ui_file,self)
-    #     self.ui = Ui_Form
-    #     print(self.ui)
-    #     self.ui.setupUi(self)
+    def set_up(self):
+        # ui_file_path = "/home/rapa/yummy/pipeline/scripts/loader/main_window.ui"
+        # ui_file = QFile(ui_file_path)
+        # ui_file.open(QFile.ReadOnly)
+        # loader = QUiLoader()
+        # self.ui = loader.load(ui_file,self)
+        from pipeline.scripts.loader.loader_ui.main_window_v002_ui import Ui_Form
+        self.ui = Ui_Form()
+        self.ui.setupUi(self)
 
-info = {"project" : "Marvelous" , "name" : "su","rank":"Artist"}
+info = {"project" : "YUMMIE" , "name" : "UICHUL SHIN","rank":"Artist","resolution" : "1920 X 1080"}
 
 if __name__ == "__main__":
     app = QApplication()
