@@ -107,10 +107,10 @@ class Publish(QWidget):
         nk_file_path = nuke.scriptName()                # full_path
         dev_file_path = nk_file_path.split("work")[0]   # dev_dir path
         self.exr_folder_path = f"{dev_file_path}source/exr/"
-        # if os.path.isdir(exr_file_path):
-        #     pass
-        # else:
-        #     os.makedirs(exr_file_path)
+        if os.path.isdir(exr_file_path):
+            pass
+        else:
+            os.makedirs(exr_file_path)
 
         self.exr_file_listwidget = self.ui.toolBox.findChild(QListWidget, "exr_file_listwidget")
         if self.exr_file_listwidget:
@@ -163,12 +163,12 @@ class Publish(QWidget):
     def add_item_tablewidget_basket(self):
 
         ### nk item ###
-        nk_items = self.nk_file_listwidget.selectedItems()
-        for nk_item in nk_items:
-            nk_file_name = QTableWidgetItem()
-            item_name = nk_item.text()
-            nk_file_name.setText(item_name)
-            self.ui.tableWidget_basket.setItem(0, 0, nk_file_name)
+        nk_selected_files = self.nk_file_listwidget.selectedItems()
+        for file in nk_selected_files:
+            nk_item = QTableWidgetItem()
+            exr_selected_file = file.text()
+            nk_item.setText(exr_selected_file)
+            self.ui.tableWidget_basket.setItem(0, 0, nk_item)
 
             nk_info_dict = self._get_nk_validation_info()
             nk_info_text = "\n".join(f"{key} : {value}" for key, value in nk_info_dict.items())
@@ -179,10 +179,10 @@ class Publish(QWidget):
         ### exr item ###
         exr_selected_folders = self.exr_file_listwidget.selectedItems()
         for folder in exr_selected_folders:
-            item = QTableWidgetItem()
+            exr_item = QTableWidgetItem()
             exr_selected_folder = folder.text()
-            item.setText(exr_selected_folder)
-            self.ui.tableWidget_basket.setItem(1, 0, item)
+            exr_item.setText(exr_selected_folder)
+            self.ui.tableWidget_basket.setItem(1, 0, exr_item)
 
             exr_file_path = f"{self.exr_folder_path}{exr_selected_folder}"
             exr_files = os.listdir(exr_file_path)
@@ -197,13 +197,13 @@ class Publish(QWidget):
 
         ### mov item ###
         mov_selected_files = self.mov_file_listwidget.selectedItems()
-        for mov_selected_file in mov_selected_files:
-            item = QTableWidgetItem()
-            item_name = mov_selected_file.text()
-            item.setText(item_name)
-            self.ui.tableWidget_basket.setItem(2, 0, item)
+        for file in mov_selected_files:
+            mov_item = QTableWidgetItem()
+            mov_selected_file = file.text()
+            mov_item.setText(mov_selected_file)
+            self.ui.tableWidget_basket.setItem(2, 0, mov_item)
 
-            self.mov_full_path = f"{self.mov_file_path}{item_name}"
+            self.mov_full_path = f"{self.mov_file_path}{mov_selected_file}"
 
             mov_validation_info_dict = self._get_exr_and_mov_validation_info(self.mov_full_path)
             mov_info_item = "\n".join(f"{key} : {value}" for key, value in mov_validation_info_dict.items())
@@ -259,6 +259,8 @@ class Publish(QWidget):
             }
             # print(file_validation_info_dict)
             return file_validation_info_dict
+
+#==================================================================
 
     def display_thumbnail(self):
 
