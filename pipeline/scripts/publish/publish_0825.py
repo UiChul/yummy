@@ -1,3 +1,12 @@
+### nk info 중 path 이상하게나옴 ;; 수정해야함
+
+### 0826 : version/publish upload
+### 0827 : render
+
+
+
+
+
 try:
     from PySide6.QtWidgets import QApplication, QWidget, QTableWidgetItem, QListWidgetItem, QListWidget, QHBoxLayout, QVBoxLayout
     from PySide6.QtUiTools import QUiLoader
@@ -10,10 +19,11 @@ except:
     from PySide2.QtCore import QFile
     from PySide2.QtGui import  Qt, QPixmap
 
-import re
 import os
-import ffmpeg
+import re
 import nuke
+import ffmpeg
+import functools
 
 class Publish(QWidget):
 
@@ -29,7 +39,6 @@ class Publish(QWidget):
         ui_file.close()
 
         # Signal
-        self.ui.pushButton_add_to_basket.clicked.connect(self.add_item_tablewidget_basket)
 
         self.make_toolbox()
         self.setup_top_bar()
@@ -38,7 +47,14 @@ class Publish(QWidget):
         self.setup_mov_file_list()
 
         self.setup_tablewidget_basket()
-        self.add_item_tablewidget_basket()
+        # self.add_item_tablewidget_basket()
+        nk_path = self.add_item_tablewidget_basket()
+        print(nk_path)
+
+        self.ui.pushButton_add_to_basket.clicked.connect(self.add_item_tablewidget_basket)
+        self.ui.pushButton_version.clicked.connect(functools.partial(self.increase_version_and_save_file, nk_path))
+
+        # self.increase_version("C:/Users/LEE JIYEON/Desktop/YUMMY/project/Marvelous/seq/OPN/OPN_0010/cmp/dev/work/test0825_v001.nknc")
 
     def make_toolbox(self):
         
@@ -89,28 +105,30 @@ class Publish(QWidget):
 
     def setup_nk_file_list(self):
 
-        current_file_path = nuke.scriptName()                 # full_path
-        nk_file_name = os.path.basename(current_file_path)    # export file_name from full_path
+        self.current_file_path = nuke.scriptName()
+        nk_work_folder_path = os.path.dirname(self.current_file_path)
         self.nk_file_listwidget = self.ui.toolBox.findChild(QListWidget, "nk_file_listwidget")
-        
         if self.nk_file_listwidget:
-            nk_item = QListWidgetItem(nk_file_name)
-            nk_item.setFlags(nk_item.flags() | Qt.ItemIsUserCheckable)
-            nk_item.setCheckState(Qt.Unchecked)
-            self.nk_file_listwidget.addItem(nk_item)
+            nk_files = os.listdir(nk_work_folder_path)
+            for nk_file in nk_files:
+                nk_item = QListWidgetItem()
+                nk_item.setText(nk_file)
+                nk_item.setFlags(nk_item.flags() | Qt.ItemIsUserCheckable)
+                nk_item.setCheckState(Qt.Unchecked)
+                self.nk_file_listwidget.addItem(nk_item)
 
         # Signal
         self.nk_file_listwidget.itemClicked.connect(self._handle_checkbox_state)
-
+    
     def setup_exr_file_list(self):
         
-        nk_file_path = nuke.scriptName()                # full_path
-        dev_file_path = nk_file_path.split("work")[0]   # dev_dir path
+        # self.current_file_path = nuke.scriptName()
+        dev_file_path = self.current_file_path.split("work")[0]   # dev_dir path
         self.exr_folder_path = f"{dev_file_path}source/exr/"
-        if os.path.isdir(exr_file_path):
-            pass
-        else:
-            os.makedirs(exr_file_path)
+        # if os.path.isdir(self.exr_folder_path):
+        #     pass
+        # else:
+        #     os.makedirs(self.exr_folder_path)
 
         self.exr_file_listwidget = self.ui.toolBox.findChild(QListWidget, "exr_file_listwidget")
         if self.exr_file_listwidget:
@@ -128,15 +146,15 @@ class Publish(QWidget):
 
     def setup_mov_file_list(self):
 
-        nk_file_path = nuke.scriptName()                # nk_full_path
-        dev_file_path = nk_file_path.split("work")[0]   # dev_dir path
-        self.mov_file_path = f"{dev_file_path}source/mov/"
-        if not os.path.isdir(self.mov_file_path):
-            os.makedirs(self.mov_file_path)
+        # self.current_file_path = nuke.scriptName()
+        dev_file_path = self.current_file_path.split("work")[0]   # dev_dir path
+        self.mov_f_path = f"{dev_file_path}source/mov/"
+        if not os.path.isdir(self.mov_f_path):
+            os.makedirs(self.mov_f_path)
 
         self.mov_file_listwidget = self.ui.toolBox.findChild(QListWidget, "mov_file_listwidget")
         if self.mov_file_listwidget:
-            mov_file_names = os.listdir(self.mov_file_path)
+            mov_file_names = os.listdir(self.mov_f_path)
             for mov_file_name in mov_file_names:
                 mov_item = QListWidgetItem(mov_file_name)
                 mov_item.setFlags(mov_item.flags() | Qt.ItemIsUserCheckable)
@@ -158,23 +176,33 @@ class Publish(QWidget):
     def setup_tablewidget_basket(self):
 
         self.ui.tableWidget_basket.setHorizontalHeaderLabels(["Publish File", "File Info"])
-        self.ui.tableWidget_basket.setVerticalHeaderLabels(["nk", "mov", "exr"])
+        self.ui.tableWidget_basket.setVerticalHeaderLabels(["nk", "exr", "mov"])
+
+        row_count = self.ui.tableWidget_basket.rowCount()
+        height = 85
+        for row in range(row_count):
+            self.ui.tableWidget_basket.setRowHeight(row, height)
 
     def add_item_tablewidget_basket(self):
 
         ### nk item ###
         nk_selected_files = self.nk_file_listwidget.selectedItems()
+        nk_new_path = ""
         for file in nk_selected_files:
             nk_item = QTableWidgetItem()
-            exr_selected_file = file.text()
-            nk_item.setText(exr_selected_file)
+            nk_selected_file = file.text()
+            nk_item.setText(nk_selected_file)
             self.ui.tableWidget_basket.setItem(0, 0, nk_item)
+
+            nk_new_path = f"{os.path.dirname(self.current_file_path)}/{nk_selected_file}"
+            print(nk_new_path)
 
             nk_info_dict = self._get_nk_validation_info()
             nk_info_text = "\n".join(f"{key} : {value}" for key, value in nk_info_dict.items())
             nk_validation_info = QTableWidgetItem(nk_info_text)
             nk_validation_info.setTextAlignment(Qt.AlignLeft | Qt.AlignTop) # 왼쪽 정렬, 위쪽 정렬
             self.ui.tableWidget_basket.setItem(0, 1, nk_validation_info)
+
 
         ### exr item ###
         exr_selected_folders = self.exr_file_listwidget.selectedItems()
@@ -203,13 +231,16 @@ class Publish(QWidget):
             mov_item.setText(mov_selected_file)
             self.ui.tableWidget_basket.setItem(2, 0, mov_item)
 
-            self.mov_full_path = f"{self.mov_file_path}{mov_selected_file}"
-
-            mov_validation_info_dict = self._get_exr_and_mov_validation_info(self.mov_full_path)
+            mov_new_path = f"{self.mov_f_path}{mov_selected_file}"
+        
+            mov_validation_info_dict = self._get_exr_and_mov_validation_info(mov_new_path)
             mov_info_item = "\n".join(f"{key} : {value}" for key, value in mov_validation_info_dict.items())
             mov_validation_info = QTableWidgetItem(mov_info_item)
             mov_validation_info.setTextAlignment(Qt.AlignLeft | Qt.AlignTop) # 왼쪽 정렬, 위쪽 정렬
             self.ui.tableWidget_basket.setItem(2, 1, mov_validation_info)
+
+        print(nk_new_path)
+        return nk_new_path
 
     def _get_nk_validation_info(self):
 
@@ -266,8 +297,8 @@ class Publish(QWidget):
 
         self.ui.label_thumbnail.clear()
 
-        current_file_path = nuke.scriptName()
-        nk_file_name = os.path.basename(current_file_path)
+        self.current_file_path = nuke.scriptName()
+        nk_file_name = os.path.basename(self.current_file_path)
         png_file_name = nk_file_name.split(".")[0]
 
         image_path = f"C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/{png_file_name}.png"
@@ -305,7 +336,34 @@ class Publish(QWidget):
         # clean up
         nuke.delete(write_node)
         nuke.delete(reformat_node)
-        
+
+#==================================================================
+
+    def increase_version_and_save_file(self, file_path):
+        """
+        파일 경로 받아서 버전업시키고 save하는 함수
+        """
+        base, ext = os.path.splitext(file_path)
+        version_pattern = re.compile("v\d{3}$")
+
+        # 현재 버전 번호 추출
+        match = version_pattern.search(base)
+        if match:
+            current_version = match.group(0)
+            if current_version:
+                # 현재 버전 번호가 존재하면 버전 번호를 증가
+                version_number = int(current_version[1:]) + 1   # 버전 1씩 증가
+                new_version = f'v{version_number:03}'   # 버전 세 자리로 포맷팅
+            else:
+                # 버전 번호가 없으면 v001로 시작
+                version_number = "v001"
+            new_base = version_pattern.sub(new_version, base)
+            new_file_path = f"{new_base}{ext}"
+
+            nuke.scriptSaveAs(new_file_path)
+            print(f"version_up_file이 저장되었습니다")
+
+
 if __name__ == "__main__":
     app = QApplication()
     win = Publish()
