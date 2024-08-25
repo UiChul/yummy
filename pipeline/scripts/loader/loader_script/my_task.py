@@ -48,8 +48,11 @@ class My_task(QWidget):
         img_path = temp.split("_")
 
         image_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/exr/{temp}/{temp}.1001.exr"
-        png_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{temp}.1001.png"
-        print(png_path)
+        
+        if not os.path.isdir(f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/"):
+            os.makedirs(f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/")
+        
+        png_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/{temp}.1001.png"
         
         nuke_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/work/{file_name}"
         
@@ -159,7 +162,7 @@ class My_task(QWidget):
         self.ui.setupUi(self)
         self.table = self.ui.tableWidget_recent_files
 
-info = {"project" : "YUMMIE" , "name" : "UICHUL SHIN","rank":"Artist","resolution" : "1920 X 1080"}
+info = {"project" : "YUMMIE" , "name" : "지연 이","rank":"Artist","resolution" : "1920 X 1080"}
 if __name__ == "__main__":
     app = QApplication()
     my = My_task(info)

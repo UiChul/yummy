@@ -42,73 +42,105 @@
             "version_code": "box_v001",
             "entity_name": "man",
             "version_type": "abc",
-            "created_by": "지연 이",
-            "updated_by": "hyogi lee",
-            "updated_at": "2024-08-23 18:01:53",
-            "description": "testing"
+            "description": "testing",
+            "sg_status": null,
+            "artist": "지연 이"
         },
         {
             "version_code": "lamp_mod_v001",
             "entity_name": "man",
             "version_type": null,
-            "created_by": "지연 이",
-            "updated_by": "지연 이",
-            "updated_at": "2024-08-20 13:48:19",
-            "description": "testing"
+            "description": "testing",
+            "sg_status": null,
+            "artist": "지연 이"
         },
         {
             "version_code": "PKG_030_mm_v001",
             "entity_name": "PKG_030",
             "version_type": "mov",
-            "created_by": "지연 이",
-            "updated_by": "UICHUL SHIN",
-            "updated_at": "2024-08-24 14:18:02",
-            "description": "test"
+            "description": "test",
+            "sg_status": "wip",
+            "artist": "지연 이"
         },
         {
             "version_code": "PKG_030_mm_v002",
             "entity_name": "PKG_030",
             "version_type": null,
-            "created_by": "지연 이",
-            "updated_by": "UICHUL SHIN",
-            "updated_at": "2024-08-24 14:18:07",
-            "description": "test"
+            "description": "test",
+            "sg_status": "wip",
+            "artist": "지연 이"
         },
         {
             "version_code": "PKG_030_mm_v003",
             "entity_name": "PKG_030",
             "version_type": null,
-            "created_by": "지연 이",
-            "updated_by": "UICHUL SHIN",
-            "updated_at": "2024-08-24 14:18:10",
-            "description": "test"
+            "description": "test",
+            "sg_status": "pub",
+            "artist": "지연 이"
         },
         {
-            "version_code": "INS_010_lgt_v001",
-            "entity_name": "INS_010",
+            "version_code": "BRK_010_lgt_v001",
+            "entity_name": "BRK_010",
             "version_type": null,
-            "created_by": "UICHUL SHIN",
-            "updated_by": "UICHUL SHIN",
-            "updated_at": "2024-08-24 14:18:15",
-            "description": "TEST"
+            "description": "DEV",
+            "sg_status": "wip",
+            "artist": "UICHUL SHIN"
         },
         {
-            "version_code": "INS_010_lgt_v002",
-            "entity_name": "INS_010",
+            "version_code": "BRK_020_lgt_v001",
+            "entity_name": "BRK_020",
             "version_type": null,
-            "created_by": "UICHUL SHIN",
-            "updated_by": "UICHUL SHIN",
-            "updated_at": "2024-08-24 14:18:19",
-            "description": "Test v002"
+            "description": "dev",
+            "sg_status": "wip",
+            "artist": "UICHUL SHIN"
         },
         {
-            "version_code": "INS_010_lgt_v003",
+            "version_code": "FLB_010_lgt_v001",
+            "entity_name": "FLB_010",
+            "version_type": null,
+            "description": null,
+            "sg_status": "pub",
+            "artist": "UICHUL SHIN"
+        },
+        {
+            "version_code": "FLB_020_lgt_v001",
+            "entity_name": "FLB_020",
+            "version_type": null,
+            "description": null,
+            "sg_status": "wip",
+            "artist": "UICHUL SHIN"
+        },
+        {
+            "version_code": "PKG_010_mm_v001",
+            "entity_name": "PKG_010",
+            "version_type": null,
+            "description": null,
+            "sg_status": "wip",
+            "artist": "지연 이"
+        },
+        {
+            "version_code": "PKG_020_mm_v001",
+            "entity_name": "PKG_020",
+            "version_type": null,
+            "description": null,
+            "sg_status": "wip",
+            "artist": "지연 이"
+        },
+        {
+            "version_code": "INS_010_mm_v001",
             "entity_name": "INS_010",
             "version_type": null,
-            "created_by": "UICHUL SHIN",
-            "updated_by": "UICHUL SHIN",
-            "updated_at": "2024-08-24 14:18:25",
-            "description": "Test v003"
+            "description": null,
+            "sg_status": "wip",
+            "artist": "지연 이"
+        },
+        {
+            "version_code": "INS_020_mm_v001",
+            "entity_name": "INS_020",
+            "version_type": null,
+            "description": null,
+            "sg_status": "pub",
+            "artist": "지연 이"
         }
     ]
 }
