@@ -8,19 +8,34 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFrame,
-    QGridLayout, QGroupBox, QHBoxLayout, QHeaderView,
-    QLabel, QLineEdit, QListView, QListWidget,
-    QListWidgetItem, QPlainTextEdit, QPushButton, QSizePolicy,
-    QTabWidget, QTableWidget, QTableWidgetItem, QToolBox,
-    QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
+try:
+    from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+        QMetaObject, QObject, QPoint, QRect,
+        QSize, QTime, QUrl, Qt)
+    from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+        QFont, QFontDatabase, QGradient, QIcon,
+        QImage, QKeySequence, QLinearGradient, QPainter,
+        QPalette, QPixmap, QRadialGradient, QTransform)
+    from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
+        QGroupBox, QHBoxLayout, QHeaderView, QLabel,
+        QLineEdit, QListView, QListWidget, QListWidgetItem,
+        QPlainTextEdit, QPushButton, QSizePolicy, QTabWidget,
+        QTableWidget, QTableWidgetItem, QToolBox, QTreeWidget,
+        QTreeWidgetItem, QVBoxLayout, QWidget, QAbstractItemView)
+except:
+    from PySide2.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+        QMetaObject, QObject, QPoint, QRect,
+        QSize, QTime, QUrl, Qt)
+    from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+        QFont, QFontDatabase, QGradient, QIcon,
+        QImage, QKeySequence, QLinearGradient, QPainter,
+        QPalette, QPixmap, QRadialGradient, QTransform)
+    from PySide2.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
+        QGroupBox, QHBoxLayout, QHeaderView, QLabel,
+        QLineEdit, QListView, QListWidget, QListWidgetItem,
+        QPlainTextEdit, QPushButton, QSizePolicy, QTabWidget,
+        QTableWidget, QTableWidgetItem, QToolBox, QTreeWidget,
+        QTreeWidgetItem, QVBoxLayout, QWidget, QAbstractItemView)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -623,26 +638,38 @@ class Ui_Form(object):
         self.toolBox_asset_task.setObjectName(u"toolBox_asset_task")
         self.toolBox_asset_task.setGeometry(QRect(10, 57, 791, 591))
         self.toolBox_asset_task.setFont(font)
-        self.page_5 = QWidget()
-        self.page_5.setObjectName(u"page_5")
-        self.page_5.setGeometry(QRect(0, 0, 791, 525))
-        self.listWidget_mdl_cache_files = QTableWidget(self.page_5)
-        self.listWidget_mdl_cache_files.setObjectName(u"listWidget_mdl_cache_files")
-        self.listWidget_mdl_cache_files.setGeometry(QRect(230, 0, 561, 525))
-        self.listWidget_mdl_cache_name = QListWidget(self.page_5)
-        self.listWidget_mdl_cache_name.setObjectName(u"listWidget_mdl_cache_name")
-        self.listWidget_mdl_cache_name.setGeometry(QRect(0, 0, 231, 525))
-        self.toolBox_asset_task.addItem(self.page_5, u"MDL")
-        self.page_6 = QWidget()
-        self.page_6.setObjectName(u"page_6")
-        self.page_6.setGeometry(QRect(0, 0, 791, 525))
-        self.listWidget_ani_cache_name = QListWidget(self.page_6)
-        self.listWidget_ani_cache_name.setObjectName(u"listWidget_ani_cache_name")
-        self.listWidget_ani_cache_name.setGeometry(QRect(0, 0, 231, 525))
-        self.listWidget_ani_cache_files = QTableWidget(self.page_6)
-        self.listWidget_ani_cache_files.setObjectName(u"listWidget_ani_cache_files")
-        self.listWidget_ani_cache_files.setGeometry(QRect(230, 0, 561, 525))
-        self.toolBox_asset_task.addItem(self.page_6, u"ANI")
+        self.page_mod = QWidget()
+        self.page_mod.setObjectName(u"page_mod")
+        self.page_mod.setGeometry(QRect(0, 0, 791, 492))
+        self.listWidget_mod = QListWidget(self.page_mod)
+        self.listWidget_mod.setObjectName(u"listWidget_mod")
+        self.listWidget_mod.setGeometry(QRect(0, 0, 231, 492))
+        self.listWidget_mod.setFont(font3)
+        self.tableWidget_mod = QTableWidget(self.page_mod)
+        self.tableWidget_mod.setObjectName(u"tableWidget_mod")
+        self.tableWidget_mod.setGeometry(QRect(240, 0, 551, 492))
+        self.toolBox_asset_task.addItem(self.page_mod, u"MOD")
+        self.page_rig = QWidget()
+        self.page_rig.setObjectName(u"page_rig")
+        self.page_rig.setGeometry(QRect(0, 0, 791, 492))
+        self.listWidget_rig = QListWidget(self.page_rig)
+        self.listWidget_rig.setObjectName(u"listWidget_rig")
+        self.listWidget_rig.setGeometry(QRect(0, 0, 231, 492))
+        self.listWidget_rig.setFont(font3)
+        self.tableWidget_rig = QTableWidget(self.page_rig)
+        self.tableWidget_rig.setObjectName(u"tableWidget_rig")
+        self.tableWidget_rig.setGeometry(QRect(240, 0, 551, 492))
+        self.toolBox_asset_task.addItem(self.page_rig, u"RIG")
+        self.page_template = QWidget()
+        self.page_template.setObjectName(u"page_template")
+        self.listWidget_temp = QListWidget(self.page_template)
+        self.listWidget_temp.setObjectName(u"listWidget_temp")
+        self.listWidget_temp.setGeometry(QRect(0, 0, 231, 492))
+        self.listWidget_temp.setFont(font3)
+        self.tableWidget_temp = QTableWidget(self.page_template)
+        self.tableWidget_temp.setObjectName(u"tableWidget_temp")
+        self.tableWidget_temp.setGeometry(QRect(240, 0, 551, 492))
+        self.toolBox_asset_task.addItem(self.page_template, u"TEMPLATE")
         self.horizontalLayoutWidget_3 = QWidget(self.tab_asset)
         self.horizontalLayoutWidget_3.setObjectName(u"horizontalLayoutWidget_3")
         self.horizontalLayoutWidget_3.setGeometry(QRect(10, 0, 291, 61))
@@ -662,6 +689,7 @@ class Ui_Form(object):
 
         self.comboBox_asset_type = QComboBox(self.horizontalLayoutWidget_3)
         self.comboBox_asset_type.setObjectName(u"comboBox_asset_type")
+        self.comboBox_asset_type.setFont(font3)
 
         self.horizontalLayout_3.addWidget(self.comboBox_asset_type)
 
@@ -1135,8 +1163,8 @@ class Ui_Form(object):
         self.tabWidget_shot_task.setCurrentIndex(0)
         self.tabWidget_shot_status.setCurrentIndex(0)
         self.tableWidget_mytask_status.setCurrentIndex(0)
-        self.tabWidget_template.setCurrentIndex(1)
-        self.toolBox_asset_task.setCurrentIndex(0)
+        self.tabWidget_template.setCurrentIndex(0)
+        self.toolBox_asset_task.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(Form)
@@ -1219,8 +1247,9 @@ class Ui_Form(object):
         self.label_48.setText(QCoreApplication.translate("Form", u"Pub date", None))
         self.label_asset_version.setText("")
         self.label_asset_pubdate.setText("")
-        self.toolBox_asset_task.setItemText(self.toolBox_asset_task.indexOf(self.page_5), QCoreApplication.translate("Form", u"MDL", None))
-        self.toolBox_asset_task.setItemText(self.toolBox_asset_task.indexOf(self.page_6), QCoreApplication.translate("Form", u"ANI", None))
+        self.toolBox_asset_task.setItemText(self.toolBox_asset_task.indexOf(self.page_mod), QCoreApplication.translate("Form", u"MOD", None))
+        self.toolBox_asset_task.setItemText(self.toolBox_asset_task.indexOf(self.page_rig), QCoreApplication.translate("Form", u"RIG", None))
+        self.toolBox_asset_task.setItemText(self.toolBox_asset_task.indexOf(self.page_template), QCoreApplication.translate("Form", u"TEMPLATE", None))
         self.label_4.setText(QCoreApplication.translate("Form", u" Asset type", None))
         self.tabWidget_template.setTabText(self.tabWidget_template.indexOf(self.tab_asset), QCoreApplication.translate("Form", u"ASSET (cache)", None))
         self.groupBox_asset_file_info_2.setTitle(QCoreApplication.translate("Form", u"Clip information", None))

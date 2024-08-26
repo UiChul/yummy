@@ -1224,7 +1224,7 @@
          </font>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab_asset">
          <attribute name="title">
@@ -1624,70 +1624,110 @@
            </font>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
-          <widget class="QWidget" name="page_5">
+          <widget class="QWidget" name="page_mod">
            <property name="geometry">
             <rect>
              <x>0</x>
              <y>0</y>
              <width>791</width>
-             <height>525</height>
+             <height>492</height>
             </rect>
            </property>
            <attribute name="label">
-            <string>MDL</string>
+            <string>MOD</string>
            </attribute>
-           <widget class="QTableWidget" name="listWidget_mdl_cache_files">
-            <property name="geometry">
-             <rect>
-              <x>230</x>
-              <y>0</y>
-              <width>561</width>
-              <height>525</height>
-             </rect>
-            </property>
-           </widget>
-           <widget class="QListWidget" name="listWidget_mdl_cache_name">
+           <widget class="QListWidget" name="listWidget_mod">
             <property name="geometry">
              <rect>
               <x>0</x>
               <y>0</y>
               <width>231</width>
-              <height>525</height>
+              <height>492</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <bold>false</bold>
+             </font>
+            </property>
+           </widget>
+           <widget class="QTableWidget" name="tableWidget_mod">
+            <property name="geometry">
+             <rect>
+              <x>240</x>
+              <y>0</y>
+              <width>551</width>
+              <height>492</height>
              </rect>
             </property>
            </widget>
           </widget>
-          <widget class="QWidget" name="page_6">
+          <widget class="QWidget" name="page_rig">
            <property name="geometry">
             <rect>
              <x>0</x>
              <y>0</y>
              <width>791</width>
-             <height>525</height>
+             <height>492</height>
             </rect>
            </property>
            <attribute name="label">
-            <string>ANI</string>
+            <string>RIG</string>
            </attribute>
-           <widget class="QListWidget" name="listWidget_ani_cache_name">
+           <widget class="QListWidget" name="listWidget_rig">
             <property name="geometry">
              <rect>
               <x>0</x>
               <y>0</y>
               <width>231</width>
-              <height>525</height>
+              <height>492</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <bold>false</bold>
+             </font>
+            </property>
+           </widget>
+           <widget class="QTableWidget" name="tableWidget_rig">
+            <property name="geometry">
+             <rect>
+              <x>240</x>
+              <y>0</y>
+              <width>551</width>
+              <height>492</height>
              </rect>
             </property>
            </widget>
-           <widget class="QTableWidget" name="listWidget_ani_cache_files">
+          </widget>
+          <widget class="QWidget" name="page_template">
+           <attribute name="label">
+            <string>TEMPLATE</string>
+           </attribute>
+           <widget class="QListWidget" name="listWidget_temp">
             <property name="geometry">
              <rect>
-              <x>230</x>
+              <x>0</x>
               <y>0</y>
-              <width>561</width>
-              <height>525</height>
+              <width>231</width>
+              <height>492</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <bold>false</bold>
+             </font>
+            </property>
+           </widget>
+           <widget class="QTableWidget" name="tableWidget_temp">
+            <property name="geometry">
+             <rect>
+              <x>240</x>
+              <y>0</y>
+              <width>551</width>
+              <height>492</height>
              </rect>
             </property>
            </widget>
@@ -1722,7 +1762,13 @@
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="comboBox_asset_type"/>
+            <widget class="QComboBox" name="comboBox_asset_type">
+             <property name="font">
+              <font>
+               <bold>false</bold>
+              </font>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>

@@ -20,7 +20,10 @@ except:
 
     import nuke
 
+    from nukescripts import addDropDataCallback
+
 import os, sys
+import json
 
 import ffmpeg
 import ffmpeg_change_codec
@@ -37,33 +40,240 @@ class LibraryLoader(QWidget):
         
         
         self.clip_table = self.ui.tableWidget_clip_files
+
         
         self.set_user_information()
-        # self.set_asset_treeWidget()
         self.set_clip_files_text_table()
 
-
+ 
         # comboBox 일단 비활성화 해놓음
         self.ui.comboBox_seq.setEnabled(False)
+
+        self.set_asset_listWidget("Character")
+        self.set_asset_type_comboBox()
+
+
         
         #Signal
-        self.clip_table.itemClicked.connect(self.set_clip_files_text_table)
-        self.clip_table.itemClicked.connect(self.import_clip_file_to_nuke)
-        self.ui.pushButton_clip_file_nuke.clicked.connect(self.open_file_window)
+        self.ui.comboBox_asset_type.currentTextChanged.connect(self.set_asset_listWidget)
+        # self.clip_table.itemClicked.connect(self.set_clip_files_text_table)
+        # self.clip_table.itemClicked.connect(self.import_clip_file_to_nuke)
+        # self.ui.pushButton_clip_file_nuke.clicked.connect(self.open_file_window)
+        self.ui.listWidget_mod.itemClicked.connect(self.set_asset_tableWidget)
+        self.ui.listWidget_rig.itemClicked.connect(self.set_asset_tableWidget)
+        # self.ui.listWidget_temp.itemClicked.connect(self.set_asset_tableWidget)
+
         # self.clip_table.itemClicked.connect(self.open_file_window)
 
         # self.clip_table.setAcceptDrops(True)
         # self.clip_table.setDragEnabled(True) 
         # self.clip_table.setDropIndicatorShown(True)  
 
+        # file_path = "/home/rapa/YUMMY/project/Marvelous/asset/Prop/rig/pub/turntable/cache/turntable.abc"
+
+        # read_geo_node =  nuke.createNode('ReadGeo')
+        # read_geo_node['file'].setValue(file_path)
+
+        
     
     """
     asset(cache)
     """
-    def set_asset_treeWidget(self):
-        pass
-        # self.asset_tree.clear()
-        # file_path = f"/home/rapa/YUMMY/project/{self.project}/asset"
+    # def set_asset_type_comboBox (self):
+    #     self.ui.comboBox_asset_type.clear()
+    #     asset_type_path = f"/home/rapa/YUMMY/project/{self.project}/asset"
+    #     asset_type_list = os.listdir(asset_type_path)
+    #     self.ui.comboBox_asset_type.addItems(asset_type_list)
+
+    #     return asset_type_path
+
+    def open_json_file (self):
+        json_file_path = '/home/rapa/YUMMY/pipeline/json/open_loader_datas.json'
+        with open(json_file_path,encoding='UTF-8') as file:
+            datas = json.load(file)
+
+            json_assets = datas['assets_with_versions']
+
+        return json_assets
+    
+    def set_asset_type_comboBox(self):
+        self.ui.comboBox_asset_type.clear()
+        
+        jsons = self.open_json_file()
+        # print(jsons)
+        result = []
+        for json in jsons:
+            asset_type = json["asset_info"]["asset_type"]
+            result.append(asset_type)
+
+        asset_type_list = list(set(result))
+        asset_type_list.sort()
+
+        self.ui.comboBox_asset_type.addItems(asset_type_list)
+
+        # print(asset_type_list)
+        return asset_type_list
+    
+            
+
+    
+    def set_asset_listWidget(self,clicked_asset_type = ""):
+
+        asset_type = self.ui.comboBox_asset_type.currentText()
+        self.ui.listWidget_mod.clear()
+        self.ui.listWidget_rig.clear()
+
+
+
+        # print (clicked_asset_type)
+
+        jsons = self.open_json_file()
+        for json in jsons:
+            asset_name = json["asset_info"]["asset_name"]
+            asset_path = json["asset_info"]["asset_path"]
+            self.task_step = None
+            
+            task_details_dict = json["asset_info"]["task_details"]
+
+            task_step = []
+
+            if task_details_dict:
+                for task_details in task_details_dict:
+                    task_step.append(task_details["task_step"])
+                # print ("step =" ,asset_name,task_step)
+
+            if clicked_asset_type == json["asset_info"]["asset_type"]:
+                if "mod" in task_step:
+                    # print ("asset=",asset_name)
+                    self.ui.listWidget_mod.addItem(asset_name)
+                    mod_full_path = asset_path + "/" + asset_type + "/" + "mod" + "/pub/" 
+
+                if "rig" in task_step:
+                    # print(f"Adding to Rig List: {asset_name}")
+                    self.ui.listWidget_rig.addItem(asset_name)
+                    rig_full_path = asset_path + "/" + asset_type + "/" + "rig" + "/pub/" 
+
+                return mod_full_path, rig_full_path
+
+
+
+
+    def set_asset_tableWidget(self, item):
+        """
+        click 한 asset 의 파일 path , json 에서 땡겨와서, tableWidget에 세팅
+        """
+
+        clicked_asset = item.text()
+        print (clicked_asset)
+
+
+        # jsons = self.open_json_file()
+
+        # for json in jsons:
+        #     asset_name = json["asset_info"]["asset_name"]   
+        #     asset_path = json["asset_info"]["asset_path"]
+        #     task_details_dict = json["asset_info"]["task_details"]
+            
+        #     task_step = []
+
+        #     if task_details_dict:
+        #         for task_details in task_details_dict:
+        #             task_step.append(task_details["task_step"])
+                    
+        #     if "mod" in task_step :
+        #         asset_full_path = asset_path + "/" + asset_type + "/" + "mod" + "/pub/" + clicked_asset
+
+        #     if "rig" in task_step :
+        #         asset_full_path = asset_path + "/" + asset_type + "/" + "rig" + "/pub/" + clicked_asset
+
+        # print (asset_full_path)
+
+            
+
+            # if clicked_asset == asset_name:
+            #     print (asset_path)
+
+
+        # jsons = self.open_json_file()
+        # asset_type_list = self.set_asset_type_comboBox()
+        # for asset_type in asset_type_list:
+        #     print (asset_type)
+
+        # # print (asset_path)
+
+        # asset_type_path = asset_path + "/" + asset_type + "/" + self.task_step + "/pub/" + asset
+        # print (asset_type_path) 
+        
+
+            
+    # def set_asset_listWidget(self,asset_name):
+    #     self.ui.listWidget_mod.clear()
+    #     self.ui.listWidget_rig.clear()
+    #     self.ui.listWidget_temp.clear()
+
+    #     json_file_path = '/home/rapa/YUMMY/pipeline/json/open_loader_datas.json'
+
+    #     with open(json_file_path,encoding='UTF-8') as file:
+    #         datas = json.load(file)
+
+    #         json_assets = datas['assets']
+
+    #         for json_asset_name in json_assets:
+
+    #             if json_asset_name['task_details'] :
+    #                 task_details_dict = json_asset_name['task_details'][0]
+    #                 # print (task_details_dict)
+                
+    #                 if 'task_step' in task_details_dict :
+    #                     task_step_value = task_details_dict['task_step']
+    #                     # print (task_step_value)
+    #             # print (json_asset_name["asset_type"])
+
+    #             asset_type_path = self.set_asset_type_comboBox()
+    #             asset_name = json_asset_name['asset_name']
+    #             asset_type = json_asset_name["asset_type"]
+    #             task_step = task_step_value
+
+    #             file_path = asset_type_path + "/" + asset_type + "/" + task_step + "/pub/" + asset_name 
+    #             print (file_path)
+
+            
+    #             if task_step == "mod" :
+    #                 self.ui.listWidget_mod.addItem(json_asset_name['asset_name'])
+
+    #             elif task_step == "rig" :
+    #                 self.ui.listWidget_rig.addItem(json_asset_name['asset_name'])
+
+    #             elif task_step == "N/A" :
+    #                 self.ui.listWidget_temp.addItem(json_asset_name['asset_name'])
+
+                    
+
+
+    # def set_asset_tableWidget(self,item):
+    #     asset = item.text()
+    #     asset_type_path = self.set_asset_type_comboBox()
+    #     asset_name = self.ui.comboBox_asset_type.currentText()
+    #     print (asset_name)
+
+    #     index = item.currentIndex()
+    #     print (index)
+
+    #     asset_path = asset_type_path + '/' + asset_name
+    #     print (asset_path)
+        # asset_list = os.listdir(asset)
+        # print (asset_list)
+
+        # self.ui.tableWidget_mod.setItem()
+
+
+
+        
+
+        
+        
+        
+
         # asset_list = os.listdir(file_path)
     
         # # Headerlabel setting
@@ -205,6 +415,11 @@ class LibraryLoader(QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 
+
+
+"""
+drag & drop
+"""
     # def startDrag(self, supportedActions):
     #     # 선택된 아이템 가져오기
     #     item = self.tableWidget.currentItem()
