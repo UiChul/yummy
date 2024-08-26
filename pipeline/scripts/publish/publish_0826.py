@@ -19,7 +19,8 @@ import os
 import re
 import nuke
 import ffmpeg
-import functools
+import shutil
+# import functools
 
 class Publish(QWidget):
 
@@ -46,9 +47,8 @@ class Publish(QWidget):
         # Signal
         self.ui.pushButton_add_to_basket.clicked.connect(self.add_item_tablewidget_basket)
         self.ui.pushButton_version.clicked.connect(self.increase_version_and_save_file)
+        # self.ui.pushButton_publish.clicked.connect(self.)
         # self.ui.pushButton_version.clicked.connect(functools.partial(self.increase_version_and_save_file, nk_path))
-
-        # self.increase_version("C:/Users/LEE JIYEON/Desktop/YUMMY/project/Marvelous/seq/OPN/OPN_0010/cmp/dev/work/test0825_v001.nknc")
 
     def make_toolbox(self):
         
@@ -327,61 +327,107 @@ class Publish(QWidget):
     #     nuke.delete(reformat_node)
 
 #==================================================================
-    def _make_version_new_path(self):
+    
+    def _make_version_path(self):
         table_items = self.ui.tableWidget_basket.selectedItems()
 
-        new_path = []
+        path = []
         for item in table_items:
             if item:
                 nk_item_text = self.ui.tableWidget_basket.item(0, 0).text()
-                nk_new_path = f"{os.path.dirname(self.current_file_path)}/{nk_item_text}"
+                nk_path = f"{os.path.dirname(self.current_file_path)}/{nk_item_text}"
                 
                 exr_item_text = self.ui.tableWidget_basket.item(1, 0).text()
-                exr_new_path = f"{self.exr_folder_path}{exr_item_text}"
+                exr_path = f"{self.exr_folder_path}{exr_item_text}"
                 
                 mov_item_text = self.ui.tableWidget_basket.item(2, 0).text()
-                mov_new_path = f"{self.mov_folder_path}{mov_item_text}"
+                mov_path = f"{self.mov_folder_path}{mov_item_text}"
                 
-                new_path.extend([nk_new_path, exr_new_path, mov_new_path])
             else:
                 print("아이템이 없습니다.")
+            
+        path.extend([nk_path, exr_path, mov_path])
 
-        return new_path
+        return path
     
-    # def _get_exr_version_up_folder(self):
-    #     os.listdir(self.exr_folder_path)
-
     def increase_version_and_save_file(self):
         """
         파일 경로 받아서 버전업시키고 save하는 함수
         """
-        new_paths = self._make_version_new_path()
+        paths = self._make_version_path()
 
-        for new_path in new_paths:
-            base, ext = os.path.splitext(new_path)
-            if ext in [".nknc", ".mov"]:
-                # 현재 버전 번호 추출
-                version_pattern = re.compile("v\d{3}$")
-                match = version_pattern.search(base)
-                if match:
-                    current_version = match.group(0)
-                    if current_version:
-                        # 현재 버전 번호가 존재하면 버전 번호를 증가
-                        version_number = int(current_version[1:]) + 1   # 버전 1씩 증가
-                        new_version = f'v{version_number:03}'   # 버전 세 자리로 포맷팅
-                    else:
-                        # 버전 번호가 없으면 v001로 시작
-                        version_number = "v001"
-                    # new_base = version_pattern.sub(new_version, base)
-                    new_base = f"{base}{new_version}"
-                    new_file_path = f"{new_base}{ext}"
+        for path in paths:
+            base, ext = os.path.splitext(path)
+            version_pattern = re.compile("v\d{3}")
+            match = version_pattern.search(base)
+            current_version = match.group(0)
+            new_number = int(current_version[1:]) + 1
+            new_version = f"v{new_number:03}"   # 현재 버전 번호가 존재하면 버전 번호를 증가
+            new_base = base.replace(current_version, new_version)
 
-                    nuke.scriptSaveAs(new_file_path)
-                    print(f"version_up_file이 저장되었습니다")
+            if ext == ".nknc":
+                new_file_path = f"{new_base}{ext}"
+                # print(new_file_path)
+                nuke.scriptSaveAs(new_file_path)
+                print("nk file이 version-up 되었습니다.")
+
+            elif ext == ".mov":
+                new_file_path = f"{new_base}{ext}"
+                # print(new_file_path)
+                shutil.copy2(base+ext, new_file_path)
+                print("mov file이 version-up 되었습니다.")
 
             else:
-                pass
+                new_folder_path = new_base
+                os.makedirs(new_folder_path)
+                # print(base)
+                exr_files = os.listdir(base)
+                # print(exr_files)
+                for exr_file in exr_files:
+                    current_path = f"{base}/{exr_file}"
+                    # print(current_path)
+                    file_path = f"{new_folder_path}/{exr_file}"
+                    # print(file_path)
+                    match = version_pattern.search(exr_file)
+                    exr_current_version = match.group(0)
+                    exr_new_number = int(exr_current_version[1:]) + 1
+                    exr_new_version = f"v{exr_new_number:03}"   # 현재 버전 번호가 존재하면 버전 번호를 증가
+                    exr_new_path = file_path.replace(exr_current_version, exr_new_version)
+                    # print(exr_new_path)
+                    shutil.copy2(current_path, exr_new_path)
 
+    def copy_file_to_pub(self):
+        nk_file
+        exr_file
+        mov_file
+        shutil.copy2()
+
+    #=========================================================
+    # def copy_selected_files_to_pub(self):
+    #     # Get selected items
+    #     selected_items = self.tableWidget.selectedItems()
+    #     if not selected_items:
+    #         print("No files selected.")
+    #         return
+
+    #     # Ask user for destination folder
+    #     destination_folder = QFileDialog.getExistingDirectory(self, "Select Destination Folder")
+    #     if not destination_folder:
+    #         print("No destination folder selected.")
+    #         return
+
+    #     for item in selected_items:
+    #         file_name = item.text()
+    #         source_path = os.path.join(os.getcwd(), file_name)  # Example source path, replace with actual path
+    #         destination_path = os.path.join(destination_folder, file_name)
+
+    #         # Copy file to destination
+    #         if os.path.exists(source_path):
+    #             shutil.copy(source_path, destination_path)
+    #             print(f"Copied {file_name} to {destination_folder}")
+    #         else:
+    #             print(f"Source file {source_path} does not exist.")
+    
 
 if __name__ == "__main__":
     app = QApplication()
