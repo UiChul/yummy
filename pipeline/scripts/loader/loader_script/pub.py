@@ -6,6 +6,9 @@ from functools import partial
 from pipeline.scripts.loader.loader_module.ffmpeg_module import change_to_png,find_resolution_frame
 from pipeline.scripts.loader.loader_module.find_time_size import File_data
 import os
+import json
+
+
 
 class Loader_pub(QWidget):
     def __init__(self,info):
@@ -18,22 +21,40 @@ class Loader_pub(QWidget):
         self.project = info["project"]
         self.name = info["name"]
         
+        self.find_pub_list()
         self.set_listwidget()
         self.set_vlc_mov()
         
         self.tree.itemClicked.connect(self.set_thumbnail)
         self.tree.itemDoubleClicked.connect(self.open_file)
-        
+    
+    
+    def find_pub_list(self):
+        with open("/home/rapa/yummy/pipeline/json/open_loader_datas.json","rt",encoding="utf-8") as r:
+            user_dic = json.load(r)
+            
+            pub_list = []
+            project_versions = user_dic["project_versions"]
+            for version in project_versions:
+                if version["sg_status_list"] == "pub":
+                    if version["version_code"][0].isupper():
+                        pub_list.append(version["version_code"])                
+            return pub_list
+            
+    
     ## 그럼 리스트 위젯으로 하고 일단 하드코딩으로 해결해야할듯
     def set_listwidget(self):
-    
-        parent_item = QTreeWidgetItem(self.tree)
-        parent_item.setText(0,"OPN_0010_ani_v003")
         
-        pub = ["OPN_0010_ani_v003.nknc","OPN_0010_ani_v003.mov","OPN_0010_ani_v003.exr"]
-        for i in pub:
-            item1 = QTreeWidgetItem(parent_item)
-            item1.setText(0,f"{i}")
+        pub_list = self.find_pub_list()
+        
+        for pub in pub_list:
+            parent_item = QTreeWidgetItem(self.tree)
+            parent_item.setText(0,pub)
+        
+            pub_child = [f"{pub}.nknc",f"{pub}.mov",f"{pub}.exr"]
+            for chlid in pub_child:
+                item1 = QTreeWidgetItem(parent_item)
+                item1.setText(0,chlid)
     
     def set_thumbnail(self,item,column):
         
@@ -45,9 +66,9 @@ class Loader_pub(QWidget):
             pub_name = pub_len[0]
             
         img_path = pub_name.split("_")
-        image_path = f"/home/rapa/YUMMY/project/Marvelous/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/exr/{pub_name}/{pub_name}.1001.exr"
-        png_path = f"/home/rapa/YUMMY/project/Marvelous/seq/{pub_name}.1001.png"
-        self.mov_path = f"/home/rapa/YUMMY/project/Marvelous/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/mov/{pub_name}.mov"
+        image_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/exr/{pub_name}/{pub_name}.1001.exr"
+        png_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{pub_name}.1001.png"
+        self.mov_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/mov/{pub_name}.mov"
         
         if not os.path.isfile(png_path):
             change_to_png(image_path,png_path)
@@ -71,7 +92,7 @@ class Loader_pub(QWidget):
             nuke_name, ext = os.path.splitext(pub_name)
             img_path = nuke_name.split("_")
             
-            open_path = f"/home/rapa/YUMMY/project/Marvelous/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/"
+            open_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/"
             w,h,frame = find_resolution_frame(open_path+"mov"+f"/{nuke_name}.mov")
             if ext == ".nknc":
                 nuke_path = open_path + f"work/{pub_name}"
@@ -103,9 +124,11 @@ class Loader_pub(QWidget):
         if self.ui.label_pub_thumbnail.mouseDoubleClickEvent:
                 self.ui.label_pub_thumbnail.mouseDoubleClickEvent = self.play_video
         
+    
     def play_video(self,event):
         cmd = f"vlc --repeat {self.mov_path}"
         os.system(cmd)
+    
     
     def open_file(self,item,column):
         pub_name =item.text(column)
@@ -115,9 +138,8 @@ class Loader_pub(QWidget):
             nuke_name, ext = os.path.splitext(pub_name)
             img_path = nuke_name.split("_")
             
-            open_path = f" /home/rapa/YUMMY/project/Marvelous/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/"
+            open_path = f" /home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/"
             
-            print(ext)
             if ext == ".nknc":
                 nuke_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc' + open_path + f"/work/{pub_name}"
                 os.system(nuke_path)

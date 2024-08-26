@@ -9,7 +9,6 @@ class Signinfo():
     
     def __init__(self,email):
         sg = self.connect_sg()
-
         user= self.get_user_by_email(sg, email)
 
         user_id = user.get("id")

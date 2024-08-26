@@ -34,6 +34,7 @@ class Mainloader(QWidget):
         self.set_user_information()
         self.input_project()
         self.set_comboBox_seq()
+        self.set_description_list()
         
         
         self.shot_treeWidget = self.ui.treeWidget
@@ -481,12 +482,26 @@ class Mainloader(QWidget):
             if not os.path.isfile(png_path):
                 change_to_png(image_path,png_path)
             
+
+            
             label_img = QLabel()
             pixmap = QPixmap(png_path)
             label_img.setPixmap(pixmap) 
             label_img.setAlignment(Qt.AlignCenter)
             label_img.setScaledContents(True)
             self.mov_table.setCellWidget(row,col,label_img)
+            
+            # mov_play_path = mov_files_path + mov
+            # video_widget = QVideoWidget()
+            # media_player = QMediaPlayer(video_widget)
+            # media_player.setSource(QUrl.fromLocalFile(mov_play_path))
+            # media_player.setVideoOutput(video_widget)
+            # video_layout = QVBoxLayout()
+            # video_layout.addWidget(video_widget)
+            # video_container = QWidget()
+            # video_container.setLayout(video_layout)
+            # self.mov_table.setCellWidget(0,col,video_container)
+            
 
             item = QTableWidgetItem()
             item.setText(mov)
@@ -546,6 +561,8 @@ class Mainloader(QWidget):
 
         file_name,file_type = os.path.splitext(selected_file)
         
+        desription = self.find_description_list(file_name)
+        
         if self.tab_name == "all":
             selected_file = self.get_all_tab_file_path(selected_file,"work")
         else:
@@ -560,6 +577,7 @@ class Mainloader(QWidget):
         self.ui.label_shot_resolution.setText(self.resolution)
         self.ui.label_shot_savedtime.setText(time)
         self.ui.label_shot_filesize.setText(size)
+        self.ui.plainTextEdit_shot_comment.setPlainText(desription)
         
     def set_work_file_information(self, item):
 
@@ -571,7 +589,8 @@ class Mainloader(QWidget):
         
         file_name, file_type = os.path.splitext(selected_file)
         
-        
+        desription = self.find_description_list(file_name)
+
         if self.tab_name == "all":
             selected_file = self.get_all_tab_file_path(file_name,"exr")
         else:
@@ -589,6 +608,8 @@ class Mainloader(QWidget):
         self.ui.label_shot_resolution.setText(self.resolution)
         self.ui.label_shot_savedtime.setText(time)
         self.ui.label_shot_filesize.setText(size)
+        self.ui.plainTextEdit_shot_comment.setPlainText(desription)
+        
         
     def set_exr_file_information(self, item):
           
@@ -599,6 +620,8 @@ class Mainloader(QWidget):
         
     def input_mov_information(self,selected_file):
         file_name,file_type = os.path.splitext(selected_file)
+        
+        desription = self.find_description_list(file_name)
         
         if self.tab_name == "all":
             selected_file = self.get_all_tab_file_path(selected_file,"mov")
@@ -615,6 +638,7 @@ class Mainloader(QWidget):
         self.ui.label_shot_resolution.setText(self.resolution)
         self.ui.label_shot_savedtime.setText(time)
         self.ui.label_shot_filesize.setText(size)
+        self.ui.plainTextEdit_shot_comment.setPlainText(desription)
         
     def set_mov_file_information(self, item):
         """
@@ -632,7 +656,7 @@ class Mainloader(QWidget):
         selected_file = item.text()
 
         file_name, file_type = os.path.splitext(selected_file)
-        
+         
         if file_type == ".nknc":
             self.input_work_information(selected_file)
         elif file_type == ".mov":
@@ -666,6 +690,7 @@ class Mainloader(QWidget):
         self.ui.label_shot_resolution.clear()
         self.ui.label_shot_savedtime.clear()
         self.ui.label_shot_filesize.clear()
+        self.ui.plainTextEdit_shot_comment.clear()
         
     def set_mov_files(self,item):
         """
@@ -717,6 +742,29 @@ class Mainloader(QWidget):
         nuke_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc ' + f"{self.nuke_file_path}"
         os.system(nuke_path)
 
+    def set_description_list(self):
+        with open("/home/rapa/yummy/pipeline/json/open_loader_datas.json","rt",encoding="utf-8") as r:
+            user_dic = json.load(r)
+        
+        self.description_list = []
+        
+        versions = user_dic["project_versions"]
+        for version in versions:
+            version_dic = {}
+            version_dic[version["version_code"]] = version["description"]
+            self.description_list.append(version_dic)  
+            
+        print(self.description_list)   
+    
+    def find_description_list(self,file_name):
+        for comment in self.description_list:
+            for shot_code , desription in comment.items():
+                if shot_code == file_name:
+                    print(desription)
+                    return desription
+            
+            
+                    
 
     def set_user_information(self):
     

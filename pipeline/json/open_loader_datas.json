@@ -1,160 +1,237 @@
 {
-    "assets": [
+    "assets_with_versions": [
         {
-            "asset_name": "box",
-            "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
-            "asset_task": "retopol",
-            "asset_assignees": "dami kim",
-            "asset_step": "mod"
+            "asset_info": {
+                "asset_name": "box",
+                "asset_type": "Prop",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
+                "task_details": [
+                    {
+                        "assignee_name": "다미 김",
+                        "task_content": "modeling",
+                        "task_step": "mod"
+                    },
+                    {
+                        "assignee_name": "다미 김",
+                        "task_content": "retopol",
+                        "task_step": "mod"
+                    }
+                ],
+                "linked_versions": [
+                    {
+                        "version_code": "box_v001",
+                        "sg_status_list": "pub",
+                        "description": "testing",
+                        "updated_at": "2024-08-26 14:28:18",
+                        "artist": "다미 김",
+                        "linked_asset": "box"
+                    },
+                    {
+                        "version_code": "box_v002",
+                        "sg_status_list": "pub",
+                        "description": "modified mesh ver",
+                        "updated_at": "2024-08-26 14:36:39",
+                        "artist": "다미 김",
+                        "linked_asset": "box"
+                    }
+                ]
+            }
         },
         {
-            "asset_name": "lamp",
-            "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
-            "asset_task": "rigging",
-            "asset_assignees": "Gyeoul Kim",
-            "asset_step": "rig"
+            "asset_info": {
+                "asset_name": "lamp",
+                "asset_type": "Prop",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
+                "task_details": [
+                    {
+                        "assignee_name": "다미 김",
+                        "task_content": "modeling",
+                        "task_step": "mod"
+                    },
+                    {
+                        "assignee_name": "Gyeoul Kim",
+                        "task_content": "rigging",
+                        "task_step": "rig"
+                    }
+                ],
+                "linked_versions": [
+                    {
+                        "version_code": "lamp_mod_v001",
+                        "sg_status_list": "pub",
+                        "description": "testing",
+                        "updated_at": "2024-08-26 14:28:07",
+                        "artist": "Gyeoul Kim",
+                        "linked_asset": "lamp"
+                    }
+                ]
+            }
         },
         {
-            "asset_name": "car",
-            "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
-            "asset_task": "N/A",
-            "asset_assignees": "N/A",
-            "asset_step": "N/A"
+            "asset_info": {
+                "asset_name": "car",
+                "asset_type": "Vehicle",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
+                "task_details": [],
+                "linked_versions": []
+            }
         },
         {
-            "asset_name": "green",
-            "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
-            "asset_task": "N/A",
-            "asset_assignees": "N/A",
-            "asset_step": "N/A"
+            "asset_info": {
+                "asset_name": "green",
+                "asset_type": "Material",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
+                "task_details": [],
+                "linked_versions": []
+            }
         },
         {
-            "asset_name": "man",
-            "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
-            "asset_task": "skeleton",
-            "asset_assignees": "Gyeoul Kim",
-            "asset_step": "rig"
+            "asset_info": {
+                "asset_name": "man",
+                "asset_type": "Character",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
+                "task_details": [
+                    {
+                        "assignee_name": "다미 김",
+                        "task_content": "basicShape",
+                        "task_step": "mod"
+                    },
+                    {
+                        "assignee_name": "Gyeoul Kim",
+                        "task_content": "skeleton",
+                        "task_step": "rig"
+                    }
+                ],
+                "linked_versions": []
+            }
         },
         {
-            "asset_name": "tower",
-            "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
-            "asset_task": "texture",
-            "asset_assignees": "dami kim",
-            "asset_step": "mod"
+            "asset_info": {
+                "asset_name": "tower",
+                "asset_type": "Environment",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
+                "task_details": [
+                    {
+                        "assignee_name": "다미 김",
+                        "task_content": "texture",
+                        "task_step": "mod"
+                    }
+                ],
+                "linked_versions": []
+            }
         }
     ],
-    "versions": [
+    "project_versions": [
         {
             "version_code": "box_v001",
-            "entity_name": "box",
             "version_type": "abc",
             "description": "testing",
             "sg_status_list": "pub",
-            "artist": "dami kim"
+            "artist": "다미 김",
+            "updated_at": "2024-08-26 14:28:18"
         },
         {
             "version_code": "lamp_mod_v001",
-            "entity_name": "lamp",
             "version_type": null,
             "description": "testing",
             "sg_status_list": "pub",
-            "artist": "Gyeoul Kim"
+            "artist": "Gyeoul Kim",
+            "updated_at": "2024-08-26 14:28:07"
         },
         {
             "version_code": "PKG_030_mm_v001",
-            "entity_name": "PKG_030",
             "version_type": "mov",
             "description": "test",
             "sg_status_list": "wip",
-            "artist": "지연 이"
+            "artist": "지연 이",
+            "updated_at": "2024-08-24 14:18:02"
         },
         {
             "version_code": "PKG_030_mm_v002",
-            "entity_name": "PKG_030",
             "version_type": null,
-            "description": "test",
+            "description": "정우인 정우인 정우인 정우인 정우인 정우인 정우인 가지마",
             "sg_status_list": "wip",
-            "artist": "지연 이"
+            "artist": "지연 이",
+            "updated_at": "2024-08-24 14:18:07"
         },
         {
             "version_code": "PKG_030_mm_v003",
-            "entity_name": "PKG_030",
             "version_type": null,
             "description": "test",
             "sg_status_list": "pub",
-            "artist": "지연 이"
+            "artist": "지연 이",
+            "updated_at": "2024-08-26 09:32:29"
         },
         {
             "version_code": "BRK_010_lgt_v001",
-            "entity_name": "BRK_010",
             "version_type": null,
             "description": "DEV",
             "sg_status_list": "wip",
-            "artist": "UICHUL SHIN"
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-08-25 15:09:03"
         },
         {
             "version_code": "BRK_020_lgt_v001",
-            "entity_name": "BRK_020",
             "version_type": null,
             "description": "dev",
             "sg_status_list": "wip",
-            "artist": "UICHUL SHIN"
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-08-25 15:09:05"
         },
         {
             "version_code": "FLB_010_lgt_v001",
-            "entity_name": "FLB_010",
             "version_type": null,
             "description": null,
             "sg_status_list": "pub",
-            "artist": "UICHUL SHIN"
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-08-25 15:09:08"
         },
         {
             "version_code": "FLB_020_lgt_v001",
-            "entity_name": "FLB_020",
             "version_type": null,
             "description": null,
             "sg_status_list": "wip",
-            "artist": "UICHUL SHIN"
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-08-25 15:09:10"
         },
         {
             "version_code": "PKG_010_mm_v001",
-            "entity_name": "PKG_010",
             "version_type": null,
             "description": null,
             "sg_status_list": "wip",
-            "artist": "지연 이"
+            "artist": "지연 이",
+            "updated_at": "2024-08-25 15:08:50"
         },
         {
             "version_code": "PKG_020_mm_v001",
-            "entity_name": "PKG_020",
             "version_type": null,
             "description": null,
             "sg_status_list": "wip",
-            "artist": "지연 이"
+            "artist": "지연 이",
+            "updated_at": "2024-08-25 15:08:52"
         },
         {
             "version_code": "INS_010_mm_v001",
-            "entity_name": "INS_010",
             "version_type": null,
             "description": null,
             "sg_status_list": "wip",
-            "artist": "지연 이"
+            "artist": "지연 이",
+            "updated_at": "2024-08-25 15:08:55"
         },
         {
             "version_code": "INS_020_mm_v001",
-            "entity_name": "INS_020",
             "version_type": null,
             "description": null,
             "sg_status_list": "pub",
-            "artist": "지연 이"
+            "artist": "지연 이",
+            "updated_at": "2024-08-25 15:08:58"
         },
         {
             "version_code": "box_v002",
-            "entity_name": "box",
             "version_type": null,
             "description": "modified mesh ver",
             "sg_status_list": "pub",
-            "artist": "dami kim"
+            "artist": "다미 김",
+            "updated_at": "2024-08-26 14:36:39"
         }
     ]
 }

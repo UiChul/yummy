@@ -22,8 +22,9 @@ class My_task(QWidget):
         
         self.project = info["project"]
         self.name = info["name"]
-        
+        self.set_click_thumbnail_mov()
         self.set_recent_file()
+        self.set_description_list()
         
         self.set_mytask_table()
         self.table.itemClicked.connect(self.check_file_info)
@@ -46,6 +47,9 @@ class My_task(QWidget):
         file_name = file_info[0]
         temp , ext=os.path.splitext(file_name)
         img_path = temp.split("_")
+        
+        self.mov_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/mov/{temp}.mov"
+        
 
         image_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/exr/{temp}/{temp}.1001.exr"
         
@@ -68,11 +72,15 @@ class My_task(QWidget):
         self.set_file_information(file_info)
     
     def set_file_information(self,file_info):
+        descirption = self.find_description_list(file_info[0])
+        if not descirption:
+            descirption = "No Comment"
         self.ui.label_mytask_filename.setText(f"{file_info[0]}")
         self.ui.label_mytask_filetype.setText(f"{file_info[1]}")
         self.ui.label_mytask_resolution.setText(f"{file_info[2]}")
         self.ui.label_mytask_savedtime.setText(f"{file_info[3]}")
         self.ui.label_mytask_filesize.setText(f"{file_info[4]}")
+        self.ui.plainTextEdit_mytask_comment.setPlainText(descirption)
         
     def make_path(self,file_info):
         file_name = file_info[0]
@@ -110,7 +118,7 @@ class My_task(QWidget):
         
         my_task_list = []
         
-        versions = user_dic["versions"]
+        versions = user_dic["project_versions"]
         for version in versions:
             version_dic = {}
             if version["artist"] == self.name: 
@@ -156,6 +164,38 @@ class My_task(QWidget):
         msg_box.setText(text)
         msg_box.exec()
         
+        
+    def set_click_thumbnail_mov(self):
+        if self.ui.label_mytask_thumbnail.mouseDoubleClickEvent:
+                self.ui.label_mytask_thumbnail.mouseDoubleClickEvent = self.play_video
+                
+    def play_video(self,event):
+        cmd = f"vlc --repeat {self.mov_path}"
+        os.system(cmd)
+        
+        
+    def set_description_list(self):
+        with open("/home/rapa/yummy/pipeline/json/open_loader_datas.json","rt",encoding="utf-8") as r:
+            user_dic = json.load(r)
+        
+        self.description_list = []
+        
+        versions = user_dic["project_versions"]
+        
+        for version in versions:
+            version_dic = {}
+            version_dic[version["version_code"]] = version["description"]
+            self.description_list.append(version_dic)  
+            
+        print(self.description_list)   
+    
+    def find_description_list(self,file_name):
+        for comment in self.description_list:
+            for shot_code , desription in comment.items():
+                if shot_code == file_name:
+                    print(desription)
+                    return desription
+        
     
     def set_up(self):
         from pipeline.scripts.loader.loader_ui.main_window_v002_ui import Ui_Form
@@ -163,7 +203,7 @@ class My_task(QWidget):
         self.ui.setupUi(self)
         self.table = self.ui.tableWidget_recent_files
 
-info = {"project" : "YUMMIE" , "name" : "지연 이","rank":"Artist","resolution" : "1920 X 1080"}
+info = {"project" : "YUMMIE" , "name" : "UICHUL SHIN","rank":"Artist","resolution" : "1920 X 1080"}
 if __name__ == "__main__":
     app = QApplication()
     my = My_task(info)
