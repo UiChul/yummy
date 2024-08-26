@@ -113,7 +113,7 @@ class My_task(QWidget):
         versions = user_dic["versions"]
         for version in versions:
             version_dic = {}
-            if version["created_by"] == self.name: 
+            if version["artist"] == self.name: 
                 version_dic[version["updated_at"]] = version["version_code"]+".nknc"
                 my_task_list.append(version_dic)
         
@@ -138,6 +138,7 @@ class My_task(QWidget):
         
         i = 0
         for file_info in my_task_table:
+            
             for time,file_name in file_info.items():
                 item = QTableWidgetItem()
                 item.setText(time)

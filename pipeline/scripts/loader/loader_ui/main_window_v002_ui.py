@@ -99,7 +99,7 @@ class Ui_Form(object):
         self.tableWidget_shot_mov.horizontalHeader().setVisible(False)
         self.tableWidget_shot_mov.horizontalHeader().setDefaultSectionSize(160)
         self.tableWidget_shot_mov.verticalHeader().setVisible(False)
-        self.tableWidget_shot_mov.verticalHeader().setDefaultSectionSize(80)
+        self.tableWidget_shot_mov.verticalHeader().setDefaultSectionSize(90)
         self.tabWidget_shot_task.addTab(self.tab_5, "")
         self.tab_all = QWidget()
         self.tab_all.setObjectName(u"tab_all")
@@ -1113,8 +1113,8 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
 
-        self.tabWidget_all.setCurrentIndex(3)
-        self.tabWidget_shot_task.setCurrentIndex(3)
+        self.tabWidget_all.setCurrentIndex(0)
+        self.tabWidget_shot_task.setCurrentIndex(1)
         self.tabWidget_shot_status.setCurrentIndex(0)
         self.tableWidget_mytask_status.setCurrentIndex(0)
         self.tabWidget_template.setCurrentIndex(0)

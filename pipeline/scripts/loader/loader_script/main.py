@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QTreeWidgetItem, QTableWidgetItem, QLabel
 from PySide6.QtWidgets import QAbstractItemView, QVBoxLayout
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
-from PySide6.QtGui import QPixmap, QColor
+from PySide6.QtGui import QPixmap, QColor,QFont
 from PySide6.QtMultimedia import QMediaPlayer
 from PySide6.QtMultimediaWidgets import QVideoWidget
 import os
@@ -30,10 +30,10 @@ class Mainloader(QWidget):
         self.rank    = info["rank"]
         self.resolution = info["resolution"]
         
+        self.set_shot_tableWidgets()
         self.set_user_information()
         self.input_project()
         self.set_comboBox_seq()
-        self.set_shot_tableWidgets()
         
         
         self.shot_treeWidget = self.ui.treeWidget
@@ -43,8 +43,7 @@ class Mainloader(QWidget):
         self.all_list = self.ui.listWidget_shot_allfile
 
         self.set_treeWidget_shot(self.seq_list[0])
-        self.tab_name = "work"
-        
+        self.tab_name = ""
         self.task_path = ""
         
         #Signal
@@ -55,14 +54,14 @@ class Mainloader(QWidget):
         self.ui.pushButton_search.clicked.connect(self.search_file_in_alllist)
         self.ui.lineEdit_alllist_search.returnPressed.connect(self.search_file_in_alllist)
 
-        self.work_table.itemClicked.connect(self.get_work_file_information)
+        self.work_table.itemClicked.connect(self.set_work_file_information)
 
-        self.exr_table.itemClicked.connect(self.get_exr_file_information)
+        self.exr_table.itemClicked.connect(self.set_exr_file_information)
 
-        self.mov_table.itemClicked.connect(self.get_mov_file_information)
+        self.mov_table.itemClicked.connect(self.set_mov_file_information)
         self.mov_table.itemDoubleClicked.connect(self.set_mov_files)
 
-        self.all_list.itemClicked.connect(self.get_all_file_information)
+        self.all_list.itemClicked.connect(self.set_all_file_information)
 
         # self.set_mov_thumbnail()
         # tab - PUB 숨기기
@@ -94,7 +93,6 @@ class Mainloader(QWidget):
 
             self.transformed_data[prefix].append([key, value['steps']])
         
-        print(self.transformed_data)
         
         
         
@@ -179,7 +177,6 @@ class Mainloader(QWidget):
                         task_item.setText(0,task)
                         task_item.setForeground(0,QColor("lightgray"))
                 
-
     def get_clicked_treeWidget_shot_item (self,item,column):
         """
         선택한 task item 가져오기
@@ -200,51 +197,51 @@ class Mainloader(QWidget):
         label_work_path = "▶  " + splited_work_path 
 
         self.ui.label_shot_filepath.setText(label_work_path)
-
-        # self.set_shot_work_files_tableWidget()
-        # self.set_shot_all_files_listWidget()
         
-    def find_project_task(self,project):
-        for project_info in self.user_dic["projects"]:
-            if project_info["name"] == project:
-                print(project)
-                return project_info["shot_code"]
+        self.clear_file_info()
         
+        if self.tab_name == "work":
+            self.set_shot_work_files_tableWidget()
+        elif self.tab_name == "exr":
+            self.set_shot_exr_files_tableWidget()
+        elif self.tab_name == "mov":
+            self.set_shot_mov_files_tableWidget()
+        elif self.tab_name == "all":
+            self.set_shot_all_files_listWidget()
+        else:
+            self.set_shot_work_files_tableWidget()
+            self.set_shot_exr_files_tableWidget()
+            self.set_shot_mov_files_tableWidget()
+            
     #=======================================================================================
     # 테이블 위젯 세팅 work,mov,exr별로
     #==========================================================================================
 
     def set_shot_tableWidgets(self):
-        """
-        tableWidgets (in shot) setting
-        """
         #set Table(tab 한번에 세팅)
         tablename = ["work","mov","exr"]
-        table_widget = [getattr(self.ui, f"tableWidget_shot_{i}") for i in tablename]
-
-        for i in table_widget:
-            h_header = i.horizontalHeader()
-            h_header.setSectionResizeMode(QHeaderView.ResizeToContents)
-            h_header.setSectionResizeMode(QHeaderView.Stretch)
-            i.setEditTriggers(QAbstractItemView.NoEditTriggers) 
-            i.setColumnCount(3)
-            i.setRowCount(8)
+        self.table_widget = [getattr(self.ui, f"tableWidget_shot_{i}") for i in tablename]
             
-    def set_shot_table(self):
+    def set_shot_table(self,tab):
         """
         tableWidgets (in shot) setting
         """
-        #set Table(tab 한번에 세팅)
-        tablename = ["work","mov","exr"]
-        table_widget = [getattr(self.ui, f"tableWidget_shot_{i}") for i in tablename]
+        #set Table(tab 한번에 세팅)      
+        if tab == "work":
+            table_widget = self.table_widget[0]
+        elif tab == "mov":
+            table_widget = self.table_widget[1]
+        elif tab == "exr":
+            table_widget = self.table_widget[2]
 
-        for i in table_widget:
-            h_header = i.horizontalHeader()
-            h_header.setSectionResizeMode(QHeaderView.ResizeToContents)
-            h_header.setSectionResizeMode(QHeaderView.Stretch)
-            i.setEditTriggers(QAbstractItemView.NoEditTriggers) 
-            i.setColumnCount(3)
-            i.setRowCount(8)
+        h_header = table_widget.horizontalHeader()
+        h_header.setSectionResizeMode(QHeaderView.ResizeToContents)
+        h_header.setSectionResizeMode(QHeaderView.Stretch)
+        table_widget.setEditTriggers(QAbstractItemView.NoEditTriggers) 
+        table_widget.setColumnCount(3)
+        table_widget.setRowCount(8)
+        table_widget.setShowGrid(True)
+        
             
     def get_tab_name (self,tabIndex):
         if tabIndex == 0 :
@@ -258,51 +255,54 @@ class Mainloader(QWidget):
 
         elif tabIndex == 2 :
             self.tab_name = "mov"
-            self.set_mov_text_files_tableWidget()
+            self.set_shot_mov_files_tableWidget()
 
         else :
             self.tab_name = "all"   
             self.set_shot_all_files_listWidget()  
 
-    """
-    work
-    """
+
+    # work 파일
     def set_shot_work_files_tableWidget(self):
         """
         work file setting
         """
+        if not self.tab_name:
+            self.tab_name == "work"
+            
+        self.clear_file_info()
+        self.set_shot_table("work")
         self.work_table.clearContents()
-        
-        h_header = self.work_table.horizontalHeader()
-        h_header.setSectionResizeMode(QHeaderView.ResizeToContents)
-        h_header.setSectionResizeMode(QHeaderView.Stretch)
-        self.work_table.setEditTriggers(QAbstractItemView.NoEditTriggers) 
-        self.work_table.setColumnCount(3)
-        self.work_table.setRowCount(8)
         
         if self.task_path:
             work_files_path = self.task_path + "/dev/" + self.tab_name
             works = os.listdir(work_files_path)
             if not works:
-                print(works)
-                self.work_table.setColumnWidth(0, 339)  # -2는 약간의 여유 공간
-                self.work_table.setRowHeight(0, 494)
-                
+                h_header = self.work_table.horizontalHeader()
+                h_header.setSectionResizeMode(QHeaderView.ResizeToContents)
+                h_header.setSectionResizeMode(QHeaderView.Stretch)
                 self.work_table.setColumnCount(1)
                 self.work_table.setRowCount(1)
-                return
-              
+                self.work_table.setShowGrid(False)
+                       
+                item = QTableWidgetItem()
+                item.setText("EMPTY")
+                
+                # 테이블 폰트 사이즈 조절
+                font  = QFont()
+                font.setPointSize(40)
+                item.setFont(font)
+                
+                # 아이템 클릭할 수 없게 만들기
+                item.setFlags(Qt.NoItemFlags)
+                self.work_table.setItem(0,0,item)
+                item.setTextAlignment(Qt.AlignCenter)   
+                return   
         else:
             return
         # print (works)
 
         # table 에 image + text 삽입
-        image_path = [
-            "/home/rapa/xgen/images1.png",
-            "/home/rapa/xgen/images2.png",  
-            "/home/rapa/xgen/images3.png"
-        ]
-
         row = 0
         col = 0
 
@@ -311,11 +311,9 @@ class Mainloader(QWidget):
                 works.remove(work)
        
         for i, work in enumerate(works):
-            version = image_path[i % len(image_path)]
-            # print (version)
 
             label_img = QLabel()
-            pixmap = QPixmap(version)
+            pixmap = QPixmap("/home/rapa/xgen/images1.png")
             label_img.setPixmap(pixmap) 
             label_img.setAlignment(Qt.AlignCenter)
             label_img.setScaledContents(True)
@@ -337,22 +335,45 @@ class Mainloader(QWidget):
         for i in range(1, self.work_table.rowCount(), 2):
             self.work_table.setRowHeight(i,50)
 
-        
-    """
-    exr
-    """
+    # exr 파일
     def set_shot_exr_files_tableWidget(self):
         """
         exr file setting
         """
         # 폴더안에 들어가서 v001.png 넣어야함.
         # table 에 image + text 삽입
+        self.clear_file_info()
         
+        if not self.tab_name:
+            self.tab_name = "exr" 
+            
+        self.set_shot_table("exr")
         self.exr_table.clearContents()
+        
         if self.task_path:
 
             exr_files_path = self.task_path + "/dev/" + self.tab_name
             exrs = os.listdir(exr_files_path)
+            if not exrs:
+                h_header = self.exr_table.horizontalHeader()
+                h_header.setSectionResizeMode(QHeaderView.ResizeToContents)
+                h_header.setSectionResizeMode(QHeaderView.Stretch)
+                self.exr_table.setColumnCount(1)
+                self.exr_table.setRowCount(1)
+                self.exr_table.setShowGrid(False)
+                       
+                item = QTableWidgetItem()
+                item.setText("EMPTY")
+                
+                # 테이블 폰트 사이즈 조절
+                font  = QFont()
+                font.setPointSize(40)
+                item.setFont(font)
+                
+                # 아이템 클릭할 수 없게 만들기
+                item.setFlags(Qt.NoItemFlags)
+                self.exr_table.setItem(0,0,item)
+                item.setTextAlignment(Qt.AlignCenter)
             
         else:
             return
@@ -363,7 +384,7 @@ class Mainloader(QWidget):
 
         for exr in exrs :
             exr_file_path = exr_files_path + "/" + exr
-            image_path = os.path.join(exr_file_path, exr + ".1001.png")
+            image_path = os.path.join(exr_file_path, exr + ".1001.exr")
             
             if not os.path.isdir(f"{self.task_path}/.thumbnail/"):
                 os.makedirs(f"{self.task_path}/.thumbnail/")
@@ -396,73 +417,166 @@ class Mainloader(QWidget):
         for i in range(1, self.exr_table.rowCount(), 2):
             self.exr_table.setRowHeight(i,50) 
  
- 
-    def set_mov_text_files_tableWidget(self):
-           """
-           mov file setting
-           """
-           self.mov_table.clearContents()
-           if self.task_path:
-                mov_files_path = self.task_path + "/dev/" + self.tab_name
-                movs = os.listdir(mov_files_path)
-           else:
-               return
-           # print (movs)
-           # print (mov_files_path)
-
-           image_path = [
-               "/home/rapa/xgen/MOV_File.png"
-           ]
-
-           row = 0
-           col = 0
-
-           # table 에 image + text 삽입
-
-           for i, mov in enumerate(movs):
-
-               version = image_path[i % len(image_path)]
-               # print (version)
-
-               label_img = QLabel()
-               pixmap = QPixmap(version)
-               label_img.setPixmap(pixmap) 
-               label_img.setAlignment(Qt.AlignCenter)
-               label_img.setScaledContents(True)
-               self.exr_table.setCellWidget(row,col,label_img)
-
-               item = QTableWidgetItem()
-               item.setText(mov)
-               self.mov_table.setItem(row+1,col,item)
-               item.setTextAlignment(Qt.AlignCenter)
-
-
-               col +=1
-
-               # 갯수 맞춰서 다다음줄로
-               if col >= self.mov_table.columnCount():            
-                   col = 00
-                   row += 2
-
-           # 홀수 row 행 높이 조절
-           for i in range(1, self.mov_table.rowCount(), 2):
-               self.mov_table.setRowHeight(i,50)                     
-#   ==========================================================================================
-#    File Information Setting
-#==========================================================================================
-
-    def get_exr_file_information(self, item):
-        
+    # mov 파일
+    def set_shot_mov_files_tableWidget(self):
         """
-        tableWidget에서 클릭한 exr 폴더의 파일의 정보 출력.
+        exr file setting
         """
+        # 폴더안에 들어가서 v001.png 넣어야함.
+        # table 에 image + text 삽입
         
+        self.clear_file_info()
+        
+        if not self.tab_name:
+            self.tab_name = "mov"
+            print(self.tab_name)
+        
+        self.set_shot_table("mov")
+        self.mov_table.clearContents()
+        
+        if self.task_path:
+
+            mov_files_path = self.task_path + "/dev/" + self.tab_name
+            movs = os.listdir(mov_files_path)
+            if not movs:
+                h_header = self.mov_table.horizontalHeader()
+                h_header.setSectionResizeMode(QHeaderView.ResizeToContents)
+                h_header.setSectionResizeMode(QHeaderView.Stretch)
+                self.mov_table.setColumnCount(1)
+                self.mov_table.setRowCount(1)
+                self.mov_table.setShowGrid(False)
+                       
+                item = QTableWidgetItem()
+                item.setText("EMPTY")
+                
+                # 테이블 폰트 사이즈 조절
+                font  = QFont()
+                font.setPointSize(40)
+                item.setFont(font)
+                
+                # 아이템 클릭할 수 없게 만들기
+                item.setFlags(Qt.NoItemFlags)
+                self.mov_table.setItem(0,0,item)
+                item.setTextAlignment(Qt.AlignCenter)
+            
+        else:
+            return
+        # print (exrs)
+
+        row = 0
+        col = 0
+
+        for mov in movs :
+            
+            mov_name = mov.split(".")[0]
+
+            exr_file_path = self.task_path + "/dev/exr/" + mov_name
+            image_path = os.path.join(exr_file_path, mov_name + ".1001.exr")
+        
+            if not os.path.isdir(f"{self.task_path}/.thumbnail/"):
+                os.makedirs(f"{self.task_path}/.thumbnail/")   
+                
+            png_path = f"{self.task_path}/.thumbnail/{mov_name}.1001.png"  
+             
+            if not os.path.isfile(png_path):
+                change_to_png(image_path,png_path)
+            
+            label_img = QLabel()
+            pixmap = QPixmap(png_path)
+            label_img.setPixmap(pixmap) 
+            label_img.setAlignment(Qt.AlignCenter)
+            label_img.setScaledContents(True)
+            self.mov_table.setCellWidget(row,col,label_img)
+
+            item = QTableWidgetItem()
+            item.setText(mov)
+            self.mov_table.setItem(row+1,col,item)
+            item.setTextAlignment(Qt.AlignCenter)
+
+            col +=1
+            
+            # 갯수 맞춰서 다다음줄로
+            if col >= self.mov_table.columnCount():            
+                col = 0
+                row += 2
+
+        # 홀수 row 행 높이 조절
+        for i in range(1, self.mov_table.rowCount(), 2):
+            self.mov_table.setRowHeight(i,50)
+    
+    # all 파일
+    def set_shot_all_files_listWidget(self):
+        """
+        dev 파일 다 긁어와서 list에 한번에 다 넣어주기 (중복 항목 제외)
+        """
+        self.all_list.clear()
+        # print(self.task_path)
+        if not self.task_path:
+            return
+        
+        dev_work_path = self.task_path + "/dev/work"
+        dev_exr_path = self.task_path + "/dev/exr"
+        dev_mov_path = self.task_path + "/dev/mov"
+
+        
+        work_files = os.listdir(dev_work_path)
+        exr_folders = os.listdir(dev_exr_path)
+        mov_files = os.listdir(dev_mov_path)
+         
+        for i,exr in enumerate(exr_folders):
+            exr_folders[i] = exr+".exr"
+            
+        all_files = work_files + mov_files + exr_folders
+        a = ",".join(all_files)
+
+        existing_all_items = self.all_list.findItems(a, Qt.MatchExactly)
+        
+        if work_files not in existing_all_items:
+            self.all_list.addItems(work_files)
+        if exr_folders not in existing_all_items:
+            self.all_list.addItems(exr_folders)
+        if mov_files not in existing_all_items:
+            self.all_list.addItems(mov_files)         
+                       
+    #=========================================================================================
+    #    File Iformation Setting
+    #==========================================================================================
+    
+    def input_work_information(self,selected_file):
+
+        file_name,file_type = os.path.splitext(selected_file)
+        
+        if self.tab_name == "all":
+            selected_file = self.get_all_tab_file_path(selected_file,"work")
+        else:
+            selected_file = self.get_file_path(selected_file)
+        
+        
+        size,time= File_data.file_info(selected_file)
+        
+        self.ui.label_shot_filename.setText(file_name)
+        self.ui.label_shot_filetype.setText(file_type)
+        self.ui.label_shot_framerange.setText("-")
+        self.ui.label_shot_resolution.setText(self.resolution)
+        self.ui.label_shot_savedtime.setText(time)
+        self.ui.label_shot_filesize.setText(size)
+        
+    def set_work_file_information(self, item):
+
         selected_file = item.text()
-        file_name, _ = os.path.splitext(selected_file)
         
-        selected_file = self.get_clicked_nuke_file_path(selected_file)
+        self.input_work_information(selected_file)
 
-        file_path = selected_file
+    def input_exr_information(self,selected_file):
+        
+        file_name, file_type = os.path.splitext(selected_file)
+        
+        
+        if self.tab_name == "all":
+            selected_file = self.get_all_tab_file_path(file_name,"exr")
+        else:
+            selected_file = self.get_file_path(file_name)
+            
         
         size,time= File_data.dir_info(selected_file)
         start,last,frame = ffmpeg_module.get_frame_count_from_directory(selected_file)
@@ -476,39 +590,22 @@ class Mainloader(QWidget):
         self.ui.label_shot_savedtime.setText(time)
         self.ui.label_shot_filesize.setText(size)
         
-
-    def get_work_file_information(self, item):
-        """
-        tableWidget에서 클릭한 파일의 정보 출력.
-        """
+    def set_exr_file_information(self, item):
+          
         selected_file = item.text()
+        
+        self.input_exr_information(selected_file)
 
+        
+    def input_mov_information(self,selected_file):
         file_name,file_type = os.path.splitext(selected_file)
         
-        selected_file = self.get_clicked_nuke_file_path(selected_file)
-        size,time= File_data.file_info(selected_file)
+        if self.tab_name == "all":
+            selected_file = self.get_all_tab_file_path(selected_file,"mov")
+        else:
+            selected_file = self.get_file_path(selected_file)
+            
         
-        self.ui.label_shot_filename.setText(file_name)
-        self.ui.label_shot_filetype.setText(".nknc")
-        self.ui.label_shot_framerange.setText("-")
-        self.ui.label_shot_resolution.setText(self.resolution)
-        self.ui.label_shot_savedtime.setText(time)
-        self.ui.label_shot_filesize.setText(size)
-        
-        
-    def get_mov_file_information(self, item):
-        """
-        tableWidget에서 클릭한 파일의 정보 출력.
-        """
-        selected_file = item.text()
-        # print (selected_file)
-
-        file_name,  file_type = os.path.splitext(selected_file)
-        selected_file = item.text()
-
-        file_name,file_type = os.path.splitext(selected_file)
-        
-        selected_file = self.get_clicked_nuke_file_path(selected_file)
         size,time= File_data.file_info(selected_file)
         w,h,frame_range = ffmpeg_module.find_resolution_frame(selected_file)
 
@@ -519,8 +616,16 @@ class Mainloader(QWidget):
         self.ui.label_shot_savedtime.setText(time)
         self.ui.label_shot_filesize.setText(size)
         
+    def set_mov_file_information(self, item):
+        """
+        tableWidget에서 클릭한 파일의 정보 출력.
+        """
+        selected_file = item.text()
+        
+        self.input_mov_information(selected_file)
 
-    def get_all_file_information (self,item):
+    def set_all_file_information (self,item):
+        
         """
         listWidget에서 클릭한 파일 정보 출력.
         """
@@ -528,21 +633,40 @@ class Mainloader(QWidget):
 
         file_name, file_type = os.path.splitext(selected_file)
         
-        if not file_type :
-            self.ui.label_shot_filetype.setText(".exr")
-        else:
-            self.ui.label_shot_filetype.setText(file_type)
-
-        if file_name == ".nknc":
-            self.ui.label_shot_filetype.setText(".nknc")
-
-        self.ui.label_shot_filename.setText(file_name)
+        if file_type == ".nknc":
+            self.input_work_information(selected_file)
+        elif file_type == ".mov":
+            self.input_mov_information(selected_file)
+        elif file_type == ".exr":
+            self.input_exr_information(selected_file)
         
+    def get_file_path (self,selected_file):
+        """
+        shot_tableWidget에서 클릭한 파일 path 획득
+        """
         
-    """
-    mov
-    """
+        front_path = self.ui.label_shot_filepath.text()
+        split_front_path = front_path.split("  ")[1]
+            
+        self.nuke_file_path = "/home/rapa/" + split_front_path + "/dev/" + self.tab_name + "/" + selected_file
+        return self.nuke_file_path
 
+    def get_all_tab_file_path(self,selected_file,file_type):
+        
+        front_path = self.ui.label_shot_filepath.text()
+        split_front_path = front_path.split("  ")[1]
+            
+        self.nuke_file_path = "/home/rapa/" + split_front_path + "/dev/" + file_type + "/" + selected_file
+        return self.nuke_file_path
+    
+    def clear_file_info(self):
+        self.ui.label_shot_filename.clear()
+        self.ui.label_shot_filetype.clear()
+        self.ui.label_shot_framerange.clear()
+        self.ui.label_shot_resolution.clear()
+        self.ui.label_shot_savedtime.clear()
+        self.ui.label_shot_filesize.clear()
+        
     def set_mov_files(self,item):
         """
         mov file setting
@@ -571,35 +695,6 @@ class Mainloader(QWidget):
             self.mov_table.setCellWidget(0,col,video_container)
             col += 1
             # media_player.play()
-    """ 
-    all
-    """
-    def set_shot_all_files_listWidget(self):
-        """
-        dev 파일 다 긁어와서 list에 한번에 다 넣어주기 (중복 항목 제외)
-        """
-        # print(self.task_path)
-        dev_work_path = self.task_path + "/dev/work"
-        dev_exr_path = self.task_path + "/dev/exr"
-        dev_mov_path = self.task_path + "/dev/mov"
-
-        work_files = os.listdir(dev_work_path)
-        exr_folders = os.listdir(dev_exr_path)
-        mov_files = os.listdir(dev_mov_path)
-
-        all_files = work_files + mov_files + exr_folders
-        a = ",".join(all_files)
-        
-        existing_all_items = self.all_list.findItems(a, Qt.MatchExactly)
-
-        if work_files not in existing_all_items:
-            self.all_list.addItems(work_files)
-        if exr_folders not in existing_all_items:
-            self.all_list.addItems(exr_folders)
-        if mov_files not in existing_all_items:
-            self.all_list.addItems(mov_files)                    
-            
-        return work_files,mov_files
         
     def search_file_in_alllist(self): 
         
@@ -618,19 +713,6 @@ class Mainloader(QWidget):
         for item in find_items:
             item.setBackground(QColor('#f7e345'))
         
-    """
-    NUKE
-    """
-    def get_clicked_nuke_file_path (self,selected_file):
-        """
-        shot_tableWidget에서 클릭한 파일 path 획득
-        """
-        front_path = self.ui.label_shot_filepath.text()
-        split_front_path = front_path.split(" ")[1]
-            
-        self.nuke_file_path = "/home/rapa/" + split_front_path + "/dev/" + f"{self.tab_name}" + "/" + selected_file
-        return self.nuke_file_path
-
     def load_nuke (self):
         nuke_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc ' + f"{self.nuke_file_path}"
         os.system(nuke_path)
