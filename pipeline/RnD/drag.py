@@ -1,74 +1,35 @@
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import *
-from PySide6.QtCore import QMimeData, Qt
-from PySide6.QtGui import QCursor,QDrag
-from darg_rnd_ui import Ui_Form
+import os
 
-class Drag(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.set_up()
-        self.set_table_widget()
-        
-    def set_table_widget(self):
-        self.table.setRowCount(1)
-        self.table.setRowHeight(0,100)
-        
-        
-        self.table.setColumnCount(3)
-        self.table.setColumnWidth(0,100)
-        self.table.setColumnWidth(1,100)
-        self.table.setColumnWidth(2,100)
-        
-        item  = QTableWidgetItem()
-        item.setText("1")
-        self.table.setItem(0,0,item)
-        
-        self.table.setDragEnabled(True)  # 드래그 활성화
-        self.table.setAcceptDrops(True)  # 드롭 허용
-        self.table.setDragDropMode(QAbstractItemView.InternalMove)
-        
-        
-    def startDrag(self, supportedActions):
-        item = self.currentItem()  # 현재 선택된 아이템
-        if not item:
-            return
 
-        drag = QDrag(self)
-        mimeData = QMimeData()
+root_dir = '/home/rapa/YUMMY/project/YUMMIE/seq'
+seqs = os.listdir(root_dir)
+# 각 샷에 대한 리스트
+# shots = ['TTL_010', 'TTL_020', 'TTL_030', 'TTL_040']
 
-        # MIME 데이터에 텍스트와 추가 정보를 포함
-        mimeData.setText(item.text())
-        mimeData.setData('application/x-item-info', f"Row:{item.row()}, Column:{item.column()}".encode('utf-8'))
+# 각 작업 단계에 대한 리스트
+steps = ['ani', 'cmp', 'lgt', 'ly', 'mm']
 
-        drag.setMimeData(mimeData)
-        drag.setHotSpot(QCursor.pos() - self.rect().topLeft())  # 드래그 시 마우스 포인터 위치
+# 각 단계별 하위 디렉터리
+sub_dirs = ['dev', 'pub']
 
-        drag.exec(Qt.IgnoreAction)
+# 각 하위 디렉터리 내의 폴더들
+sub_folders = ['exr', 'mov', 'work']
 
-    def dropEvent(self, event):
-        mimeData = event.mimeData()
+# 루트 디렉터리 (필요에 따라 수정)
+for seq in seqs:
+    seq_path = os.path.join(root_dir, seq)
+    shots = os.listdir(seq_path)
+    print(shots)
+    for shot in shots:
+        for step in steps:
+            for sub_dir in sub_dirs:
+                for sub_folder in sub_folders:
+                    # 경로 생성
+                    path = os.path.join(root_dir,seq,shot, step, sub_dir, sub_folder)
 
-        if mimeData.hasFormat('application/x-item-info'):
-            item_info = mimeData.data('application/x-item-info').data().decode('utf-8')
-            print(f"드롭된 아이템 정보: {item_info}")
-
-        super().dropEvent(event)  # 기본 드롭 이벤트 처리
-        
-    
-        
-        
-        
-        
-        
-
-        
-    def set_up(self):
-        self.ui = Ui_Form()
-        self.ui.setupUi(self)
-        self.table = self.ui.tableWidget
-        
-app = QApplication()
-my = Drag()
-my.show()
-app.exec()
+                    # 디렉터리 생성
+                    if os.path.isdir(path):
+                        print("파일이 이미 존재")
+                        break
+                    os.makedirs(path, exist_ok=True)
+                    print(f"Created: {path}")

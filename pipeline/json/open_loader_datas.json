@@ -7,31 +7,39 @@
                 "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "modeling",
                         "task_step": "mod"
                     },
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "retopol",
                         "task_step": "mod"
                     }
                 ],
                 "linked_versions": [
                     {
-                        "version_code": "box_v001",
+                        "version_code": "box_mod_v001",
                         "sg_status_list": "pub",
                         "description": "testing",
-                        "updated_at": "2024-08-26 14:28:18",
-                        "artist": "다미 김",
+                        "updated_at": "2024-08-26 16:44:03",
+                        "artist": "Dami Kim",
                         "linked_asset": "box"
                     },
                     {
-                        "version_code": "box_v002",
+                        "version_code": "box_mod_v002",
                         "sg_status_list": "pub",
                         "description": "modified mesh ver",
-                        "updated_at": "2024-08-26 14:36:39",
-                        "artist": "다미 김",
+                        "updated_at": "2024-08-26 16:44:10",
+                        "artist": "Dami Kim",
+                        "linked_asset": "box"
+                    },
+                    {
+                        "version_code": "box_rig_v001",
+                        "sg_status_list": null,
+                        "description": null,
+                        "updated_at": "2024-08-26 16:45:11",
+                        "artist": "Gyeoul Kim",
                         "linked_asset": "box"
                     }
                 ]
@@ -44,7 +52,7 @@
                 "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "modeling",
                         "task_step": "mod"
                     },
@@ -61,6 +69,14 @@
                         "description": "testing",
                         "updated_at": "2024-08-26 14:28:07",
                         "artist": "Gyeoul Kim",
+                        "linked_asset": "lamp"
+                    },
+                    {
+                        "version_code": "lamp_mod_v001",
+                        "sg_status_list": null,
+                        "description": null,
+                        "updated_at": "2024-08-26 16:25:09",
+                        "artist": "Dami Kim",
                         "linked_asset": "lamp"
                     }
                 ]
@@ -91,7 +107,7 @@
                 "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "basicShape",
                         "task_step": "mod"
                     },
@@ -111,7 +127,7 @@
                 "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "texture",
                         "task_step": "mod"
                     }
@@ -122,12 +138,12 @@
     ],
     "project_versions": [
         {
-            "version_code": "box_v001",
+            "version_code": "box_mod_v001",
             "version_type": "abc",
             "description": "testing",
             "sg_status_list": "pub",
-            "artist": "다미 김",
-            "updated_at": "2024-08-26 14:28:18"
+            "artist": "Dami Kim",
+            "updated_at": "2024-08-26 16:44:03"
         },
         {
             "version_code": "lamp_mod_v001",
@@ -148,7 +164,7 @@
         {
             "version_code": "PKG_030_mm_v002",
             "version_type": null,
-            "description": "정우인 정우인 정우인 정우인 정우인 정우인 정우인 가지마",
+            "description": "test",
             "sg_status_list": "wip",
             "artist": "지연 이",
             "updated_at": "2024-08-24 14:18:07"
@@ -157,9 +173,9 @@
             "version_code": "PKG_030_mm_v003",
             "version_type": null,
             "description": "test",
-            "sg_status_list": "pub",
+            "sg_status_list": "fin",
             "artist": "지연 이",
-            "updated_at": "2024-08-26 09:32:29"
+            "updated_at": "2024-08-26 17:11:06"
         },
         {
             "version_code": "BRK_010_lgt_v001",
@@ -226,12 +242,44 @@
             "updated_at": "2024-08-25 15:08:58"
         },
         {
-            "version_code": "box_v002",
+            "version_code": "box_mod_v002",
             "version_type": null,
             "description": "modified mesh ver",
             "sg_status_list": "pub",
-            "artist": "다미 김",
-            "updated_at": "2024-08-26 14:36:39"
+            "artist": "Dami Kim",
+            "updated_at": "2024-08-26 16:44:10"
+        },
+        {
+            "version_code": "lamp_mod_v001",
+            "version_type": null,
+            "description": null,
+            "sg_status_list": null,
+            "artist": "Dami Kim",
+            "updated_at": "2024-08-26 16:25:09"
+        },
+        {
+            "version_code": "box_rig_v001",
+            "version_type": null,
+            "description": null,
+            "sg_status_list": null,
+            "artist": "Gyeoul Kim",
+            "updated_at": "2024-08-26 16:45:11"
+        },
+        {
+            "version_code": "FNL_010_cmp_v001",
+            "version_type": null,
+            "description": "CMP작업끝",
+            "sg_status_list": "sc",
+            "artist": "Wooin JUNG",
+            "updated_at": "2024-08-27 17:29:16"
+        },
+        {
+            "version_code": "FNL_020_cmp_v001",
+            "version_type": null,
+            "description": "FNL_020작업끝~~",
+            "sg_status_list": "sc",
+            "artist": "Wooin JUNG",
+            "updated_at": "2024-08-27 17:29:18"
         }
     ]
 }

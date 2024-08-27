@@ -13,15 +13,13 @@ from datetime import datetime
 
 
 class My_task(QWidget):
-    def __init__(self,info):
+    def __init__(self):
         super().__init__()
         # self.ui = Ui_Form
         # self.table = self.ui.tableWidget_recent_files
         self.set_up()
-        self.info = info
         
-        self.project = info["project"]
-        self.name = info["name"]
+        self.make_json_dic()
         self.set_click_thumbnail_mov()
         self.set_recent_file()
         self.set_description_list()
@@ -30,6 +28,15 @@ class My_task(QWidget):
         self.table.itemClicked.connect(self.check_file_info)
         self.ui.pushButton_mytask_selectedopen.clicked.connect(self.set_open_btn)
         self.ui.pushButton_mytask_newfileopen.clicked.connect(self.set_new_btn)
+        
+    def make_json_dic(self):
+        with open("/home/rapa/yummy/pipeline/json/project_data.json","rt",encoding="utf-8") as r:
+            info = json.load(r)
+        
+        self.project = info["project"]
+        self.user    = info["name"]
+        self.rank    = info["rank"]
+        self.resolution = info["resolution"]
         
     def check_file_info(self,item):
         index = item.row()
@@ -41,8 +48,7 @@ class My_task(QWidget):
         print(file_info)
         self.set_img(file_info)
         self.make_path(file_info)
-        
-        
+          
     def set_img(self,file_info):
         file_name = file_info[0]
         temp , ext=os.path.splitext(file_name)
@@ -68,7 +74,7 @@ class My_task(QWidget):
         self.ui.label_mytask_thumbnail.setPixmap(scaled_pixmap)
         
         file_size,save_time  =  File_data.file_info(nuke_path)
-        file_info = [temp,ext,self.info["resolution"],save_time,file_size]
+        file_info = [temp,ext,self.resolution,save_time,file_size]
         self.set_file_information(file_info)
     
     def set_file_information(self,file_info):
@@ -121,7 +127,7 @@ class My_task(QWidget):
         versions = user_dic["project_versions"]
         for version in versions:
             version_dic = {}
-            if version["artist"] == self.name: 
+            if version["artist"] == self.user: 
                 version_dic[version["updated_at"]] = version["version_code"]+".nknc"
                 my_task_list.append(version_dic)
         
@@ -132,8 +138,6 @@ class My_task(QWidget):
     def extract_time(self,item):
         save_time_str = list(item.keys())[0]
         return datetime.strptime(save_time_str, '%Y-%m-%d %H:%M:%S')
-    
-            
             
     def input_mytask_table(self):
         
@@ -152,9 +156,14 @@ class My_task(QWidget):
                 item.setText(time)
                 item.setTextAlignment(Qt.AlignCenter)
                 self.table.setItem(i,1,item)
+                
+                item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+                
                 item = QTableWidgetItem()
                 item.setText(file_name)
                 item.setTextAlignment(Qt.AlignCenter)
+                item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+                
                 self.table.setItem(i,0,item)
             i +=1
             
@@ -164,7 +173,6 @@ class My_task(QWidget):
         msg_box.setText(text)
         msg_box.exec()
         
-        
     def set_click_thumbnail_mov(self):
         if self.ui.label_mytask_thumbnail.mouseDoubleClickEvent:
                 self.ui.label_mytask_thumbnail.mouseDoubleClickEvent = self.play_video
@@ -172,7 +180,6 @@ class My_task(QWidget):
     def play_video(self,event):
         cmd = f"vlc --repeat {self.mov_path}"
         os.system(cmd)
-        
         
     def set_description_list(self):
         with open("/home/rapa/yummy/pipeline/json/open_loader_datas.json","rt",encoding="utf-8") as r:
@@ -196,7 +203,6 @@ class My_task(QWidget):
                     print(desription)
                     return desription
         
-    
     def set_up(self):
         from pipeline.scripts.loader.loader_ui.main_window_v002_ui import Ui_Form
         self.ui = Ui_Form()
@@ -206,6 +212,6 @@ class My_task(QWidget):
 info = {"project" : "YUMMIE" , "name" : "UICHUL SHIN","rank":"Artist","resolution" : "1920 X 1080"}
 if __name__ == "__main__":
     app = QApplication()
-    my = My_task(info)
+    my = My_task()
     my.show()
     app.exec()

@@ -9,24 +9,30 @@ import os
 import json
 
 
-
 class Loader_pub(QWidget):
-    def __init__(self,info):
+    def __init__(self):
         super().__init__()
         # self.ui = Ui_Form
         self.set_up()
         # self.tree = self.ui.treeWidget_pub_list
         # self.ui.groupBox_shot_file_info_3.setVisible(False)
         
-        self.project = info["project"]
-        self.name = info["name"]
-        
+        self.make_json_dic()
         self.find_pub_list()
         self.set_listwidget()
         self.set_vlc_mov()
         
         self.tree.itemClicked.connect(self.set_thumbnail)
         self.tree.itemDoubleClicked.connect(self.open_file)
+        
+    def make_json_dic(self):
+        with open("/home/rapa/yummy/pipeline/json/project_data.json","rt",encoding="utf-8") as r:
+            info = json.load(r)
+        
+        self.project = info["project"]
+        self.user    = info["name"]
+        self.rank    = info["rank"]
+        self.resolution = info["resolution"]
     
     
     def find_pub_list(self):
@@ -67,7 +73,12 @@ class Loader_pub(QWidget):
             
         img_path = pub_name.split("_")
         image_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/exr/{pub_name}/{pub_name}.1001.exr"
-        png_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{pub_name}.1001.png"
+        
+        if not os.path.isdir(f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/"):
+            os.makedirs(f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/")
+        
+        png_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/{pub_name}.1001.png"
+
         self.mov_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/mov/{pub_name}.mov"
         
         if not os.path.isfile(png_path):
@@ -152,7 +163,7 @@ class Loader_pub(QWidget):
                 exr_path = "xdg-open " + open_path + "/exr"
                 print("exr")
                 os.system(exr_path)
-                
+               
     # def find_file_size_date(self,path):
         
     def set_up(self):
@@ -166,6 +177,6 @@ info = {"project" : "YUMMIE" , "name" : "UICHUL SHIN","rank":"Artist","resolutio
 
 if __name__ == "__main__":
     app = QApplication()
-    my = Loader_pub(info)
+    my = Loader_pub()
     my.show()
     app.exec()

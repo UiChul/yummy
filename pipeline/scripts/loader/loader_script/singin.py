@@ -80,11 +80,11 @@ class Signin(QWidget):
             from pipeline.scripts.loader.loader_script.get_datas_for_user import OpenLoaderData
             OpenLoaderData(project)
             info = {"project" : project , "name" : self.user_name,"rank": self.rank}
-            
             from pipeline.scripts.loader.loader_script.loader_merge import Merge
             self.load = Merge(info)
             self.load.show()       
             self.close()     
+            
         
     #=====================================================================================
         

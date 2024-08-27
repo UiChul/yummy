@@ -30,7 +30,10 @@ def exr_name_change(folder_path):
         elif not filename.endswith('.exr'):
             # 확장자가 .exr가 아닌 파일 삭제
             os.remove(file_path)
-            
+
+
+
+       
 import ffmpeg
 
 mp4_dir = os.listdir("/home/rapa/다운로드/project_source")
@@ -44,10 +47,11 @@ def video_mov(input,output):
         )
         
 for mp4 in mp4_dir:
-    mov = mp4.split(".")[0]
-    mov = mov+".mov"
     
-    video_mov("/home/rapa/다운로드/project_source/"+mp4 , "/home/rapa/다운로드/project_source/"+mov)
+    if os.path.isfile("/home/rapa/다운로드/project_source/"+mp4):
+        mov = mp4.split(".")[0]
+        mov = mov+".mov"
+        # video_mov("/home/rapa/다운로드/project_source/"+mp4 , "/home/rapa/다운로드/project_source/mov/"+mov)
      
 
         

@@ -20,16 +20,11 @@ from pipeline.scripts.loader.loader_module import ffmpeg_module
 # from functools import partial
 
 class Mainloader(QWidget):
-    def __init__(self,info):
+    def __init__(self):
         super().__init__()
         self.set_up()
-        print(info)
         
-        self.project = info["project"]
-        self.user    = info["name"]
-        self.rank    = info["rank"]
-        self.resolution = info["resolution"]
-        
+        self.make_json_dic()
         self.set_shot_tableWidgets()
         self.set_user_information()
         self.input_project()
@@ -50,16 +45,17 @@ class Mainloader(QWidget):
         #Signal
         self.ui.comboBox_seq.currentTextChanged.connect(self.set_treeWidget_shot)
         self.shot_treeWidget.itemClicked.connect(self.get_clicked_treeWidget_shot_item)
-        self.ui.pushButton_shot_nuke.clicked.connect(self.load_nuke)
+        self.ui.pushButton_shot_open.clicked.connect(self.load_nuke)
+        self.ui.pushButton_shot_new.clicked.connect(self.load_new_nuke)
+        
         self.ui.tabWidget_shot_task.tabBarClicked.connect(self.get_tab_name)
         self.ui.pushButton_search.clicked.connect(self.search_file_in_alllist)
         self.ui.lineEdit_alllist_search.returnPressed.connect(self.search_file_in_alllist)
 
         self.work_table.itemClicked.connect(self.set_work_file_information)
-
         self.exr_table.itemClicked.connect(self.set_exr_file_information)
-
         self.mov_table.itemClicked.connect(self.set_mov_file_information)
+        
         self.mov_table.itemDoubleClicked.connect(self.set_mov_files)
 
         self.all_list.itemClicked.connect(self.set_all_file_information)
@@ -67,12 +63,23 @@ class Mainloader(QWidget):
         # self.set_mov_thumbnail()
         # tab - PUB 숨기기
         # self.ui.tabWidget_all.tabBar().setTabVisible(3, False)
+    
+    # ==============================================================================================    
+    # json 연결
+    # ==============================================================================================    
+    
+    def make_json_dic(self):
+        with open("/home/rapa/yummy/pipeline/json/project_data.json","rt",encoding="utf-8") as r:
+            info = json.load(r)
         
+        self.project = info["project"]
+        self.user    = info["name"]
+        self.rank    = info["rank"]
+        self.resolution = info["resolution"]
     
-    #==========================================================================================
+    # ==========================================================================================
     # tree 위젯 셋팅 추가
-    #==========================================================================================
-    
+    # ==========================================================================================
     
     def input_project(self):
         with open("/home/rapa/yummy/pipeline/json/login_user_data.json","rt",encoding="utf-8") as r:
@@ -82,7 +89,6 @@ class Mainloader(QWidget):
             if projects["name"] == self.project:
                 self.transform_json_data(projects["shot_code"])
             
-        
     def transform_json_data(self,data):
         self.transformed_data = {}
 
@@ -93,17 +99,11 @@ class Mainloader(QWidget):
                 self.transformed_data[prefix] = []
 
             self.transformed_data[prefix].append([key, value['steps']])
-        
-        
-        
-        
+                 
     #==========================================================================================
     # 트리 위젯 세팅 
     #==========================================================================================
         
-    """
-    seq
-    """    
     def set_comboBox_seq(self):
         self.project_path = f"/home/rapa/YUMMY/project/{self.project}/seq"
         self.seq_list = []
@@ -111,9 +111,7 @@ class Mainloader(QWidget):
         for key in self.transformed_data.keys():
             self.seq_list.append(key)
         self.ui.comboBox_seq.addItems(self.seq_list)  
-    """
-    shot
-    """
+
     def set_treeWidget_shot(self,seq = ""):
         if not seq:
             seq = self.ui.comboBox_seq.currentText()
@@ -130,7 +128,8 @@ class Mainloader(QWidget):
             
         for shot_detail in shot_info:
             task_shot_code.append(shot_detail[0])
-            
+        
+        self.my_dev_list = []
         # shot code setting
         for shot_code in shot_codes:
             parent_item = QTreeWidgetItem(self.shot_treeWidget)
@@ -152,11 +151,16 @@ class Mainloader(QWidget):
                     if task in my_task:
                         task_item.setText(0,task)
                         task_item.setForeground(0,QColor("Green"))
+                        my_task_dict = {}
+                        my_task_dict[task] = shot_code
+                        self.my_dev_list.append(my_task_dict)
+                        
                     else:
-                        pub_list = os.listdir(f"{task_path}/{task}/pub/")
+                        pub_list = os.listdir(f"{task_path}/{task}/pub/work")
                         if pub_list:
                             task_item.setText(0,task)
                             task_item.setForeground(0,QColor("YellowGreen"))
+                           
                         else:
                             task_item.setText(0,task)
                             task_item.setForeground(0,QColor("lightgray"))                                      
@@ -167,9 +171,9 @@ class Mainloader(QWidget):
                 task_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{seq}/{shot_code}"
                 tasks = os.listdir(task_path)
     
-                for task in tasks :
+                for task in tasks : 
                     task_item = QTreeWidgetItem(parent_item)
-                    pub_list = os.listdir(f"{task_path}/{task}/pub/")
+                    pub_list = os.listdir(f"{task_path}/{task}/pub/work")
                     if pub_list:
                         task_item.setText(0,task)
                         task_item.setForeground(0,QColor("YellowGreen"))
@@ -182,6 +186,8 @@ class Mainloader(QWidget):
         """
         선택한 task item 가져오기
         """
+        print(self.my_dev_list)
+        
         selected_task = item.text(column)
 
         # 선택한 task의 부모인 shot_code 가져오기 
@@ -241,9 +247,9 @@ class Mainloader(QWidget):
         table_widget.setEditTriggers(QAbstractItemView.NoEditTriggers) 
         table_widget.setColumnCount(3)
         table_widget.setRowCount(8)
-        table_widget.setShowGrid(True)
+        table_widget.setShowGrid(False)
         
-            
+                
     def get_tab_name (self,tabIndex):
         if tabIndex == 0 :
             self.tab_name = "work"
@@ -262,7 +268,6 @@ class Mainloader(QWidget):
             self.tab_name = "all"   
             self.set_shot_all_files_listWidget()  
 
-
     # work 파일
     def set_shot_work_files_tableWidget(self):
         """
@@ -273,11 +278,31 @@ class Mainloader(QWidget):
             
         self.clear_file_info()
         self.set_shot_table("work")
-        self.work_table.clearContents()
         
+        for row in range(self.work_table.rowCount()):
+            self.work_table.setRowHeight(row,195)
+            
+        self.work_table.setShowGrid(True)
+        
+        
+        self.work_table.clearContents()
+            
         if self.task_path:
-            work_files_path = self.task_path + "/dev/" + self.tab_name
+
+            task = self.task_path.split("/")[-1]
+            shot_code = self.task_path.split("/")[-2]
+            
+            pub_dev = "pub"
+            
+            for task_shot_code in self.my_dev_list:
+                for dev_task,dev_shot_code in task_shot_code.items():
+                    if dev_task == task and dev_shot_code == shot_code:
+                        pub_dev = "dev"
+                        
+            work_files_path = self.task_path + f"/{pub_dev}/" + self.tab_name
+            
             works = os.listdir(work_files_path)
+            
             if not works:
                 h_header = self.work_table.horizontalHeader()
                 h_header.setSectionResizeMode(QHeaderView.ResizeToContents)
@@ -301,8 +326,8 @@ class Mainloader(QWidget):
                 return   
         else:
             return
+        
         # print (works)
-
         # table 에 image + text 삽입
         row = 0
         col = 0
@@ -311,31 +336,47 @@ class Mainloader(QWidget):
             if not work.split(".")[-1] == "nknc":
                 works.remove(work)
        
-        for i, work in enumerate(works):
+        for work in works:
+            
+            cell_widget = QWidget()
+            layout = QVBoxLayout()
 
             label_img = QLabel()
             pixmap = QPixmap("/home/rapa/xgen/images1.png")
             label_img.setPixmap(pixmap) 
             label_img.setAlignment(Qt.AlignCenter)
             label_img.setScaledContents(True)
-            self.work_table.setCellWidget(row,col,label_img)
-
+            
+            label_text = QLabel()
+            label_text.setText(work)
+            label_text.setAlignment(Qt.AlignCenter)
+            label_text.setStyleSheet(''' font-size: 11px; ''')
+            label_text.setWordWrap(True)
+            
+            layout.addWidget(label_img)
+            layout.addWidget(label_text)
+            layout.setContentsMargins(0,0,0,10)
+            layout.setAlignment(Qt.AlignCenter)  
+            cell_widget.setLayout(layout)
+            
             item = QTableWidgetItem()
             item.setText(work)
-            self.work_table.setItem(row+1,col,item)
-            item.setTextAlignment(Qt.AlignCenter)
-
+            self.work_table.setItem(row, col, item)
+            self.work_table.setCellWidget(row,col,cell_widget)
+            
             col +=1
+            
+            # self.reduce_item_visibility_in_tableWidget(row, col)
             
             # 갯수 맞춰서 다다음줄로
             if col >= self.work_table.columnCount():            
                 col = 0
-                row += 2
+                row += 1
 
-        # 홀수 row 행 높이 조절
-        for i in range(1, self.work_table.rowCount(), 2):
-            self.work_table.setRowHeight(i,50)
-
+        # # 홀수 row 행 높이 조절
+        # for i in range(1, self.work_table.rowCount(), 2):
+        #     self.work_table.setRowHeight(i,50)
+        
     # exr 파일
     def set_shot_exr_files_tableWidget(self):
         """
@@ -343,17 +384,33 @@ class Mainloader(QWidget):
         """
         # 폴더안에 들어가서 v001.png 넣어야함.
         # table 에 image + text 삽입
-        self.clear_file_info()
-        
         if not self.tab_name:
             self.tab_name = "exr" 
-            
+        
+        self.clear_file_info()
         self.set_shot_table("exr")
+        
+        for row in range(self.work_table.rowCount()):
+            self.exr_table.setRowHeight(row,120)
+        
+        self.exr_table.setShowGrid(True)
+        
         self.exr_table.clearContents()
         
         if self.task_path:
+            
+            
+            task = self.task_path.split("/")[-1]
+            shot_code = self.task_path.split("/")[-2]
+            
+            pub_dev = "pub"
+            
+            for task_shot_code in self.my_dev_list:
+                for dev_task,dev_shot_code in task_shot_code.items():
+                    if dev_task == task and dev_shot_code == shot_code:
+                        pub_dev = "dev"
 
-            exr_files_path = self.task_path + "/dev/" + self.tab_name
+            exr_files_path = self.task_path + f"/{pub_dev}/" + self.tab_name
             exrs = os.listdir(exr_files_path)
             if not exrs:
                 h_header = self.exr_table.horizontalHeader()
@@ -395,28 +452,39 @@ class Mainloader(QWidget):
             if not os.path.isfile(png_path):
                 change_to_png(image_path,png_path)
             
+            cell_widget = QWidget()
+            layout = QVBoxLayout()
+
+            
             label_img = QLabel()
             pixmap = QPixmap(png_path)
             label_img.setPixmap(pixmap) 
             label_img.setAlignment(Qt.AlignCenter)
             label_img.setScaledContents(True)
-            self.exr_table.setCellWidget(row,col,label_img)
+            
+            label_text = QLabel()
+            label_text.setText(exr)
+            label_text.setAlignment(Qt.AlignCenter)
+            label_text.setStyleSheet(''' font-size: 11px; ''')
+            label_text.setWordWrap(True)
+            
+            layout.addWidget(label_img)
+            layout.addWidget(label_text)
+            layout.setContentsMargins(0,0,0,10)
+            layout.setAlignment(Qt.AlignCenter)  
+            cell_widget.setLayout(layout)
 
             item = QTableWidgetItem()
             item.setText(exr)
-            self.exr_table.setItem(row+1,col,item)
-            item.setTextAlignment(Qt.AlignCenter)
-
+            self.exr_table.setItem(row, col, item)
+            self.exr_table.setCellWidget(row,col,cell_widget)
+            
             col +=1
             
             # 갯수 맞춰서 다다음줄로
             if col >= self.exr_table.columnCount():            
                 col = 0
-                row += 2
-
-        # 홀수 row 행 높이 조절
-        for i in range(1, self.exr_table.rowCount(), 2):
-            self.exr_table.setRowHeight(i,50) 
+                row += 1
  
     # mov 파일
     def set_shot_mov_files_tableWidget(self):
@@ -426,18 +494,31 @@ class Mainloader(QWidget):
         # 폴더안에 들어가서 v001.png 넣어야함.
         # table 에 image + text 삽입
         
-        self.clear_file_info()
-        
         if not self.tab_name:
             self.tab_name = "mov"
-            print(self.tab_name)
         
+        self.clear_file_info()
         self.set_shot_table("mov")
+        
+        for row in range(self.work_table.rowCount()):
+            self.mov_table.setRowHeight(row,120)
+    
+        self.mov_table.setShowGrid(True)
         self.mov_table.clearContents()
         
         if self.task_path:
+            
+            task = self.task_path.split("/")[-1]
+            shot_code = self.task_path.split("/")[-2]
+            
+            pub_dev = "pub"
+            
+            for task_shot_code in self.my_dev_list:
+                for dev_task,dev_shot_code in task_shot_code.items():
+                    if dev_task == task and dev_shot_code == shot_code:
+                        pub_dev = "dev"
 
-            mov_files_path = self.task_path + "/dev/" + self.tab_name
+            mov_files_path = self.task_path + f"/{pub_dev}/" + self.tab_name
             movs = os.listdir(mov_files_path)
             if not movs:
                 h_header = self.mov_table.horizontalHeader()
@@ -482,32 +563,32 @@ class Mainloader(QWidget):
             if not os.path.isfile(png_path):
                 change_to_png(image_path,png_path)
             
-
+            cell_widget = QWidget()
+            layout = QVBoxLayout()
             
             label_img = QLabel()
             pixmap = QPixmap(png_path)
             label_img.setPixmap(pixmap) 
             label_img.setAlignment(Qt.AlignCenter)
             label_img.setScaledContents(True)
-            self.mov_table.setCellWidget(row,col,label_img)
             
-            # mov_play_path = mov_files_path + mov
-            # video_widget = QVideoWidget()
-            # media_player = QMediaPlayer(video_widget)
-            # media_player.setSource(QUrl.fromLocalFile(mov_play_path))
-            # media_player.setVideoOutput(video_widget)
-            # video_layout = QVBoxLayout()
-            # video_layout.addWidget(video_widget)
-            # video_container = QWidget()
-            # video_container.setLayout(video_layout)
-            # self.mov_table.setCellWidget(0,col,video_container)
+            label_text = QLabel()
+            label_text.setText(mov)
+            label_text.setAlignment(Qt.AlignCenter)
+            label_text.setStyleSheet(''' font-size: 11px; ''')
+            label_text.setWordWrap(True)
             
-
+            layout.addWidget(label_img)
+            layout.addWidget(label_text)
+            layout.setContentsMargins(0,0,0,10)
+            layout.setAlignment(Qt.AlignCenter)  
+            cell_widget.setLayout(layout)
+            
             item = QTableWidgetItem()
             item.setText(mov)
-            self.mov_table.setItem(row+1,col,item)
-            item.setTextAlignment(Qt.AlignCenter)
-
+            self.mov_table.setItem(row, col, item)
+            self.mov_table.setCellWidget(row,col,cell_widget)      
+        
             col +=1
             
             # 갯수 맞춰서 다다음줄로
@@ -515,9 +596,6 @@ class Mainloader(QWidget):
                 col = 0
                 row += 2
 
-        # 홀수 row 행 높이 조절
-        for i in range(1, self.mov_table.rowCount(), 2):
-            self.mov_table.setRowHeight(i,50)
     
     # all 파일
     def set_shot_all_files_listWidget(self):
@@ -579,8 +657,8 @@ class Mainloader(QWidget):
         self.ui.label_shot_filesize.setText(size)
         self.ui.plainTextEdit_shot_comment.setPlainText(desription)
         
-    def set_work_file_information(self, item):
-
+    def set_work_file_information(self,item):
+        
         selected_file = item.text()
         
         self.input_work_information(selected_file)
@@ -609,15 +687,13 @@ class Mainloader(QWidget):
         self.ui.label_shot_savedtime.setText(time)
         self.ui.label_shot_filesize.setText(size)
         self.ui.plainTextEdit_shot_comment.setPlainText(desription)
-        
-        
+         
     def set_exr_file_information(self, item):
           
         selected_file = item.text()
         
         self.input_exr_information(selected_file)
-
-        
+   
     def input_mov_information(self,selected_file):
         file_name,file_type = os.path.splitext(selected_file)
         
@@ -663,6 +739,38 @@ class Mainloader(QWidget):
             self.input_mov_information(selected_file)
         elif file_type == ".exr":
             self.input_exr_information(selected_file)
+
+    def clear_file_info(self):
+        self.ui.label_shot_filename.clear()
+        self.ui.label_shot_filetype.clear()
+        self.ui.label_shot_framerange.clear()
+        self.ui.label_shot_resolution.clear()
+        self.ui.label_shot_savedtime.clear()
+        self.ui.label_shot_filesize.clear()
+        self.ui.plainTextEdit_shot_comment.clear()
+
+    def find_description_list(self,file_name):
+            for comment in self.description_list:
+                for shot_code , desription in comment.items():
+                    if shot_code == file_name:
+                        print(desription)
+                        return desription
+
+    def set_description_list(self):
+           with open("/home/rapa/yummy/pipeline/json/open_loader_datas.json","rt",encoding="utf-8") as r:
+               user_dic = json.load(r)
+
+           self.description_list = []
+
+           versions = user_dic["project_versions"]
+           for version in versions:
+               version_dic = {}
+               version_dic[version["version_code"]] = version["description"]
+               self.description_list.append(version_dic)  
+ 
+    #=========================================================================================
+    # file_name으로 path 찾기
+    #==========================================================================================
         
     def get_file_path (self,selected_file):
         """
@@ -671,7 +779,7 @@ class Mainloader(QWidget):
         
         front_path = self.ui.label_shot_filepath.text()
         split_front_path = front_path.split("  ")[1]
-            
+         
         self.nuke_file_path = "/home/rapa/" + split_front_path + "/dev/" + self.tab_name + "/" + selected_file
         return self.nuke_file_path
 
@@ -682,15 +790,6 @@ class Mainloader(QWidget):
             
         self.nuke_file_path = "/home/rapa/" + split_front_path + "/dev/" + file_type + "/" + selected_file
         return self.nuke_file_path
-    
-    def clear_file_info(self):
-        self.ui.label_shot_filename.clear()
-        self.ui.label_shot_filetype.clear()
-        self.ui.label_shot_framerange.clear()
-        self.ui.label_shot_resolution.clear()
-        self.ui.label_shot_savedtime.clear()
-        self.ui.label_shot_filesize.clear()
-        self.ui.plainTextEdit_shot_comment.clear()
         
     def set_mov_files(self,item):
         """
@@ -739,33 +838,22 @@ class Mainloader(QWidget):
             item.setBackground(QColor('#f7e345'))
         
     def load_nuke (self):
-        nuke_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc ' + f"{self.nuke_file_path}"
+        
+        directory_path = os.path.dirname(self.nuke_file_path)
+        task_type = directory_path.split("/")[-1]
+        
+        if task_type == "work":
+            cmd_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc ' + f"{self.nuke_file_path}"
+        elif task_type == "mov":
+            cmd_path = "xdg-open " + directory_path + "/"
+        elif task_type == "exr":
+            cmd_path = "xdg-open " + directory_path + "/"
+        os.system(cmd_path)
+     
+    def load_new_nuke(self):
+        nuke_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc'
         os.system(nuke_path)
-
-    def set_description_list(self):
-        with open("/home/rapa/yummy/pipeline/json/open_loader_datas.json","rt",encoding="utf-8") as r:
-            user_dic = json.load(r)
-        
-        self.description_list = []
-        
-        versions = user_dic["project_versions"]
-        for version in versions:
-            version_dic = {}
-            version_dic[version["version_code"]] = version["description"]
-            self.description_list.append(version_dic)  
-            
-        print(self.description_list)   
-    
-    def find_description_list(self,file_name):
-        for comment in self.description_list:
-            for shot_code , desription in comment.items():
-                if shot_code == file_name:
-                    print(desription)
-                    return desription
-            
-            
-                    
-
+     
     def set_user_information(self):
     
         self.ui.label_projectname.setText(f"{self.project}")
@@ -782,10 +870,8 @@ class Mainloader(QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 
-info = {"project" : "YUMMIE", "name" : "지연 이", "rank" : "Artist", "resolution" : "1920 X 1080"}
-
 if __name__ == "__main__":
     app = QApplication()
-    my  = Mainloader(info)
+    my  = Mainloader()
     my.show()
     app.exec()

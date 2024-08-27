@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1155</width>
-    <height>889</height>
+    <width>1151</width>
+    <height>871</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -85,7 +85,7 @@
          </font>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="movable">
          <bool>false</bool>
@@ -315,7 +315,7 @@
        <x>820</x>
        <y>250</y>
        <width>231</width>
-       <height>181</height>
+       <height>131</height>
       </rect>
      </property>
      <property name="font">
@@ -340,7 +340,7 @@
         <x>0</x>
         <y>20</y>
         <width>231</width>
-        <height>161</height>
+        <height>111</height>
        </rect>
       </property>
      </widget>
@@ -404,7 +404,7 @@
      </widget>
      <widget class="QWidget" name="tab_shot_lit">
       <attribute name="title">
-       <string>LIT</string>
+       <string>LGT</string>
       </attribute>
       <widget class="QTableWidget" name="tableWidget_shot_lit">
        <property name="geometry">
@@ -419,7 +419,7 @@
      </widget>
      <widget class="QWidget" name="tab_shot_fx">
       <attribute name="title">
-       <string>FX</string>
+       <string>ANI</string>
       </attribute>
       <widget class="QTableWidget" name="tableWidget_shot_fx">
        <property name="geometry">
@@ -678,7 +678,7 @@
       </layout>
      </widget>
     </widget>
-    <widget class="QPushButton" name="pushButton_shot_nuke">
+    <widget class="QPushButton" name="pushButton_shot_open">
      <property name="geometry">
       <rect>
        <x>820</x>
@@ -688,7 +688,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>NUKE</string>
+      <string>OPEN</string>
      </property>
     </widget>
     <widget class="QTreeWidget" name="treeWidget">
@@ -702,7 +702,7 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>20</pointsize>
+       <pointsize>10</pointsize>
        <bold>false</bold>
       </font>
      </property>
@@ -711,6 +711,19 @@
        <string notr="true">1</string>
       </property>
      </column>
+    </widget>
+    <widget class="QPushButton" name="pushButton_shot_new">
+     <property name="geometry">
+      <rect>
+       <x>820</x>
+       <y>390</y>
+       <width>231</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>NEW</string>
+     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_my_task">
@@ -727,7 +740,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <property name="usesScrollButtons">
       <bool>true</bool>
@@ -912,6 +925,12 @@
        <width>500</width>
        <height>431</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+       <bold>true</bold>
+      </font>
      </property>
      <attribute name="horizontalHeaderVisible">
       <bool>true</bool>
@@ -2667,6 +2686,12 @@
        <width>391</width>
        <height>641</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+       <bold>true</bold>
+      </font>
      </property>
      <attribute name="headerVisible">
       <bool>false</bool>
