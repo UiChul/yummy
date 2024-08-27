@@ -4,13 +4,13 @@
 ### 0827 : render
 
 try:
-    from PySide6.QtWidgets import QApplication, QWidget, QTableWidgetItem, QListWidgetItem, QListWidget, QHBoxLayout, QVBoxLayout, QFileDialog, QMessageBox
+    from PySide6.QtWidgets import QApplication, QWidget, QTableWidgetItem, QListWidgetItem, QListWidget, QHBoxLayout, QVBoxLayout, QFileDialog, QMessageBox, QGroupBox
     from PySide6.QtUiTools import QUiLoader
     from PySide6.QtCore import QFile
     from PySide6.QtGui import  Qt, QPixmap
 
 except:
-    from PySide2.QtWidgets import QApplication, QWidget, QTableWidgetItem, QListWidgetItem, QListWidget, QHBoxLayout, QVBoxLayout, QFileDialog, QMessageBox
+    from PySide2.QtWidgets import QApplication, QWidget, QTableWidgetItem, QListWidgetItem, QListWidget, QHBoxLayout, QVBoxLayout, QFileDialog, QMessageBox, QGroupBox
     from PySide2.QtUiTools import QUiLoader
     from PySide2.QtCore import QFile
     from PySide2.QtGui import  Qt, QPixmap
@@ -23,11 +23,12 @@ import shutil
 # import functools
 
 class CustomListWidget(QListWidget):
-    def __init__(self, parent=None, start_path=""):
+    def __init__(self, parent=None, start_path="", mode = "file"):
         super().__init__(parent)
         self.start_path = start_path
+        self.mode = mode 
 
-    def _mouseDoubleClickEvent(self, event):
+    def mouseDoubleClickEvent(self, event):
         if event.button() == Qt.LeftButton:
             self._handle_double_click()
         super().mouseDoubleClickEvent(event)
@@ -44,27 +45,29 @@ class CustomListWidget(QListWidget):
             return
 
         # Open file dialog to select files
-        file_dialog = QFileDialog(self, "Select Files", self.start_path, "All Files (*);;Text Files (*.txt)")
+        file_dialog = QFileDialog(self, "Select Files", self.start_path, "All Files (*)")
         file_dialog.setFileMode(QFileDialog.ExistingFiles)
         file_dialog.setViewMode(QFileDialog.List)
         
         if file_dialog.exec_():
             selected_files = file_dialog.selectedFiles()
             if selected_files:
-                file_paths = "\n".join(selected_files)
-                QMessageBox.information(self, "Files Selected", f"You selected:\n{file_paths}")
+                for file_path in selected_files:
+                    file_name = os.path.basename(file_path)
+                    self.addItem(file_name)
+                # QMessageBox.information(self, "Files Selected", f"You selected:\n{file_path}")
    
     def open_folder_dialog(self):
         if not self.start_path:
             QMessageBox.warning(self, "Error", "The start path is not set.")
             return
 
-        # Open folder dialog to select a folder
+        QMessageBox.information(self, "Folder Selected", "Please select folders for exr files")
         folder = QFileDialog.getExistingDirectory(self, "Select a Folder", self.start_path)
         
         if folder:
-            # Display a message box with the selected folder
-            QMessageBox.information(self, "Folder Selected", f"You selected:\n{folder}")
+            file_name = os.path.basename(folder)
+            self.addItem(file_name)
         else:
             QMessageBox.warning(self, "No Selection", "No folder was selected.")
 
@@ -74,7 +77,7 @@ class Publish(QWidget):
     def __init__(self):
         super().__init__()         
 
-        ui_file_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/publish_ver4.ui"
+        ui_file_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/publish_ver5.ui"
         ui_file = QFile(ui_file_path)
         ui_file.open(QFile.ReadOnly)
         loader = QUiLoader()                                      
@@ -82,53 +85,49 @@ class Publish(QWidget):
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint) # UI 최상단 고정
         ui_file.close()
 
-        self.make_toolbox()
+        self.setup_file_in_groubBox_from_Dialog()
         self.setup_top_bar()
-        self.setup_nk_file_list()
-        self.setup_exr_file_list()
-        self.setup_mov_file_list()
-
         self.setup_tablewidget_basket()
 
+        self._collect_path()
+
         # Signal
-        self.ui.pushButton_add_to_basket.clicked.connect(self.add_item_tablewidget_basket)
+        self.ui.pushButton_add_to_basket.clicked.connect(self.add_nk_item_tablewidget_basket)
+        self.ui.pushButton_add_to_basket.clicked.connect(self.add_exr_item_tablewidget_basket)
+        self.ui.pushButton_add_to_basket.clicked.connect(self.add_mov_item_tablewidget_basket)
         self.ui.pushButton_version.clicked.connect(self.increase_version_and_save_file)
     
-    def make_toolbox(self):
-        
-        # Remove previous page
-        while self.ui.toolBox.count() > 0:
-            self.ui.toolBox.removeItem(0)
+    def setup_file_in_groubBox_from_Dialog(self):
 
         # nk_page
         nk_page = QWidget()
         layout1 = QVBoxLayout(nk_page)
         nk_file_path = os.path.dirname(nuke.scriptName())
-        nk_file_listwidget = CustomListWidget(start_path = nk_file_path)  # Use custom list widget
-        nk_file_listwidget.setSelectionMode(QListWidget.MultiSelection)    # multi select listwidget_item
-        nk_file_listwidget.setObjectName("nk_file_listwidget")
-        layout1.addWidget(nk_file_listwidget)
-        self.ui.toolBox.addItem(nk_page, "nk")
+        self.nk_file_listwidget = CustomListWidget(start_path = nk_file_path, mode="file")  # Use custom list widget
+        self.nk_file_listwidget.setSelectionMode(QListWidget.MultiSelection)    # multi select listwidget_item
+        self.nk_file_listwidget.setObjectName("nk_file_listwidget")
+        layout1.addWidget(self.nk_file_listwidget)
+        self.ui.groupBox_nk.setLayout(layout1)
 
         # exr_page
         exr_page = QWidget()
         layout2 = QVBoxLayout(exr_page)
         exr_folder_path = nk_file_path.split("work")[0]+"exr/"
-        exr_file_listwidget = CustomListWidget(start_path = exr_folder_path)  # Use custom list widget
-        exr_file_listwidget.setSelectionMode(QListWidget.MultiSelection)   # multi select listwidget_item
-        exr_file_listwidget.setObjectName("exr_file_listwidget")
-        layout2.addWidget(exr_file_listwidget)
-        self.ui.toolBox.addItem(exr_page, "exr")
+        self.exr_file_listwidget = CustomListWidget(start_path = exr_folder_path, mode = "folder")  # Use custom list widget
+        self.exr_file_listwidget.setSelectionMode(QListWidget.MultiSelection)   # multi select listwidget_item
+        self.exr_file_listwidget.setObjectName("exr_file_listwidget")
+        layout2.addWidget(self.exr_file_listwidget)
+        self.ui.groupBox_exr.setLayout(layout2)
 
         # mov_page
         mov_page = QWidget()
         layout3 = QVBoxLayout(mov_page)
         mov_file_path = nk_file_path.split("work")[0]+"mov/"
-        mov_file_listwidget = CustomListWidget(start_path = mov_file_path)  # Use custom list widget
-        mov_file_listwidget.setSelectionMode(QListWidget.MultiSelection)   # multi select listwidget_item
-        mov_file_listwidget.setObjectName("mov_file_listwidget")
-        layout3.addWidget(mov_file_listwidget)
-        self.ui.toolBox.addItem(mov_page, "mov")
+        self.mov_file_listwidget = CustomListWidget(start_path = mov_file_path, mode = "file")  # Use custom list widget
+        self.mov_file_listwidget.setSelectionMode(QListWidget.MultiSelection)   # multi select listwidget_item
+        self.mov_file_listwidget.setObjectName("mov_file_listwidget")
+        layout3.addWidget(self.mov_file_listwidget)
+        self.ui.groupBox_mov.setLayout(layout3)
 
     def setup_top_bar(self):
 
@@ -141,70 +140,18 @@ class Publish(QWidget):
         self.ui.label_shot_code.setText(shot_code)
         self.ui.label_team_name.setText(team_name)
 
-    def setup_nk_file_list(self):
-
-        self.current_file_path = nuke.scriptName()
-        nk_work_folder_path = os.path.dirname(self.current_file_path)
-        self.nk_file_listwidget = self.ui.toolBox.findChild(QListWidget, "nk_file_listwidget")
-        if self.nk_file_listwidget:
-            nk_files = os.listdir(nk_work_folder_path)
-            for nk_file in nk_files:
-                nk_item = QListWidgetItem()
-                nk_item.setText(nk_file)
-                nk_item.setFlags(nk_item.flags() | Qt.ItemIsUserCheckable)
-                nk_item.setCheckState(Qt.Unchecked)
-                self.nk_file_listwidget.addItem(nk_item)
-
-        # Signal
-        self.nk_file_listwidget.itemClicked.connect(self._handle_checkbox_state)
-    
-    def setup_exr_file_list(self):
+    def _collect_path(self):
         
-        self.dev_file_path = self.current_file_path.split("work")[0]
-        self.exr_folder_path = f"{self.dev_file_path}exr/"
-        # if os.path.isdir(self.exr_folder_path):
-        #     pass
-        # else:
-        #     os.makedirs(self.exr_folder_path)
+        self.current_nk_file_path = nuke.scriptName()
+        self.work_path = f"{os.path.dirname(self.current_nk_file_path)}/"
+        self.dev_path = self.work_path.split("work")[0]
+        self.exr_folder_path = f"{self.dev_path}exr/"
+        self.mov_file_path = f"{self.dev_path}mov/"
 
-        self.exr_file_listwidget = self.ui.toolBox.findChild(QListWidget, "exr_file_listwidget")
-        if self.exr_file_listwidget:
-            exr_folders = os.listdir(self.exr_folder_path)         # exr은 폴더기준으로
-            for exr_folder in exr_folders:
-                exr_item = QListWidgetItem()
-                exr_item.setText(exr_folder)
-                exr_item.setFlags(exr_item.flags() | Qt.ItemIsUserCheckable)
-                exr_item.setCheckState(Qt.Unchecked)
-                self.exr_file_listwidget.addItem(exr_item)
-
-        # Signal
-        self.exr_file_listwidget.itemClicked.connect(self._handle_checkbox_state)
-
-    def setup_mov_file_list(self):
-
-        self.dev_file_path = self.current_file_path.split("work")[0]   # dev_dir path
-        self.mov_folder_path = f"{self.dev_file_path}mov/"
-        if not os.path.isdir(self.mov_folder_path):
-            os.makedirs(self.mov_folder_path)
-
-        self.mov_file_listwidget = self.ui.toolBox.findChild(QListWidget, "mov_file_listwidget")
-        if self.mov_file_listwidget:
-            mov_file_names = os.listdir(self.mov_folder_path)
-            for mov_file_name in mov_file_names:
-                mov_item = QListWidgetItem(mov_file_name)
-                mov_item.setFlags(mov_item.flags() | Qt.ItemIsUserCheckable)
-                mov_item.setCheckState(Qt.Unchecked)
-                self.mov_file_listwidget.addItem(mov_item)
-
-        # Signal
-        self.mov_file_listwidget.itemClicked.connect(self._handle_checkbox_state)
-
-    def _handle_checkbox_state(self, item):
-
-        if item.checkState() == Qt.Unchecked:
-            item.setCheckState(Qt.Checked)
-        else:
-            item.setCheckState(Qt.Unchecked)
+        print(self.work_path)
+        print(self.dev_path)
+        print(self.exr_folder_path)
+        print(self.mov_file_path)
 
 #===================================================================
 
@@ -218,7 +165,11 @@ class Publish(QWidget):
         for row in range(row_count):
             self.ui.tableWidget_basket.setRowHeight(row, height)
 
-    def add_item_tablewidget_basket(self):
+        self.add_nk_item_tablewidget_basket()
+        self.add_exr_item_tablewidget_basket()
+        self.add_mov_item_tablewidget_basket()
+
+    def add_nk_item_tablewidget_basket(self):
         
         ### nk item ###
         nk_selected_files = self.nk_file_listwidget.selectedItems()
@@ -234,6 +185,7 @@ class Publish(QWidget):
             nk_validation_info.setTextAlignment(Qt.AlignLeft | Qt.AlignTop) # 왼쪽 정렬, 위쪽 정렬
             self.ui.tableWidget_basket.setItem(0, 1, nk_validation_info)
 
+    def add_exr_item_tablewidget_basket(self):
 
         ### exr item ###
         exr_selected_folders = self.exr_file_listwidget.selectedItems()
@@ -248,11 +200,13 @@ class Publish(QWidget):
             for file in exr_files:
                 self.exr_full_path = f"{exr_file_path}/{file}"
 
-            exr_validation_info_dict = self._get_exr_and_mov_validation_info(self.exr_full_path)
-            exr_info_text = "\n".join(f"{key} : {value}" for key, value in exr_validation_info_dict.items())
-            exr_validation_info = QTableWidgetItem(exr_info_text)
-            exr_validation_info.setTextAlignment(Qt.AlignLeft | Qt.AlignTop) # 왼쪽 정렬, 위쪽 정렬
-            self.ui.tableWidget_basket.setItem(1, 1, exr_validation_info)
+                exr_validation_info_dict = self._get_exr_and_mov_validation_info(self.exr_full_path)
+                exr_info_text = "\n".join(f"{key} : {value}" for key, value in exr_validation_info_dict.items())
+                exr_validation_info = QTableWidgetItem(exr_info_text)
+                exr_validation_info.setTextAlignment(Qt.AlignLeft | Qt.AlignTop) # 왼쪽 정렬, 위쪽 정렬
+                self.ui.tableWidget_basket.setItem(1, 1, exr_validation_info)
+
+    def add_mov_item_tablewidget_basket(self):
 
         ### mov item ###
         mov_selected_files = self.mov_file_listwidget.selectedItems()
@@ -262,16 +216,13 @@ class Publish(QWidget):
             mov_item.setText(mov_selected_file)
             self.ui.tableWidget_basket.setItem(2, 0, mov_item)
 
-            mov_new_path = f"{self.mov_folder_path}{mov_selected_file}"
+            mov_new_path = f"{self.mov_file_path}{mov_selected_file}"
         
             mov_validation_info_dict = self._get_exr_and_mov_validation_info(mov_new_path)
             mov_info_item = "\n".join(f"{key} : {value}" for key, value in mov_validation_info_dict.items())
             mov_validation_info = QTableWidgetItem(mov_info_item)
             mov_validation_info.setTextAlignment(Qt.AlignLeft | Qt.AlignTop) # 왼쪽 정렬, 위쪽 정렬
             self.ui.tableWidget_basket.setItem(2, 1, mov_validation_info)
-
-        # print(nk_new_path)
-        # return nk_new_path
 
     def _get_nk_validation_info(self):
 
@@ -369,21 +320,35 @@ class Publish(QWidget):
     #     nuke.delete(reformat_node)
 
 #==================================================================
-    
-    def _make_version_path(self):
+    def _make_new_version_path(self):
+        """
+        1.로컬패스를 /로 split 한다.
+        2.project인자를 찾는다
+        3.그 다음오는 인자는 project_name
+        4.서버패스에서 같은 project_name을 찾는다
+         
+        """
+        
+        start_path = ""
+
+
+    def _make_new_version_path(self):
         table_items = self.ui.tableWidget_basket.selectedItems()
 
         path = []
         for item in table_items:
             if item:
                 nk_item_text = self.ui.tableWidget_basket.item(0, 0).text()
-                nk_path = f"{os.path.dirname(self.current_file_path)}/{nk_item_text}"
+                nk_path = f"{self.work_path}{nk_item_text}"
+                print(nk_path)
                 
                 exr_item_text = self.ui.tableWidget_basket.item(1, 0).text()
                 exr_path = f"{self.exr_folder_path}{exr_item_text}"
+                print(exr_path)
                 
                 mov_item_text = self.ui.tableWidget_basket.item(2, 0).text()
-                mov_path = f"{self.mov_folder_path}{mov_item_text}"
+                mov_path = f"{self.mov_file_path}{mov_item_text}"
+                print(mov_path)
                 
             else:
                 print("아이템이 없습니다.")
@@ -396,7 +361,7 @@ class Publish(QWidget):
         """
         파일 경로 받아서 버전업시키고 save하는 함수
         """
-        paths = self._make_version_path()
+        paths = self._make_new_version_path()
 
         for path in paths:
             base, ext = os.path.splitext(path)
@@ -438,11 +403,11 @@ class Publish(QWidget):
                     # print(exr_new_path)
                     shutil.copy2(current_path, exr_new_path)
 
-    def copy_file_to_pub(self):
-        nk_file
-        exr_file
-        mov_file
-        shutil.copy2()
+    # def copy_file_to_pub(self):
+    #     nk_file
+    #     exr_file
+    #     mov_file
+    #     shutil.copy2()
 
     #=========================================================
     # def copy_selected_files_to_pub(self):
