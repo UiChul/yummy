@@ -1,36 +1,45 @@
-# # new_path = []
-# # nk_new_path = "a"
-# # exr_new_path = "b"
-# # mov_new_path = "c"
-# # new_path.extend([nk_new_path, exr_new_path, mov_new_path])
+try:
+    from PySide6.QtWidgets import QApplication, QWidget, QTableWidgetItem, QListWidgetItem, QListWidget, QHBoxLayout, QVBoxLayout, QFileDialog
+    from PySide6.QtUiTools import QUiLoader
+    from PySide6.QtCore import QFile
+    from PySide6.QtGui import  Qt, QPixmap
 
-# # print(new_path)
+except:
+    from PySide2.QtWidgets import QApplication, QWidget, QTableWidgetItem, QListWidgetItem, QListWidget, QHBoxLayout, QVBoxLayout, QFileDialog
+    from PySide2.QtUiTools import QUiLoader
+    from PySide2.QtCore import QFile
+    from PySide2.QtGui import  Qt, QPixmap
 
-# import re
+import os
+import re
+# import nuke
+import ffmpeg
+import shutil
+# import functools
 
-# # a = os.path.basename("C:/Users/LEE JIYEON/Desktop/YUMMY/project/Marvelous/seq/OPN/OPN_0010/cmp/dev/work")
-# # print(a)
-# base = "C:/Users/LEE JIYEON/Desktop/YUMMY/project/Marvelous/seq/OPN/OPN_0010/cmp/dev/work/test0825_v002"
-# version_pattern = re.compile("v\d{3}")
-# match = version_pattern.search(base)
-# # print(match)
-# current_version = match.group(0)
-# new_number = int(current_version[1:]) + 1
-# new_version = f"v{new_number:03}"   # 현재 버전 번호가 존재하면 버전 번호를 증가
-# print(new_number)
-# print(new_version)
+class Publish(QWidget):
 
-# a = base.replace(current_version, new_version)
+    def __init__(self):
+        super().__init__()         
 
-# print(a)
+        ui_file_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/publish_ver4.ui"
+        ui_file = QFile(ui_file_path)
+        ui_file.open(QFile.ReadOnly)
+        loader = QUiLoader()                                      
+        self.ui = loader.load(ui_file, self)
+        self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint) # UI 최상단 고정
+        ui_file.close()
+
+        
+        file_tuple = QFileDialog.getOpenFileName(self, "import file", "C:/Users/LEE JIYEON/Desktop/YUMMY/project/Marvelous/seq/OPN/OPN_0010/cmp/dev/work", "nk File(*.nknc)")
+        # file_tuple = QFileDialog.getOpenFileName(self, "import json file","/home/rapa/show/insideout2/seq/OPN/OPN_0100/comp/plate") 
+        self.seq_path = file_tuple[0]
+        QFileDialog.getExistingDirectory
 
 
-# import shutil
-# original = "C:/Users/LEE JIYEON/Desktop/YUMMY/project/Marvelous/seq/OPN/OPN_0010/cmp/dev/source/mov/test_v002.mov"
-# change = "C:/Users/LEE JIYEON/Desktop/YUMMY/project/Marvelous/seq/OPN/OPN_0010/cmp/dev/source/mov/test_v003.mov"
-# shutil.copy2(original, change)
-
-base = "work/"
-file = "abc.ext"
-
-print(base+file)
+    
+if __name__ == "__main__":
+    app = QApplication()
+    win = Publish()
+    win.show()
+    app.exec()
