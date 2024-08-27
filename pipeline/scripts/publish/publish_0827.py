@@ -18,6 +18,7 @@ except:
 import os
 import re
 import nuke
+import json
 import ffmpeg
 import shutil
 # import functools
@@ -95,8 +96,9 @@ class Publish(QWidget):
         self.ui.pushButton_add_to_basket.clicked.connect(self.add_nk_item_tablewidget_basket)
         self.ui.pushButton_add_to_basket.clicked.connect(self.add_exr_item_tablewidget_basket)
         self.ui.pushButton_add_to_basket.clicked.connect(self.add_mov_item_tablewidget_basket)
-        self.ui.pushButton_version.clicked.connect(self.increase_version_and_save_file)
-    
+        # self.ui.pushButton_version.clicked.connect(self.increase_version_in_local)
+        self.ui.pushButton_version.clicked.connect(self.copy_to_server)
+
     def setup_file_in_groubBox_from_Dialog(self):
 
         # nk_page
@@ -148,10 +150,10 @@ class Publish(QWidget):
         self.exr_folder_path = f"{self.dev_path}exr/"
         self.mov_file_path = f"{self.dev_path}mov/"
 
-        print(self.work_path)
-        print(self.dev_path)
-        print(self.exr_folder_path)
-        print(self.mov_file_path)
+        # print(self.work_path)
+        # print(self.dev_path)
+        # print(self.exr_folder_path)
+        # print(self.mov_file_path)
 
 #===================================================================
 
@@ -274,6 +276,237 @@ class Publish(QWidget):
             return file_validation_info_dict
 
 #==================================================================
+    """
+    version up
+    """
+    def increase_version_in_local(self):
+        """
+        파일 경로 받아서 버전업시키고 save하는 함수
+        """
+        local_paths = self._find_local_path()
+
+        ver_up_local_paths = []
+        for local_path in local_paths:
+            base, ext = os.path.splitext(local_path)
+            version_pattern = re.compile("v\d{3}")
+            match = version_pattern.search(base)
+            current_version = match.group(0)
+            new_number = int(current_version[1:]) + 1
+            new_version = f"v{new_number:03}"   # 현재 버전 번호가 존재하면 버전 번호를 증가
+            new_base = base.replace(current_version, new_version)
+
+            if ext == ".nknc":
+                nk_version_up_path = f"{new_base}{ext}"
+                ver_up_local_paths.append(nk_version_up_path)
+                # print(nk_version_up_path)
+                # nuke.scriptSaveAs(nk_version_up_path)
+                print("nk file이 version-up 되었습니다.")
+
+            elif ext == ".mov":
+                mov_version_up_path = f"{new_base}{ext}"
+                ver_up_local_paths.append(mov_version_up_path)
+                # print(mov_version_up_path)
+                # shutil.copy2(base+ext, mov_version_up_path)
+                print("mov file이 version-up 되었습니다.")
+
+            else:
+                new_ver_folder = new_base
+                os.makedirs(new_ver_folder)
+                # print(base)
+                exr_files = os.listdir(base)
+                # print(exr_files)
+                for exr_file in exr_files:
+                    current_path = f"{base}/{exr_file}"
+                    # print(current_path)
+                    new_ver_folder_path = f"{new_ver_folder}/{exr_file}"
+                    # print(new_ver_folder_path)
+                    match = version_pattern.search(exr_file)
+                    exr_current_version = match.group(0)
+                    exr_new_number = int(exr_current_version[1:]) + 1
+                    exr_new_version = f"v{exr_new_number:03}"   # 현재 버전 번호가 존재하면 버전 번호를 증가
+                    exr_version_up_path = new_ver_folder_path.replace(exr_current_version, exr_new_version)
+                    ver_up_local_paths.append(exr_version_up_path)
+                    # print(exr_version_up_path)
+                    shutil.copy2(current_path, exr_version_up_path)
+        return ver_up_local_paths
+
+    def _find_local_path(self):
+
+        table_items = self.ui.tableWidget_basket.selectedItems()
+
+        local_path = []
+        for item in table_items:
+            if item:
+                nk_item_text = self.ui.tableWidget_basket.item(0, 0).text()
+                nk_local_path = f"{self.work_path}{nk_item_text}"
+                
+                exr_item_text = self.ui.tableWidget_basket.item(1, 0).text()
+                exr_local_path = f"{self.exr_folder_path}{exr_item_text}"
+                
+                mov_item_text = self.ui.tableWidget_basket.item(2, 0).text()
+                mov_local_path = f"{self.mov_file_path}{mov_item_text}"
+                
+            else:
+                print("아이템이 없습니다.")
+            
+        local_path.extend([nk_local_path, exr_local_path, mov_local_path])
+
+        return local_path
+    
+    def copy_to_server_from_local(self):
+
+        ver_up_local_paths = self.increase_version_in_local()
+        server_paths = self._find_server_full_path()
+
+        for server_path in server_paths:
+            base, ext = os.path.splitext(server_path)
+            print(base)
+            shutil.copy2(base+ext, version_up_path)
+
+            # if ext == ".nknc":
+            #     version_up_path = f"{new_base}{ext}"
+            #     # print(version_up_path)
+            #     # nuke.scriptSaveAs(version_up_path)
+            #     print("nk file이 version-up 되었습니다.")
+
+            # elif ext == ".mov":
+            #     version_up_path = f"{new_base}{ext}"
+            #     # print(version_up_path)
+            #     # shutil.copy2(base+ext, version_up_path)
+            #     print("mov file이 version-up 되었습니다.")
+
+            # else:
+            #     new_ver_folder = new_base
+            #     os.makedirs(new_ver_folder)
+            #     # print(base)
+            #     exr_files = os.listdir(base)
+            #     # print(exr_files)
+            #     for exr_file in exr_files:
+            #         current_path = f"{base}/{exr_file}"
+            #         # print(current_path)
+            #         new_ver_folder_path = f"{new_ver_folder}/{exr_file}"
+            #         # print(new_ver_folder_path)
+            #         match = version_pattern.search(exr_file)
+            #         exr_current_version = match.group(0)
+            #         exr_new_number = int(exr_current_version[1:]) + 1
+            #         exr_new_version = f"v{exr_new_number:03}"   # 현재 버전 번호가 존재하면 버전 번호를 증가
+            #         version_up_path = new_ver_folder_path.replace(exr_current_version, exr_new_version)
+            #         # print(version_up_path)
+            #         shutil.copy2(current_path, version_up_path)
+
+    
+    def _find_server_seq_path(self):
+        """Finds the matching folder and updates the UI."""
+
+        json_file_path = 'C:/home/rapa/YUMMY/pipeline/json/project_data.json'
+        path_finder = PathFinder(json_file_path)
+
+        start_path = ' C:/home/rapa/YUMMY/project'
+
+        # Get the new path
+        server_project_path = path_finder.append_project_to_path(start_path)
+        server_seq_path = f"{server_project_path}seq/"
+        # print(server_seq_path)
+
+        return server_seq_path
+    
+    def _find_server_full_path(self):
+        """
+        파일 이름에서 shot name/shot code/team name 가져올수잇음
+        """
+        nk_file_name = self.ui.tableWidget_basket.item(0, 0).text()
+        exr_v_folder_name = self.ui.tableWidget_basket.item(1, 0).text()
+        mov_file_name = self.ui.tableWidget_basket.item(2, 0).text()
+
+        seq_name = nk_file_name.split("_")[0]
+        code = nk_file_name.split("_")[1]
+        shot_code = f"{seq_name}_{code}"
+        team_name = nk_file_name.split("_")[2]
+
+        seq_path = self._find_server_seq_path()
+
+        server_full_path = []
+        nk_server_full_path = f"{seq_path}{seq_name}/{shot_code}/{team_name}/dev/work/{nk_file_name}"
+        exr_server_full_path = f"{seq_path}{seq_name}/{shot_code}/{team_name}/dev/exr/{exr_v_folder_name}"
+        mov_server_full_path = f"{seq_path}{seq_name}/{shot_code}/{team_name}/dev/mov/{mov_file_name}"
+            
+        server_full_path.extend([nk_server_full_path, exr_server_full_path, mov_server_full_path])
+
+        return server_full_path
+
+    #=========================================================
+    # def copy_selected_files_to_pub(self):
+    #     # Get selected items
+    #     selected_items = self.tableWidget.selectedItems()
+    #     if not selected_items:
+    #         print("No files selected.")
+    #         return
+
+    #     # Ask user for destination folder
+    #     destination_folder = QFileDialog.getExistingDirectory(self, "Select Destination Folder")
+    #     if not destination_folder:
+    #         print("No destination folder selected.")
+    #         return
+
+    #     for item in selected_items:
+    #         file_name = item.text()
+    #         source_path = os.path.join(os.getcwd(), file_name)  # Example source path, replace with actual path
+    #         destination_path = os.path.join(destination_folder, file_name)
+
+    #         # Copy file to destination
+    #         if os.path.exists(source_path):
+    #             shutil.copy(source_path, destination_path)
+    #             print(f"Copied {file_name} to {destination_folder}")
+    #         else:
+    #             print(f"Source file {source_path} does not exist.")
+    
+
+class PathFinder:
+
+    def __init__(self, json_file_path):
+        self.json_file_path = json_file_path
+        self.key = 'project'
+        self.json_data = self._read_paths_from_json()
+
+    def _read_paths_from_json(self):
+        """Reads the JSON file and returns the data."""
+        try:
+            with open(self.json_file_path, 'r', encoding='utf-8') as file:
+                data = json.load(file)
+            return data
+        except FileNotFoundError:
+            print(f"Error: The file {self.json_file_path} was not found.")
+            return {}
+        except json.JSONDecodeError:
+            print("Error: The JSON file could not be decoded.")
+            return {}
+        except UnicodeDecodeError:
+            print("Error: The file encoding is not correct. Please check the file encoding.")
+            return {}
+
+    def append_project_to_path(self, start_path):
+        """Finds the folder in the JSON data that matches the basename of start_path."""
+        # Check if the specified key exists in the JSON data
+        if self.key not in self.json_data:
+            print(f"Error: Key '{self.key}' not found in the JSON data.")
+            return None
+
+        # Get the project value
+        project_value = self.json_data[self.key]
+        # print(project_value)
+        
+        # Ensure start_path does not end with a separator
+        start_path = start_path.rstrip(os.sep)
+        # print(start_path)
+        
+        # Append the project value to the start_path
+        new_path = f"{start_path}/{project_value}/"
+        # print(new_path)
+        
+        return new_path
+
+
+#==================================================================
 
     # def display_thumbnail(self):
 
@@ -318,123 +551,6 @@ class Publish(QWidget):
     #     # clean up
     #     nuke.delete(write_node)
     #     nuke.delete(reformat_node)
-
-#==================================================================
-    def _make_new_version_path(self):
-        """
-        1.로컬패스를 /로 split 한다.
-        2.project인자를 찾는다
-        3.그 다음오는 인자는 project_name
-        4.서버패스에서 같은 project_name을 찾는다
-         
-        """
-        
-        start_path = ""
-
-
-    def _make_new_version_path(self):
-        table_items = self.ui.tableWidget_basket.selectedItems()
-
-        path = []
-        for item in table_items:
-            if item:
-                nk_item_text = self.ui.tableWidget_basket.item(0, 0).text()
-                nk_path = f"{self.work_path}{nk_item_text}"
-                print(nk_path)
-                
-                exr_item_text = self.ui.tableWidget_basket.item(1, 0).text()
-                exr_path = f"{self.exr_folder_path}{exr_item_text}"
-                print(exr_path)
-                
-                mov_item_text = self.ui.tableWidget_basket.item(2, 0).text()
-                mov_path = f"{self.mov_file_path}{mov_item_text}"
-                print(mov_path)
-                
-            else:
-                print("아이템이 없습니다.")
-            
-        path.extend([nk_path, exr_path, mov_path])
-
-        return path
-    
-    def increase_version_and_save_file(self):
-        """
-        파일 경로 받아서 버전업시키고 save하는 함수
-        """
-        paths = self._make_new_version_path()
-
-        for path in paths:
-            base, ext = os.path.splitext(path)
-            version_pattern = re.compile("v\d{3}")
-            match = version_pattern.search(base)
-            current_version = match.group(0)
-            new_number = int(current_version[1:]) + 1
-            new_version = f"v{new_number:03}"   # 현재 버전 번호가 존재하면 버전 번호를 증가
-            new_base = base.replace(current_version, new_version)
-
-            if ext == ".nknc":
-                new_file_path = f"{new_base}{ext}"
-                # print(new_file_path)
-                nuke.scriptSaveAs(new_file_path)
-                print("nk file이 version-up 되었습니다.")
-
-            elif ext == ".mov":
-                new_file_path = f"{new_base}{ext}"
-                # print(new_file_path)
-                shutil.copy2(base+ext, new_file_path)
-                print("mov file이 version-up 되었습니다.")
-
-            else:
-                new_folder_path = new_base
-                os.makedirs(new_folder_path)
-                # print(base)
-                exr_files = os.listdir(base)
-                # print(exr_files)
-                for exr_file in exr_files:
-                    current_path = f"{base}/{exr_file}"
-                    # print(current_path)
-                    file_path = f"{new_folder_path}/{exr_file}"
-                    # print(file_path)
-                    match = version_pattern.search(exr_file)
-                    exr_current_version = match.group(0)
-                    exr_new_number = int(exr_current_version[1:]) + 1
-                    exr_new_version = f"v{exr_new_number:03}"   # 현재 버전 번호가 존재하면 버전 번호를 증가
-                    exr_new_path = file_path.replace(exr_current_version, exr_new_version)
-                    # print(exr_new_path)
-                    shutil.copy2(current_path, exr_new_path)
-
-    # def copy_file_to_pub(self):
-    #     nk_file
-    #     exr_file
-    #     mov_file
-    #     shutil.copy2()
-
-    #=========================================================
-    # def copy_selected_files_to_pub(self):
-    #     # Get selected items
-    #     selected_items = self.tableWidget.selectedItems()
-    #     if not selected_items:
-    #         print("No files selected.")
-    #         return
-
-    #     # Ask user for destination folder
-    #     destination_folder = QFileDialog.getExistingDirectory(self, "Select Destination Folder")
-    #     if not destination_folder:
-    #         print("No destination folder selected.")
-    #         return
-
-    #     for item in selected_items:
-    #         file_name = item.text()
-    #         source_path = os.path.join(os.getcwd(), file_name)  # Example source path, replace with actual path
-    #         destination_path = os.path.join(destination_folder, file_name)
-
-    #         # Copy file to destination
-    #         if os.path.exists(source_path):
-    #             shutil.copy(source_path, destination_path)
-    #             print(f"Copied {file_name} to {destination_folder}")
-    #         else:
-    #             print(f"Source file {source_path} does not exist.")
-    
 
 if __name__ == "__main__":
     app = QApplication()
