@@ -1,0 +1,210 @@
+from PySide6.QtWidgets import QApplication, QTableWidget, QLabel, QVBoxLayout, QWidget, QHeaderView, QGridLayout
+from PySide6.QtCore import Qt, QMimeData, QSize
+from PySide6.QtGui import QDrag, QPixmap, QCursor
+import os
+import sys
+
+try:
+    import nuke
+except ImportError:
+    nuke = None 
+
+class DraggableWidget(QWidget):
+    def __init__(self, file_path, image_path, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # 이미지와 라벨이 들어갈 레이아웃
+        layout = QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
+        self.setLayout(layout)
+
+        # 이미지 라벨
+        self.image_label = QLabel()
+        pixmap = QPixmap(image_path)
+        
+        # 이미지 크기 조절
+        desired_size = QSize(260, 135)  # 원하는 크기 (너비, 높이)
+        scaled_pixmap = pixmap.scaled(desired_size, Qt.AspectRatioMode.KeepAspectRatioByExpanding, 
+                                      Qt.TransformationMode.SmoothTransformation)
+        
+        self.image_label.setPixmap(scaled_pixmap)
+        self.image_label.setAlignment(Qt.AlignCenter)
+        self.image_label.setFixedSize(desired_size)  # QLabel 크기를 고정
+        self.image_label.setScaledContents(True)  # 이미지가 QLabel에 맞게 조정되도록 설정
+        layout.addWidget(self.image_label)
+
+        # 드래그 가능한 라벨(이미지 라벨과 함께 동작함)
+        self.draggable_label = QLabel(os.path.basename(file_path))
+        self.draggable_label.setAlignment(Qt.AlignCenter | Qt.AlignBottom)
+        self.draggable_label.setFixedSize(260, 20)
+        self.draggable_label.setStyleSheet(
+                                           "font: 10pt;"
+                                           )
+        layout.addWidget(self.draggable_label)
+
+        self.file_path = file_path
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            drag = QDrag(self)
+            mime_data = QMimeData()
+            mime_data.setText(self.file_path)  # Store file path in QMimeData
+            drag.setMimeData(mime_data)
+
+            # Set the drag cursor
+            drag.setHotSpot(event.pos())
+            drag.setPixmap(self.image_label.pixmap())
+            drag.exec_(Qt.CopyAction | Qt.MoveAction)
+
+            # Change cursor shape to indicate drag operation
+            QApplication.setOverrideCursor(QCursor(Qt.DragCopyCursor))
+        else:
+            super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            # Restore the cursor shape
+            QApplication.restoreOverrideCursor()
+        super().mouseReleaseEvent(event)
+        
+class DroppableTableWidget(QTableWidget):
+    def __init__(self, rows, columns, *args, **kwargs):
+        super().__init__(rows, columns, *args, **kwargs)
+        self.setAcceptDrops(True)
+        self.setSelectionMode(QTableWidget.MultiSelection) 
+        self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.setSizeAdjustPolicy(QTableWidget.AdjustToContents)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.horizontalHeader().setVisible(False)
+        self.verticalHeader().setVisible(False)
+
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasText():
+            event.acceptProposedAction()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        if event.mimeData().hasText():
+            text = event.mimeData().text()
+            if nuke:
+                self.apply_to_nuke(text)
+            event.acceptProposedAction()
+        else:
+            event.ignore()
+
+    def apply_to_nuke(self, text):
+        if nuke:
+            # 누크에서 리드 노드를 찾아서 추가, 리드 노드가 없다면 만들기
+            read_nodes = [node for node in nuke.allNodes() if node.Class() == "Read"]
+            if read_nodes:
+                read_node = read_nodes[0]  # Use the first Read node found
+            else:
+                read_node = nuke.createNode('Read')
+
+            # 리드 노드의 'file'에 mime 데이터로 넘어오는 파일 패스 전달
+            read_node['file'].setValue(text)
+
+            # viewer로 연결
+            nuke.connectViewer(0, read_node)
+
+            if not read_nodes:
+                nuke.message("A new Read node has been created and configured.")
+
+class LibraryLoader(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.set_up() #pyside UI 불러오기
+
+        # Main layout setup
+        layout = QVBoxLayout()
+        layout.setAlignment(Qt.AlignCenter)
+        self.setLayout(layout)
+
+        # clip 테이블 위젯을 드래그&드랍 테이블 위젯으로 지정
+        self.table_widget = DroppableTableWidget(3, 3)  # Initial size, will adjust dynamically
+        self.table_widget.setMinimumSize(500, 400)
+
+        # clip 테이블 위젯을 ui에서 만들어진 layout에 삽입
+        if hasattr(self.ui, 'gridLayout_clip'):
+            self.ui.gridLayout_clip.addWidget(self.table_widget, 0, 0)  # Add at position (0, 0)
+
+        # mov와 썸네일 이미지 로드
+        self.load_mov_files("/home/rapa/YUMMY/project/Marvelous/template/shot/clip_lib", "/home/rapa/YUMMY/project/Marvelous/template/shot/clip_lib/clip_thumbnail")
+
+    def load_mov_files(self, folder_path, image_path):
+        """
+        Load all .mov files from the given folder path into the table widget,
+        and set images from the image_path folder.
+        """
+        # mov 파일 리스트를 리스트로 저장
+        mov_files = []
+        for f in os.listdir(folder_path):
+            if f.endswith('.mov'):
+                base_name = os.path.splitext(f)[0]
+                mov_files.append((base_name, f))
+
+        # 리스트를 파일 이름 순으로 정렬
+        mov_files.sort(key=lambda x: x[0])
+
+        # 썸네일 이미지 파일 리스트를 딕셔너리로 저장
+        images = {}
+        for f in os.listdir(image_path):
+            if f.lower().endswith(('.png', '.jpg', '.jpeg')):
+                base_name = os.path.splitext(f)[0]
+                images[base_name] = f
+
+        # 공통된 파일 이름을 담을 리스트 초기화
+        common_keys = []
+        
+        # mov_files에서 base_name을 하나씩 확인하여 images에 존재하는지 확인
+        for base_name, _ in mov_files:
+            if base_name in images:
+                common_keys.append(base_name)
+
+        # 불러오는 파일 갯수에 맞게 테이블 셋업
+        rows = (len(common_keys) // 3) + (1 if len(common_keys) % 3 else 0)
+        self.table_widget.setRowCount(rows)
+        self.table_widget.setColumnCount(3)
+
+        # 드래그 가능한 위젯 안에 내용 채우기
+        for index, base_name in enumerate(common_keys):
+            row = index // 3
+            col = index % 3
+            
+            # mov_file 찾기
+            mov_file = None
+            for name, file in mov_files:
+                if name == base_name:
+                    mov_file = file
+                    break
+            
+            # image_file 찾기
+            image_file = images[base_name]
+
+            file_path = os.path.join(folder_path, mov_file)
+            image_file_path = os.path.join(image_path, image_file)
+
+            # 셀 위젯 만들기
+            draggable_widget = DraggableWidget(file_path, image_file_path)
+            self.table_widget.setCellWidget(row, col, draggable_widget)
+
+    def set_up(self):
+        from main_window_v002_ui import Ui_Form
+        self.ui = Ui_Form()
+        self.ui.setupUi(self)
+        
+if __name__ == '__main__':
+    app = QApplication.instance()  # QApplication이 실행되고 있는지 체크
+    if not app:
+        app = QApplication(sys.argv)
+
+    window = LibraryLoader()
+    window.show()
+
+    sys.exit(app.exec())
