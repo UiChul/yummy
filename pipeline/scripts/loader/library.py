@@ -1,26 +1,18 @@
 
+from PySide6.QtWidgets import QWidget, QHeaderView, QFileDialog, QTableWidget, QLabel
+from PySide6.QtWidgets import QVBoxLayout, QLabel, QApplication, QTableWidgetItem
+from PySide6.QtWidgets import QAbstractItemView
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import QFile, QMimeData, QUrl, Qt
+from PySide6.QtCore import Qt, QByteArray, QDataStream, QIODevice, QEvent
+from PySide6.QtGui import QPixmap, Qt, QDrag, QClipboard
+
 try:
-    # from PySide6.QtCore import Qt
-    from PySide6.QtWidgets import QWidget,QHeaderView,QFileDialog
-    from PySide6.QtWidgets import QVBoxLayout, QTableWidgetItem, QLabel, QApplication
-    from PySide6.QtWidgets import QAbstractItemView
-    from PySide6.QtUiTools import QUiLoader
-    from PySide6.QtCore import QFile, QMimeData, QUrl
-    from PySide6.QtGui import QPixmap, Qt, QDrag
-
-except:
-    # from PySide2.QtCore import Qt
-    from PySide2.QtWidgets import QWidget,QHeaderView,QFileDialog
-    from PySide2.QtWidgets import QVBoxLayout, QTableWidgetItem, QLabel, QApplication
-    from PySide2.QtWidgets import QAbstractItemView
-    from PySide2.QtUiTools import QUiLoader
-    from PySide2.QtCore import QFile, QMimeData, QUrl
-    from PySide2.QtGui import QPixmap, Qt, QDrag
-    # from PySide2.QtCore import (QCoreApplication, QDate, QDateTime, QLocale, ...)
-
     import nuke
+except ImportError:
+    nuke = None
 
-    from nukescripts import addDropDataCallback
+    # from nukescripts import addDropDataCallback
 
 import os, sys
 import json
@@ -39,11 +31,12 @@ class LibraryLoader(QWidget):
         self.user = info["name"]
         
         
-        self.clip_table = self.ui.tableWidget_clip_files
+        # self.clip_table = self.ui.tableWidget_clip_files
 
+        self.asset_paths = {"mod" : None, "rig": None}
         
         self.set_user_information()
-        self.set_clip_files_text_table()
+        # self.set_clip_files_text_table()
 
  
         # comboBox 일단 비활성화 해놓음
@@ -51,17 +44,15 @@ class LibraryLoader(QWidget):
 
         self.set_asset_listWidget("Character")
         self.set_asset_type_comboBox()
-
+        self.set_tableWidget()
+        self.input_asset_tableWidget_mod()
+        self.input_asset_tableWidget_rig()
 
         
         #Signal
         self.ui.comboBox_asset_type.currentTextChanged.connect(self.set_asset_listWidget)
-        # self.clip_table.itemClicked.connect(self.set_clip_files_text_table)
-        # self.clip_table.itemClicked.connect(self.import_clip_file_to_nuke)
-        # self.ui.pushButton_clip_file_nuke.clicked.connect(self.open_file_window)
-        self.ui.listWidget_mod.itemClicked.connect(self.set_asset_tableWidget)
-        self.ui.listWidget_rig.itemClicked.connect(self.set_asset_tableWidget)
-        # self.ui.listWidget_temp.itemClicked.connect(self.set_asset_tableWidget)
+        self.ui.tableWidget_mod.cellClicked.connect(self.output_asset_path_tableWidget)
+        self.ui.tableWidget_rig.cellClicked.connect(self.output_asset_path_tableWidget)
 
         # self.clip_table.itemClicked.connect(self.open_file_window)
 
@@ -79,311 +70,331 @@ class LibraryLoader(QWidget):
     """
     asset(cache)
     """
-    # def set_asset_type_comboBox (self):
-    #     self.ui.comboBox_asset_type.clear()
-    #     asset_type_path = f"/home/rapa/YUMMY/project/{self.project}/asset"
-    #     asset_type_list = os.listdir(asset_type_path)
-    #     self.ui.comboBox_asset_type.addItems(asset_type_list)
 
-    #     return asset_type_path
-
-    def open_json_file (self):
-        json_file_path = '/home/rapa/YUMMY/pipeline/json/open_loader_datas.json'
-        with open(json_file_path,encoding='UTF-8') as file:
-            datas = json.load(file)
-
-            json_assets = datas['assets_with_versions']
-
-        return json_assets
-    
-    def set_asset_type_comboBox(self):
-        self.ui.comboBox_asset_type.clear()
-        
-        jsons = self.open_json_file()
-        # print(jsons)
-        result = []
-        for json in jsons:
-            asset_type = json["asset_info"]["asset_type"]
-            result.append(asset_type)
-
-        asset_type_list = list(set(result))
-        asset_type_list.sort()
-
-        self.ui.comboBox_asset_type.addItems(asset_type_list)
-
-        # print(asset_type_list)
-        return asset_type_list
-    
-            
-
-    
-    def set_asset_listWidget(self,clicked_asset_type = ""):
-
-        asset_type = self.ui.comboBox_asset_type.currentText()
-        self.ui.listWidget_mod.clear()
-        self.ui.listWidget_rig.clear()
-
-
-
-        # print (clicked_asset_type)
-
-        jsons = self.open_json_file()
-        for json in jsons:
-            asset_name = json["asset_info"]["asset_name"]
-            asset_path = json["asset_info"]["asset_path"]
-            self.task_step = None
-            
-            task_details_dict = json["asset_info"]["task_details"]
-
-            task_step = []
-
-            if task_details_dict:
-                for task_details in task_details_dict:
-                    task_step.append(task_details["task_step"])
-                # print ("step =" ,asset_name,task_step)
-
-            if clicked_asset_type == json["asset_info"]["asset_type"]:
-                if "mod" in task_step:
-                    # print ("asset=",asset_name)
-                    self.ui.listWidget_mod.addItem(asset_name)
-                    mod_full_path = asset_path + "/" + asset_type + "/" + "mod" + "/pub/" 
-
-                if "rig" in task_step:
-                    # print(f"Adding to Rig List: {asset_name}")
-                    self.ui.listWidget_rig.addItem(asset_name)
-                    rig_full_path = asset_path + "/" + asset_type + "/" + "rig" + "/pub/" 
-
-                return mod_full_path, rig_full_path
-
-
-
-
-    def set_asset_tableWidget(self, item):
-        """
-        click 한 asset 의 파일 path , json 에서 땡겨와서, tableWidget에 세팅
-        """
-
-        clicked_asset = item.text()
-        print (clicked_asset)
-
-
-        # jsons = self.open_json_file()
-
-        # for json in jsons:
-        #     asset_name = json["asset_info"]["asset_name"]   
-        #     asset_path = json["asset_info"]["asset_path"]
-        #     task_details_dict = json["asset_info"]["task_details"]
-            
-        #     task_step = []
-
-        #     if task_details_dict:
-        #         for task_details in task_details_dict:
-        #             task_step.append(task_details["task_step"])
-                    
-        #     if "mod" in task_step :
-        #         asset_full_path = asset_path + "/" + asset_type + "/" + "mod" + "/pub/" + clicked_asset
-
-        #     if "rig" in task_step :
-        #         asset_full_path = asset_path + "/" + asset_type + "/" + "rig" + "/pub/" + clicked_asset
-
-        # print (asset_full_path)
-
-            
-
-            # if clicked_asset == asset_name:
-            #     print (asset_path)
-
-
-        # jsons = self.open_json_file()
-        # asset_type_list = self.set_asset_type_comboBox()
-        # for asset_type in asset_type_list:
-        #     print (asset_type)
-
-        # # print (asset_path)
-
-        # asset_type_path = asset_path + "/" + asset_type + "/" + self.task_step + "/pub/" + asset
-        # print (asset_type_path) 
-        
-
-            
-    # def set_asset_listWidget(self,asset_name):
-    #     self.ui.listWidget_mod.clear()
-    #     self.ui.listWidget_rig.clear()
-    #     self.ui.listWidget_temp.clear()
-
+    # def open_json_file (self):
     #     json_file_path = '/home/rapa/YUMMY/pipeline/json/open_loader_datas.json'
-
     #     with open(json_file_path,encoding='UTF-8') as file:
     #         datas = json.load(file)
 
-    #         json_assets = datas['assets']
+    #         json_assets = datas['assets_with_versions']
 
-    #         for json_asset_name in json_assets:
-
-    #             if json_asset_name['task_details'] :
-    #                 task_details_dict = json_asset_name['task_details'][0]
-    #                 # print (task_details_dict)
-                
-    #                 if 'task_step' in task_details_dict :
-    #                     task_step_value = task_details_dict['task_step']
-    #                     # print (task_step_value)
-    #             # print (json_asset_name["asset_type"])
-
-    #             asset_type_path = self.set_asset_type_comboBox()
-    #             asset_name = json_asset_name['asset_name']
-    #             asset_type = json_asset_name["asset_type"]
-    #             task_step = task_step_value
-
-    #             file_path = asset_type_path + "/" + asset_type + "/" + task_step + "/pub/" + asset_name 
-    #             print (file_path)
-
-            
-    #             if task_step == "mod" :
-    #                 self.ui.listWidget_mod.addItem(json_asset_name['asset_name'])
-
-    #             elif task_step == "rig" :
-    #                 self.ui.listWidget_rig.addItem(json_asset_name['asset_name'])
-
-    #             elif task_step == "N/A" :
-    #                 self.ui.listWidget_temp.addItem(json_asset_name['asset_name'])
-
-                    
-
-
-    # def set_asset_tableWidget(self,item):
-    #     asset = item.text()
-    #     asset_type_path = self.set_asset_type_comboBox()
-    #     asset_name = self.ui.comboBox_asset_type.currentText()
-    #     print (asset_name)
-
-    #     index = item.currentIndex()
-    #     print (index)
-
-    #     asset_path = asset_type_path + '/' + asset_name
-    #     print (asset_path)
-        # asset_list = os.listdir(asset)
-        # print (asset_list)
-
-        # self.ui.tableWidget_mod.setItem()
-
-
-
-        
-
-        
-        
-        
-
-        # asset_list = os.listdir(file_path)
+    #     return json_assets
     
-        # # Headerlabel setting
-        # self.asset_tree.setHeaderLabels([" Asset"])
+    # def set_asset_type_comboBox(self):
+    #     self.ui.comboBox_asset_type.clear()
+        
+    #     jsons = self.open_json_file()
+    #     # print(jsons)
+    #     result = []
+    #     for json in jsons:
+    #         asset_type = json["asset_info"]["asset_type"]
+    #         result.append(asset_type)
 
-        # # shot code setting
-        # for asset_item in asset_list:
-        #     parent_item = QTreeWidgetItem(self.asset_tree)
-        #     parent_item.setText(0, asset_item)
+    #     asset_type_list = list(set(result))
+    #     asset_type_list.sort()
 
-        # # task setting
-        #     self.task_path = f"/home/rapa/YUMMY/project/{self.project}/asset/{asset_item}"
-        #     tasks = os.listdir(self.task_path)
+    #     self.ui.comboBox_asset_type.addItems(asset_type_list)
 
-        #     for task in tasks :
-        #         task_item = QTreeWidgetItem(parent_item)
-        #         task_item.setText(0,task)
+    #     # print(asset_type_list)
+    #     return asset_type_list
+    
+
+    # def set_asset_listWidget(self, asset_type = ""):
+    #     if not asset_type:
+    #         asset_type = self.ui.comboBox_asset_type.currentText()
+
+    #     self.ui.listWidget_mod.clear()
+    #     self.ui.listWidget_rig.clear()
+
+
+    #     jsons = self.open_json_file()
+
+    #     for json in jsons:
+    #         asset_name = json["asset_info"]["asset_name"]
+    #         asset_path = json["asset_info"]["asset_path"]
+    #         self.task_step = None
+            
+    #         task_details_dict = json["asset_info"]["task_details"]
+
+    #         task_step = []
+
+    #         if task_details_dict:
+    #             for task_details in task_details_dict:
+    #                 task_step.append(task_details["task_step"])
+    #             # print ("step =" ,asset_name,task_step)
+
+    #         if asset_type == json["asset_info"]["asset_type"]:
+    #             if "mod" in task_step:
+    #                 # print ("asset=",asset_name)
+    #                 self.ui.listWidget_mod.addItem(asset_name)
+    #                 self.asset_paths["mod"] = f"{asset_path}/{asset_type}/mod/pub/"
+
+    #             if "rig" in task_step:
+    #                 # print(f"Adding to Rig List: {asset_name}")
+    #                 self.ui.listWidget_rig.addItem(asset_name)
+    #                 self.asset_paths["rig"] = f"{asset_path}/{asset_type}/rig/pub/"
+
+    #     self.input_asset_tableWidget_mod()
+    #     self.input_asset_tableWidget_rig()
+        
+
+
+    # def set_tableWidget(self):
+
+    #     tables = [self.ui.tableWidget_mod, self.ui.tableWidget_rig]
+    #     for i in tables:
+    #         h_header = i.horizontalHeader()
+    #         h_header.setSectionResizeMode(QHeaderView.ResizeToContents)
+    #         h_header.setSectionResizeMode(QHeaderView.Stretch)
+    #         i.setEditTriggers(QAbstractItemView.NoEditTriggers) 
+    #         i.setColumnCount(2)
+    #         i.setRowCount(6)
+    #         i.setAcceptDrops(True)
+    #         i.setDragEnabled(True)
+    #         i.setDragDropMode(QAbstractItemView.DragDrop)
+    #         i.setDefaultDropAction(Qt.CopyAction)
+    #         i.installEventFilter(self)
+
+    # def input_asset_tableWidget_mod(self):
+    #     """
+    #     click 한 asset 의 파일 path , json 에서 땡겨와서, tableWidget에 세팅
+    #     """
+    #     self.ui.tableWidget_mod.clear()
+    #     row = 0
+    #     col = 0
+
+    #     count_mod = self.ui.listWidget_mod.count()
+    #     count_rig = self.ui.listWidget_rig.count()
+        
+    #     # listWidget에 띄어진 items_text
+    #     asset_lists = []
+    #     thumbnails_path = []
+    #     for i in range(count_mod):
+    #         item_text = self.ui.listWidget_mod.item(i).text()
+    #         asset_lists.append(item_text)
+
+    #         thumbnail_path = f"/home/rapa/xgen/asset_thumbnail/asset_{item_text}_thumbnail.png"
+    #         thumbnails_path.append(thumbnail_path)
+
+    #     # print (asset_lists)
+    #     # print (thumbnails_path)
+
+    #     row = 0
+    #     col = 0
+    #     for image, asset_list in zip(thumbnails_path, asset_lists):
+    #         cell_widget = QWidget()
+    #         layout = QVBoxLayout()
+
+    #         path = os.path.join(thumbnail_path,image)
+    #         label_image = QLabel()
+    #         pixmap = QPixmap(path)
+    #         label_image.setPixmap(pixmap)
+    #         label_image.setAlignment(Qt.AlignCenter)
+    #         label_image.setScaledContents(True)
+
+    #         label_text = QLabel()
+    #         label_text.setText(asset_list)
+    #         label_text.setStyleSheet(''' font-size: 12px; ''')
+    #         label_text.setAlignment(Qt.AlignCenter)
+    #         label_text.setWordWrap(True)
+
+    #         layout.addWidget(label_image)
+    #         layout.addWidget(label_text)
+    #         layout.setContentsMargins(20,10,20,10)
+    #         layout.setAlignment(Qt.AlignCenter)
+
+    #         cell_widget.setLayout(layout)
+
+    #         item = QTableWidgetItem(asset_list)
+    #         item.setData(Qt.UserRole, os.path.join(self.asset_paths["mod"], asset_list))
+    #         self.ui.tableWidget_mod.setItem(row, col, item)
+    #         self.ui.tableWidget_mod.setCellWidget(row, col, cell_widget)
+
+    #         self.reduce_item_visibility_in_tableWidget(row, col)
+            
+    #         col += 1  
+
+    #         if col >= 3:
+    #             col = 0
+    #             row += 1
+
+    # def input_asset_tableWidget_rig(self):
+    #         """
+    #         click 한 asset 의 파일 path , json 에서 땡겨와서, tableWidget에 세팅
+    #         """
+    #         self.ui.tableWidget_rig.clear()
+            
+    #         row = 0
+    #         col = 0
+
+    #         count_rig = self.ui.listWidget_rig.count()
+            
+    #         # listWidget에 띄어진 items_text
+    #         asset_lists = []
+    #         thumbnails_path = []
+    #         for i in range(count_rig):
+    #             item_text = self.ui.listWidget_rig.item(i).text()
+    #             asset_lists.append(item_text)
+
+    #             thumbnail_path = f"/home/rapa/xgen/asset_thumbnail/asset_{item_text}_thumbnail.png"
+    #             thumbnails_path.append(thumbnail_path)
+
+    #         # print (asset_lists)
+    #         # print (thumbnails_path)
+
+    #         row = 0
+    #         col = 0
+    #         for image, asset_list in zip(thumbnails_path, asset_lists):
+    #             cell_widget = QWidget()
+    #             layout = QVBoxLayout()
+
+    #             path = os.path.join(thumbnail_path,image)
+    #             label_image = QLabel()
+    #             pixmap = QPixmap(path)
+    #             label_image.setPixmap(pixmap)
+    #             label_image.setAlignment(Qt.AlignCenter)
+    #             label_image.setScaledContents(True)
+
+    #             label_text = QLabel()
+    #             label_text.setText(asset_list)
+    #             label_text.setStyleSheet(''' font-size: 12px; ''')
+    #             label_text.setAlignment(Qt.AlignCenter)
+    #             label_text.setWordWrap(True)
+
+    #             layout.addWidget(label_image)
+    #             layout.addWidget(label_text)
+    #             layout.setContentsMargins(20,10,20,10)
+    #             layout.setAlignment(Qt.AlignCenter)
+
+    #             cell_widget.setLayout(layout)
+
+    #             self.ui.tableWidget_rig.setCellWidget(row,col,cell_widget)
+
+    #             item = QTableWidgetItem(asset_list)
+    #             item.setData(Qt.UserRole, os.path.join(self.asset_paths["rig"], asset_list))
+    #             self.ui.tableWidget_rig.setItem(row, col, item)
+    #             self.ui.tableWidget_rig.setCellWidget(row, col, cell_widget)
+
+    #             self.reduce_item_visibility_in_tableWidget(row, col)
+
+    #             col += 1  
+
+    #             if col >= 3:
+    #                 col = 0
+    #                 row += 1
+
+    # def reduce_item_visibility_in_tableWidget(self, row, col): 
+    #     tables = self.ui.tableWidget_rig, self.ui.tableWidget_mod
+    #     for table in tables:
+    #         item = table.item(row, col)
+    #         if item:
+    #             item.setText('')
+    #             font = item.font()
+    #             font.setPointSize(1) 
+    #             item.setFont(font)
+        
+    # def output_asset_path_tableWidget(self, row, col):
+
+    #     item = self.ui.tableWidget_mod.item(row, col) 
+    #     print (item)
+
+    #     file_path = item.data(Qt.UserRole)
+    #     print (file_path)
+
+    #     return file_path
+
+
 
     
     """
     clip
     """
-    def drag_drop(self):
-        pass
+
+    # def set_clip_files_text_table (self):
+    #     """
+    #     이미지와 텍스트를 함께 포함하는 커스텀 QWidget생성.
+    #     """
 
 
-    def set_clip_files_text_table (self):
-        """
-        이미지와 텍스트를 함께 포함하는 커스텀 QWidget생성.
-        """
+    #     # self.ui.tableWidget_mod.clear()
+    #     file_path = f"/home/rapa/YUMMY/project/{self.project}/template/shot/clip_lib/"
+    #     clip_lists = os.listdir(file_path)
+
+    #     image_path = "/home/rapa/xgen/clip_thumbnail"
+    #     images = os.listdir(image_path)
+
+    #     count = (len(clip_lists) / 3)
+
+        # h_header = self.clip_table.horizontalHeader()
+        # h_header.setSectionResizeMode(QHeaderView.ResizeToContents)
+        # h_header.setSectionResizeMode(QHeaderView.Stretch)
+        # self.clip_table.setEditTriggers(QAbstractItemView.NoEditTriggers) 
+        # self.clip_table.setColumnCount(3)
+        # self.clip_table.setRowCount(count+1)
+
+        # row = 0
+        # col = 0
+        # for image, clip_list in zip(images, clip_lists):
+        #     cell_widget = QWidget()
+        #     layout = QVBoxLayout()
+
+        #     path = os.path.join(image_path,image)
+        #     label_image = QLabel()
+        #     pixmap = QPixmap(path)
+        #     label_image.setPixmap(pixmap)
+        #     label_image.setAlignment(Qt.AlignCenter)
+        #     label_image.setScaledContents(True)
+
+        #     label_text = QLabel()
+        #     label_text.setText(clip_list)
+        #     label_text.setStyleSheet(''' font-size: 9px; ''')
+        #     label_text.setAlignment(Qt.AlignCenter)
+        #     label_text.setWordWrap(True)
+
+        #     layout.addWidget(label_image)
+        #     layout.addWidget(label_text)
+        #     layout.setContentsMargins(20,5,20,10)
+        #     layout.setAlignment(Qt.AlignCenter)
+
+        #     cell_widget.setLayout(layout)
+
+        #     self.clip_table.setCellWidget(row,col,cell_widget)  
+
+        #     col += 1  
+
+        #     if col >= 3:
+        #         col = 0
+        #         row += 1
+
+        # return clip_lists
 
 
-        # self.clip_table.clear()
-        file_path = f"/home/rapa/YUMMY/project/{self.project}/template/shot/clip_lib/"
-        clip_lists = os.listdir(file_path)
+    # def import_clip_file_to_nuke (self,item):
 
-        image_path = "/home/rapa/xgen/clip_thumbnail"
-        images = os.listdir(image_path)
+    #     # make read node in nuke
+    #     self.selected_item = item.text()
+    #     file_path = f"/home/rapa/YUMMY/project/{self.project}/template/shot/clip_lib/{self.selected_item}"
+    #     read_node = nuke.createNode('Read')
+    #     nuke.connectViewer(0,read_node)
+    #     read_node['file'].setValue(file_path)
 
-        count = (len(clip_lists) / 3)
+    #     # frame resetting
+    #     frame = self.get_frame_info(file_path)
+    #     read_node['last'].setValue(frame)
 
-        h_header = self.clip_table.horizontalHeader()
-        h_header.setSectionResizeMode(QHeaderView.ResizeToContents)
-        h_header.setSectionResizeMode(QHeaderView.Stretch)
-        self.clip_table.setEditTriggers(QAbstractItemView.NoEditTriggers) 
-        self.clip_table.setColumnCount(3)
-        self.clip_table.setRowCount(count+1)
-
-        row = 0
-        col = 0
-        for image, clip_list in zip(images, clip_lists):
-            cell_widget = QWidget()
-            layout = QVBoxLayout()
-
-            path = os.path.join(image_path,image)
-            label_image = QLabel()
-            pixmap = QPixmap(path)
-            label_image.setPixmap(pixmap)
-            label_image.setAlignment(Qt.AlignCenter)
-            label_image.setScaledContents(True)
-
-            label_text = QLabel()
-            label_text.setText(clip_list)
-            label_text.setStyleSheet(''' font-size: 9px; ''')
-            label_text.setAlignment(Qt.AlignCenter)
-            label_text.setWordWrap(True)
-
-            layout.addWidget(label_image)
-            layout.addWidget(label_text)
-            layout.setContentsMargins(20,5,20,10)
-            layout.setAlignment(Qt.AlignCenter)
-
-            cell_widget.setLayout(layout)
-
-            self.clip_table.setCellWidget(row,col,cell_widget)  
-
-            col += 1  
-
-            if col >= 3:
-                col = 0
-                row += 1
-
-        return clip_lists
-
-
-    def import_clip_file_to_nuke (self,item):
-
-        # make read node in nuke
-        self.selected_item = item.text()
-        file_path = f"/home/rapa/YUMMY/project/{self.project}/template/shot/clip_lib/{self.selected_item}"
-        read_node = nuke.createNode('Read')
-        nuke.connectViewer(0,read_node)
-        read_node['file'].setValue(file_path)
-
-        # frame resetting
-        frame = self.get_frame_info(file_path)
-        read_node['last'].setValue(frame)
-
-        read_node['selected'].setValue(True)
+    #     read_node['selected'].setValue(True)
  
-    def open_file_window(self):
 
-        file_tuple = QFileDialog.getOpenFileName(self, "import nuke file", f"/home/rapa/YUMMY/project/{self.project}/seq/OPN/OPN_0010") 
-        self.selected_nuke_file_path = file_tuple[0]
-        print (self.selected_nuke_file_path)
+    # def open_file_window(self):
 
-        if self.selected_nuke_file_path:
-            nuke_path = "/mnt/project/Nuke15.1v1/Nuke15.1"
-            command = f'source /home/rapa/env/nuke.env && {nuke_path} --nc "{self.selected_nuke_file_path}"'
-            os.system(command)
+    #     file_tuple = QFileDialog.getOpenFileName(self, "import nuke file", f"/home/rapa/YUMMY/project/{self.project}/seq/OPN/OPN_0010") 
+    #     self.selected_nuke_file_path = file_tuple[0]
+    #     print (self.selected_nuke_file_path)
+
+    #     if self.selected_nuke_file_path:
+    #         nuke_path = "/mnt/project/Nuke15.1v1/Nuke15.1"
+    #         command = f'source /home/rapa/env/nuke.env && {nuke_path} --nc "{self.selected_nuke_file_path}"'
+    #         os.system(command)
 
 
     def get_frame_info(self,input):
@@ -398,13 +409,12 @@ class LibraryLoader(QWidget):
         return frame
 
 
-
-
     def set_user_information(self):
 
         self.ui.label_projectname.setText(f"{self.project}")
         self.ui.label_username.setText(f"{self.user}")
         
+
     def set_up(self):
         from main_window_v002_ui import Ui_Form
         # ui_file_path = "/home/rapa/yummy/pipeline/scripts/loader/main_window.ui"
@@ -420,36 +430,95 @@ class LibraryLoader(QWidget):
 """
 drag & drop
 """
-    # def startDrag(self, supportedActions):
-    #     # 선택된 아이템 가져오기
-    #     item = self.tableWidget.currentItem()
-    #     if item:
-    #         drag = QDrag(self)
-    #         mimeData = QMimeData()
+class DraggableWidget(QWidget):
+    def __init__(self, image_path, asset_name, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.image_path = image_path
+        self.asset_name = asset_name
+        self.file_path = "/home/rapa/YUMMY/project/YUMMIE/template/asset/Character/mod/pub/man"
 
-    #         # 드래그할 파일 생성
-    #         file_path = "/home/rapa/YUMMY/project/Marvelous/template/shot/clip_lib/OpenfootageNET_00268_Fluid_lowres.mov"
-    #         mimeData.setUrls([QUrl.fromLocalFile(file_path)])
-    #         drag.setMimeData(mimeData)
+        layout = QVBoxLayout()
 
-    #         # 드래그 시작
-    #         drag.exec_(supportedActions)
+        label_image = QLabel()
+        pixmap = QPixmap(self.image_path)
+        label_image.setPixmap(pixmap)
+        label_image.setAlignment(Qt.AlignCenter)
+        label_image.setScaledContents(True)
 
-    # def dragEnterEvent(self, event):
-    #     if event.mimeData().hasUrls():
-    #         event.acceptProposedAction()
-    #     else:
-    #         event.ignore()
+        label_text = QLabel()
+        label_text.setText(self.asset_name)
+        label_text.setStyleSheet('''font-size: 12px;''')
+        label_text.setAlignment(Qt.AlignCenter)
+        label_text.setWordWrap(True)
 
-    # def dropEvent(self, event):
-    #     if event.mimeData().hasUrls():
-    #         urls = event.mimeData().urls()
-    #         for url in urls:
-    #             print(f"Dropped file: {url.toLocalFile()}")
-    #         event.acceptProposedAction()
-    #     else:
-    #         event.ignore()
-        
+        layout.addWidget(label_image)
+        layout.addWidget(label_text)
+        layout.setContentsMargins(20, 10, 20, 10)
+        layout.setAlignment(Qt.AlignCenter)
+
+        self.setLayout(layout)
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            drag = QDrag(self)
+            mime_data = QMimeData()
+            mime_data.setText(self.file_path)
+            drag.setMimeData(mime_data)
+            drag.exec_(Qt.CopyAction | Qt.MoveAction)
+        else:
+            super().mousePressEvent(event)
+
+            # Encode widget information into mime data
+            # data = QByteArray()
+            # stream = QDataStream(data, QIODevice.WriteOnly)
+            # stream.writeQString(self.asset_name)
+            # stream.writeQString(self.image_path)
+
+
+class DroppableTableWidget(QTableWidget):
+    def __init__(self, rows, columns, *args, **kwargs):
+        super().__init__(rows, columns, *args, **kwargs)
+        self.setAcceptDrops(True)
+        self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.verticalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.setSizeAdjustPolicy(QTableWidget.AdjustToContents)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasText():
+            event.acceptProposedAction()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        if event.mimeData().hasText():
+            text = event.mimeData().text()
+            if nuke:
+                self.apply_to_nuke(text)
+            event.acceptProposedAction()
+        else:
+            event.ignore()
+
+    def apply_to_nuke(self, text):
+        if nuke:
+            # Find or create a Read node
+            read_nodes = [node for node in nuke.allNodes() if node.Class() == "Read"]
+            if read_nodes:
+                read_node = read_nodes[0]  # Use the first Read node found
+            else:
+                read_node = nuke.createNode('Read')
+
+            # Set the 'file' path
+            read_node['file'].setValue(text)
+
+            # Optionally connect the Read node to the viewer
+            nuke.connectViewer(0, read_node)
+
+            # Provide feedback if no Read nodes were found initially
+            if not read_nodes:
+                nuke.message("A new Read node has been created and configured.")
+
 
 info = {"project" : "Marvelous" , "name" : "su"}
 
@@ -457,4 +526,6 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     win  = LibraryLoader()
     win.show()
+
+    draggable_widget = DraggableWidget("path/to/image.png", "AssetName", LibraryLoader())
     app.exec()

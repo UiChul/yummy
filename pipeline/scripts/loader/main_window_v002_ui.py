@@ -8,34 +8,19 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-try:
-    from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-        QMetaObject, QObject, QPoint, QRect,
-        QSize, QTime, QUrl, Qt)
-    from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-        QFont, QFontDatabase, QGradient, QIcon,
-        QImage, QKeySequence, QLinearGradient, QPainter,
-        QPalette, QPixmap, QRadialGradient, QTransform)
-    from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
-        QGroupBox, QHBoxLayout, QHeaderView, QLabel,
-        QLineEdit, QListView, QListWidget, QListWidgetItem,
-        QPlainTextEdit, QPushButton, QSizePolicy, QTabWidget,
-        QTableWidget, QTableWidgetItem, QToolBox, QTreeWidget,
-        QTreeWidgetItem, QVBoxLayout, QWidget, QAbstractItemView)
-except:
-    from PySide2.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-        QMetaObject, QObject, QPoint, QRect,
-        QSize, QTime, QUrl, Qt)
-    from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-        QFont, QFontDatabase, QGradient, QIcon,
-        QImage, QKeySequence, QLinearGradient, QPainter,
-        QPalette, QPixmap, QRadialGradient, QTransform)
-    from PySide2.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
-        QGroupBox, QHBoxLayout, QHeaderView, QLabel,
-        QLineEdit, QListView, QListWidget, QListWidgetItem,
-        QPlainTextEdit, QPushButton, QSizePolicy, QTabWidget,
-        QTableWidget, QTableWidgetItem, QToolBox, QTreeWidget,
-        QTreeWidgetItem, QVBoxLayout, QWidget, QAbstractItemView)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
+    QGroupBox, QHBoxLayout, QHeaderView, QLabel,
+    QLineEdit, QListView, QListWidget, QListWidgetItem,
+    QPlainTextEdit, QPushButton, QSizePolicy, QTabWidget,
+    QTableWidget, QTableWidgetItem, QToolBox, QTreeWidget,
+    QTreeWidgetItem, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -645,9 +630,12 @@ class Ui_Form(object):
         self.listWidget_mod.setObjectName(u"listWidget_mod")
         self.listWidget_mod.setGeometry(QRect(0, 0, 231, 492))
         self.listWidget_mod.setFont(font3)
-        self.tableWidget_mod = QTableWidget(self.page_mod)
-        self.tableWidget_mod.setObjectName(u"tableWidget_mod")
-        self.tableWidget_mod.setGeometry(QRect(240, 0, 551, 492))
+        self.gridLayoutWidget_6 = QWidget(self.page_mod)
+        self.gridLayoutWidget_6.setObjectName(u"gridLayoutWidget_6")
+        self.gridLayoutWidget_6.setGeometry(QRect(240, 0, 551, 491))
+        self.gridLayout_mod = QGridLayout(self.gridLayoutWidget_6)
+        self.gridLayout_mod.setObjectName(u"gridLayout_mod")
+        self.gridLayout_mod.setContentsMargins(0, 0, 0, 0)
         self.toolBox_asset_task.addItem(self.page_mod, u"MOD")
         self.page_rig = QWidget()
         self.page_rig.setObjectName(u"page_rig")
@@ -656,19 +644,26 @@ class Ui_Form(object):
         self.listWidget_rig.setObjectName(u"listWidget_rig")
         self.listWidget_rig.setGeometry(QRect(0, 0, 231, 492))
         self.listWidget_rig.setFont(font3)
-        self.tableWidget_rig = QTableWidget(self.page_rig)
-        self.tableWidget_rig.setObjectName(u"tableWidget_rig")
-        self.tableWidget_rig.setGeometry(QRect(240, 0, 551, 492))
+        self.gridLayoutWidget_7 = QWidget(self.page_rig)
+        self.gridLayoutWidget_7.setObjectName(u"gridLayoutWidget_7")
+        self.gridLayoutWidget_7.setGeometry(QRect(240, 0, 551, 491))
+        self.gridLayout_rig = QGridLayout(self.gridLayoutWidget_7)
+        self.gridLayout_rig.setObjectName(u"gridLayout_rig")
+        self.gridLayout_rig.setContentsMargins(0, 0, 0, 0)
         self.toolBox_asset_task.addItem(self.page_rig, u"RIG")
         self.page_template = QWidget()
         self.page_template.setObjectName(u"page_template")
+        self.page_template.setGeometry(QRect(0, 0, 791, 492))
         self.listWidget_temp = QListWidget(self.page_template)
         self.listWidget_temp.setObjectName(u"listWidget_temp")
         self.listWidget_temp.setGeometry(QRect(0, 0, 231, 492))
         self.listWidget_temp.setFont(font3)
-        self.tableWidget_temp = QTableWidget(self.page_template)
-        self.tableWidget_temp.setObjectName(u"tableWidget_temp")
-        self.tableWidget_temp.setGeometry(QRect(240, 0, 551, 492))
+        self.gridLayoutWidget_4 = QWidget(self.page_template)
+        self.gridLayoutWidget_4.setObjectName(u"gridLayoutWidget_4")
+        self.gridLayoutWidget_4.setGeometry(QRect(250, 0, 521, 491))
+        self.gridLayout_test = QGridLayout(self.gridLayoutWidget_4)
+        self.gridLayout_test.setObjectName(u"gridLayout_test")
+        self.gridLayout_test.setContentsMargins(0, 0, 0, 0)
         self.toolBox_asset_task.addItem(self.page_template, u"TEMPLATE")
         self.horizontalLayoutWidget_3 = QWidget(self.tab_asset)
         self.horizontalLayoutWidget_3.setObjectName(u"horizontalLayoutWidget_3")
@@ -786,21 +781,6 @@ class Ui_Form(object):
 
         self.verticalLayout_16.addWidget(self.label_clip_filesize)
 
-        self.tableWidget_clip_files = QTableWidget(self.tab_clip1)
-        self.tableWidget_clip_files.setObjectName(u"tableWidget_clip_files")
-        self.tableWidget_clip_files.setGeometry(QRect(10, 10, 781, 641))
-        font7 = QFont()
-        font7.setPointSize(10)
-        font7.setBold(False)
-        self.tableWidget_clip_files.setFont(font7)
-        self.tableWidget_clip_files.setDragEnabled(True)
-        self.tableWidget_clip_files.setDragDropMode(QAbstractItemView.DragDrop)
-        self.tableWidget_clip_files.horizontalHeader().setVisible(False)
-        self.tableWidget_clip_files.horizontalHeader().setMinimumSectionSize(50)
-        self.tableWidget_clip_files.horizontalHeader().setStretchLastSection(False)
-        self.tableWidget_clip_files.verticalHeader().setVisible(False)
-        self.tableWidget_clip_files.verticalHeader().setMinimumSectionSize(50)
-        self.tableWidget_clip_files.verticalHeader().setDefaultSectionSize(150)
         self.groupBox_clip_comment_4 = QGroupBox(self.tab_clip1)
         self.groupBox_clip_comment_4.setObjectName(u"groupBox_clip_comment_4")
         self.groupBox_clip_comment_4.setGeometry(QRect(800, 210, 231, 181))
@@ -813,6 +793,12 @@ class Ui_Form(object):
         self.pushButton_clip_file_nuke = QPushButton(self.tab_clip1)
         self.pushButton_clip_file_nuke.setObjectName(u"pushButton_clip_file_nuke")
         self.pushButton_clip_file_nuke.setGeometry(QRect(800, 606, 231, 41))
+        self.gridLayoutWidget_5 = QWidget(self.tab_clip1)
+        self.gridLayoutWidget_5.setObjectName(u"gridLayoutWidget_5")
+        self.gridLayoutWidget_5.setGeometry(QRect(10, 10, 781, 631))
+        self.gridLayout_clip = QGridLayout(self.gridLayoutWidget_5)
+        self.gridLayout_clip.setObjectName(u"gridLayout_clip")
+        self.gridLayout_clip.setContentsMargins(0, 0, 0, 0)
         self.tabWidget_template.addTab(self.tab_clip1, "")
         self.tab_nodes = QWidget()
         self.tab_nodes.setObjectName(u"tab_nodes")
@@ -929,11 +915,11 @@ class Ui_Form(object):
         self.label_82 = QLabel(self.groupBox_clip_comment_3)
         self.label_82.setObjectName(u"label_82")
         self.label_82.setGeometry(QRect(10, 30, 211, 141))
-        font8 = QFont()
-        font8.setBold(False)
-        font8.setUnderline(False)
-        font8.setStrikeOut(False)
-        self.label_82.setFont(font8)
+        font7 = QFont()
+        font7.setBold(False)
+        font7.setUnderline(False)
+        font7.setStrikeOut(False)
+        self.label_82.setFont(font7)
         self.tableWidget_nodes_files = QTableWidget(self.tab_nodes)
         self.tableWidget_nodes_files.setObjectName(u"tableWidget_nodes_files")
         self.tableWidget_nodes_files.setGeometry(QRect(240, 10, 551, 641))
@@ -1098,9 +1084,9 @@ class Ui_Form(object):
         self.label_username = QLabel(self.frame)
         self.label_username.setObjectName(u"label_username")
         self.label_username.setGeometry(QRect(5, 1, 151, 20))
-        font9 = QFont()
-        font9.setPointSize(8)
-        self.label_username.setFont(font9)
+        font8 = QFont()
+        font8.setPointSize(8)
+        self.label_username.setFont(font8)
 
         self.gridLayout_4.addWidget(self.frame, 0, 3, 1, 1)
 
@@ -1111,7 +1097,7 @@ class Ui_Form(object):
         self.label_rank = QLabel(self.frame_3)
         self.label_rank.setObjectName(u"label_rank")
         self.label_rank.setGeometry(QRect(5, 1, 151, 20))
-        self.label_rank.setFont(font9)
+        self.label_rank.setFont(font8)
 
         self.gridLayout_4.addWidget(self.frame_3, 1, 3, 1, 1)
 
@@ -1122,7 +1108,7 @@ class Ui_Form(object):
         self.label_projectname = QLabel(self.frame_2)
         self.label_projectname.setObjectName(u"label_projectname")
         self.label_projectname.setGeometry(QRect(5, 0, 151, 21))
-        self.label_projectname.setFont(font9)
+        self.label_projectname.setFont(font8)
 
         self.gridLayout_4.addWidget(self.frame_2, 2, 3, 1, 1)
 
@@ -1133,10 +1119,10 @@ class Ui_Form(object):
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.label_8.sizePolicy().hasHeightForWidth())
         self.label_8.setSizePolicy(sizePolicy2)
-        font10 = QFont()
-        font10.setPointSize(8)
-        font10.setBold(True)
-        self.label_8.setFont(font10)
+        font9 = QFont()
+        font9.setPointSize(8)
+        font9.setBold(True)
+        self.label_8.setFont(font9)
 
         self.gridLayout_4.addWidget(self.label_8, 2, 1, 1, 1)
 
@@ -1144,7 +1130,7 @@ class Ui_Form(object):
         self.label_7.setObjectName(u"label_7")
         sizePolicy2.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
         self.label_7.setSizePolicy(sizePolicy2)
-        self.label_7.setFont(font10)
+        self.label_7.setFont(font9)
 
         self.gridLayout_4.addWidget(self.label_7, 0, 1, 1, 1)
 
@@ -1152,7 +1138,7 @@ class Ui_Form(object):
         self.label_19.setObjectName(u"label_19")
         sizePolicy2.setHeightForWidth(self.label_19.sizePolicy().hasHeightForWidth())
         self.label_19.setSizePolicy(sizePolicy2)
-        self.label_19.setFont(font10)
+        self.label_19.setFont(font9)
 
         self.gridLayout_4.addWidget(self.label_19, 1, 1, 1, 1)
 

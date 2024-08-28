@@ -42,7 +42,7 @@ def auto_change(path):
             change_codec(clip_path,out_path)
         
 
-def extract_thumbnail_ffmpeg(video_path, thumbnail_path, time="00:00:01"):
+def extract_thumbnail_ffmpeg(video_path, thumbnail_path, time="00:00:02"):
     command = [
         'ffmpeg',
         '-i', video_path,
@@ -62,7 +62,7 @@ def auto_extract(path):
         
         clip_path = path + "/" + clip
         
-        extract_thumbnail_ffmpeg(clip_path, f'/home/rapa/xgen/thumbnail{numb}.jpg')
+        extract_thumbnail_ffmpeg(clip_path, f'/home/rapa/YUMMY/project/Marvelous/template/shot/clip_thumbnail/{clip}.jpg')
         numb += 1
 
 
