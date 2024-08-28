@@ -7,7 +7,11 @@ from PySide6.QtCore import QFile
 from shotgun_api3 import shotgun
 import os
 import sys
-sys.path.append("/home/rapa/yummy")
+sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
+from loader_ui.singin_window_ui import Ui_Form
+from loader_script.get_datas_for_login import Signinfo
+from loader_script.get_datas_for_user import OpenLoaderData
+
 import json
 
 
@@ -52,7 +56,6 @@ class Signin(QWidget):
             self.set_messagebox("email 정보가 정확하지 않습니다","로그인 실패")
             return
         else:
-            from pipeline.scripts.loader.loader_script.get_datas_for_login import Signinfo
             Signinfo(user_email)    
             self.set_messagebox("프로젝트를 선택해주세요.","이메일 인증 성공")
             self.input_project()
@@ -77,10 +80,9 @@ class Signin(QWidget):
     def connect_loader(self):
         if self.email_vaildate >= 2:
             project = self.ui.comboBox_project_name.currentText()
-            from pipeline.scripts.loader.loader_script.get_datas_for_user import OpenLoaderData
             OpenLoaderData(project)
             info = {"project" : project , "name" : self.user_name,"rank": self.rank}
-            from pipeline.scripts.loader.loader_script.loader_merge import Merge
+            from loader_script.loader_merge import Merge
             self.load = Merge(info)
             self.load.show()       
             self.close()     
@@ -112,7 +114,6 @@ class Signin(QWidget):
             return users
     
     def set_up(self):
-        from pipeline.scripts.loader.loader_ui.singin_window_ui import Ui_Form
         # ui_file_path = "singin_window.ui"
         # ui_file = QFile(ui_file_path)
         # ui_file.open(QFile.ReadOnly)

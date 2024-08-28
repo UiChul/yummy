@@ -3,8 +3,8 @@
         {
             "asset_info": {
                 "asset_name": "box",
-                "asset_type": "Prop",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
+                "asset_type": "prop",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
                 "task_details": [
                     {
                         "assignee_name": "Dami Kim",
@@ -48,8 +48,8 @@
         {
             "asset_info": {
                 "asset_name": "lamp",
-                "asset_type": "Prop",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
+                "asset_type": "prop",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
                 "task_details": [
                     {
                         "assignee_name": "Dami Kim",
@@ -64,10 +64,10 @@
                 ],
                 "linked_versions": [
                     {
-                        "version_code": "lamp_mod_v001",
+                        "version_code": "lamp_rig_v001",
                         "sg_status_list": "pub",
                         "description": "testing",
-                        "updated_at": "2024-08-26 14:28:07",
+                        "updated_at": "2024-08-28 10:44:45",
                         "artist": "Gyeoul Kim",
                         "linked_asset": "lamp"
                     },
@@ -85,8 +85,8 @@
         {
             "asset_info": {
                 "asset_name": "car",
-                "asset_type": "Vehicle",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
+                "asset_type": "vehicle",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/vehicle",
                 "task_details": [],
                 "linked_versions": []
             }
@@ -94,8 +94,8 @@
         {
             "asset_info": {
                 "asset_name": "green",
-                "asset_type": "Material",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
+                "asset_type": "matt",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/matt",
                 "task_details": [],
                 "linked_versions": []
             }
@@ -103,8 +103,8 @@
         {
             "asset_info": {
                 "asset_name": "man",
-                "asset_type": "Character",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
+                "asset_type": "character",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/character",
                 "task_details": [
                     {
                         "assignee_name": "Dami Kim",
@@ -123,8 +123,8 @@
         {
             "asset_info": {
                 "asset_name": "tower",
-                "asset_type": "Environment",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/template/asset",
+                "asset_type": "env",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/env",
                 "task_details": [
                     {
                         "assignee_name": "Dami Kim",
@@ -146,12 +146,12 @@
             "updated_at": "2024-08-26 16:44:03"
         },
         {
-            "version_code": "lamp_mod_v001",
+            "version_code": "lamp_rig_v001",
             "version_type": null,
             "description": "testing",
             "sg_status_list": "pub",
             "artist": "Gyeoul Kim",
-            "updated_at": "2024-08-26 14:28:07"
+            "updated_at": "2024-08-28 10:44:45"
         },
         {
             "version_code": "PKG_030_mm_v001",
@@ -159,15 +159,15 @@
             "description": "test",
             "sg_status_list": "wip",
             "artist": "지연 이",
-            "updated_at": "2024-08-24 14:18:02"
+            "updated_at": "2024-08-28 10:34:39"
         },
         {
             "version_code": "PKG_030_mm_v002",
             "version_type": null,
             "description": "test",
-            "sg_status_list": "wip",
+            "sg_status_list": "pub",
             "artist": "지연 이",
-            "updated_at": "2024-08-24 14:18:07"
+            "updated_at": "2024-08-28 11:56:55"
         },
         {
             "version_code": "PKG_030_mm_v003",
@@ -175,7 +175,7 @@
             "description": "test",
             "sg_status_list": "fin",
             "artist": "지연 이",
-            "updated_at": "2024-08-26 17:11:06"
+            "updated_at": "2024-08-28 10:38:28"
         },
         {
             "version_code": "BRK_010_lgt_v001",
@@ -199,7 +199,7 @@
             "description": null,
             "sg_status_list": "pub",
             "artist": "UICHUL SHIN",
-            "updated_at": "2024-08-25 15:09:08"
+            "updated_at": "2024-08-27 18:19:41"
         },
         {
             "version_code": "FLB_020_lgt_v001",

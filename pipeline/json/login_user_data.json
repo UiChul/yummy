@@ -1,7 +1,7 @@
 {
-    "user_id": 93,
-    "name": "UICHUL SHIN",
-    "email": "suc708@naver.com",
+    "user_id": 97,
+    "name": "지연 이",
+    "email": "stellalee969@gmail.com",
     "permission_group": "Admin",
     "projects": [
         {
@@ -11,9 +11,33 @@
             "resolution_height": "1920",
             "status": null,
             "shot_code": {
-                "Dogs": {
+                "gamja": {
                     "steps": [
-                        "mod"
+                        "ani"
+                    ]
+                },
+                "Cats": {
+                    "steps": [
+                        "lkd"
+                    ]
+                },
+                "fights": {
+                    "steps": [
+                        "cmp"
+                    ]
+                }
+            }
+        },
+        {
+            "id": 122,
+            "name": "Marvelous",
+            "resolution_width": "1920",
+            "resolution_height": "1080",
+            "status": "Active",
+            "shot_code": {
+                "hyo_010": {
+                    "steps": [
+                        "cmp"
                     ]
                 }
             }
@@ -25,54 +49,54 @@
             "resolution_height": "1080",
             "status": "Active",
             "shot_code": {
-                "INS_020": {
+                "FLB_020": {
                     "steps": [
-                        "lgt"
-                    ]
-                },
-                "INS_010": {
-                    "steps": [
-                        "lgt"
+                        "mm"
                     ]
                 },
                 "BRK_010": {
                     "steps": [
-                        "lgt"
+                        "mm"
                     ]
                 },
                 "BRK_020": {
                     "steps": [
-                        "lgt"
+                        "mm"
                     ]
                 },
                 "FLB_010": {
                     "steps": [
-                        "lgt"
+                        "mm"
                     ]
                 },
-                "FLB_020": {
+                "INS_010": {
                     "steps": [
-                        "lgt"
+                        "mm"
+                    ]
+                },
+                "INS_020": {
+                    "steps": [
+                        "mm"
                     ]
                 },
                 "PKG_010": {
                     "steps": [
-                        "lgt"
+                        "mm"
                     ]
                 },
                 "PKG_020": {
                     "steps": [
-                        "lgt"
+                        "mm"
                     ]
                 },
                 "PKG_030": {
                     "steps": [
-                        "lgt"
+                        "mm"
                     ]
                 },
-                "FNL_010": {
+                "FNL_020": {
                     "steps": [
-                        "lgt"
+                        "mm"
                     ]
                 }
             }

@@ -23,6 +23,7 @@ class My_task(QWidget):
         self.set_click_thumbnail_mov()
         self.set_recent_file()
         self.set_description_list()
+        self.set_status_table()
         
         self.set_mytask_table()
         self.table.itemClicked.connect(self.check_file_info)
@@ -44,8 +45,9 @@ class My_task(QWidget):
         for col in range(2):
             info = self.table.item(index,col)
             file_info.append(info.text())
-
+            
         print(file_info)
+        self.set_mytask_status(file_info)
         self.set_img(file_info)
         self.make_path(file_info)
           
@@ -119,8 +121,8 @@ class My_task(QWidget):
         self.input_mytask_table()
         
     def set_recent_file(self):
-        with open("/home/rapa/yummy/pipeline/json/open_loader_datas.json","rt",encoding="utf-8") as r:
-            user_dic = json.load(r)
+        
+        user_dic = self.open_loader_json()
         
         my_task_list = []
         
@@ -182,8 +184,8 @@ class My_task(QWidget):
         os.system(cmd)
         
     def set_description_list(self):
-        with open("/home/rapa/yummy/pipeline/json/open_loader_datas.json","rt",encoding="utf-8") as r:
-            user_dic = json.load(r)
+        
+        user_dic = self.open_loader_json()
         
         self.description_list = []
         
@@ -202,12 +204,44 @@ class My_task(QWidget):
                 if shot_code == file_name:
                     print(desription)
                     return desription
+      
+    def open_loader_json(self):
+        with open("/home/rapa/yummy/pipeline/json/open_loader_datas.json","rt",encoding="utf-8") as r:
+               user_dic = json.load(r)
+        return user_dic  
+        
+    def set_mytask_status(self,file_info):
+        
+        user_dic = self.open_loader_json()
+        file_name = file_info[0]
+        shot_code_data,_ = os.path.splitext(file_name)
+        
+        project_versions = user_dic["project_versions"]
+        
+        
+    
+    def set_status_table(self):
+        
+        self.status_table.setColumnCount(7)
+        self.status_table.setRowCount(8)
+        
+        self.status_table.setHorizontalHeaderLabels(["Artist","ShotCode","Task","Version","Status","Upadate Data" ,"Description"])
+        
+        self.status_table.setColumnWidth(0, 1020 * 0.1)
+        self.status_table.setColumnWidth(1, 1020 * 0.15)
+        self.status_table.setColumnWidth(2, 1020 * 0.1)
+        self.status_table.setColumnWidth(3, 1020 * 0.1)
+        self.status_table.setColumnWidth(4, 1020 * 0.05)
+        self.status_table.setColumnWidth(5, 1020*  0.20)
+        self.status_table.setColumnWidth(6, 1030 * 0.30)
+        self.status_table.setSelectionBehavior(QTableWidget.SelectRows)    
         
     def set_up(self):
         from pipeline.scripts.loader.loader_ui.main_window_v002_ui import Ui_Form
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.table = self.ui.tableWidget_recent_files
+        self.status_table = self.ui.tableWidget_mytask_status
 
 info = {"project" : "YUMMIE" , "name" : "UICHUL SHIN","rank":"Artist","resolution" : "1920 X 1080"}
 if __name__ == "__main__":

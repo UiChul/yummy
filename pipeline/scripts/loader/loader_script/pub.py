@@ -1,12 +1,13 @@
 from PySide6.QtWidgets import QWidget,QApplication,QTreeWidgetItem
 from PySide6.QtGui import QFont,QPixmap
-import sys
-sys.path.append("/home/rapa/yummy")
-from functools import partial
-from pipeline.scripts.loader.loader_module.ffmpeg_module import change_to_png,find_resolution_frame
-from pipeline.scripts.loader.loader_module.find_time_size import File_data
+
 import os
 import json
+import sys
+sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
+
+from loader_module.ffmpeg_module import change_to_png,find_resolution_frame
+from loader_module.find_time_size import File_data
 
 
 class Loader_pub(QWidget):
@@ -34,7 +35,6 @@ class Loader_pub(QWidget):
         self.rank    = info["rank"]
         self.resolution = info["resolution"]
     
-    
     def find_pub_list(self):
         with open("/home/rapa/yummy/pipeline/json/open_loader_datas.json","rt",encoding="utf-8") as r:
             user_dic = json.load(r)
@@ -46,8 +46,7 @@ class Loader_pub(QWidget):
                     if version["version_code"][0].isupper():
                         pub_list.append(version["version_code"])                
             return pub_list
-            
-    
+        
     ## 그럼 리스트 위젯으로 하고 일단 하드코딩으로 해결해야할듯
     def set_listwidget(self):
         
@@ -87,7 +86,6 @@ class Loader_pub(QWidget):
         pixmap = QPixmap(png_path)
         scaled_pixmap = pixmap.scaled(630,350)
         self.ui.label_pub_thumbnail.setPixmap(scaled_pixmap)
-        
                   
     def set_file_info(self,pub_name):
         pub_len = pub_name.split(".")
@@ -129,17 +127,14 @@ class Loader_pub(QWidget):
         self.ui.label_pub_resolution.setText(file_info_list[3])
         self.ui.label_pub_savedtime.setText(file_info_list[4])
         self.ui.label_pub_filesize.setText(file_info_list[5])
-            
-    
+              
     def set_vlc_mov(self):
         if self.ui.label_pub_thumbnail.mouseDoubleClickEvent:
                 self.ui.label_pub_thumbnail.mouseDoubleClickEvent = self.play_video
-        
     
     def play_video(self,event):
         cmd = f"vlc --repeat {self.mov_path}"
         os.system(cmd)
-    
     
     def open_file(self,item,column):
         pub_name =item.text(column)
@@ -162,10 +157,8 @@ class Loader_pub(QWidget):
             elif ext == ".exr":
                 exr_path = "xdg-open " + open_path + "/exr"
                 print("exr")
-                os.system(exr_path)
-               
-    # def find_file_size_date(self,path):
-        
+                os.system(exr_path)      
+    # def find_file_size_date(self,path):       
     def set_up(self):
         from pipeline.scripts.loader.loader_ui.main_window_v002_ui import Ui_Form
         self.ui = Ui_Form()
@@ -173,8 +166,6 @@ class Loader_pub(QWidget):
         self.tree = self.ui.treeWidget_pub_list
         self.ui.groupBox_shot_file_info_3.setVisible(False)
         
-info = {"project" : "YUMMIE" , "name" : "UICHUL SHIN","rank":"Artist","resolution" : "1920 X 1080"}
-
 if __name__ == "__main__":
     app = QApplication()
     my = Loader_pub()

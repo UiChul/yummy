@@ -1,12 +1,12 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget,QApplication
 import os,sys
-sys.path.append("/home/rapa/yummy")
-from pipeline.scripts.loader.loader_ui.main_window_v002_ui import Ui_Form
-from pipeline.scripts.loader.loader_script.main import Mainloader
-from pipeline.scripts.loader.loader_script.my_task import My_task
-from pipeline.scripts.loader.loader_module.project_data import project_data
-from pipeline.scripts.loader.loader_script.pub import Loader_pub
+sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
+from loader_ui.main_window_v002_ui import Ui_Form
+from loader_script.main import Mainloader
+from loader_script.my_task import My_task
+from loader_module.project_data import project_data
+from loader_script.pub import Loader_pub
 import json
 
 class Merge(QWidget,My_task,Mainloader,project_data,Loader_pub):
