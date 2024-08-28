@@ -1624,7 +1624,7 @@
            </font>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="page_mod">
            <property name="geometry">
@@ -1632,7 +1632,7 @@
              <x>0</x>
              <y>0</y>
              <width>791</width>
-             <height>492</height>
+             <height>525</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1644,7 +1644,7 @@
               <x>0</x>
               <y>0</y>
               <width>231</width>
-              <height>492</height>
+              <height>521</height>
              </rect>
             </property>
             <property name="font">
@@ -1659,7 +1659,7 @@
               <x>240</x>
               <y>0</y>
               <width>551</width>
-              <height>491</height>
+              <height>521</height>
              </rect>
             </property>
             <layout class="QGridLayout" name="gridLayout_mod"/>
@@ -1671,7 +1671,7 @@
              <x>0</x>
              <y>0</y>
              <width>791</width>
-             <height>492</height>
+             <height>525</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1683,7 +1683,7 @@
               <x>0</x>
               <y>0</y>
               <width>231</width>
-              <height>492</height>
+              <height>521</height>
              </rect>
             </property>
             <property name="font">
@@ -1698,49 +1698,10 @@
               <x>240</x>
               <y>0</y>
               <width>551</width>
-              <height>491</height>
+              <height>521</height>
              </rect>
             </property>
             <layout class="QGridLayout" name="gridLayout_rig"/>
-           </widget>
-          </widget>
-          <widget class="QWidget" name="page_template">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>791</width>
-             <height>492</height>
-            </rect>
-           </property>
-           <attribute name="label">
-            <string>TEMPLATE</string>
-           </attribute>
-           <widget class="QListWidget" name="listWidget_temp">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>0</y>
-              <width>231</width>
-              <height>492</height>
-             </rect>
-            </property>
-            <property name="font">
-             <font>
-              <bold>false</bold>
-             </font>
-            </property>
-           </widget>
-           <widget class="QWidget" name="gridLayoutWidget_4">
-            <property name="geometry">
-             <rect>
-              <x>250</x>
-              <y>0</y>
-              <width>521</width>
-              <height>491</height>
-             </rect>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_test"/>
            </widget>
           </widget>
          </widget>

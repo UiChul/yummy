@@ -533,10 +533,9 @@ if __name__ == '__main__':
     if not app:
         app = QApplication(sys.argv)
 
-    window = LibraryLoader_rig(), LibraryLoader_mod()
-    window2 = LibraryLoader_mod()
+    window = LibraryLoader_rig()
+    window = LibraryLoader_mod()
 
     window.show()
-    window2.show()
 
     sys.exit(app.exec())
