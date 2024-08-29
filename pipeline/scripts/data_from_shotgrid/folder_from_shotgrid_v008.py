@@ -38,7 +38,7 @@ def get_tasks_by_user(sg, user_id):
     filters = [["task_assignees", "is", {"type": "HumanUser", "id": user_id}]]
     fields = ["project", "entity", "step", "content"]  # 태스크의 프로젝트 정보
     tasks = sg.find("Task", filters=filters, fields=fields)
-    print ("태스크#########################",tasks)
+
     return tasks
 
 def get_project_names_from_tasks(sg, tasks):
@@ -54,13 +54,12 @@ def get_project_names_from_tasks(sg, tasks):
         if project:
             project_ids.add(project.get("id"))
 
-    print (list(project_ids))
     # 프로젝트 이름을 가져옴
     if project_ids:
         filters = [["id", "in", list(project_ids)]]
         fields = ["name"]
         projects = sg.find("Project", filters=filters, fields=fields)
-        print (projects)
+
         project_names = {}
         for project in projects:
             project_id = project.get("id")
@@ -68,7 +67,6 @@ def get_project_names_from_tasks(sg, tasks):
             if project_id and project_name:
                 project_names[project_id] = project_name
 
-        print (project_names)
         return project_names
     
     return project_ids, project_names
@@ -81,7 +79,7 @@ def get_asset_types_from_projects(sg, project_ids):
     return: 프로젝트 ID와 자산 타입 및 자산 코드가 담긴 딕셔너리
     """
     project_asset_types = {}
-    project_asset_codes = {}
+    project_asset_names = {}
     
     for project_id in project_ids:
         filters = [["project", "is", {"type": "Project", "id": project_id}]]
@@ -89,35 +87,33 @@ def get_asset_types_from_projects(sg, project_ids):
         assets = sg.find("Asset", filters=filters, fields=fields)
         
         asset_types = set()
-        asset_codes = set()
+        asset_names = set()
         
         for asset in assets:
-            print(f"Asset Data: {asset}")
+            print(f"Asset Data!!!!!: {asset}")
             asset_type = asset.get("sg_asset_type")
-            asset_code = asset.get("code")
+            asset_name = asset.get("code")
             
             if asset_type:
                 asset_types.add(asset_type)
-            if asset_code:
-                asset_codes.add(asset_code)
+            if asset_name:
+                asset_names.add(asset_name)
         
         project_asset_types[project_id] = list(asset_types)
-        project_asset_codes[project_id] = list(asset_codes)
-    
-    print("프로젝트 자산 타입~~~~~~~~~~~~~~~~~~~~~~:", project_asset_types)
-    print("프로젝트 자산 코드~~~~~~~~~~~~~~~~~~~~~:", project_asset_codes)
+        project_asset_names[project_id] = list(asset_names)
     
     return project_asset_types
 
 def get_shots_and_steps_from_tasks(tasks):
     """
-    태스크에서 샷과 steps 가져오기
+    유저에게 할당된 태스크에서 샷과 steps 가져오기
     """
     shot_steps = {}
     for task in tasks:
-        entity = task.get("entity")
+        entity = task.get("entity")  # ex) {'id': 1306, 'name': 'hyo_010', 'type': 'Shot'}
         step = task.get("step")
-        content = task.get("content")
+        task_name = task.get("content")
+        print ("컨텐트!!!!!!@!@!@!@", task_name)
 
         if entity and entity.get("type") == "Shot":
             shot_code = entity.get("name")
@@ -126,22 +122,26 @@ def get_shots_and_steps_from_tasks(tasks):
             if shot_code not in shot_steps:
                 shot_steps[shot_code] = []
 
-            shot_steps[shot_code].append({"step": step_name, "task": content})
+            shot_steps[shot_code].append({"step": step_name, "task": task_name})
 
     print ("샷스탭!!!!!!!!!!!", shot_steps)
     return shot_steps
 
 def display_shot_steps(shot_steps):
     """
-    각 샷에 대한 작업 단계 정보를 출력합니다.
+    각 샷에 대한 스텝, 태스크 정보를 출력합니다.
     
-    :param shot_steps: 샷 코드와 작업 단계 정보가 담긴 딕셔너리
+    샷 코드와 스텝, 태스크 정보가 담긴 딕셔너리
     """
     for shot_code, steps in shot_steps.items():
         print(f"Shot: {shot_code}")
         for step_info in steps:
             print(f"  Step: {step_info['step']} | Task: {step_info['task']}")
         print("-" * 40)
+    """
+    Shot: FIN_0010
+    Step: mm | Task: FIN_0010_mm
+    """
 
 def get_sequences_from_projects(sg, project_ids):
     """
@@ -149,21 +149,22 @@ def get_sequences_from_projects(sg, project_ids):
     project_ids: 프로젝트 ID 리스트
     return: 프로젝트 ID와 시퀀스 데이터가 담긴 딕셔너리
     """
-    project_sequences = {}
+    project_sequences = {}  
+    # ex) {122(프로젝트 id): [{'id': 41, 'code': 'OPN', 'shots': [{'id': 1174, 'name': 'OPN_0010', 'type': 'Shot'}
     for project_id in project_ids:
         filters = [["project", "is", {"type": "Project", "id": project_id}]]
         fields = ["id", "code", "shots"]
         sequences = sg.find("Sequence", filters=filters, fields=fields)
-        print ("nooooooo", sequences)
+        
+
         seq_data = []
         for seq in sequences:
             seq_id = seq.get("id")
             seq_code = seq.get("code")
             seq_shots = seq.get("shots", [])
             seq_data.append({"id": seq_id, "code": seq_code, "shots": seq_shots})
-        
+    
         project_sequences[project_id] = seq_data
-    print ("yssss", project_sequences)
     return project_sequences
 
 def get_shot_codes_for_sequences(sequences):
@@ -173,23 +174,20 @@ def get_shot_codes_for_sequences(sequences):
     sequences: 시퀀스 데이터 리스트 [{id: 시퀀스 ID, code: 시퀀스 코드, shots: 샷들}]
     return: 시퀀스 코드와 샷 코드가 담긴 딕셔너리
     """
-    seq_shot_codes = {}
-    # for sequences in project_sequences.values():
-    #     print ("heyyyyyyyyyyyyy", sequences)
+    seq_shot_codes = {} # ex) 'OPN': ['OPN_0010', 'OPN_0020', 'OPN_0030']
+
     for sequence in sequences:
         seq_code = sequence.get("code")
-        print ("시퀀스 코오오오드", seq_code)
+       
         if seq_code:
             shots = sequence.get("shots", [])
-            print ("샤아아아아아앗", shots)
+
             shot_codes = []
             for shot in shots:
                 shot_code = shot.get("name")
                 shot_codes.append(shot_code)
-            print ("샷코오오오오드", shot_codes)
-            seq_shot_codes[seq_code] = shot_codes
 
-    print ("시퀀스 샷 코드으으으으", seq_shot_codes)
+            seq_shot_codes[seq_code] = shot_codes
     
     return seq_shot_codes
 
@@ -239,7 +237,6 @@ def create_folders(base_path, project_names, project_asset_types, project_sequen
     json_folder = "json"
 
     folders = []
-
     for project_id, project_name in project_names.items():
         # I_O 폴더와 tem, pipeline 폴더 생성
         folders = [
@@ -253,7 +250,7 @@ def create_folders(base_path, project_names, project_asset_types, project_sequen
 
             f"{pipeline_folder}/{scripts_folder}",
             f"{pipeline_folder}/{json_folder}"
-        ]
+            ]
         # 어셋 타입 폴더 생성
         asset_types = project_asset_types.get(project_id, [])
         for asset_type in asset_types:
@@ -326,7 +323,7 @@ if __name__ == "__main__":
     
     sg = connect_sg()
     
-    # 사용자 이메일 입력 및 유저 정보 가져오기
+    # 사용자 이메일 입력 및 유저 정보 가져오기(로그인할 때 받는 유저 이메일)
     email = input("이메일 입력: ")
     user = get_user_by_email(sg, email)
     
