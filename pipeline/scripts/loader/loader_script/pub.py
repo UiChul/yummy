@@ -23,6 +23,7 @@ class Loader_pub:
         self.find_pub_list()
         self.set_listwidget()
         self.set_vlc_mov()
+        self.set_thumbnail()
         
         self.tree.itemClicked.connect(self.set_thumbnail)
         self.tree.itemDoubleClicked.connect(self.open_file)
@@ -52,6 +53,8 @@ class Loader_pub:
         
         pub_list = self.find_pub_list()
         
+        self.start_item = pub_list[0]
+        
         for pub in pub_list:
             parent_item = QTreeWidgetItem(self.tree)
             parent_item.setText(0,pub)
@@ -61,11 +64,18 @@ class Loader_pub:
                 item1 = QTreeWidgetItem(parent_item)
                 item1.setText(0,chlid)
     
-    def set_thumbnail(self,item,column):
+    def set_thumbnail(self,item = 100,column = 100):
         
-        pub_name =item.text(column)
-        pub_len = pub_name.split(".")
-        self.set_file_info(pub_name)
+        if item == 100:
+            pub_name = self.start_item
+            pub_len = pub_name.split(".")
+            self.set_file_info(pub_name)
+            
+        else:
+            pub_name =item.text(column)
+            pub_len = pub_name.split(".")
+            self.set_file_info(pub_name)
+        
         
         if len(pub_len) == 2:
             pub_name = pub_len[0]

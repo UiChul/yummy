@@ -31,6 +31,7 @@ class My_task:
         self.set_status_table()     
         self.set_mytask_table()
         
+        
         self.table.itemClicked.connect(self.check_file_info)
         
         self.ui.pushButton_mytask_selectedopen.clicked.connect(self.set_open_btn)
@@ -46,11 +47,16 @@ class My_task:
         self.resolution = info["resolution"]
         
     def check_file_info(self,item):
-        index = item.row()
-        file_info  = []
-        for col in range(2):
-            info = self.table.item(index,col)
-            file_info.append(info.text())
+        
+        if type(item) == list:
+            file_info = item
+        else:
+            index = item.row()
+            file_info  = []
+            for col in range(2):
+                info = self.table.item(index,col)
+                file_info.append(info.text())
+        
         
         self.status_table.clearContents()
         my_task_list = self.set_mytask_status(file_info)
@@ -158,16 +164,22 @@ class My_task:
         # 가져오고 이걸 시간순으로 정렬을 해서 my task에 띄운다.
         # nuke_path = f"/home/rapa/YUMMY/project/Marvelous/seq/OPN/OPN_0010/dev/work/"
          
+         
         my_task_table = self.set_recent_file()  
+        
+        start_list = []
         
         i = 0
         for file_info in my_task_table:
-            
             for time,file_name in file_info.items():
+                if i == 0:
+                    start_list.append(file_name)
+                    start_list.append(time)
                 item = QTableWidgetItem()
                 item.setText(time)
                 item.setTextAlignment(Qt.AlignCenter)
                 self.table.setItem(i,1,item)
+                
                 
                 item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
                 
@@ -177,7 +189,10 @@ class My_task:
                 item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
                 
                 self.table.setItem(i,0,item)
+                
             i +=1
+            
+        self.check_file_info(start_list)
             
     def set_messagebox(self, text, title = "Error"):
         msg_box = QMessageBox()
