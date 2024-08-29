@@ -5,11 +5,14 @@ sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
 from loader_ui.main_window_v002_ui import Ui_Form
 from loader_script.main import Mainloader
 from loader_script.my_task import My_task
+from loader_script.loader_clip import Libraryclip
+from loader_script.loader_asset import Libraryasset
 from loader_module.project_data import project_data
 from loader_script.pub import Loader_pub
 import json
 
-class Merge(QWidget,My_task,Mainloader,project_data,Loader_pub):
+# class Merge(QWidget,Mainloader,project_data,Loader_pub):
+class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libraryasset):
     def __init__(self,info):
         super().__init__()
         self.set_up(info)
@@ -37,15 +40,23 @@ class Merge(QWidget,My_task,Mainloader,project_data,Loader_pub):
     def set_up(self,info):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+        
         self.set_main_loader(info)
         info = project_data.__init__(self,info,self.ui)
         self.write_project_json(info)
-        Mainloader.__init__(self,self.ui)
+        Libraryclip.__init__(self,self.ui)
+        Libraryasset.__init__(self,self.ui)
         My_task.__init__(self,self.ui)
         Loader_pub.__init__(self,self.ui)
-         
+        Mainloader.__init__(self,self.ui)
+
+info = {"project": "YUMMIE",
+
+"name": "UICHUL SHIN",
+
+"rank": "Admin"} 
 if __name__ == "__main__":
     app  = QApplication()
-    my = Merge()
+    my = Merge(info)
     my.show()
     app.exec()

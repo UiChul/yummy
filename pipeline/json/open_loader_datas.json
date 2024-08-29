@@ -15,6 +15,11 @@
                         "assignee_name": "Dami Kim",
                         "task_content": "retopol",
                         "task_step": "mod"
+                    },
+                    {
+                        "assignee_name": "Gyeoul Kim",
+                        "task_content": "rigging",
+                        "task_step": "rig"
                     }
                 ],
                 "linked_versions": [
@@ -60,6 +65,11 @@
                         "assignee_name": "Gyeoul Kim",
                         "task_content": "rigging",
                         "task_step": "rig"
+                    },
+                    {
+                        "assignee_name": "Gyeoul Kim",
+                        "task_content": "rigging",
+                        "task_step": "rig"
                     }
                 ],
                 "linked_versions": [
@@ -87,7 +97,18 @@
                 "asset_name": "car",
                 "asset_type": "vehicle",
                 "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/vehicle",
-                "task_details": [],
+                "task_details": [
+                    {
+                        "assignee_name": "Dami Kim",
+                        "task_content": "mod",
+                        "task_step": "mod"
+                    },
+                    {
+                        "assignee_name": "Gyeoul Kim",
+                        "task_content": "rig",
+                        "task_step": "rig"
+                    }
+                ],
                 "linked_versions": []
             }
         },
@@ -96,7 +117,18 @@
                 "asset_name": "green",
                 "asset_type": "matt",
                 "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/matt",
-                "task_details": [],
+                "task_details": [
+                    {
+                        "assignee_name": "Dami Kim",
+                        "task_content": "mod",
+                        "task_step": "mod"
+                    },
+                    {
+                        "assignee_name": "Gyeoul Kim",
+                        "task_content": "rig",
+                        "task_step": "rig"
+                    }
+                ],
                 "linked_versions": []
             }
         },
@@ -127,9 +159,209 @@
                 "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/env",
                 "task_details": [
                     {
+                        "assignee_name": "Gyeoul Kim",
+                        "task_content": "rigging",
+                        "task_step": "rig"
+                    },
+                    {
                         "assignee_name": "Dami Kim",
                         "task_content": "texture",
                         "task_step": "mod"
+                    }
+                ],
+                "linked_versions": []
+            }
+        },
+        {
+            "asset_info": {
+                "asset_name": "armed_man",
+                "asset_type": "character",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/character",
+                "task_details": [
+                    {
+                        "assignee_name": "Dami Kim",
+                        "task_content": "modeling",
+                        "task_step": "mod"
+                    },
+                    {
+                        "assignee_name": "Gyeoul Kim",
+                        "task_content": "rigging",
+                        "task_step": "rig"
+                    }
+                ],
+                "linked_versions": []
+            }
+        },
+        {
+            "asset_info": {
+                "asset_name": "mat",
+                "asset_type": "character",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/character",
+                "task_details": [
+                    {
+                        "assignee_name": "Dami Kim",
+                        "task_content": "mod",
+                        "task_step": "mod"
+                    },
+                    {
+                        "assignee_name": "Gyeoul Kim",
+                        "task_content": "rig",
+                        "task_step": "rig"
+                    }
+                ],
+                "linked_versions": []
+            }
+        },
+        {
+            "asset_info": {
+                "asset_name": "minion",
+                "asset_type": "character",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/character",
+                "task_details": [
+                    {
+                        "assignee_name": "Dami Kim",
+                        "task_content": "modeling",
+                        "task_step": "mod"
+                    },
+                    {
+                        "assignee_name": "Gyeoul Kim",
+                        "task_content": "rigging",
+                        "task_step": "rig"
+                    }
+                ],
+                "linked_versions": []
+            }
+        },
+        {
+            "asset_info": {
+                "asset_name": "full_cg",
+                "asset_type": "env",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/env",
+                "task_details": [
+                    {
+                        "assignee_name": "Dami Kim",
+                        "task_content": "modeling+",
+                        "task_step": "mod"
+                    },
+                    {
+                        "assignee_name": "Gyeoul Kim",
+                        "task_content": "rig",
+                        "task_step": "rig"
+                    }
+                ],
+                "linked_versions": []
+            }
+        },
+        {
+            "asset_info": {
+                "asset_name": "FCG",
+                "asset_type": "env",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/env",
+                "task_details": [
+                    {
+                        "assignee_name": "Gyeoul Kim",
+                        "task_content": "FCG_rigging",
+                        "task_step": "rig"
+                    }
+                ],
+                "linked_versions": []
+            }
+        },
+        {
+            "asset_info": {
+                "asset_name": "blue",
+                "asset_type": "matt",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/matt",
+                "task_details": [
+                    {
+                        "assignee_name": "Dami Kim",
+                        "task_content": "matt",
+                        "task_step": "mod"
+                    },
+                    {
+                        "assignee_name": "Gyeoul Kim",
+                        "task_content": "matt_rig",
+                        "task_step": "rig"
+                    }
+                ],
+                "linked_versions": []
+            }
+        },
+        {
+            "asset_info": {
+                "asset_name": "fountain",
+                "asset_type": "prop",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
+                "task_details": [
+                    {
+                        "assignee_name": "Dami Kim",
+                        "task_content": "mod_prop",
+                        "task_step": "mod"
+                    },
+                    {
+                        "assignee_name": "Gyeoul Kim",
+                        "task_content": "rigging",
+                        "task_step": "rig"
+                    }
+                ],
+                "linked_versions": []
+            }
+        },
+        {
+            "asset_info": {
+                "asset_name": "power_outlet",
+                "asset_type": "prop",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
+                "task_details": [
+                    {
+                        "assignee_name": "Dami Kim",
+                        "task_content": "mod_prop",
+                        "task_step": "mod"
+                    },
+                    {
+                        "assignee_name": "Gyeoul Kim",
+                        "task_content": "rigging",
+                        "task_step": "rig"
+                    }
+                ],
+                "linked_versions": []
+            }
+        },
+        {
+            "asset_info": {
+                "asset_name": "teapot",
+                "asset_type": "prop",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
+                "task_details": [
+                    {
+                        "assignee_name": "Dami Kim",
+                        "task_content": "mod_prop",
+                        "task_step": "mod"
+                    },
+                    {
+                        "assignee_name": "Gyeoul Kim",
+                        "task_content": "rigging",
+                        "task_step": "rig"
+                    }
+                ],
+                "linked_versions": []
+            }
+        },
+        {
+            "asset_info": {
+                "asset_name": "wall_tools",
+                "asset_type": "prop",
+                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
+                "task_details": [
+                    {
+                        "assignee_name": "Dami Kim",
+                        "task_content": "mod_prop",
+                        "task_step": "mod"
+                    },
+                    {
+                        "assignee_name": "Gyeoul Kim",
+                        "task_content": "rigging",
+                        "task_step": "rig"
                     }
                 ],
                 "linked_versions": []

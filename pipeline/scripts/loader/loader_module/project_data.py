@@ -9,8 +9,11 @@ import json
 class project_data:
     def __init__(self,info,Ui_Form):
         self.resolution = ""
+        
         self.ui = Ui_Form
+        
         self.open_json()
+        
         info["resolution"] = self.resolution
         return info
      

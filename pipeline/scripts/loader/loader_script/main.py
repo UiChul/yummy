@@ -7,7 +7,8 @@ from PySide6.QtCore import QFile,QSize
 from PySide6.QtGui import QPixmap, QColor,QFont,QMovie
 from PySide6.QtMultimedia import QMediaPlayer
 from PySide6.QtMultimediaWidgets import QVideoWidget
-
+import threading
+import subprocess
 import os
 import sys
 import json
@@ -21,10 +22,11 @@ from loader_module import ffmpeg_module
 
 # from functools import partial
 
-class Mainloader(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.set_up()
+class Mainloader:
+    def __init__(self,Ui_Form):
+        # super().__init__()
+        self.ui = Ui_Form
+        # self.set_up()
         
         self.make_json_dic()
         self.set_shot_tableWidgets()
@@ -854,6 +856,10 @@ class Mainloader(QWidget):
     #=========================================================================================
     # 버튼 연결
     #==========================================================================================
+    # def thread_load_nuke(self):
+    #     thread_load = threading.Thread(target=self.load_nuke)
+    #     thread_load.start()   
+        
         
     def load_nuke (self):
         
@@ -862,15 +868,24 @@ class Mainloader(QWidget):
         
         if task_type == "work":
             cmd_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc ' + f"{self.nuke_file_path}"
+            subprocess.Popen(cmd_path, shell=True,executable="/bin/bash")
+
         elif task_type == "mov":
             cmd_path = "xdg-open " + directory_path + "/"
+            os.system(cmd_path)
+            
         elif task_type == "exr":
             cmd_path = "xdg-open " + directory_path + "/"
-        os.system(cmd_path)
-     
+            os.system(cmd_path)
+            
+    # def thread_load_new_nuke(self):
+    #     thread_load_new = threading.Thread(target=self.load_new_nuke)
+    #     thread_load_new.start()   
+        
     def load_new_nuke(self):
-        nuke_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc'
-        os.system(nuke_path)
+        subprocess.Popen("source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc", shell=True,executable="/bin/bash")
+        
+
      
     #=========================================================================================
     # 스테이터스 창
@@ -929,18 +944,18 @@ class Mainloader(QWidget):
             task_table = self.task_table_widget[4]
             status_list = self.status_dic["ly"]
             
-        self.set_status_table(task_table)
-        self.input_status_table(status_list,task_table)
+        self.set_status_table_1(task_table)
+        self.input_status_table_1(status_list,task_table)
         
-    def set_status_table(self,task_table):
+    def set_status_table_1(self,task_table):
         
         task_table.setColumnCount(6)
         task_table.setRowCount(8)
         
         task_table.setHorizontalHeaderLabels(["Artist","ShotCode", "Version","Status","Upadate Data" ,"Description"])
         
-        task_table.setColumnWidth(0, 1020 * 0.1)
-        task_table.setColumnWidth(1, 1020 * 0.17)
+        task_table.setColumnWidth(0, 1020 * 0.14)
+        task_table.setColumnWidth(1, 1020 * 0.13)
         task_table.setColumnWidth(2, 1020 * 0.1)
         task_table.setColumnWidth(3, 1020 * 0.05)
         task_table.setColumnWidth(4, 1020*  0.23)
@@ -955,11 +970,11 @@ class Mainloader(QWidget):
         task_table.setEditTriggers(QAbstractItemView.NoEditTriggers) 
         task_table.setShowGrid(True)
     
-    def input_status_table(self,status_list,task_table):
+    def input_status_table_1(self,status_list,task_table):
         
         if not status_list:
             return
-        status_list.sort(key=self.extract_time,reverse = True)
+        status_list.sort(key=self.extract_time_shot,reverse = True)
         
         row = 0
         for status_info in status_list:
@@ -1009,10 +1024,9 @@ class Mainloader(QWidget):
                 col += 1
             row += 1
     
-    def extract_time(self,item):
+    def extract_time_shot(self,item):
         return datetime.strptime(item['Update Date'], '%Y-%m-%d %H:%M:%S')
         
-     
     def set_user_information(self):
     
         self.ui.label_projectname.setText(f"{self.project}")

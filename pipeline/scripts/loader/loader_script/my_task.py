@@ -8,6 +8,8 @@ import os
 import json
 import sys
 import re
+import threading
+import subprocess
 from datetime import datetime
 sys.path.append("/home/rapa/yummy/")
 from PySide6.QtGui import QPixmap
@@ -15,12 +17,12 @@ from pipeline.scripts.loader.loader_module.ffmpeg_module import change_to_png
 from pipeline.scripts.loader.loader_module.find_time_size import File_data
 
 
-class My_task(QWidget):
-    def __init__(self):
-        super().__init__()
-        # self.ui = Ui_Form
-        # self.table = self.ui.tableWidget_recent_files
-        self.set_up()
+class My_task:
+    def __init__(self,Ui_Form):
+        self.ui = Ui_Form
+        self.table = self.ui.tableWidget_recent_files
+        self.status_table = self.ui.tableWidget_mytask_status
+        # self.set_up()
         
         self.make_json_dic()
         self.set_click_thumbnail_mov()
@@ -49,7 +51,8 @@ class My_task(QWidget):
         for col in range(2):
             info = self.table.item(index,col)
             file_info.append(info.text())
-            
+        
+        self.status_table.clearContents()
         my_task_list = self.set_mytask_status(file_info)
         self.input_status_table(my_task_list)
         self.set_img(file_info)
@@ -99,16 +102,19 @@ class My_task(QWidget):
         temp , ext=os.path.splitext(file_name)
         img_path = temp.split("_")    
         self.nuke_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc' + f" /home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/work/{file_name}"
-    
+      
     def set_open_btn(self):
-        try:
-            os.system(self.nuke_path)
-        except:
+        if self.nuke_path:
+            subprocess.Popen(self.nuke_path, shell=True,executable="/bin/bash")
+
+            # os.system(self.nuke_path)
+        else:
             self.set_messagebox("파일을 먼저 선택해주세요") 
-        pass
-            
+        # pass
+    
     def set_new_btn(self):
-        os.system('source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc')
+        subprocess.Popen('source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc', shell=True,executable="/bin/bash")
+
         pass
         
     def set_mytask_table(self):
@@ -137,11 +143,11 @@ class My_task(QWidget):
                 version_dic[version["updated_at"]] = version["version_code"]+".nknc"
                 my_task_list.append(version_dic)
         
-        my_task_list.sort(key=self.extract_time,reverse=True)
+        my_task_list.sort(key=self.extract_time_mytask,reverse=True)
                 
         return my_task_list
         
-    def extract_time(self,item):
+    def extract_time_mytask(self,item):
         save_time_str = list(item.keys())[0]
         return datetime.strptime(save_time_str, '%Y-%m-%d %H:%M:%S')
             
@@ -199,14 +205,12 @@ class My_task(QWidget):
             version_dic = {}
             version_dic[version["version_code"]] = version["description"]
             self.description_list.append(version_dic)  
-            
-        print(self.description_list)   
+             
     
     def find_description_list(self,file_name):
         for comment in self.description_list:
             for shot_code , desription in comment.items():
                 if shot_code == file_name:
-                    print(desription)
                     return desription
       
     def open_loader_json(self):
@@ -249,10 +253,7 @@ class My_task(QWidget):
 
         
     def input_status_table(self,my_task_list):
-        
-        
         # my_task_list.sort(key=self.extract_time,reverse = True)
-        
         row = 0
         for status_info in my_task_list:
             col = 0
@@ -297,8 +298,6 @@ class My_task(QWidget):
     
     # def extract_time(self,item):
     #     return datetime.strptime(item['UpdateDate'], '%Y-%m-%d %H:%M:%S')
-    
-    
     def set_status_table(self):
         
         self.status_table.setColumnCount(7)
@@ -306,8 +305,8 @@ class My_task(QWidget):
         
         self.status_table.setHorizontalHeaderLabels(["Artist","ShotCode","Task","Version","Status","Upadate Data" ,"Description"])
         
-        self.status_table.setColumnWidth(0, 1020 * 0.1)
-        self.status_table.setColumnWidth(1, 1020 * 0.15)
+        self.status_table.setColumnWidth(0, 1020 * 0.13)
+        self.status_table.setColumnWidth(1, 1020 * 0.12)
         self.status_table.setColumnWidth(2, 1020 * 0.1)
         self.status_table.setColumnWidth(3, 1020 * 0.1)
         self.status_table.setColumnWidth(4, 1020 * 0.05)
@@ -315,8 +314,7 @@ class My_task(QWidget):
         self.status_table.setColumnWidth(6, 1030 * 0.30)
         self.status_table.setSelectionBehavior(QTableWidget.SelectRows)    
         self.status_table.setEditTriggers(QAbstractItemView.NoEditTriggers) 
-        
-        
+           
     def set_up(self):
         from pipeline.scripts.loader.loader_ui.main_window_v002_ui import Ui_Form
         self.ui = Ui_Form()
@@ -329,4 +327,4 @@ if __name__ == "__main__":
     app = QApplication()
     my = My_task()
     my.show()
-    app.exec()
+    app.exec_()

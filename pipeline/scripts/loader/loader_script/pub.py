@@ -1,6 +1,8 @@
 from PySide6.QtWidgets import QWidget,QApplication,QTreeWidgetItem
 from PySide6.QtGui import QFont,QPixmap
-
+import subprocess
+import multiprocessing
+import threading
 import os
 import json
 import sys
@@ -8,15 +10,14 @@ sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
 
 from loader_module.ffmpeg_module import change_to_png,find_resolution_frame
 from loader_module.find_time_size import File_data
-
-
-class Loader_pub(QWidget):
-    def __init__(self):
-        super().__init__()
-        # self.ui = Ui_Form
-        self.set_up()
-        # self.tree = self.ui.treeWidget_pub_list
-        # self.ui.groupBox_shot_file_info_3.setVisible(False)
+class Loader_pub:
+    def __init__(self,Ui_Form):
+        # super().__init__()
+        self.ui = Ui_Form
+        self.tree = self.ui.treeWidget_pub_list
+        self.ui.groupBox_shot_file_info_3.setVisible(False)
+        
+        # self.set_up()
         
         self.make_json_dic()
         self.find_pub_list()
@@ -45,8 +46,7 @@ class Loader_pub(QWidget):
                 if version["sg_status_list"] == "pub":
                     if version["version_code"][0].isupper():
                         pub_list.append(version["version_code"])                
-            return pub_list
-        
+            return pub_list 
     ## 그럼 리스트 위젯으로 하고 일단 하드코딩으로 해결해야할듯
     def set_listwidget(self):
         
@@ -92,11 +92,9 @@ class Loader_pub(QWidget):
         
         if len(pub_len) == 1:
             self.ui.groupBox_shot_file_info_3.setVisible(False)
-            print("no")
             return
         
         if len(pub_len) == 2:
-            print("Hello")
             self.ui.groupBox_shot_file_info_3.setVisible(True)
             nuke_name, ext = os.path.splitext(pub_name)
             img_path = nuke_name.split("_")
@@ -137,37 +135,38 @@ class Loader_pub(QWidget):
         os.system(cmd)
     
     def open_file(self,item,column):
-        pub_name =item.text(column)
-        pub_len = pub_name.split(".")
         
-        if len(pub_len) == 2:
-            nuke_name, ext = os.path.splitext(pub_name)
+        self.pub_name =item.text(column)
+        self.pub_len = self.pub_name.split(".")  
+        
+        if len(self.pub_len) == 2:
+            nuke_name, ext = os.path.splitext(self.pub_name)
             img_path = nuke_name.split("_")
             
             open_path = f" /home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/"
             
             if ext == ".nknc":
-                nuke_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc' + open_path + f"/work/{pub_name}"
-                os.system(nuke_path)
-            
+                nuke_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc' + open_path + f"/work/{self.pub_name}"       
+                subprocess.Popen(nuke_path, shell=True,executable="/bin/bash")
+                print("Nuke has been closed.")  # Nuke가 종료되면 메시지 출력
+
             elif ext == ".mov":
                 mov_path = "xdg-open " + open_path + "/mov"
                 os.system(mov_path)
             
             elif ext == ".exr":
                 exr_path = "xdg-open " + open_path + "/exr"
-                print("exr")
-                os.system(exr_path)      
-    # def find_file_size_date(self,path):       
+                os.system(exr_path)
+                                 
     def set_up(self):
-        from pipeline.scripts.loader.loader_ui.main_window_v002_ui import Ui_Form
+        from loader_ui.main_window_v002_ui import Ui_Form
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.tree = self.ui.treeWidget_pub_list
         self.ui.groupBox_shot_file_info_3.setVisible(False)
         
 if __name__ == "__main__":
-    app = QApplication()
+    app = QApplication(sys.argv)
     my = Loader_pub()
     my.show()
     app.exec()
