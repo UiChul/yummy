@@ -1,16 +1,17 @@
-### nk info 중 path 이상하게나옴 ;; 수정해야함
-### making tuumbnail, description as hardcording
-### tumbnail, description output process
 
 
 try:
-    from PySide6.QtWidgets import QApplication, QWidget, QTableWidgetItem, QListWidgetItem, QListWidget, QHBoxLayout, QVBoxLayout, QFileDialog, QMessageBox, QGroupBox
+    from PySide6.QtWidgets import QApplication, QWidget, QTableWidgetItem
+    from PySide6.QtWidgets import QListWidgetItem, QListWidget, QHBoxLayout
+    from PySide6.QtWidgets import QVBoxLayout, QFileDialog, QMessageBox, QGroupBox
     from PySide6.QtUiTools import QUiLoader
     from PySide6.QtCore import QFile
     from PySide6.QtGui import  Qt, QPixmap
 
 except:
-    from PySide2.QtWidgets import QApplication, QWidget, QTableWidgetItem, QListWidgetItem, QListWidget, QHBoxLayout, QVBoxLayout, QFileDialog, QMessageBox, QGroupBox
+    from PySide2.QtWidgets import QApplication, QWidget, QTableWidgetItem
+    from PySide2.QtWidgets import QListWidgetItem, QListWidget, QHBoxLayout
+    from PySide2.QtWidgets import QVBoxLayout, QFileDialog, QMessageBox, QGroupBox
     from PySide2.QtUiTools import QUiLoader
     from PySide2.QtCore import QFile
     from PySide2.QtGui import  Qt, QPixmap
@@ -24,6 +25,9 @@ import shutil
 # import functools
 
 class CustomListWidget(QListWidget):
+    """
+    When doubleclicked each Listwidget, each Dialog is open
+    """
     def __init__(self, parent=None, start_path="", mode = "file"):
         super().__init__(parent)
         self.start_path = start_path
@@ -46,13 +50,15 @@ class CustomListWidget(QListWidget):
             return
 
         # Open file dialog to select files
-        file_dialog = QFileDialog(self, "Select Files", self.start_path, "All Files (*)")
+        file_dialog = QFileDialog(self, "Select Files from Local", self.start_path, "All Files (*)")
         file_dialog.setFileMode(QFileDialog.ExistingFiles)
         file_dialog.setViewMode(QFileDialog.List)
         
         if file_dialog.exec_():
             selected_files = file_dialog.selectedFiles()
             if selected_files:
+                self.file_paths = selected_files
+                self.clear()
                 for file_path in selected_files:
                     file_name = os.path.basename(file_path)
                     self.addItem(file_name)
@@ -71,9 +77,17 @@ class CustomListWidget(QListWidget):
             self.addItem(file_name)
         else:
             QMessageBox.warning(self, "No Selection", "No folder was selected.")
+        
+    def get_selected_file_paths(self):
+
+        return self.file_paths
 
 
 class PathFinder:
+    """
+    Read Json File and find matching material (key:project_name)
+    and then find Local path
+    """
 
     def __init__(self, json_file_path):
         self.json_file_path = json_file_path
@@ -90,15 +104,15 @@ class PathFinder:
         except FileNotFoundError:
             print(f"Error: The file {self.json_file_path} was not found.")
             return {}
-        # except json.JSONDecodeError:
-        #     print("Error: The JSON file could not be decoded.")
-        #     return {}
-        # except UnicodeDecodeError:
-        #     print("Error: The file encoding is not correct. Please check the file encoding.")
-        #     return {}
+        except json.JSONDecodeError:
+            print("Error: The JSON file could not be decoded.")
+            return {}
+        except UnicodeDecodeError:
+            print("Error: The file encoding is not correct. Please check the file encoding.")
+            return {}
 
     def append_project_to_path(self, start_path):
-        """Find data that matches project_name(key) in Json data"""
+        """Find data that matches key(project_name) in Json data"""
 
         if self.key not in self.json_data:
             print(f"Error: Key '{self.key}' not found in the Json data.")
@@ -318,7 +332,7 @@ class MainPublish(QWidget):
             # print(file_validation_info_dict)
             return file_validation_info_dict
 
-   #==================================================================
+    #==================================================================
 
     def _find_Local_path(self):
 
@@ -534,9 +548,52 @@ class MainPublish(QWidget):
                 shutil.copy2(ver_up_server_dev_paths[2], ver_up_server_pub_paths[2])
                 print("mov version up file이 server로 이동되었습니다.")
 
-    #=========================================================
+    #=================================================================
 
-    def display_thumbnail(self):
+    def generate_thumbnail_from_file(self):
+        # display thumbnail based on local path
+        local_paths = self._find_Local_path()
+
+        nk_file_path = local_paths[0]
+        nk_thumbnail_path = f"{nk_file_path}_nk_thumbnail.png"
+
+        exr_file_path = local_paths[1]
+        exr_thumbnail_path = f"{exr_file_path}_exr_thumbnail.png"
+
+        mov_file_path = local_paths[2]
+        mov_thumbnail_path = f"{mov_file_path}_mov_thumbnail.png"
+        
+
+        if not os.path.exists(nk_thumbnail_path):
+            self.create_thumbnail(nk_file_path, nk_thumbnail_path)
+
+        elif not os.path.exists(exr_thumbnail_path):
+            self.create_thumbnail(exr_file_path, exr_thumbnail_path)
+
+        elif not os.path.exists(mov_thumbnail_path):
+            self.create_thumbnail(mov_file_path, mov_thumbnail_path)
+
+    def create_nk_thumbnail(self, input_path, output_path):
+
+        ffmpeg.input(input_path, ss=0).output(output_path, vframes=1, vf="scale=320:240").run()
+
+    def change_to_png_from_exr(input,output):
+        (
+            ffmpeg
+            .input(input)
+            .output(output,vf="eq=gamma=1.7")
+            .run()
+        )
+
+    def display_thumbnail_in_ui(self, image_path):
+
+        if os.path.exists(image_path):
+            pixmap = QPixmap(image_path)
+            scaled_pixmap = pixmap.scaled(230, 190, Qt.AspectRatioMode.KeepAspectRatio)
+            self.ui.label_thumbnail.setPixmap(scaled_pixmap)
+
+# 
+
 
     #     self.ui.label_thumbnail.clear()
 
@@ -586,3 +643,18 @@ if __name__ == "__main__":
     win = MainPublish()
     win.show()
     app.exec()
+
+
+
+
+
+# MODI
+### making error&pass code when already ver number in it -- 목
+### making tuumbnail, description as hardcording -- 목
+### tumbnail, description output process --- 목
+### render/publish setting in nuke -- 목
+### nk info 중 path 이상하게나옴 ;; 수정해야함 --금
+### find maximum version in Local_path -- 금
+### complete ALL process (open nuke > use ui > shotgrid upload/publish) -- 금
+### 금요일 퇴근전 의철님께 넘기기★
+### 주말 코드 수정/레쥬메/등등
