@@ -54,11 +54,11 @@ class DraggableWidget_mod(QWidget):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
+            print("Mouse Click Signal")
             drag = QDrag(self)
             mime_data = QMimeData()
-            mime_data.setText(self.file_path)  # Store file path in QMimeData
+            mime_data.setText(self.file_path) # Store file path in QMimeData
             drag.setMimeData(mime_data)
-
              # Set the drag cursor
             drag.setHotSpot(event.pos())
             drag.setPixmap(self.image_label.pixmap())
@@ -68,6 +68,7 @@ class DraggableWidget_mod(QWidget):
             QApplication.setOverrideCursor(QCursor(Qt.DragCopyCursor))
         else:
             super().mousePressEvent(event)
+            print("Mouse Click Signal")
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -212,8 +213,6 @@ class DroppableTableWidget_rig(QTableWidget):
         self.verticalHeader().setVisible(False)
         self.setEditTriggers(QAbstractItemView.NoEditTriggers) 
 
-
-
     def dragEnterEvent(self, event):
         if event.mimeData().hasText():
             event.acceptProposedAction()
@@ -274,13 +273,16 @@ class Libraryasset():
         self.set_asset_listWidget("character")
         # Load asset json files into the table
         self.set_asset_type_comboBox()
-        self.load_asset_files_in_tableWidget()
+        
+        self.load_asset_files_in_tableWidget_mod()
         self.load_asset_files_in_tableWidget_rig()
 
-        self.ui.listWidget_mod.itemClicked.connect(self.set_asset_information)
+        
         self.ui.comboBox_asset_type.currentTextChanged.connect(self.set_asset_listWidget)
-        self.ui.comboBox_asset_type.currentTextChanged.connect(self.load_asset_files_in_tableWidget)
+        self.ui.comboBox_asset_type.currentTextChanged.connect(self.load_asset_files_in_tableWidget_mod)
         self.ui.comboBox_asset_type.currentTextChanged.connect(self.load_asset_files_in_tableWidget_rig)
+        
+        self.table_widget_mod.itemClicked.connect(self.set_asset_information)
         
 
     def open_json_file (self):
@@ -350,12 +352,11 @@ class Libraryasset():
 
 ########################################################################################
 # mod
-    def load_asset_files_in_tableWidget(self, current_asset_type=""):
+    def load_asset_files_in_tableWidget_mod(self, current_asset_type=""):
         """
         Load all .abc files from the given folder path into the table widget,
         and set images from the image_path folder.
         """
-
         if not current_asset_type:
             current_asset_type = self.ui.comboBox_asset_type.currentText()
 
@@ -417,7 +418,6 @@ class Libraryasset():
                 for file_name in file_names:
                     alembic_full_file_path = os.path.join(cache_folder_path, file_name)
                     alembics.append(alembic_full_file_path)  # Add each file to the list
-                    print("Alembic File Path: ", alembic_full_file_path)
 
         # print("alembics", alembics)
 
@@ -427,11 +427,12 @@ class Libraryasset():
             col = index % 2
 
             # Create DraggableWidget with correct paths
-            draggable_widget = DraggableWidget_mod(alembic, thumbnail)
-            self.table_widget_mod.setCellWidget(row, col, draggable_widget)
+            draggable_widget_mod = DraggableWidget_mod(alembic, thumbnail)
+            print(draggable_widget_mod)
+            self.table_widget_mod.setCellWidget(row, col, draggable_widget_mod)
             # print("Added DraggableWidget", alembic, thumbnail)
 
-
+    
 
 # rig
 #############################################################################################
@@ -516,18 +517,18 @@ class Libraryasset():
             col = index % 2
 
             # Create DraggableWidget with correct paths
-            draggable_widget = DraggableWidget_rig(alembic, thumbnail)
-            self.table_widget_rig.setCellWidget(row, col, draggable_widget)
+            draggable_widget_rig = DraggableWidget_rig(alembic, thumbnail)
+            self.table_widget_rig.setCellWidget(row, col, draggable_widget_rig)
             # print("Added DraggableWidget", alembic, thumbnail)
 
 
 
 ##########################################################################################3
-    def set_asset_information(self, item):
-        asset_name = item.text()
+    def set_asset_information(self):
+        # asset_name = item.text()
         print("Hello")
-        self.ui.label_asset_filename.setText(asset_name)
-        self.ui.label_asset_filetype.setText("abc")
+        # self.ui.label_asset_filename.setText(asset_name)
+        # self.ui.label_asset_filetype.setText("abc")
         # 일단 informaiton 나머지 미완..~^^ ㅎ
 
     def set_up(self):
