@@ -34,7 +34,7 @@ class Mainloader(QWidget):
         self.set_comboBox_seq()
         self.set_description_list()
         
-        self.sort_status_task()
+        self.get_task_tab_name(2)
         
         self.shot_treeWidget = self.ui.treeWidget
         self.work_table = self.ui.tableWidget_shot_work
@@ -873,37 +873,13 @@ class Mainloader(QWidget):
         os.system(nuke_path)
      
     #=========================================================================================
-    # 스테이터스창
+    # 스테이터스 창
     #==========================================================================================    
      
     def set_status_table_list(self):
         tablename = ["ani","cmp","lgt","mm","ly"]
         self.task_table_widget = [getattr(self.ui, f"tableWidget_shot_{task}") for task in tablename]
         self.sort_status_task()
-        
-        
-    def set_status_table(self,task_table):
-        
-        task_table.setColumnCount(6)
-        task_table.setRowCount(8)
-        
-        task_table.setHorizontalHeaderLabels(["Artist","ShotCode", "Version","Status","Upadate Data" ,"Description"])
-        
-        task_table.setColumnWidth(0, 1020 * 0.1)
-        task_table.setColumnWidth(1, 1020 * 0.17)
-        task_table.setColumnWidth(2, 1020 * 0.1)
-        task_table.setColumnWidth(3, 1020 * 0.05)
-        task_table.setColumnWidth(4, 1020*  0.23)
-        task_table.setColumnWidth(5, 1030 * 0.35)
-        
-        task_table.setSelectionBehavior(QTableWidget.SelectRows)
-        
-        for row in range(task_table.rowCount()):
-            task_table.setRowHeight(row,30)
-            
-        
-        task_table.setEditTriggers(QAbstractItemView.NoEditTriggers) 
-        task_table.setShowGrid(True)
         
     def sort_status_task(self):
         user_dic = self.open_loader_json()
@@ -943,24 +919,46 @@ class Mainloader(QWidget):
             task_table = self.task_table_widget[2]
             status_list = self.status_dic["lgt"]
             
-        elif tabindex == 3 :
+        elif tabindex == 4 :
             self.st_tab_name = "mm"
             task_table = self.task_table_widget[3]
             status_list = self.status_dic["mm"]
             
-        elif tabindex == 4 :
+        elif tabindex == 3 :
             self.st_tab_name = "ly"
             task_table = self.task_table_widget[4]
             status_list = self.status_dic["ly"]
             
         self.set_status_table(task_table)
         self.input_status_table(status_list,task_table)
+        
+    def set_status_table(self,task_table):
+        
+        task_table.setColumnCount(6)
+        task_table.setRowCount(8)
+        
+        task_table.setHorizontalHeaderLabels(["Artist","ShotCode", "Version","Status","Upadate Data" ,"Description"])
+        
+        task_table.setColumnWidth(0, 1020 * 0.1)
+        task_table.setColumnWidth(1, 1020 * 0.17)
+        task_table.setColumnWidth(2, 1020 * 0.1)
+        task_table.setColumnWidth(3, 1020 * 0.05)
+        task_table.setColumnWidth(4, 1020*  0.23)
+        task_table.setColumnWidth(5, 1030 * 0.35)
+        
+        task_table.setSelectionBehavior(QTableWidget.SelectRows)
+        
+        for row in range(task_table.rowCount()):
+            task_table.setRowHeight(row,30)
+            
+        
+        task_table.setEditTriggers(QAbstractItemView.NoEditTriggers) 
+        task_table.setShowGrid(True)
     
     def input_status_table(self,status_list,task_table):
         
         if not status_list:
             return
-        
         status_list.sort(key=self.extract_time,reverse = True)
         
         row = 0
@@ -993,7 +991,7 @@ class Mainloader(QWidget):
                         label.setAlignment(Qt.AlignCenter)
                         task_table.setCellWidget(row, col, label)
                         
-                    elif info == "fin":
+                    elif info == "fin" or info == "sc":
                         label = QLabel()
                         gif_movie = QMovie("/home/rapa/xgen/fin3.gif")
                         gif_movie.setScaledSize(QSize(30,30))# GIF 파일 경로 설정
@@ -1003,6 +1001,8 @@ class Mainloader(QWidget):
                         task_table.setCellWidget(row, col, label)
                                  
                 else:
+                    if not info:
+                        info = "No description"
                     item.setText(info)
                     item.setTextAlignment(Qt.AlignCenter)
                     task_table.setItem(row,col,item)

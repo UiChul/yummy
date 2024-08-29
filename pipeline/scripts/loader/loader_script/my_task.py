@@ -1,15 +1,18 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication,QTableWidgetItem,QTableWidget
-from PySide6.QtWidgets import QTableWidgetItem, QAbstractItemView,QMessageBox
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QTableWidgetItem,QMessageBox,QLabel
+from PySide6.QtWidgets import QWidget,QAbstractItemView
+from PySide6.QtCore import QFile,QSize
+from PySide6.QtGui import QPixmap,QMovie
+import os
+import json
 import sys
+import re
+from datetime import datetime
 sys.path.append("/home/rapa/yummy/")
 from PySide6.QtGui import QPixmap
 from pipeline.scripts.loader.loader_module.ffmpeg_module import change_to_png
 from pipeline.scripts.loader.loader_module.find_time_size import File_data
-import os
-import json
-from datetime import datetime
 
 
 class My_task(QWidget):
@@ -23,10 +26,11 @@ class My_task(QWidget):
         self.set_click_thumbnail_mov()
         self.set_recent_file()
         self.set_description_list()
-        self.set_status_table()
-        
+        self.set_status_table()     
         self.set_mytask_table()
+        
         self.table.itemClicked.connect(self.check_file_info)
+        
         self.ui.pushButton_mytask_selectedopen.clicked.connect(self.set_open_btn)
         self.ui.pushButton_mytask_newfileopen.clicked.connect(self.set_new_btn)
         
@@ -46,8 +50,8 @@ class My_task(QWidget):
             info = self.table.item(index,col)
             file_info.append(info.text())
             
-        print(file_info)
-        self.set_mytask_status(file_info)
+        my_task_list = self.set_mytask_status(file_info)
+        self.input_status_table(my_task_list)
         self.set_img(file_info)
         self.make_path(file_info)
           
@@ -215,10 +219,85 @@ class My_task(QWidget):
         user_dic = self.open_loader_json()
         file_name = file_info[0]
         shot_code_data,_ = os.path.splitext(file_name)
+
+        shot_code_data_split = shot_code_data.split("_")
+        
+        shot_code = "_".join([shot_code_data_split[0],shot_code_data_split[1]])
         
         project_versions = user_dic["project_versions"]
         
+        my_task_list = []
         
+        for version in project_versions:
+            match_shot_code = re.match(fr"{shot_code}",version["version_code"])
+            if match_shot_code:
+                
+                shot_dic = {}
+                shot_info = version["version_code"].split("_")
+                task  = shot_info[2]
+                
+                shot_dic["Artist"] = version["artist"] 
+                shot_dic["Shot Code"]  = "_".join([shot_info[0],shot_info[1]])
+                shot_dic["Task"]  = task
+                shot_dic["Version"] = shot_info[-1] 
+                shot_dic["Status"]  = version["sg_status_list"]
+                shot_dic["UpdateDate"] = version["updated_at"]
+                shot_dic["Description"] = version["description"]
+                
+                my_task_list.append(shot_dic)
+        return my_task_list
+
+        
+    def input_status_table(self,my_task_list):
+        
+        
+        # my_task_list.sort(key=self.extract_time,reverse = True)
+        
+        row = 0
+        for status_info in my_task_list:
+            col = 0
+            for info in status_info.values():
+                item = QTableWidgetItem()
+                if col == 4:
+                    if info == "wip":
+                        label = QLabel()
+                        gif_movie = QMovie("/home/rapa/xgen/wip4.gif")
+                        gif_movie.setScaledSize(QSize(30,30))# GIF 파일 경로 설정
+                        label.setMovie(gif_movie)
+                        gif_movie.start() 
+                        label.setAlignment(Qt.AlignCenter)
+                        self.status_table.setCellWidget(row, col, label)
+                        
+                    elif info == "pub":
+                        label = QLabel()
+                        gif_movie = QMovie("/home/rapa/xgen/pub3.gif")
+                        gif_movie.setScaledSize(QSize(30,30))# GIF 파일 경로 설정
+                        label.setMovie(gif_movie)
+                        gif_movie.start() 
+                        label.setAlignment(Qt.AlignCenter)
+                        self.status_table.setCellWidget(row, col, label)
+                        
+                    elif info == "fin" or info == "sc":
+                        label = QLabel()
+                        gif_movie = QMovie("/home/rapa/xgen/fin3.gif")
+                        gif_movie.setScaledSize(QSize(30,30))# GIF 파일 경로 설정
+                        label.setMovie(gif_movie)
+                        gif_movie.start() 
+                        label.setAlignment(Qt.AlignCenter)
+                        self.status_table.setCellWidget(row, col, label)
+                                 
+                else:
+                    if not info:
+                        info = "No description"
+                    item.setText(info)
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.status_table.setItem(row,col,item)
+                col += 1
+            row += 1
+    
+    # def extract_time(self,item):
+    #     return datetime.strptime(item['UpdateDate'], '%Y-%m-%d %H:%M:%S')
+    
     
     def set_status_table(self):
         
@@ -235,6 +314,8 @@ class My_task(QWidget):
         self.status_table.setColumnWidth(5, 1020*  0.20)
         self.status_table.setColumnWidth(6, 1030 * 0.30)
         self.status_table.setSelectionBehavior(QTableWidget.SelectRows)    
+        self.status_table.setEditTriggers(QAbstractItemView.NoEditTriggers) 
+        
         
     def set_up(self):
         from pipeline.scripts.loader.loader_ui.main_window_v002_ui import Ui_Form
