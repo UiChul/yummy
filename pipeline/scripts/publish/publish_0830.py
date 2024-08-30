@@ -33,111 +33,6 @@ import ffmpeg
 import shutil
 # import functools
 
-class CustomListWidget(QListWidget):
-    """
-    When double clicked each Listwidget, each Dialog is open
-    """
-    # fileSelected = Signal(list)
-
-    def __init__(self, parent=None, start_path="", mode = "file"):
-        super().__init__(parent)
-        self.start_path = start_path
-        self.mode = mode
-
-    def mouseDoubleClickEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            self._handle_double_click()
-        super().mouseDoubleClickEvent(event)
-
-    def _handle_double_click(self):
-        if self.mode == 'folder':
-            self.open_folder_dialog()
-        else:
-            # file_dialog = QFileDialog(self, "Select Files from Local", self.start_path, "All Files (*)")
-            # print(file_dialog)
-            self.open_file_dialog()
-
-    def open_file_dialog(self):
-        # if not self.start_path:
-        #     QMessageBox.warning(self, "Error", "The start path is not set.")
-        #     return
-        print("Hello")
-        # Open file dialog to select files
-        file_dialog = QFileDialog.getOpenFileName(self, "Select Files from Local", self.start_path, "All Files (*)")
-        print(file_dialog)
-        # file_dialog.setFileMode(QFileDialog.ExistingFiles)
-        # file_dialog.setViewMode(QFileDialog.List)
-        
-        file_name = os.path.basename(file_dialog[0])
-        self.addItem(file_name)
-        # if file_dialog.exec_():
-        # selected_files = file_dialog.selectedFiles()
-        #     if selected_files:
-        #         # self.selected_files = selected_files  # 선택된 파일 목록 저장
-        #         # self.clear()
-        #         for file_path in selected_files:
-        #             file_name = os.path.basename(file_path)
-        #             self.addItem(file_name)
-        # self.fileSelected.emit(file_dialog[0])
-        self.qwer = file_dialog[0]
-
-        # if file_dialog.exec_():
-        #         selected_files = file_dialog.selectedFiles()
-        #         if selected_files:
-        #             # 마지막 파일의 파일 이름을 추출
-        #             last_file_path = selected_files[-1]
-        #             self.selected_file_name = os.path.basename(last_file_path)
-        #             self.addItem(self.selected_file_name)  # 리스트 위젯에 마지막 파일 이름 추가
-        #             self.fileSelected.emit(selected_files)
-
-        #             print("Selected file name:", self.selected_file_name)  # 선택된 파일 이름 출력
-        #             return self.selected_file_name
-   
-    def open_folder_dialog(self):
-        if not self.start_path:
-            QMessageBox.warning(self, "Error", "The start path is not set.")
-            return
-
-        QMessageBox.information(self, "Folder Selected", "Please select 'Folder' for exr")
-        folder = QFileDialog.getExistingDirectory(self, "Select a Folder", self.start_path)
-        
-        if folder:
-            # self.file_paths = [folder]
-            # self.clear()
-            exr_folder = os.path.basename(folder)
-            self.addItem(exr_folder)
-
-            exr_files = os.listdir(folder)
-            frame_list = []
-            for exr_file in exr_files:
-                match = re.search(r"\d{4}", exr_file)
-                frame = match.group(0)
-                frame_list.append(frame)
-                max_frame = max(frame_list)
-            split = exr_file.split(".")
-            base = split[0]
-            ext = split[2]
-            file_name = f"{base}.{max_frame}.{ext}"
-            # print(file_name)
-
-        else:
-            QMessageBox.warning(self, "No Selection", "No folder was selected.")
-
-        return file_name
-        
-
-    # def get_selected_file_names(self):
-
-    #     file_names = []
-
-    #     selected_items = self.selectedItems()
-    #     print(selected_items)
-    #     return [item.text() for item in selected_items]
-    
-    # def get_selected_file_paths(self):
-    #     print(self.file_paths)
-    #     return self.file_paths
-
 
 class PathFinder:
     """
@@ -210,45 +105,76 @@ class MainPublish(QWidget):
         self.ui.pushButton_add_to_basket.clicked.connect(self.add_mov_item_tablewidget_basket)
         self.ui.pushButton_version.clicked.connect(self.copy_to_Server_from_Local)
         self.ui.pushButton_publish.clicked.connect(self.copy_to_pub_from_dev_in_Server)
-        
-        # self.nk_file_listwidget.fileSelected.connect(self.generate_thumbnail_from_file)   # connecting signal from class(:CustomListwidget) and function that making thumbnail
 
     def setup_file_in_groubBox_from_Local(self):
 
         # nk_page
         nk_page = QWidget()
         layout1 = QVBoxLayout(nk_page)
-        nk_file_path = os.path.dirname(nuke.scriptName())
-        self.nk_file_listwidget = CustomListWidget(parent=self, start_path = nk_file_path, mode="file")  # Use custom list widget
-        self.nk_file_listwidget.setSelectionMode(QListWidget.MultiSelection)    # multi select listwidget_item
+        self.nk_file_path = os.path.dirname(nuke.scriptName())
+        self.nk_file_listwidget = QListWidget()
         self.nk_file_listwidget.setObjectName("nk_file_listwidget")
         layout1.addWidget(self.nk_file_listwidget)
+        self.nk_file_listwidget.addItem("Double-click here to add file")
         self.ui.groupBox_nk.setLayout(layout1)
+        self.nk_file_listwidget.itemDoubleClicked.connect(self.open_nk_file_dialog)
+        self.nk_file_listwidget.itemDoubleClicked.connect(self.generate_nk_thumbnail_from_file)
 
         # exr_page
         exr_page = QWidget()
         layout2 = QVBoxLayout(exr_page)
-        exr_folder_path = nk_file_path.split("work")[0]+"exr/"
-        self.exr_file_listwidget = CustomListWidget(start_path = exr_folder_path, mode = "folder")  # Use custom list widget
-        self.exr_file_listwidget.setSelectionMode(QListWidget.MultiSelection)   # multi select listwidget_item
-        self.exr_file_listwidget.setObjectName("exr_file_listwidget")
-        layout2.addWidget(self.exr_file_listwidget)
+        self.exr_folder_path = self.nk_file_path.split("work")[0]+"exr/"
+        self.exr_folder_listwidget = QListWidget()
+        self.exr_folder_listwidget.addItem("Double-click here to add folder")
+        self.exr_folder_listwidget.setObjectName("exr_file_listwidget")
+        layout2.addWidget(self.exr_folder_listwidget)
         self.ui.groupBox_exr.setLayout(layout2)
+        self.exr_folder_listwidget.itemDoubleClicked.connect(self.open_exr_folder_dialog)
+        self.exr_folder_listwidget.itemDoubleClicked.connect(self.generate_exr_thumbnail_from_file)
 
         # mov_page
         mov_page = QWidget()
         layout3 = QVBoxLayout(mov_page)
-        mov_file_path = nk_file_path.split("work")[0]+"mov/"
-        self.mov_file_listwidget = CustomListWidget(start_path = mov_file_path, mode = "file")  # Use custom list widget
-        self.mov_file_listwidget.setSelectionMode(QListWidget.MultiSelection)   # multi select listwidget_item
+        self.mov_file_path = self.nk_file_path.split("work")[0]+"mov/"
+        self.mov_file_listwidget = QListWidget()
         self.mov_file_listwidget.setObjectName("mov_file_listwidget")
         layout3.addWidget(self.mov_file_listwidget)
+        self.mov_file_listwidget.addItem("Double-click here to add file")
         self.ui.groupBox_mov.setLayout(layout3)
+        self.mov_file_listwidget.itemDoubleClicked.connect(self.open_mov_file_dialog)
+        self.mov_file_listwidget.itemDoubleClicked.connect(self.generate_mov_thumbnail_from_file)
 
+    def open_nk_file_dialog(self):
+        file_dialog = QFileDialog.getOpenFileNames(self, "Select Files from Local", self.nk_file_path, "All Files (*)")
+        selected_files = file_dialog[0]
+        if selected_files:
+            self.nk_file_names = [os.path.basename(path) for path in selected_files]
+            self.nk_file_listwidget.clear()
+            self.nk_file_listwidget.addItems(self.nk_file_names)
+            print(self.nk_file_names)
+
+    def open_mov_file_dialog(self):
+        file_dialog = QFileDialog.getOpenFileNames(self, "Select Files from Local", self.mov_file_path, "All Files (*)")
+        selected_files = file_dialog[0]
+        if selected_files:
+            file_names = [os.path.basename(path) for path in selected_files]
+            self.mov_file_listwidget.clear()
+            self.mov_file_listwidget.addItems(file_names)
+
+    def open_exr_folder_dialog(self):
+        QMessageBox.information(self, "Folder Selected", "Please select 'Folder' for exr")
+
+        folder = QFileDialog.getExistingDirectory(self, "Select Folder from Local", self.exr_folder_path)
+        if folder:
+            self.folder_name = os.path.basename(folder)
+            self.exr_folder_listwidget.clear()
+            self.exr_folder_listwidget.addItem(self.folder_name)
+            # self.generate_thumbnail_from_file()
+      
     def setup_top_bar(self):
 
-        nk_file_path = nuke.scriptName()
-        split = nk_file_path.split("/")
+        # self.nk_file_path = nuke.scriptName()
+        split = self.nk_file_path.split("/")
         project_name = split[5]
         shot_code = split[8]
         team_name = split[9]
@@ -304,7 +230,7 @@ class MainPublish(QWidget):
     def add_exr_item_tablewidget_basket(self):
 
         ### exr item ###
-        exr_selected_folders = self.exr_file_listwidget.selectedItems()
+        exr_selected_folders = self.exr_folder_listwidget.selectedItems()
         for folder in exr_selected_folders:
             exr_item = QTableWidgetItem()
             exr_selected_folder = folder.text()
@@ -607,46 +533,189 @@ class MainPublish(QWidget):
 
     #=================================================================
     """ 썸네일부분 미완 """
-    # def handle_file_selection(self, file_paths):
-        # if file_paths:
-        #     self.generate_thumbnail_from_file(file_paths)
+    import nuke
 
-    def generate_thumbnail_from_file(self, file_paths):
-        print("핸들핸들")
-        # a = CustomListWidget()
-        a = self.nk_file_listwidget.qwer
-        # b = a.open_file_dialog()
-        print("a",a)
+def create_thumbnail_from_nuke_script(nuke_script_path, output_image_path, frame=1):
+            nk_path = f"{self.nk_file_path}/{self.nk_file_names[0]}"
+        nuke.scriptOpen(nk_path)
+    # Nuke 스크립트를 열기
+    nuke.scriptOpen(nuke_script_path)
+    
+    # Read 노드 생성
+    read_node = nuke.createNode('Read')
+    read_node['file'].setValue(nuke_script_path)
+    
+    # Write 노드 생성
+    write_node = nuke.createNode('Write')
+    write_node['file'].setValue(output_image_path)
+    write_node['file_type'].setValue('png')  # 이미지 포맷 설정 (예: PNG)
+    
+    # 프레임 설정
+    nuke.frame(frame)
+    
+    # 렌더링 실행
+    nuke.execute(write_node, frame, frame)
+    
+    # 노드 정리
+    nuke.delete(read_node)
+    nuke.delete(write_node)
 
-        # print(b)
-        # print(self.nk_file_listwidget.item())
-        # selected_texts = self.nk_file_listwidget.get_selected_item_texts()
-        # print(selected_texts)
-        # print(self.nk_file_listwidget.selectedItems())
+# 사용 예제
+create_thumbnail_from_nuke_script('path/to/your_script.nk', 'path/to/thumbnail.png', frame=10)
 
 
-        # print(file_paths[0])
-        # print(file_paths[1])
-        # print(file_paths[2])
-        # Define paths for thumbnails
-        # thumbnail_paths = [
-        #     f"C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/{self.nk_file_listwidget.item().text()}_nk_thumbnail.png",
-        #     f"{file_paths[1]}_exr_thumbnail.png",
-        #     f"{file_paths[2]}_mov_thumbnail.png"
-        # ]
 
-    #     # Generate thumbnails if they do not exist
-    #     for i, path in enumerate(file_paths):
-    #         if not os.path.exists(thumbnail_paths[i]):
-    #             if i == 0:
-    #                 self.create_nk_thumbnail(path, thumbnail_paths[i])
-    #             elif i == 1:
-    #                 self.change_to_png_from_exr(path, thumbnail_paths[i])
-    #             elif i == 2:
-    #                 self.create_mov_thumbnail(path, thumbnail_paths[i])
+
+
+
+    def generate_nk_thumbnail_from_file(self, file_paths):
+        reformat_node = nuke.createNode("Reformat")
+        write_node = nuke.createNode("Write")
+        write_node.setInput(0, reformat_node)
+
+        new_format_name = 'HD_1080'
+        formats = nuke.formats()
+        new_format = next((fmt for fmt in formats if fmt.name() == new_format_name), None)
+
+        if new_format:
+            reformat_node['format'].setValue(new_format)
+
+        write_node["file"].setValue(file_path)
+        write_node["file_type"].setValue("png")
         
-    #     # Display the NK thumbnail in UI
-    #     self.display_thumbnail_in_ui(thumbnail_paths[0])
+        write_node["first"].setValue(frame_number)
+        write_node["last"].setValue(frame_number)
+        
+        # render
+        nuke.execute(write_node, frame_number, frame_number)
+        
+        # clean up
+        nuke.delete(write_node)
+        nuke.delete(reformat_node)
+
+
+
+
+        pass
+
+    def create_nk_thumbnail(self, frame_number):
+
+
+
+        reformat_node = nuke.createNode("Reformat")
+        write_node = nuke.createNode("Write")
+        write_node.setInput(0, reformat_node)
+
+        new_format_name = 'HD_1080'
+        formats = nuke.formats()
+        new_format = next((fmt for fmt in formats if fmt.name() == new_format_name), None)
+
+        if new_format:
+            reformat_node['format'].setValue(new_format)
+
+        write_node["file"].setValue(nk_path)
+        write_node["file_type"].setValue("png")
+
+        write_node["first"].setValue(frame_number)
+        write_node["last"].setValue(frame_number)
+        
+        # render
+        nuke.execute(write_node, frame_number, frame_number)
+        
+        # clean up
+        nuke.delete(write_node)
+        nuke.delete(reformat_node)
+
+
+
+        # thumbnail_node = nuke.createNode('Thumbnail')
+        # thumbnail_node.setInput(0, nuke.nodes.Read(file=input_path))
+        
+        # # 원하는 썸네일의 크기를 설정합니다
+        # thumbnail_node['size'].setValue('320x240')
+        
+        # # 썸네일을 렌더링합니다
+        # thumbnail_node['file'].setValue(output_path)
+
+    def generate_nk_thumbnail_from_file(self, file_paths):
+
+        nk_path = f"{self.nk_file_path}/{self.nk_file_names[0]}"
+        # exr_path = f"{self.exr_folder_path}{ver}/{exr_name}"
+        base, ext = os.path.splitext(nk_path)
+        image_name = base.split("/")[-1]
+
+        thumbnail_folder_path = self.nk_file_path.split("dev")[0]
+
+        if not os.path.isdir(f"{thumbnail_folder_path}/.thumbnail"):
+            os.makedirs(f"{thumbnail_folder_path}/.thumbnail")
+
+        png_path = f"{thumbnail_folder_path}.thumbnail/{image_name}.png"
+
+        # print(f"누크패스 : {nk_path}")
+        # print(f"피엔지패스 : {png_path}")
+
+
+        if not os.path.isfile(png_path):
+            self.create_nk_thumbnail(nk_path, png_path)
+            self.display_thumbnail_in_ui(png_path)
+            print("exr이 png가 되었습니다.")
+        else:
+            self.display_thumbnail_in_ui(png_path)
+
+    def generate_exr_thumbnail_from_file(self):
+
+        split = self.exr_folder_path.split("/")   # exr_folder_path : local path의 exr 폴더임
+        shot_code = split[-5]
+        team_name = split[-4]
+        ver = self.folder_name
+        exr_name = f"{shot_code}_{team_name}_{ver}.1001.exr"
+        image_name = f"{shot_code}_{team_name}_{ver}.1001.png"
+
+        exr_path = f"{self.exr_folder_path}{ver}/{exr_name}"
+        thumbnail_folder_path = self.exr_folder_path.split("dev")[0]
+
+        if not os.path.isdir(f"{thumbnail_folder_path}/.thumbnail"):
+            os.makedirs(f"{thumbnail_folder_path}/.thumbnail")
+
+        png_path = f"{thumbnail_folder_path}/.thumbnail/{image_name}"
+
+        if not os.path.isfile(png_path):
+            self.change_to_png_from_exr(exr_path, png_path)
+            self.display_thumbnail_in_ui(png_path)
+            print("exr이 png가 되었습니다.")
+        else:
+            self.display_thumbnail_in_ui(png_path)
+
+    def change_to_png_from_exr(self, input, output):
+        (
+            ffmpeg
+            .input(input)
+            .output(output)
+            .run()
+        )
+
+    def display_thumbnail_in_ui(self, image_path):
+
+        if os.path.exists(image_path):
+            pixmap = QPixmap(image_path)
+            scaled_pixmap = pixmap.scaled(230, 190, Qt.AspectRatioMode.KeepAspectRatio)
+            self.ui.label_thumbnail_exr.setPixmap(scaled_pixmap)
+
+    def generate_mov_thumbnail_from_file(self, file_paths):
+        pass
+        # Generate thumbnails if they do not exist
+        # for i, path in enumerate(file_paths):
+        #     if not os.path.exists(thumbnail_paths[i]):
+        #         if i == 0:
+        #             print("누크")
+                    # self.create_nk_thumbnail(path, thumbnail_paths[i])
+                # elif i == 1:
+                #     self.change_to_png_from_exr(path, thumbnail_paths[i])
+                # elif i == 2:
+                #     self.create_mov_thumbnail(path, thumbnail_paths[i])
+        
+        # Display the NK thumbnail in UI
+        # self.display_thumbnail_in_ui(thumbnail_paths[0])
 
     # def create_nk_thumbnail(self, input_path, output_path):
     #     try:
@@ -654,11 +723,6 @@ class MainPublish(QWidget):
     #     except ffmpeg.Error as e:
     #         QMessageBox.warning(self, "Error", f"Failed to create NK thumbnail for {input_path}. Error: {str(e)}")
 
-    def change_to_png_from_exr(self, input_path, output_path):
-        try:
-            ffmpeg.input(input_path).output(output_path, vf="eq=gamma=1.7").run()
-        except ffmpeg.Error as e:
-            QMessageBox.warning(self, "Error", f"Failed to convert EXR to PNG for {input_path}. Error: {str(e)}")
 
     # def create_mov_thumbnail(self, input_path, output_path):
     #     try:
@@ -680,45 +744,38 @@ class MainPublish(QWidget):
     #     # display thumbnail based on local path
     #     # !!!!! thumbnail path >> pipeline 쪽에서 저장하는걸로 변경/적용필요
     #     local_paths = self._find_Local_path()
+    #     print(local_paths)
 
-    #     nk_file_path = local_paths[0]
-    #     nk_thumbnail_path = f"{nk_file_path}_nk_thumbnail.png"
+        # nk_file_path = local_paths[0]
+        # print(f"{nk_file_path}:mov입니다")
+        # nk_thumbnail_path = f"{nk_file_path}_nk_thumbnail.png"
 
-    #     exr_file_path = local_paths[1]
-    #     exr_thumbnail_path = f"{exr_file_path}_exr_thumbnail.png"
+        # exr_file_path = local_paths[1]
+        # print(f"{exr_file_path}:exr입니다")
+        # exr_thumbnail_path = f"{exr_file_path}_exr_thumbnail.png"
 
-    #     mov_file_path = local_paths[2]
-    #     mov_thumbnail_path = f"{mov_file_path}_mov_thumbnail.png"
+        # mov_file_path = local_paths[2]
+        # print(f"{exr_file_path}:mov입니다")
+        # mov_thumbnail_path = f"{mov_file_path}_mov_thumbnail.png"
 
-    #     if not os.path.exists(nk_thumbnail_path):
-    #         self.create_nk_thumbnail(nk_file_path, nk_thumbnail_path)
+        # if not os.path.exists(nk_thumbnail_path):
+        #     self.create_nk_thumbnail(nk_file_path, nk_thumbnail_path)
 
-    #     elif not os.path.exists(exr_thumbnail_path):
-    #         self.change_to_png_from_exr(exr_file_path, exr_thumbnail_path)
+        # elif not os.path.exists(exr_thumbnail_path):
+        #     self.change_to_png_from_exr(exr_file_path, exr_thumbnail_path)
 
-    #     elif not os.path.exists(mov_thumbnail_path):
-    #         self.change_to_png_from_exr(mov_file_path, mov_thumbnail_path)
+        # elif not os.path.exists(mov_thumbnail_path):
+        #     self.change_to_png_from_exr(mov_file_path, mov_thumbnail_path)
 
-    #     self.display_thumbnail_in_ui(nk_thumbnail_path)
+        # self.display_thumbnail_in_ui(nk_thumbnail_path)
 
-    # def create_nk_thumbnail(self, input_path, output_path):
+    def create_mov_thumbnail(self, input_path, output_path):
 
-    #     ffmpeg.input(input_path, ss=0).output(output_path, vframes=1, vf="scale=320:240").run()
+        ffmpeg.input(input_path, ss=0).output(output_path, vframes=1, vf="scale=320:240").run()
 
-    # def change_to_png_from_exr(input,output):
-    #     (
-    #         ffmpeg
-    #         .input(input)
-    #         .output(output,vf="eq=gamma=1.7")
-    #         .run()
-    #     )
 
-    # def display_thumbnail_in_ui(self, image_path):
 
-    #     if os.path.exists(image_path):
-    #         pixmap = QPixmap(image_path)
-    #         scaled_pixmap = pixmap.scaled(230, 190, Qt.AspectRatioMode.KeepAspectRatio)
-    #         self.ui.label_thumbnail_nk.setPixmap(scaled_pixmap)
+
 
     # def save_frame_as_thumbnail(self, file_path, frame_number):
     #     # display thumbnail.ver1 : making write node for thumbnail 
