@@ -1,6 +1,5 @@
 # MODI
 ### making error&pass code when already ver number in it -- 목
-### making tuumbnail, description as hardcording -- 목
 ### tumbnail, description output process --- 목
 ### render/publish setting in nuke -- 목
 ### nk info 중 path 이상하게나옴 ;; 수정해야함 --금
@@ -48,35 +47,32 @@ class PathFinder:
     def _read_paths_from_json(self):
         """Read Json file and data return"""
 
-        try:
-            with open(self.json_file_path, 'r', encoding='utf-8') as file:
-                data = json.load(file)
-            return data
-        except FileNotFoundError:
-            print(f"Error: The file {self.json_file_path} was not found.")
-            return {}
-        except json.JSONDecodeError:
-            print("Error: The JSON file could not be decoded.")
-            return {}
-        except UnicodeDecodeError:
-            print("Error: The file encoding is not correct. Please check the file encoding.")
-            return {}
+        # try:
+        with open(self.json_file_path, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+        return data
+        # except FileNotFoundError:
+        #     print(f"Error: The file {self.json_file_path} was not found.")
+        #     return {}
+        # except json.JSONDecodeError:
+        #     print("Error: The JSON file could not be decoded.")
+        #     return {}
+        # except UnicodeDecodeError:
+        #     print("Error: The file encoding is not correct. Please check the file encoding.")
+        #     return {}
 
     def append_project_to_path(self, start_path):
         """Find data that matches key(project_name) in Json data"""
 
-        if self.key not in self.json_data:
-            print(f"Error: Key '{self.key}' not found in the Json data.")
-            return None
+        # if self.key not in self.json_data:
+        #     print(f"Error: Key '{self.key}' not found in the Json data.")
+        #     return None
 
         project_value = self.json_data[self.key]
-        # print(project_value)
         
         start_path = start_path.rstrip(os.sep)
-        # print(start_path)
         
         new_path = f"{start_path}/{project_value}/"
-        # print(new_path)
         
         return new_path
 
@@ -151,15 +147,15 @@ class MainPublish(QWidget):
             self.nk_file_names = [os.path.basename(path) for path in selected_files]
             self.nk_file_listwidget.clear()
             self.nk_file_listwidget.addItems(self.nk_file_names)
-            print(self.nk_file_names)
+            # print(self.nk_file_names)
 
     def open_mov_file_dialog(self):
         file_dialog = QFileDialog.getOpenFileNames(self, "Select Files from Local", self.mov_file_path, "All Files (*)")
         selected_files = file_dialog[0]
         if selected_files:
-            file_names = [os.path.basename(path) for path in selected_files]
+            self.mov_file_names = [os.path.basename(path) for path in selected_files]
             self.mov_file_listwidget.clear()
-            self.mov_file_listwidget.addItems(file_names)
+            self.mov_file_listwidget.addItems(self.mov_file_names)
 
     def open_exr_folder_dialog(self):
         QMessageBox.information(self, "Folder Selected", "Please select 'Folder' for exr")
@@ -532,43 +528,36 @@ class MainPublish(QWidget):
                 print("mov version up file이 server로 이동되었습니다.")
 
     #=================================================================
-    """ 썸네일부분 미완 """
-    import nuke
+    def _make_thumbnail_path(self):
+        """Make a thumbnail_path and If thumbnail_folder is not existed, it needs to create """
 
-def create_thumbnail_from_nuke_script(nuke_script_path, output_image_path, frame=1):
-            nk_path = f"{self.nk_file_path}/{self.nk_file_names[0]}"
-        nuke.scriptOpen(nk_path)
-    # Nuke 스크립트를 열기
-    nuke.scriptOpen(nuke_script_path)
+        split = self.exr_folder_path.split("dev")[0]
+        thumbnail_path = f"{split}.thumbnail"
+
+        if not os.path.isdir(thumbnail_path):
+            os.makedirs(thumbnail_path)
+
+        return thumbnail_path
     
-    # Read 노드 생성
-    read_node = nuke.createNode('Read')
-    read_node['file'].setValue(nuke_script_path)
-    
-    # Write 노드 생성
-    write_node = nuke.createNode('Write')
-    write_node['file'].setValue(output_image_path)
-    write_node['file_type'].setValue('png')  # 이미지 포맷 설정 (예: PNG)
-    
-    # 프레임 설정
-    nuke.frame(frame)
-    
-    # 렌더링 실행
-    nuke.execute(write_node, frame, frame)
-    
-    # 노드 정리
-    nuke.delete(read_node)
-    nuke.delete(write_node)
+    def display_thumbnail_in_ui(self, image_path):
 
-# 사용 예제
-create_thumbnail_from_nuke_script('path/to/your_script.nk', 'path/to/thumbnail.png', frame=10)
+        base, png = os.path.splitext(image_path)
+        origin_ext = base.split("_")[-1]
 
+        if os.path.exists(image_path):
+            pixmap = QPixmap(image_path)
+            scaled_pixmap = pixmap.scaled(160, 160, Qt.AspectRatioMode.KeepAspectRatio)
+            if origin_ext == "exr":
+                self.ui.label_thumbnail_exr.setPixmap(scaled_pixmap)
 
+            if origin_ext == "nk":
+                self.ui.label_thumbnail_nk.setPixmap(scaled_pixmap)
 
-
-
-
-    def generate_nk_thumbnail_from_file(self, file_paths):
+            if origin_ext == "mov":
+                self.ui.label_thumbnail_mov.setPixmap(scaled_pixmap)
+    #=================================================================    
+    def _create_nk_thumbnail(self, file_path, frame_number):
+        
         reformat_node = nuke.createNode("Reformat")
         write_node = nuke.createNode("Write")
         write_node.setInput(0, reformat_node)
@@ -580,12 +569,12 @@ create_thumbnail_from_nuke_script('path/to/your_script.nk', 'path/to/thumbnail.p
         if new_format:
             reformat_node['format'].setValue(new_format)
 
+        # nk_png_path = self.generate_nk_thumbnail_from_file()
         write_node["file"].setValue(file_path)
-        write_node["file_type"].setValue("png")
-        
         write_node["first"].setValue(frame_number)
         write_node["last"].setValue(frame_number)
-        
+        print(file_path)
+
         # render
         nuke.execute(write_node, frame_number, frame_number)
         
@@ -593,74 +582,35 @@ create_thumbnail_from_nuke_script('path/to/your_script.nk', 'path/to/thumbnail.p
         nuke.delete(write_node)
         nuke.delete(reformat_node)
 
-
-
-
-        pass
-
-    def create_nk_thumbnail(self, frame_number):
-
-
-
-        reformat_node = nuke.createNode("Reformat")
-        write_node = nuke.createNode("Write")
-        write_node.setInput(0, reformat_node)
-
-        new_format_name = 'HD_1080'
-        formats = nuke.formats()
-        new_format = next((fmt for fmt in formats if fmt.name() == new_format_name), None)
-
-        if new_format:
-            reformat_node['format'].setValue(new_format)
-
-        write_node["file"].setValue(nk_path)
-        write_node["file_type"].setValue("png")
-
-        write_node["first"].setValue(frame_number)
-        write_node["last"].setValue(frame_number)
-        
-        # render
-        nuke.execute(write_node, frame_number, frame_number)
-        
-        # clean up
-        nuke.delete(write_node)
-        nuke.delete(reformat_node)
-
-
-
-        # thumbnail_node = nuke.createNode('Thumbnail')
-        # thumbnail_node.setInput(0, nuke.nodes.Read(file=input_path))
-        
-        # # 원하는 썸네일의 크기를 설정합니다
-        # thumbnail_node['size'].setValue('320x240')
-        
-        # # 썸네일을 렌더링합니다
-        # thumbnail_node['file'].setValue(output_path)
-
-    def generate_nk_thumbnail_from_file(self, file_paths):
+    def generate_nk_thumbnail_from_file(self):
 
         nk_path = f"{self.nk_file_path}/{self.nk_file_names[0]}"
-        # exr_path = f"{self.exr_folder_path}{ver}/{exr_name}"
         base, ext = os.path.splitext(nk_path)
         image_name = base.split("/")[-1]
+        thumbnail_path = self._make_thumbnail_path()
+        if not os.path.isdir(thumbnail_path):
+            os.makedirs(thumbnail_path)
 
-        thumbnail_folder_path = self.nk_file_path.split("dev")[0]
+        nk_png_path = f"{thumbnail_path}/{image_name}_nk.png"
 
-        if not os.path.isdir(f"{thumbnail_folder_path}/.thumbnail"):
-            os.makedirs(f"{thumbnail_folder_path}/.thumbnail")
-
-        png_path = f"{thumbnail_folder_path}.thumbnail/{image_name}.png"
-
-        # print(f"누크패스 : {nk_path}")
-        # print(f"피엔지패스 : {png_path}")
-
-
-        if not os.path.isfile(png_path):
-            self.create_nk_thumbnail(nk_path, png_path)
-            self.display_thumbnail_in_ui(png_path)
-            print("exr이 png가 되었습니다.")
+        # display nk_thumbnail 
+        if not os.path.isfile(nk_png_path):
+            self._create_nk_thumbnail(nk_png_path, 1001)
+            self.display_thumbnail_in_ui(nk_png_path)
+            print("nk가 png가 되었습니다.")
         else:
-            self.display_thumbnail_in_ui(png_path)
+            self.display_thumbnail_in_ui(nk_png_path)
+        return nk_png_path
+
+    #=================================================================
+
+    def _create_exr_thumbnail(self, input, output):
+        (
+            ffmpeg
+            .input(input)
+            .output(output)
+            .run()
+        )
 
     def generate_exr_thumbnail_from_file(self):
 
@@ -669,157 +619,52 @@ create_thumbnail_from_nuke_script('path/to/your_script.nk', 'path/to/thumbnail.p
         team_name = split[-4]
         ver = self.folder_name
         exr_name = f"{shot_code}_{team_name}_{ver}.1001.exr"
-        image_name = f"{shot_code}_{team_name}_{ver}.1001.png"
+        image_name = f"{shot_code}_{team_name}_{ver}.1001_exr.png"
+        
+        # thumbnail_folder_path = f"{self.exr_folder_path.split("dev")[0]}/.thumbnail"
+        thumbnail_path = self._make_thumbnail_path()
+        print(thumbnail_path)
+
+        if not os.path.isdir(thumbnail_path):
+            os.makedirs(thumbnail_path)
 
         exr_path = f"{self.exr_folder_path}{ver}/{exr_name}"
-        thumbnail_folder_path = self.exr_folder_path.split("dev")[0]
+        print(f"{exr_path}:이엑스알")
+        exr_png_path = f"{thumbnail_path}/{image_name}"
+        print(f"{exr_png_path}:이엑스알피엔지")
 
-        if not os.path.isdir(f"{thumbnail_folder_path}/.thumbnail"):
-            os.makedirs(f"{thumbnail_folder_path}/.thumbnail")
-
-        png_path = f"{thumbnail_folder_path}/.thumbnail/{image_name}"
-
-        if not os.path.isfile(png_path):
-            self.change_to_png_from_exr(exr_path, png_path)
-            self.display_thumbnail_in_ui(png_path)
+        if not os.path.isfile(exr_png_path):
+            self._create_exr_thumbnail(exr_path, exr_png_path)
+            self.display_thumbnail_in_ui(exr_png_path)
             print("exr이 png가 되었습니다.")
         else:
-            self.display_thumbnail_in_ui(png_path)
-
-    def change_to_png_from_exr(self, input, output):
+            self.display_thumbnail_in_ui(exr_png_path)
+            
+    #=================================================================
+    
+    def _create_mov_thumbnail(self, input_path, output_path, frame_number=1):
         (
-            ffmpeg
-            .input(input)
-            .output(output)
-            .run()
+        ffmpeg
+        .input(input_path, ss=0)
+        .output(output_path, vframes=1)
+        .run()
         )
-
-    def display_thumbnail_in_ui(self, image_path):
-
-        if os.path.exists(image_path):
-            pixmap = QPixmap(image_path)
-            scaled_pixmap = pixmap.scaled(230, 190, Qt.AspectRatioMode.KeepAspectRatio)
-            self.ui.label_thumbnail_exr.setPixmap(scaled_pixmap)
-
-    def generate_mov_thumbnail_from_file(self, file_paths):
-        pass
-        # Generate thumbnails if they do not exist
-        # for i, path in enumerate(file_paths):
-        #     if not os.path.exists(thumbnail_paths[i]):
-        #         if i == 0:
-        #             print("누크")
-                    # self.create_nk_thumbnail(path, thumbnail_paths[i])
-                # elif i == 1:
-                #     self.change_to_png_from_exr(path, thumbnail_paths[i])
-                # elif i == 2:
-                #     self.create_mov_thumbnail(path, thumbnail_paths[i])
         
-        # Display the NK thumbnail in UI
-        # self.display_thumbnail_in_ui(thumbnail_paths[0])
+    def generate_mov_thumbnail_from_file(self):
 
-    # def create_nk_thumbnail(self, input_path, output_path):
-    #     try:
-    #         ffmpeg.input(input_path, ss=0).output(output_path, vframes=1, vf="scale=320:240").run()
-    #     except ffmpeg.Error as e:
-    #         QMessageBox.warning(self, "Error", f"Failed to create NK thumbnail for {input_path}. Error: {str(e)}")
+        mov_path = f"{self.mov_file_path}{self.mov_file_names[0]}"
 
+        thumbnail_path = self._make_thumbnail_path()    
+        image_name = self.mov_file_names[0].split(".")[0]
+        mov_png_path = f"{thumbnail_path}/{image_name}_mov.png"
 
-    # def create_mov_thumbnail(self, input_path, output_path):
-    #     try:
-    #         ffmpeg.input(input_path, ss=0).output(output_path, vframes=1, vf="scale=320:240").run()
-    #     except ffmpeg.Error as e:
-    #         QMessageBox.warning(self, "Error", f"Failed to create MOV thumbnail for {input_path}. Error: {str(e)}")
-
-    # def display_thumbnail_in_ui(self, image_path):
-    #     if os.path.exists(image_path):
-    #         pixmap = QPixmap(image_path)
-    #         scaled_pixmap = pixmap.scaled(230, 190, Qt.AspectRatioMode.KeepAspectRatio)
-    #         self.ui.label_thumbnail_nk.setPixmap(scaled_pixmap)
-    #     else:
-    #         QMessageBox.warning(self, "Error", f"Thumbnail not found at {image_path}")
-
-
-
-    # def generate_thumbnail_from_file(self):
-    #     # display thumbnail based on local path
-    #     # !!!!! thumbnail path >> pipeline 쪽에서 저장하는걸로 변경/적용필요
-    #     local_paths = self._find_Local_path()
-    #     print(local_paths)
-
-        # nk_file_path = local_paths[0]
-        # print(f"{nk_file_path}:mov입니다")
-        # nk_thumbnail_path = f"{nk_file_path}_nk_thumbnail.png"
-
-        # exr_file_path = local_paths[1]
-        # print(f"{exr_file_path}:exr입니다")
-        # exr_thumbnail_path = f"{exr_file_path}_exr_thumbnail.png"
-
-        # mov_file_path = local_paths[2]
-        # print(f"{exr_file_path}:mov입니다")
-        # mov_thumbnail_path = f"{mov_file_path}_mov_thumbnail.png"
-
-        # if not os.path.exists(nk_thumbnail_path):
-        #     self.create_nk_thumbnail(nk_file_path, nk_thumbnail_path)
-
-        # elif not os.path.exists(exr_thumbnail_path):
-        #     self.change_to_png_from_exr(exr_file_path, exr_thumbnail_path)
-
-        # elif not os.path.exists(mov_thumbnail_path):
-        #     self.change_to_png_from_exr(mov_file_path, mov_thumbnail_path)
-
-        # self.display_thumbnail_in_ui(nk_thumbnail_path)
-
-    def create_mov_thumbnail(self, input_path, output_path):
-
-        ffmpeg.input(input_path, ss=0).output(output_path, vframes=1, vf="scale=320:240").run()
-
-
-
-
-
-    # def save_frame_as_thumbnail(self, file_path, frame_number):
-    #     # display thumbnail.ver1 : making write node for thumbnail 
-        
-    #     reformat_node = nuke.createNode("Reformat")
-    #     write_node = nuke.createNode("Write")
-    #     write_node.setInput(0, reformat_node)
-
-    #     new_format_name = 'HD_1080'
-    #     formats = nuke.formats()
-    #     new_format = next((fmt for fmt in formats if fmt.name() == new_format_name), None)
-
-    #     if new_format:
-    #         reformat_node['format'].setValue(new_format)
-
-    #     write_node["file"].setValue(file_path)
-    #     write_node["file_type"].setValue("png")
-        
-    #     write_node["first"].setValue(frame_number)
-    #     write_node["last"].setValue(frame_number)
-        
-    #     # render
-    #     nuke.execute(write_node, frame_number, frame_number)
-        
-    #     # clean up
-    #     nuke.delete(write_node)
-    #     nuke.delete(reformat_node)
-
-    # def setup_thumbnail(self):
-    #     self.ui.label_thumbnail.clear()
-
-    #     self.current_file_path = nuke.scriptName()
-    #     nk_file_name = os.path.basename(self.current_file_path)
-    #     png_file_name = nk_file_name.split(".")[0]
-
-    #     image_path = f"C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/{png_file_name}.png"
-    #     thumbnail = QPixmap(image_path)
-    #     scaled_thumbnail = thumbnail.scaled(230, 190, Qt.AspectRatioMode.KeepAspectRatio)
-
-    #     if os.path.exists(image_path):
-    #         self.ui.label_thumbnail.setPixmap(scaled_thumbnail)
-    #         return
-
-    #     self.save_frame_as_thumbnail(image_path, 1001)
+        if not os.path.isfile(mov_png_path):
+            self._create_mov_thumbnail(mov_path, mov_png_path)
+            self.display_thumbnail_in_ui(mov_png_path)
+            print("mov가 png가 되었습니다.")
+        else:
+            self.display_thumbnail_in_ui(mov_png_path)
+    #=================================================================
 
 
 if __name__ == "__main__":
