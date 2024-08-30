@@ -5,7 +5,7 @@ sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
 from loader_ui.main_window_v002_ui import Ui_Form
 from loader_script.loader_shot import Mainloader
 from loader_script.loader_my_task import My_task
-from loader_script.loader_clip import Libraryclip
+from loader_script.loader_clip_v002 import Libraryclip
 from loader_script.loader_asset import Libraryasset
 from loader_module.project_data import project_data
 from loader_script.loader_pub import Loader_pub

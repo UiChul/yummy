@@ -269,6 +269,8 @@ class My_task:
         
     def input_status_table(self,my_task_list):
         # my_task_list.sort(key=self.extract_time,reverse = True)
+        
+        my_task_list.reverse()
         row = 0
         for status_info in my_task_list:
             col = 0
@@ -277,7 +279,7 @@ class My_task:
                 if col == 4:
                     if info == "wip":
                         label = QLabel()
-                        gif_movie = QMovie("/home/rapa/xgen/wip4.gif")
+                        gif_movie = QMovie("/home/rapa/xgen/wip5.gif")
                         gif_movie.setScaledSize(QSize(30,30))# GIF 파일 경로 설정
                         label.setMovie(gif_movie)
                         gif_movie.start() 

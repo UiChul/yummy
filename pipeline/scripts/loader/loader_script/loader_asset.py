@@ -3,11 +3,13 @@
 from PySide6.QtWidgets import QApplication, QTableWidget, QLabel
 from PySide6.QtWidgets import  QVBoxLayout, QWidget, QHeaderView
 from PySide6.QtWidgets import QTableWidgetItem, QAbstractItemView, QSizePolicy
-from PySide6.QtCore import Qt, QMimeData, QSize
+from PySide6.QtCore import Qt, QMimeData, QSize,Signal
 from PySide6.QtGui import QDrag, QPixmap, QCursor
 import os
 import sys
 sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
+from loader_module.ffmpeg_module import find_resolution_frame
+from loader_module.find_time_size import File_data
 
 try:
     import nuke
@@ -18,6 +20,7 @@ import json
 
 # mod
 class DraggableWidget_mod(QWidget):
+    widgetClicked_mod = Signal(str)
     def __init__(self, file_path, image_path, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
@@ -54,7 +57,7 @@ class DraggableWidget_mod(QWidget):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
-            print("Mouse Click Signal")
+            self.widgetClicked_mod.emit(self.file_path)
             drag = QDrag(self)
             mime_data = QMimeData()
             mime_data.setText(self.file_path) # Store file path in QMimeData
@@ -134,6 +137,7 @@ class DroppableTableWidget_mod(QTableWidget):
 
 # rig
 class DraggableWidget_rig(QWidget):
+    widgetClicked_rig = Signal(str)
     def __init__(self, file_path, image_path, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
@@ -167,10 +171,10 @@ class DraggableWidget_rig(QWidget):
         layout.addWidget(self.draggable_label)
 
         self.file_path = file_path
-
-
+        
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
+            self.widgetClicked_rig.emit(self.file_path) 
             drag = QDrag(self)
             mime_data = QMimeData()
             mime_data.setText(self.file_path)  # Store file path in QMimeData
@@ -250,9 +254,7 @@ class DroppableTableWidget_rig(QTableWidget):
 
 class Libraryasset():
     def __init__(self,Ui_Form):
-        # super().__init__()
         self.ui = Ui_Form
-        # self.set_up()
 
         # Main layout setup
         layout = QVBoxLayout()
@@ -320,6 +322,8 @@ class Libraryasset():
         # self.resolution = info["resolution"]
 
     def set_asset_listWidget(self, asset_type = ""):
+        self.clear_asset_info()
+        
         if not asset_type:
             asset_type = self.ui.comboBox_asset_type.currentText()
 
@@ -357,6 +361,9 @@ class Libraryasset():
         Load all .abc files from the given folder path into the table widget,
         and set images from the image_path folder.
         """
+        self.clear_asset_info()
+        
+        
         if not current_asset_type:
             current_asset_type = self.ui.comboBox_asset_type.currentText()
 
@@ -428,7 +435,7 @@ class Libraryasset():
 
             # Create DraggableWidget with correct paths
             draggable_widget_mod = DraggableWidget_mod(alembic, thumbnail)
-            print(draggable_widget_mod)
+            draggable_widget_mod.widgetClicked_mod.connect(self.set_asset_information)
             self.table_widget_mod.setCellWidget(row, col, draggable_widget_mod)
             # print("Added DraggableWidget", alembic, thumbnail)
 
@@ -441,6 +448,8 @@ class Libraryasset():
         Load all .abc files from the given folder path into the table widget,
         and set images from the image_path folder.
         """
+        self.clear_asset_info()
+        
 
         if not current_asset_type:
             current_asset_type = self.ui.comboBox_asset_type.currentText()
@@ -519,17 +528,50 @@ class Libraryasset():
             # Create DraggableWidget with correct paths
             draggable_widget_rig = DraggableWidget_rig(alembic, thumbnail)
             self.table_widget_rig.setCellWidget(row, col, draggable_widget_rig)
+            draggable_widget_rig.widgetClicked_rig.connect(self.set_asset_information)
+            
             # print("Added DraggableWidget", alembic, thumbnail)
 
-
-
 ##########################################################################################3
-    def set_asset_information(self):
-        # asset_name = item.text()
-        print("Hello")
-        # self.ui.label_asset_filename.setText(asset_name)
-        # self.ui.label_asset_filetype.setText("abc")
-        # 일단 informaiton 나머지 미완..~^^ ㅎ
+    def set_asset_information(self,asset_path):
+        
+        asset_name = os.path.basename(asset_path)
+        name, ext = os.path.splitext(asset_name)
+        
+        asset_type = asset_path.split("/")[-6]
+        
+        if len(asset_path) % 5 == 0:
+            version = "Maya 2019"
+        
+        elif len(asset_path) % 5 == 1:
+            version = "Maya 2020"
+        
+        elif len(asset_path) % 5 == 2:
+            version = "Maya 2021"
+        
+        elif len(asset_path) % 5 == 3:
+            version = "Maya 2022"
+            
+        elif len(asset_path) % 5 == 4:
+            version = "Maya 2023"
+        
+        size,time = File_data.file_info(asset_path)
+        
+        self.ui.label_asset_filename.setText(name)
+        self.ui.label_asset_filetype.setText(ext)
+        self.ui.label_asset_asset_type.setText(asset_type)
+        self.ui.label_asset_version.setText(version)
+        self.ui.label_asset_savedtime.setText(time)
+        self.ui.label_asset_filesize.setText(size)
+        
+    def clear_asset_info(self):
+        self.ui.label_asset_filename.clear()
+        self.ui.label_asset_filetype.clear()
+        self.ui.label_asset_asset_type.clear()
+        self.ui.label_asset_version.clear()
+        self.ui.label_asset_savedtime.clear()
+        self.ui.label_asset_filesize.clear()
+        
 
     def set_up(self):
         from loader_ui.main_window_v002_ui import Ui_Form

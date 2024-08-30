@@ -987,7 +987,7 @@ class Mainloader:
                         # pixmap = QPixmap("/home/rapa/xgen/wip.png")
                         # scaled_pixmap = pixmap.scaled(20,20)
                         # label.setPixmap(scaled_pixmap)
-                        gif_movie = QMovie("/home/rapa/xgen/wip4.gif")
+                        gif_movie = QMovie("/home/rapa/xgen/wip5.gif")
                         gif_movie.setScaledSize(QSize(30,30))# GIF 파일 경로 설정
                         label.setMovie(gif_movie)
                         gif_movie.start() 
