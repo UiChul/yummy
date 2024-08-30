@@ -188,43 +188,43 @@ class LibraryLoader(QWidget):
         "/home/rapa/YUMMY/project/Marvelous/template/shot/clip_lib/clip_thumbnail"
         )
 
-        self.on_button()
+    #     self.on_button()
 
 
 
-    # 즐겨찾기 버튼 
-    def on_button(self):
-        self.pushB_star = self.ui.pushButton_star
-        self.pushB_pressed = self.ui.pushButton_star_pressed
+    # # 즐겨찾기 버튼 
+    # def on_button(self):
+    #     self.pushB_star = self.ui.pushButton_star
+    #     self.pushB_pressed = self.ui.pushButton_star_pressed
         
-        self.pixmap_normal = QPixmap("/home/rapa/xgen/star_pushbutton.png")
-        self.pushB_star.setIcon(QIcon(self.pixmap_normal))
+    #     self.pixmap_normal = QPixmap("/home/rapa/xgen/star_pushbutton.png")
+    #     self.pushB_star.setIcon(QIcon(self.pixmap_normal))
 
         
-        # 버튼 클릭 시 동작
-        self.pushB_star.clicked.connect(self.switch_buttons)
+    #     # 버튼 클릭 시 동작
+    #     self.pushB_star.clicked.connect(self.switch_buttons)
 
     
-        # 두 번째 버튼 생성
-        self.pixmap_pressed = QPixmap("/home/rapa/xgen/star_pressed_pushbutton.png")
-        self.pushB_pressed.setIcon(QIcon(self.pixmap_pressed))
+    #     # 두 번째 버튼 생성
+    #     self.pixmap_pressed = QPixmap("/home/rapa/xgen/star_pressed_pushbutton.png")
+    #     self.pushB_pressed.setIcon(QIcon(self.pixmap_pressed))
 
         
-        # 버튼 클릭 시 동작
-        self.pushB_pressed.clicked.connect(self.switch_buttons)
+    #     # 버튼 클릭 시 동작
+    #     self.pushB_pressed.clicked.connect(self.switch_buttons)
         
 
-        self.pushB_pressed.setVisible(False)
+    #     self.pushB_pressed.setVisible(False)
 
         
 
-    def switch_buttons(self):
-        if self.pushButton_star.isVisible():
-            self.pushButton_star.setVisible(False)
-            self.pushButton_star_pressed.setVisible(True)
-        else:
-            self.pushButton_star.setVisible(True)
-            self.pushButton_star_pressed.setVisible(False)
+    # def switch_buttons(self):
+    #     if self.pushButton_star.isVisible():
+    #         self.pushButton_star.setVisible(False)
+    #         self.pushButton_star_pressed.setVisible(True)
+    #     else:
+    #         self.pushButton_star.setVisible(True)
+    #         self.pushButton_star_pressed.setVisible(False)
 
 
 
