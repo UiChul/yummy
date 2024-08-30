@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>689</width>
-    <height>836</height>
+    <height>852</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -240,7 +240,7 @@
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 170, 0);</string>
+       <string notr="true">background-color: rgb(255, 161, 10);</string>
       </property>
       <property name="text">
        <string>Version upload</string>
@@ -264,7 +264,7 @@
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 170, 0);</string>
+       <string notr="true">background-color: rgb(255, 161, 10);</string>
       </property>
       <property name="text">
        <string>Publish upload</string>

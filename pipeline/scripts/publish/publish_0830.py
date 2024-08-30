@@ -1,12 +1,18 @@
 # MODI
 ### making error&pass code when already ver number in it -- 목
-### tumbnail, description output process --- 목
 ### render/publish setting in nuke -- 목
 ### nk info 중 path 이상하게나옴 ;; 수정해야함 --금
 ### find maximum version in Local_path -- 금
 ### complete ALL process (open nuke > use ui > shotgrid upload/publish) -- 금
 ### 금요일 퇴근전 의철님께 넘기기★
 ### 주말 코드 수정/레쥬메/등등
+
+
+# ★★  수연님 !!!
+# 맨 마지막에 gather_thumbnail_path함수랑 get_description_text함수에 모아놨어요
+# 리스트로 넣어놨긴했는데 이게 맞는지 저도 잘 모르겟어여 ....
+#  혹시 이상 잇으시면 말씀해주세용....:)
+
 
 try:
     from PySide6.QtWidgets import QApplication, QWidget, QTableWidgetItem
@@ -96,11 +102,15 @@ class MainPublish(QWidget):
         self._collect_path()
 
         # Signal
-        self.ui.pushButton_add_to_basket.clicked.connect(self.add_nk_item_tablewidget_basket)
-        self.ui.pushButton_add_to_basket.clicked.connect(self.add_exr_item_tablewidget_basket)
-        self.ui.pushButton_add_to_basket.clicked.connect(self.add_mov_item_tablewidget_basket)
+        self.ui.pushButton_add_to_basket.clicked.connect(self.on_add_button_clicked)
         self.ui.pushButton_version.clicked.connect(self.copy_to_Server_from_Local)
         self.ui.pushButton_publish.clicked.connect(self.copy_to_pub_from_dev_in_Server)
+    
+    def on_add_button_clicked(self):
+        self.add_nk_item_tablewidget_basket()
+        self.add_exr_item_tablewidget_basket()
+        self.add_mov_item_tablewidget_basket()
+        self.get_lineEdit_text()
 
     def setup_file_in_groubBox_from_Local(self):
 
@@ -528,6 +538,7 @@ class MainPublish(QWidget):
                 print("mov version up file이 server로 이동되었습니다.")
 
     #=================================================================
+
     def _make_thumbnail_path(self):
         """Make a thumbnail_path and If thumbnail_folder is not existed, it needs to create """
 
@@ -555,7 +566,9 @@ class MainPublish(QWidget):
 
             if origin_ext == "mov":
                 self.ui.label_thumbnail_mov.setPixmap(scaled_pixmap)
+    
     #=================================================================    
+
     def _create_nk_thumbnail(self, file_path, frame_number):
         
         reformat_node = nuke.createNode("Reformat")
@@ -600,6 +613,7 @@ class MainPublish(QWidget):
             print("nk가 png가 되었습니다.")
         else:
             self.display_thumbnail_in_ui(nk_png_path)
+
         return nk_png_path
 
     #=================================================================
@@ -639,6 +653,8 @@ class MainPublish(QWidget):
             print("exr이 png가 되었습니다.")
         else:
             self.display_thumbnail_in_ui(exr_png_path)
+
+        return exr_png_path
             
     #=================================================================
     
@@ -664,7 +680,28 @@ class MainPublish(QWidget):
             print("mov가 png가 되었습니다.")
         else:
             self.display_thumbnail_in_ui(mov_png_path)
+
+        return mov_png_path
+    
     #=================================================================
+    def gather_thumbnail_info(self):
+        thumbnail_list = []
+        nk_thumbnail_path = self.generate_nk_thumbnail_from_file()
+        exr_thumbnail_path = self.generate_exr_thumbnail_from_file()
+        mov_thumbnail_path = self.generate_mov_thumbnail_from_file()
+        thumbnail_list.append(nk_thumbnail_path, exr_thumbnail_path, mov_thumbnail_path)
+
+        return thumbnail_list
+
+    def get_lineEdit_text(self):
+        description_list = []
+        nk_description = self.ui.lineEdit_description_nk.text()
+        exr_description = self.ui.lineEdit_description_exr.text()
+        mov_description = self.ui.lineEdit_description_mov.text()
+        description_list.append(nk_description, exr_description, mov_description)
+
+        return description_list
+
 
 
 if __name__ == "__main__":
