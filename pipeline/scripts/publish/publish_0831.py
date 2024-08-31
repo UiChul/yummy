@@ -1,12 +1,13 @@
 # MODI
 ### making error&pass code when already ver number in it -- 목
 ### render/publish setting in nuke -- 목
-### nk info 중 path 이상하게나옴 ;; 수정해야함 --금
 ### find maximum version in Local_path -- 금
 ### complete ALL process (open nuke > use ui > shotgrid upload/publish) -- 금
 ### 금요일 퇴근전 의철님께 넘기기★
 ### 주말 코드 수정/레쥬메/등등
 
+# self
+# return, pass, continue
 
 
 try:
@@ -29,6 +30,7 @@ import os
 import re
 import nuke
 import json
+import glob
 import ffmpeg
 import shutil
 # import functools
@@ -48,31 +50,15 @@ class PathFinder:
     def _read_paths_from_json(self):
         """Read Json file and data return"""
 
-        # try:
         with open(self.json_file_path, 'r', encoding='utf-8') as file:
             data = json.load(file)
         return data
-        # except FileNotFoundError:
-        #     print(f"Error: The file {self.json_file_path} was not found.")
-        #     return {}
-        # except json.JSONDecodeError:
-        #     print("Error: The JSON file could not be decoded.")
-        #     return {}
-        # except UnicodeDecodeError:
-        #     print("Error: The file encoding is not correct. Please check the file encoding.")
-        #     return {}
 
     def append_project_to_path(self, start_path):
         """Find data that matches key(project_name) in Json data"""
 
-        # if self.key not in self.json_data:
-        #     print(f"Error: Key '{self.key}' not found in the Json data.")
-        #     return None
-
         project_value = self.json_data[self.key]
-        
         start_path = start_path.rstrip(os.sep)
-        
         new_path = f"{start_path}/{project_value}/"
         
         return new_path
@@ -93,7 +79,7 @@ class MainPublish(QWidget):
         self.setup_file_in_groubBox_from_Local()
         self.setup_top_bar()
         self.setup_tablewidget_basket()
-        self.set_delet_icon()
+        self.set_delete_icon()
 
         self._collect_path()
 
@@ -101,12 +87,14 @@ class MainPublish(QWidget):
         self.ui.pushButton_add_to_basket.clicked.connect(self.on_add_button_clicked)
         self.ui.pushButton_version.clicked.connect(self.copy_to_Server_from_Local)
         self.ui.pushButton_publish.clicked.connect(self.copy_to_pub_from_dev_in_Server)
+        self.ui.pushButton_delete.clicked.connect(self.delete_tablewidget_item)
     
     def on_add_button_clicked(self):
         self.add_nk_item_tablewidget_basket()
         self.add_exr_item_tablewidget_basket()
         self.add_mov_item_tablewidget_basket()
-        self.get_lineEdit_text()
+        self.count_tablewidget_item()
+        self.get_description_text()
 
     def setup_file_in_groubBox_from_Local(self):
 
@@ -152,9 +140,15 @@ class MainPublish(QWidget):
         if selected_files:
             self.nk_file_names = [os.path.basename(path) for path in selected_files]
             self.nk_file_listwidget.clear()
-            self.nk_file_listwidget.addItems(self.nk_file_names)
-            self.nk_file_listwidget.setCurrentItem(self.nk_file_names)
-            # print(self.nk_file_names)
+
+            items = []
+            for file_name in self.nk_file_names:
+                item = QListWidgetItem(file_name)
+                self.nk_file_listwidget.addItem(item)
+                items.append(item)
+
+            if items:
+                self.nk_file_listwidget.setCurrentItem(items[0])
 
     def open_mov_file_dialog(self):
         file_dialog = QFileDialog.getOpenFileNames(self, "Select Files from Local", self.mov_file_path, "All Files (*)")
@@ -162,7 +156,15 @@ class MainPublish(QWidget):
         if selected_files:
             self.mov_file_names = [os.path.basename(path) for path in selected_files]
             self.mov_file_listwidget.clear()
-            self.mov_file_listwidget.addItems(self.mov_file_names)
+
+            items = []
+            for file_name in self.mov_file_names:
+                item = QListWidgetItem(file_name)
+                self.mov_file_listwidget.addItem(item)
+                items.append(item)
+            
+            if items:
+                self.mov_file_listwidget.setCurrentItem(items[0])
 
     def open_exr_folder_dialog(self):
         QMessageBox.information(self, "Folder Selected", "Please select 'Folder' for exr")
@@ -171,16 +173,19 @@ class MainPublish(QWidget):
         if folder:
             self.folder_name = os.path.basename(folder)
             self.exr_folder_listwidget.clear()
-            self.exr_folder_listwidget.addItem(self.folder_name)
-            # self.generate_thumbnail_from_file()
+
+            item = QListWidgetItem(self.folder_name)
+            self.exr_folder_listwidget.addItem(item)
+            self.exr_folder_listwidget.setCurrentItem(item)
       
     def setup_top_bar(self):
 
         # self.nk_file_path = nuke.scriptName()
         split = self.nk_file_path.split("/")
-        project_name = split[5]
-        shot_code = split[8]
-        team_name = split[9]
+        # print(split)
+        project_name = split[-7]
+        shot_code = split[-4]
+        team_name = split[-3]
         self.ui.label_project_name.setText(project_name)
         self.ui.label_shot_code.setText(shot_code)
         self.ui.label_team_name.setText(team_name)
@@ -193,10 +198,20 @@ class MainPublish(QWidget):
         self.exr_folder_path = f"{self.dev_path}exr/"
         self.mov_file_path = f"{self.dev_path}mov/"
 
-        # print(self.work_path)
-        # print(self.dev_path)
-        # print(self.exr_folder_path)
-        # print(self.mov_file_path)
+    # def test(self):
+
+    #     pattern = "v[0-9][0-9][0-9]"
+    #     search_pattern = os.path.join(os.path.dirname(self.current_nk_file_path), pattern)
+    #     # search_pattern = os.path.join(self.exr_folder_path, pattern)
+    #     # search_pattern = os.path.join(self.mov_file_path, pattern)
+    #     file_paths = glob.glob(search_pattern)
+    #     for i in file_paths:
+    #         print(i)
+    #     #     a = i.split("v")[-1]
+    #     #     b = a.split(".")[0]
+    #     # print(b)
+
+    #     # return file_paths
 
     #===================================================================
 
@@ -206,7 +221,7 @@ class MainPublish(QWidget):
         self.ui.tableWidget_basket.setVerticalHeaderLabels(["nk", "exr", "mov"])
 
         row_count = self.ui.tableWidget_basket.rowCount()
-        height = 85
+        height = 80
         for row in range(row_count):
             self.ui.tableWidget_basket.setRowHeight(row, height)
 
@@ -271,6 +286,8 @@ class MainPublish(QWidget):
     
     def _get_nk_validation_info(self):
 
+        ######### 사실 마지막 아이템을 publish하지 중간껄 publish할 일이 있을까??
+        ######### 중간꺼 한다치면 thumbnail은 어카지 ....
         nk_file_validation_dict = {}
         root = nuke.root()
         path = root["name"].value()                     # file path
@@ -321,22 +338,35 @@ class MainPublish(QWidget):
     def count_tablewidget_item(self):
 
         row_count = self.ui.tableWidget_basket.rowCount()
-        for row in range(row_count):
-            item_count = 0
-            column_count = self.ui.tableWidget_basket.columnCount()
-            for column in range(column_count):
-                item = self.ui.tableWidget_basket.item(row, column)
-                if item is not None and not item.text().strip() == "":
-                    item_count += 1
-            print(f"Row {row}: {item_count} items filled")
 
+        item_count = 0
+
+        for row in range(row_count):
+            item = self.ui.tableWidget_basket.item(row, 0)
+            if item:
+                item_count += 1
+        self.ui.label_item_count.setText(str(item_count))
+
+    def delete_tablewidget_item(self):
+        self.ui.tableWidget_basket.clear()
+        selected_items = self.ui.tableWidget_basket.selectedItems()
+
+        rows_to_clear = set()
+        for item in selected_items:
+            row = item.row()
+            rows_to_clear.add(row)
+
+        for row in rows_to_clear:
+            self.ui.tableWidget_basket.setItem(row, 0, None)
+            self.ui.tableWidget_basket.setItem(row, 1, None)
+            
     #==================================================================
 
     def _find_Local_path(self):
 
         table_items = self.ui.tableWidget_basket.selectedItems()
 
-        ver_up_local_path = []
+        origin_local_path = []
         for item in table_items:
             if item:
                 nk_item_text = self.ui.tableWidget_basket.item(0, 0).text()
@@ -351,60 +381,92 @@ class MainPublish(QWidget):
             else:
                 print("아이템이 없습니다.")
             
-        ver_up_local_path.extend([nk_local_path, exr_local_path, mov_local_path])
+        origin_local_path.extend([nk_local_path, exr_local_path, mov_local_path])
 
-        return ver_up_local_path
+        return origin_local_path
     
-    def increase_version_in_Local(self):
+    def _get_highest_version_number(self, path, version_pattern):
+
+        highest_version = 0
+        for filename in os.listdir(path):
+            match = version_pattern.search(filename)
+            if match:
+                version_number = int(match.group(0)[1:])
+                if version_number > highest_version:
+                    highest_version = version_number
+        return highest_version
+    
+    def version_up_in_Local(self):
         """Take the file_path, version it up and Save it"""
 
         local_paths = self._find_Local_path()
 
         version_pattern = re.compile("v\d{3}")
         
-        ver_up_local_paths = []
+        new_local_paths = []
         for local_path in local_paths:
             base, ext = os.path.splitext(local_path)
-            match = version_pattern.search(base)
-            current_version = match.group(0)
-            new_number = int(current_version[1:]) + 1
-            new_version = f"v{new_number:03}"   # 현재 버전 번호가 존재하면 버전 번호를 증가
-            new_base = base.replace(current_version, new_version)
+            base_dir = os.path.dirname(local_path)
+
+            highest_version = self._get_highest_version_number(base_dir, version_pattern)
+            new_version = f"v{highest_version + 1:03}"
+
+            # Create new base path with incremented version
+            new_base = base.replace(version_pattern.search(base).group(0), new_version) if version_pattern.search(base) else f"{base}_{new_version}"
 
             if ext == ".nknc":
                 nk_version_up_path = f"{new_base}{ext}"
-                ver_up_local_paths.append(nk_version_up_path)
+                new_local_paths.append(nk_version_up_path)
                 # print("======nk======")
                 nuke.scriptSaveAs(nk_version_up_path)
                 print("nk file이 version-up 되었습니다.")
 
             elif ext == ".mov":
                 mov_version_up_path = f"{new_base}{ext}"
-                ver_up_local_paths.append(mov_version_up_path)
+                new_local_paths.append(mov_version_up_path)
                 # print("======mov======")
-                shutil.copy2(base+ext, mov_version_up_path)
+                shutil.copy2(local_path, mov_version_up_path)
                 print("mov file이 version-up 되었습니다.")
 
-            else:
+            elif os.path.isdir(local_path):
                 new_ver_folder = new_base
-                os.makedirs(new_ver_folder)
-                # print(base)
-                exr_files = os.listdir(base)
-                # print(exr_files)
-                for exr_file in exr_files:
-                    current_path = f"{base}/{exr_file}"
-                    # print(current_path)
-                    new_ver_folder_path = f"{new_ver_folder}/{exr_file}"
-                    # print(new_ver_folder_path)
-                    match = version_pattern.search(exr_file)
-                    exr_current_version = match.group(0)
-                    exr_new_number = int(exr_current_version[1:]) + 1
-                    exr_new_version = f"v{exr_new_number:03}"   # 현재 버전 번호가 존재하면 버전 번호를 증가
-                    exr_version_up_path = new_ver_folder_path.replace(exr_current_version, exr_new_version)
-                    ver_up_local_paths.append(exr_version_up_path)
-                    # print(exr_version_up_path)
-                    shutil.copy2(current_path, exr_version_up_path)
-        return ver_up_local_paths
+                os.makedirs(new_ver_folder, exist_ok=True)
+
+                for exr_file in os.listdir(local_path):
+                    current_path = os.path.join(local_path, exr_file)
+                    new_exr_path = os.path.join(new_ver_folder, exr_file)
+                    # print(new_exr_path)
+                    if version_pattern.search(exr_file):
+                        exr_current_version = version_pattern.search(exr_file).group(0)
+                        exr_new_number = int(exr_current_version[1:]) + 1
+                        exr_new_version = f"v{exr_new_number:03}"
+                        new_exr_path = new_exr_path.replace(exr_current_version, exr_new_version)
+                        print(new_exr_path)
+                    
+                    shutil.copy2(current_path, new_exr_path)
+                    new_local_paths.append(new_exr_path)
+                    print(f"exr file이 version-up 되었습니다: {new_exr_path}")
+
+            # else:
+            #     new_ver_folder = new_base
+            #     os.makedirs(new_ver_folder)
+            #     # print(base)
+            #     exr_files = os.listdir(base)
+            #     # print(exr_files)
+            #     for exr_file in exr_files:
+            #         current_path = f"{base}/{exr_file}"
+            #         # print(current_path)
+            #         new_ver_folder_path = f"{new_ver_folder}/{exr_file}"
+            #         # print(new_ver_folder_path)
+            #         match = version_pattern.search(exr_file)
+            #         exr_current_version = match.group(0)
+            #         exr_new_number = int(exr_current_version[1:]) + 1
+            #         exr_new_version = f"v{exr_new_number:03}"   # 현재 버전 번호가 존재하면 버전 번호를 증가
+            #         exr_version_up_path = new_ver_folder_path.replace(exr_current_version, exr_new_version)
+            #         new_local_paths.append(exr_version_up_path)
+            #         # print(exr_version_up_path)
+            #         shutil.copy2(current_path, exr_version_up_path)
+        return new_local_paths
 
     def _find_Server_seq_path(self):
         """Find matching folder from Json and make Server path until 'seq' """
@@ -474,13 +536,13 @@ class MainPublish(QWidget):
     
     def copy_to_Server_from_Local(self):
 
-        ver_up_local_paths = self.increase_version_in_Local()
+        ver_up_local_paths = self.version_up_in_Local()
         ver_up_server_dev_paths = self._find_Server_dev_path()
 
         for ver_up_local_path in ver_up_local_paths:
             ver_up_local_path = ver_up_local_path.strip()
             base, ext = os.path.splitext(ver_up_local_path)
-            print(ext)
+            # print(ext)
 
             if ext == ".nknc":
                 # print(f"{ver_up_local_path}:누크로컬패스")
@@ -515,14 +577,14 @@ class MainPublish(QWidget):
 
     def copy_to_pub_from_dev_in_Server(self):
 
-        ver_up_local_paths = self.increase_version_in_Local()
+        ver_up_local_paths = self.version_up_in_Local()
         ver_up_server_dev_paths = self._find_Server_dev_path()
         ver_up_server_pub_paths = self._find_Server_pub_path()
 
         for ver_up_local_path in ver_up_local_paths:
             ver_up_local_path = ver_up_local_path.strip()
             base, ext = os.path.splitext(ver_up_local_path)
-            print(ext)
+            # print(ext)
 
             if ext == ".nknc":
                 # print(f"{ver_up_local_path}:누크로컬패스")
@@ -579,10 +641,20 @@ class MainPublish(QWidget):
     #=================================================================    
 
     def _create_nk_thumbnail(self, file_path, frame_number):
-        
+        # read_node 찾기 
+        base_name = 'Read'
+        max_num = 10
+
+        for number in range(1, max_num + 1):
+            node_name = f"{base_name}{number}"
+            # print(node_name)
+            read_node = nuke.toNode(node_name)
+            if read_node is not None:
+                break
+
+        # reformat_node 생성 및 read_node와 연결
         reformat_node = nuke.createNode("Reformat")
-        write_node = nuke.createNode("Write")
-        write_node.setInput(0, reformat_node)
+        reformat_node.setInput(0, read_node)
 
         new_format_name = 'HD_1080'
         formats = nuke.formats()
@@ -591,11 +663,13 @@ class MainPublish(QWidget):
         if new_format:
             reformat_node['format'].setValue(new_format)
 
-        # nk_png_path = self.generate_nk_thumbnail_from_file()
+        # write_node 생성 및 reformat_node와 연결
+        write_node = nuke.createNode("Write")
+        write_node.setInput(0, reformat_node)
+
         write_node["file"].setValue(file_path)
         write_node["first"].setValue(frame_number)
         write_node["last"].setValue(frame_number)
-        print(file_path)
 
         # render
         nuke.execute(write_node, frame_number, frame_number)
@@ -646,15 +720,15 @@ class MainPublish(QWidget):
         
         # thumbnail_folder_path = f"{self.exr_folder_path.split("dev")[0]}/.thumbnail"
         thumbnail_path = self._make_thumbnail_path()
-        print(thumbnail_path)
+        # print(thumbnail_path)
 
         if not os.path.isdir(thumbnail_path):
             os.makedirs(thumbnail_path)
 
         exr_path = f"{self.exr_folder_path}{ver}/{exr_name}"
-        print(f"{exr_path}:이엑스알")
+        # print(f"{exr_path}:이엑스알")
         exr_png_path = f"{thumbnail_path}/{image_name}"
-        print(f"{exr_png_path}:이엑스알피엔지")
+        # print(f"{exr_png_path}:이엑스알피엔지")
 
         if not os.path.isfile(exr_png_path):
             self._create_exr_thumbnail(exr_path, exr_png_path)
@@ -702,7 +776,7 @@ class MainPublish(QWidget):
 
         return thumbnail_list
 
-    def get_lineEdit_text(self):
+    def get_description_text(self):
         description_list = []
         nk_description = self.ui.lineEdit_description_nk.text()
         exr_description = self.ui.lineEdit_description_exr.text()
@@ -711,7 +785,9 @@ class MainPublish(QWidget):
 
         return description_list
     
-    def set_delet_icon(self):
+    def set_delete_icon(self):
+        """set the trashbin_icon"""
+
         if self.ui.pushButton_delete.isChecked():
             image_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/delete_icon2.png"
         else:
