@@ -288,8 +288,8 @@ class My_task:
                         
                     elif info == "pub":
                         label = QLabel()
-                        gif_movie = QMovie("/home/rapa/xgen/pub3.gif")
-                        gif_movie.setScaledSize(QSize(30,30))# GIF 파일 경로 설정
+                        gif_movie = QMovie("/home/rapa/xgen/pub001.gif")
+                        gif_movie.setScaledSize(QSize(40,30))# GIF 파일 경로 설정
                         label.setMovie(gif_movie)
                         gif_movie.start() 
                         label.setAlignment(Qt.AlignCenter)

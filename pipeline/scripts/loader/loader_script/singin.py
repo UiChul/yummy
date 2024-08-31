@@ -1,28 +1,60 @@
-from PySide6.QtCore import Qt,Signal
+from PySide6.QtCore import Qt,Signal,QSize
+from PySide6.QtCore import QObject,QThread,QTimer
 from PySide6.QtWidgets import QWidget,QApplication,QMessageBox
-from PySide6.QtWidgets import QFileDialog
-
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile
+from PySide6.QtGui import QMovie,QGuiApplication
 from shotgun_api3 import shotgun
-import os
+
+import json
 import sys
 sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
 from loader_ui.singin_window_ui import Ui_Form
 from loader_script.get_datas_for_login import Signinfo
 from loader_script.get_datas_for_user import OpenLoaderData
 
-import json
-
+class Sg_json(QObject):
+    finished = Signal()
+    finished_first = Signal(dict)
+    
+    def __init__(self, project = ""):
+        super().__init__()
+        self.project = project
+    
+    def open_loader(self):
+        if self.project == "-":
+            self.finished.emit()
+            return  
+        OpenLoaderData(self.project)
+        self.finished.emit()
+    
+    def open_sg(self):
+        flow = Shotgrid_connect(self.project)
+        flow.connect_sg()
+        user= flow.get_user_by_email()
+        self.finished_first.emit(user)
+    
+    def open_project_login(self):
+        Signinfo(self.project)
+        self.finished.emit()
 
 class Signin(QWidget):
     
     def __init__(self):
         super().__init__()
         self.set_up()
+        self.put_login_gif()
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.email_vaildate = 0
         self.ui.lineEdit_email.returnPressed.connect(self.check_login)
+        
+        
+    def put_login_gif(self):
+        self.gif_index = 0  # 현재 재생 중인 GIF 인덱스
+        self.gif_paths = [  # 변경할 GIF 경로 목록
+            "/home/rapa/xgen/run1.gif",
+            "/home/rapa/xgen/run002.gif",
+            "/home/rapa/xgen/run003.gif",
+            "/home/rapa/xgen/run004.gif"
+        ]
         
     def input_project(self):
         with open("/home/rapa/yummy/pipeline/json/login_user_data.json","rt",encoding="utf-8") as r:
@@ -38,57 +70,204 @@ class Signin(QWidget):
         msg_box = QMessageBox()
         msg_box.setWindowTitle(title)
         msg_box.setText(text)
+        # main_window_center = self.geometry().center()
+        # offset = QPoint(0, -50)  # 50 픽셀 위로
+        # msg_box.move_to_position(main_window_center + offset)
         msg_box.exec()
-          
-    def check_login(self):
+        
+    # def connect_shotgrid(self):
+    #     user_email = self.ui.lineEdit_email.text()
+    #     sg = self.connect_sg()
+    #     user= self.get_user_by_email(sg, user_email)
+        
+    def connect_shotgrid_thread(self):
+        # self.set_login_buffering_img()
+        self.set_first_login_gif()
+        self.ui.stackedWidget.setCurrentIndex(1) 
         user_email = self.ui.lineEdit_email.text()
-        # stellalee969@gmail.com
-        # sooyeonp26@gmail.com
-
+        
+        self.worker = Sg_json(user_email)
+        self.thread_json = QThread()
+        self.worker.moveToThread(self.thread_json)
+        self.thread_json.started.connect(self.worker.open_sg)
+        
+        self.worker.finished_first.connect(self.thread_json.quit)
+        self.worker.finished_first.connect(self.worker.deleteLater)
+        self.thread_json.finished.connect(self.thread_json.deleteLater)
+        
+        self.worker.finished_first.connect(self.connect_shotgird_finished)
+        self.thread_json.start()
+    
+    def set_first_login_gif(self):
+        gif_movie = QMovie("/home/rapa/xgen/run003.gif")
+        gif_movie.setScaledSize(QSize(150,150))
+        self.ui.label_qmovie.setMovie(gif_movie)
+        gif_movie.start()
+        self.ui.label_qmovie.setAlignment(Qt.AlignCenter)    
+        
+    def connect_shotgird_finished(self,user):
+        if not user:
+            gif_movie = QMovie("/home/rapa/xgen/slip1.gif")
+            gif_movie.setScaledSize(QSize(150,150))
+            self.ui.label_qmovie.setMovie(gif_movie)
+            gif_movie.start()
+            self.ui.label_qmovie.setAlignment(Qt.AlignCenter)    
+            self.set_messagebox("email 정보가 정확하지 않습니다","로그인 실패")
+            self.ui.stackedWidget.setCurrentIndex(0) 
+        else:
+            self.make_user_thread()
+    
+    def make_user_thread(self):
+        self.set_first_login_gif()
+        self.ui.stackedWidget.setCurrentIndex(1) 
+        user_email = self.ui.lineEdit_email.text()
+        self.worker = Sg_json(user_email)
+        self.thread_json = QThread()
+        self.worker.moveToThread(self.thread_json)
+        self.thread_json.started.connect(self.worker.open_project_login)
+        self.worker.finished.connect(self.make_user_json_finished)
+        self.worker.finished.connect(self.thread_json.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread_json.finished.connect(self.thread_json.deleteLater)
+        self.thread_json.start()
+        
+    def make_user_json_finished(self):
+        self.set_messagebox("프로젝트를 선택해주세요.","이메일 인증 성공")
+        self.input_project()
+        
+        self.ui.lineEdit_email.setEnabled(False)
+        self.ui.label.setEnabled(False)
+        
+        self.ui.comboBox_project_name.setVisible(True)
+        self.ui.label_2.setVisible(True)
+        self.ui.stackedWidget.setCurrentIndex(0)  
+                
+        self.email_vaildate += 1
+        
+    def check_login(self):
+        
+        user_email = self.ui.lineEdit_email.text()
+        
         if not user_email:
             self.set_messagebox("email을 입력해주세요" , "로그인 실패")
             return
         
-        sg = self.connect_sg()
-        user= self.get_user_by_email(sg, user_email)
-
-        if not user:
-            self.set_messagebox("email 정보가 정확하지 않습니다","로그인 실패")
-            return
-        else:
-            Signinfo(user_email)    
-            self.set_messagebox("프로젝트를 선택해주세요.","이메일 인증 성공")
-            self.input_project()
-            
-            self.ui.lineEdit_email.setEnabled(False)
-            self.ui.label.setEnabled(False)
-            
-            self.ui.comboBox_project_name.setVisible(True)
-            self.ui.label_2.setVisible(True)
-            
-        self.email_vaildate += 1
-        print(self.email_vaildate)
-            
+        self.connect_shotgrid_thread()
+        
     def keyPressEvent(self, event):
         if self.email_vaildate >= 1:
-            if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
-                self.connect_loader()
-                self.email_vaildate += 1
+            if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:    
+                # if not self.thread_json.isRunning():                              
+                self.login_start()
         else:
             print("no vaildate")
-            
+    
+    def login_start(self):
+        self.set_login_buffering_img()
+        self.ui.stackedWidget.setCurrentIndex(1)  
+        project = self.ui.comboBox_project_name.currentText()
+        if project == "-":
+            return
+        
+        self.worker = Sg_json(project)
+        self.thread_json = QThread()
+        self.worker.moveToThread(self.thread_json)
+        self.thread_json.started.connect(self.worker.open_loader)
+        self.worker.finished.connect(self.on_worker_finished)
+        self.worker.finished.connect(self.thread_json.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread_json.finished.connect(self.thread_json.deleteLater)
+        self.thread_json.start()
+         
+    def on_worker_finished(self):
+        self.connect_loader()
+        
+    def set_login_buffering_img(self):
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_gif)
+        self.timer.start(2000)  # 2초(2000밀리초)마다 실행
+
+        # 첫 번째 GIF 설정
+        self.update_gif()
+        
+    def update_gif(self):
+        # self.ui.stackedWidget.setCurrentIndex(1)
+        gif_path = self.gif_paths[self.gif_index]
+        gif_movie = QMovie(gif_path)
+        gif_movie.setScaledSize(QSize(150,150))
+        self.ui.label_qmovie.setMovie(gif_movie)
+        gif_movie.start()
+        self.ui.label_qmovie.setAlignment(Qt.AlignCenter)
+        
+        self.gif_index = (self.gif_index + 1) % len(self.gif_paths)
+           
     def connect_loader(self):
-        if self.email_vaildate >= 2:
-            project = self.ui.comboBox_project_name.currentText()
-            OpenLoaderData(project)
-            info = {"project" : project , "name" : self.user_name,"rank": self.rank}
-            from loader_script.loader_merge import Merge
-            self.load = Merge(info)
-            self.load.show()       
-            self.close()     
-            
+        project = self.ui.comboBox_project_name.currentText()
+        
+        if project == "-":
+            return
+        
+        info = {"project" : project , "name" : self.user_name,"rank": self.rank}
+        from loader_script.loader_merge import Merge
+        self.load = Merge(info)
+        self.load.show()       
+        self.close()     
         
     #=====================================================================================
+        
+    # def connect_sg(self):
+    #     URL = "https://4thacademy.shotgrid.autodesk.com"
+    #     SCRIPT_NAME = "test_hyo"
+    #     API_KEY = "ljbgffxqg@cejveci5dQebhdx"
+    #     """
+    #     샷그리드 연결
+    #     """
+    #     sg = shotgun.Shotgun(URL, SCRIPT_NAME, API_KEY)
+
+    #     return sg
+
+    # def get_user_by_email(self,sg, email):
+    #     """
+    #     입력된 이메일 정보로 유저 정보 가져오기
+    #     """
+    #     filters = [["email", "is", email]]
+    #     fields = ["id", "name", "email", "permission_rule_set"]
+    #     users = sg.find("HumanUser", filters=filters, fields=fields)
+    #     if users:
+    #         return users[0]
+    #     else:
+    #         return users
+    
+    def center_window(self):
+        # 화면의 중심 좌표를 얻음
+        screen = QGuiApplication.primaryScreen()
+        screen_geometry = screen.geometry()  # 화면의 전체 지오메트리 얻기
+        screen_center = screen_geometry.center()  # 화면의 중심점 얻기
+        # 현재 창의 크기 및 중심 좌표 계산
+        window_geometry = self.frameGeometry()  # 현재 창의 프레임 지오메트리 얻기
+        window_geometry.moveCenter(screen_center)  # 창의 중심을 화면의 중심으로 이동
+        # 최종적으로 계산된 좌표로 창 이동
+        offset_y = 200  # 화면 중심보다 50 픽셀 위로 이동
+        adjusted_position = window_geometry.topLeft()
+        adjusted_position.setY(adjusted_position.y() - offset_y)  # Y 좌표를 조정하여 위로 이동
+
+        # 최종적으로 계산된 좌표로 창 이동
+        self.move(adjusted_position)
+
+    def set_up(self):
+        self.ui = Ui_Form()
+        self.ui.setupUi(self)
+        self.center_window()
+        self.ui.comboBox_project_name.setVisible(False)
+        self.ui.label_2.setVisible(False)
+
+class Shotgrid_connect:
+    
+    def __init__(self,user_email):
+        
+        self.user_email = user_email
+        # self.connect_sg()
+        # self.get_user_by_email()
         
     def connect_sg(self):
         URL = "https://4thacademy.shotgrid.autodesk.com"
@@ -97,33 +276,22 @@ class Signin(QWidget):
         """
         샷그리드 연결
         """
-        sg = shotgun.Shotgun(URL, SCRIPT_NAME, API_KEY)
+        self.sg = shotgun.Shotgun(URL, SCRIPT_NAME, API_KEY)
 
-        return sg
+        # return sg
 
-    def get_user_by_email(self,sg, email):
+    def get_user_by_email(self):
         """
         입력된 이메일 정보로 유저 정보 가져오기
         """
-        filters = [["email", "is", email]]
+        filters = [["email", "is", self.user_email]]
         fields = ["id", "name", "email", "permission_rule_set"]
-        users = sg.find("HumanUser", filters=filters, fields=fields)
+        users = self.sg.find("HumanUser", filters=filters, fields=fields)
         if users:
             return users[0]
         else:
             return users
     
-    def set_up(self):
-        # ui_file_path = "singin_window.ui"
-        # ui_file = QFile(ui_file_path)
-        # ui_file.open(QFile.ReadOnly)
-        # loader = QUiLoader()
-        # self.ui = loader.load(ui_file,self)
-        self.ui = Ui_Form()
-        self.ui.setupUi(self)
-        self.ui.comboBox_project_name.setVisible(False)
-        self.ui.label_2.setVisible(False)
-        
 
 if __name__ == "__main__":
     app = QApplication()

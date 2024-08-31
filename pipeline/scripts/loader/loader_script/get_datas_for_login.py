@@ -1,6 +1,7 @@
 import os
 import json
 from shotgun_api3 import shotgun
+from PySide6.QtCore import Signal
 
 class Signinfo():
     URL = "https://4thacademy.shotgrid.autodesk.com"
@@ -17,7 +18,7 @@ class Signinfo():
             projects = self.get_projects_by_userID(sg, user_id,project_entities)
             user_data = self.arrange_user_data_for_json(user, projects)
             self.save_user_data_to_json(user_data, "/home/rapa/yummy/pipeline/json/login_user_data.json")
-            print (user_data)
+            # print (user_data)
 
     def connect_sg(self):
         """

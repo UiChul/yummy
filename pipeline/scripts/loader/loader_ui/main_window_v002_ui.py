@@ -26,7 +26,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(1151, 871)
+        Form.resize(1153, 871)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -560,7 +560,7 @@ class Ui_Form(object):
         self.toolBox_asset_task.addItem(self.page_mod, u"MOD")
         self.page_rig = QWidget()
         self.page_rig.setObjectName(u"page_rig")
-        self.page_rig.setGeometry(QRect(0, 0, 791, 525))
+        self.page_rig.setGeometry(QRect(0, 0, 98, 28))
         self.listWidget_rig = QListWidget(self.page_rig)
         self.listWidget_rig.setObjectName(u"listWidget_rig")
         self.listWidget_rig.setGeometry(QRect(0, 0, 231, 521))
@@ -923,8 +923,8 @@ class Ui_Form(object):
 
         self.tabWidget_all.setCurrentIndex(2)
         self.tabWidget_shot_task.setCurrentIndex(0)
-        self.tabWidget_shot_status.setCurrentIndex(2)
-        self.tabWidget_template.setCurrentIndex(1)
+        self.tabWidget_shot_status.setCurrentIndex(0)
+        self.tabWidget_template.setCurrentIndex(0)
         self.toolBox_asset_task.setCurrentIndex(0)
 
 
@@ -941,7 +941,7 @@ class Ui_Form(object):
         self.label_shot_filepath.setText("")
         self.groupBox_shot_comment.setTitle(QCoreApplication.translate("Form", u"Comment", None))
         self.tabWidget_shot_status.setTabText(self.tabWidget_shot_status.indexOf(self.tab_shot_fx), QCoreApplication.translate("Form", u"ANI", None))
-        self.tabWidget_shot_status.setTabText(self.tabWidget_shot_status.indexOf(self.tab_shot_comp), QCoreApplication.translate("Form", u"COMP", None))
+        self.tabWidget_shot_status.setTabText(self.tabWidget_shot_status.indexOf(self.tab_shot_comp), QCoreApplication.translate("Form", u"CMP", None))
         self.tabWidget_shot_status.setTabText(self.tabWidget_shot_status.indexOf(self.tab_shot_lit), QCoreApplication.translate("Form", u"LGT", None))
         self.tabWidget_shot_status.setTabText(self.tabWidget_shot_status.indexOf(self.tab_shot_ldv), QCoreApplication.translate("Form", u"LY", None))
         self.tabWidget_shot_status.setTabText(self.tabWidget_shot_status.indexOf(self.tab_shot_mm), QCoreApplication.translate("Form", u"MM", None))
