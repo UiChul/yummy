@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QGuiApplication
+from PySide6.QtGui import QGuiApplication,QPalette,QColor
 from PySide6.QtWidgets import QWidget,QApplication,QSizePolicy
 from PySide6.QtCore import Qt, QSize
 
@@ -19,6 +19,7 @@ class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libra
     def __init__(self,info):
         super().__init__()
         self.set_up()
+        self.setPalette(self.get_darkModePalette())
         self.tab_enable(info)
         self.set_main_loader(info)
         
@@ -53,7 +54,34 @@ class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libra
         window_geometry.moveCenter(screen_center)  
         adjusted_position = window_geometry.topLeft()
         self.move(adjusted_position)
+
+    def get_darkModePalette(self) :
+
+        darkPalette = self.palette()
+        darkPalette.setColor( QPalette.Window, QColor( 53, 53, 53 ) )
+        darkPalette.setColor( QPalette.WindowText, QColor(211, 215, 207))
+        darkPalette.setColor( QPalette.Disabled, QPalette.WindowText, QColor( 127, 127, 127 ) )
+        darkPalette.setColor( QPalette.Base, QColor( 42, 42, 42 ) )
+        darkPalette.setColor( QPalette.AlternateBase, QColor( 66, 66, 66 ) )
+        darkPalette.setColor( QPalette.ToolTipBase, QColor( 53, 53, 53 ) )
+        darkPalette.setColor( QPalette.ToolTipText, QColor(211, 215, 207) )
+        darkPalette.setColor( QPalette.Text, QColor(211, 215, 207) )
+        darkPalette.setColor( QPalette.Disabled, QPalette.Text, QColor( 127, 127, 127 ) )
+        darkPalette.setColor( QPalette.Dark, QColor( 35, 35, 35 ) )
+        darkPalette.setColor( QPalette.Shadow, QColor( 20, 20, 20 ) )
+        darkPalette.setColor( QPalette.Button, QColor( 53, 53, 53 ) )
+        darkPalette.setColor( QPalette.ButtonText, QColor(211, 215, 207) )
+        darkPalette.setColor( QPalette.Disabled, QPalette.ButtonText, QColor( 127, 127, 127 ) )
+        darkPalette.setColor( QPalette.BrightText, Qt.red )
+        darkPalette.setColor( QPalette.Link, QColor( 42, 130, 218 ) )
+        darkPalette.setColor( QPalette.Highlight, QColor( 42, 130, 218 ) )
+        darkPalette.setColor( QPalette.Disabled, QPalette.Highlight, QColor( 80, 80, 80 ) )
+        darkPalette.setColor( QPalette.HighlightedText, QColor(211, 215, 207) )
+        darkPalette.setColor( QPalette.Disabled, QPalette.HighlightedText, QColor( 127, 127, 127 ), )
+
+        return darkPalette
     
+
     def set_up(self):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
