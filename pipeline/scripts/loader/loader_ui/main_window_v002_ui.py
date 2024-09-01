@@ -921,9 +921,9 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
 
-        self.tabWidget_all.setCurrentIndex(1)
+        self.tabWidget_all.setCurrentIndex(0)
         self.tabWidget_shot_task.setCurrentIndex(0)
-        self.tabWidget_shot_status.setCurrentIndex(0)
+        self.tabWidget_shot_status.setCurrentIndex(2)
         self.tabWidget_template.setCurrentIndex(0)
         self.toolBox_asset_task.setCurrentIndex(0)
 

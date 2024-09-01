@@ -28,10 +28,9 @@ class Mainloader:
         self.ui = Ui_Form
         # self.set_up()
         
-        self.make_json_dic()
+        self.set_project_info()
         self.set_shot_tableWidgets()
         self.set_status_table_list()
-        self.set_user_information()
         self.input_project()
         self.set_comboBox_seq()
         self.set_description_list()
@@ -64,22 +63,19 @@ class Mainloader:
         self.mov_table.itemClicked.connect(self.set_mov_file_information)
         
         self.mov_table.itemDoubleClicked.connect(self.set_mov_files)
-
         self.all_list.itemClicked.connect(self.set_all_file_information)
 
-        # self.set_mov_thumbnail()
-        # tab - PUB 숨기기
-        # self.ui.tabWidget_all.tabBar().setTabVisible(3, False)
     
     # ==============================================================================================    
     # json 연결
     # ==============================================================================================    
     
-    def make_json_dic(self):
+    # project 기본 세팅 설정
+    
+    def set_project_info(self):
         with open("/home/rapa/yummy/pipeline/json/project_data.json","rt",encoding="utf-8") as r:
             info = json.load(r)
             
-        
         self.project = info["project"]
         self.user    = info["name"]
         self.rank    = info["rank"]
@@ -89,6 +85,7 @@ class Mainloader:
     # tree 위젯 셋팅 추가
     # ==========================================================================================
     
+    
     def input_project(self):
         with open("/home/rapa/yummy/pipeline/json/login_user_data.json","rt",encoding="utf-8") as r:
             user_dic = json.load(r)
@@ -96,12 +93,13 @@ class Mainloader:
         for projects in user_dic["projects"]:
             if projects["name"] == self.project:
                 self.transform_json_data(projects["shot_code"])
-            
+
     def transform_json_data(self,data):
+        
         self.transformed_data = {}
 
         for key, value in data.items():
-            prefix = key.split('_')[0]  # 접두사 추출 (예: 'INS', 'BRK', 'FLB')
+            prefix = key.split('_')[0]
 
             if prefix not in self.transformed_data:
                 self.transformed_data[prefix] = []
@@ -773,7 +771,7 @@ class Mainloader:
                 
     def open_loader_json(self):
         with open("/home/rapa/yummy/pipeline/json/open_loader_datas.json","rt",encoding="utf-8") as r:
-               user_dic = json.load(r)
+            user_dic = json.load(r)
         return user_dic
         
     #=========================================================================================
@@ -802,7 +800,6 @@ class Mainloader:
     #=========================================================================================
     # vlc 연결
     #==========================================================================================
-          
     def set_mov_files(self,item):
         """
         mov file setting
@@ -813,24 +810,6 @@ class Mainloader:
         mov_path = os.path.join(mov_files_path, movs)
         mov_play_path = 'vlc --repeat ' + f"{mov_path}"
         os.system(mov_play_path)
-
-    def set_mov_thumbnail(self):
-        mov_files_path = "/home/rapa/YUMMY/project/Marvelous/seq/OPN/OPN_0010/ani/dev/mov" 
-        movs = os.listdir(mov_files_path)
-        col = 0
-        for mov in movs:
-            mov_play_path = mov_files_path + mov
-            video_widget = QVideoWidget()
-            media_player = QMediaPlayer(video_widget)
-            media_player.setSource(QUrl.fromLocalFile(mov_play_path))
-            media_player.setVideoOutput(video_widget)
-            video_layout = QVBoxLayout()
-            video_layout.addWidget(video_widget)
-            video_container = QWidget()
-            video_container.setLayout(video_layout)
-            self.mov_table.setCellWidget(0,col,video_container)
-            col += 1
-            # media_player.play()
        
     #=========================================================================================
     # 검색 기능
@@ -1026,19 +1005,8 @@ class Mainloader:
     
     def extract_time_shot(self,item):
         return datetime.strptime(item['Update Date'], '%Y-%m-%d %H:%M:%S')
-        
-    def set_user_information(self):
-    
-        self.ui.label_projectname.setText(f"{self.project}")
-        self.ui.label_username.setText(f"{self.user}")
-        self.ui.label_rank.setText(f"{self.rank}")
-        
+           
     def set_up(self):
-        # ui_file_path = "/home/rapa/yummy/pipeline/scripts/loader/main_window.ui"
-        # ui_file = QFile(ui_file_path)
-        # ui_file.open(QFile.ReadOnly)
-        # loader = QUiLoader()
-        # self.ui = loader.load(ui_file,self)
         from loader_ui.main_window_v002_ui import Ui_Form
         self.ui = Ui_Form()
         self.ui.setupUi(self)

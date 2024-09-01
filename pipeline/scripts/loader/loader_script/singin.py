@@ -81,7 +81,7 @@ class Signin(QWidget):
     def put_loader_gif(self):
         self.gif_index = 0  # 현재 재생 중인 GIF 인덱스
         self.gif_paths = [  # 변경할 GIF 경로 목록
-            "/home/rapa/xgen/run0010.gif",
+            "/home/rapa/xgen/run001.gif",
             "/home/rapa/xgen/run002.gif",
             "/home/rapa/xgen/run003.gif",
             "/home/rapa/xgen/run004.gif"
@@ -130,7 +130,7 @@ class Signin(QWidget):
      
     def connect_shotgird_finished(self,user):
         if not user:
-            gif_movie = QMovie("/home/rapa/xgen/slip1.gif")
+            gif_movie = QMovie("/home/rapa/xgen/slip001.gif")
             gif_movie.setScaledSize(QSize(150,150))
             self.ui.label_qmovie.setMovie(gif_movie)
             gif_movie.start()
@@ -211,7 +211,7 @@ class Signin(QWidget):
     def set_login_buffering_img(self):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_gif)
-        self.timer.start(2000)  # 2초(2000밀리초)마다 실행
+        self.timer.start(2400)  # 2초(2000밀리초)마다 실행
 
         # 첫 번째 GIF 설정
         self.update_gif()
