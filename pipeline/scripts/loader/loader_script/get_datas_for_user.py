@@ -145,11 +145,12 @@ class OpenLoaderData():
 
         if project_id:
             filters = [["project", "is", {"type": "Project", "id": project_id}]]
-            fields = ["code", "sg_version_type", "description", "sg_status_list", "user", "updated_at"]
+            fields = ["code", "id", "sg_version_type", "description", "sg_status_list", "user", "updated_at"]
             versions = self.sg.find("Version", filters=filters, fields=fields)
 
             for version in versions:
                 code = version.get("code", "N/A")
+                version_id = version.get("id", "N/A")
                 version_type = version.get("sg_version_type", "N/A")
                 description = version.get("description", "N/A")
                 sg_status_list = version.get("sg_status_list", "N/A")
@@ -163,6 +164,7 @@ class OpenLoaderData():
 
                 project_ver_datas.append({
                     "version_code": code,
+                    "version_id": version_id,
                     "version_type": version_type,
                     "description": description,
                     "sg_status_list": sg_status_list,

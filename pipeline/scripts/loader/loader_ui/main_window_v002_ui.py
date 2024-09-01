@@ -560,7 +560,7 @@ class Ui_Form(object):
         self.toolBox_asset_task.addItem(self.page_mod, u"MOD")
         self.page_rig = QWidget()
         self.page_rig.setObjectName(u"page_rig")
-        self.page_rig.setGeometry(QRect(0, 0, 98, 28))
+        self.page_rig.setGeometry(QRect(0, 0, 100, 30))
         self.listWidget_rig = QListWidget(self.page_rig)
         self.listWidget_rig.setObjectName(u"listWidget_rig")
         self.listWidget_rig.setGeometry(QRect(0, 0, 231, 521))

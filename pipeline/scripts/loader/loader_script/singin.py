@@ -211,8 +211,7 @@ class Signin(QWidget):
     def set_login_buffering_img(self):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_gif)
-        self.timer.start(2400)  # 2초(2000밀리초)마다 실행
-
+        self.timer.start(2200)  # 2초(2000밀리초)마다 실행
         # 첫 번째 GIF 설정
         self.update_gif()
         

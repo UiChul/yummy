@@ -4,6 +4,7 @@ from PySide6.QtCore import Qt, QMimeData, QSize, QProcess, Signal, QObject
 from PySide6.QtGui import QContextMenuEvent, QDrag, QPixmap, QCursor, QAction, QMovie
 import os
 import sys
+import subprocess
 sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
 
 from loader_ui.main_window_v002_ui import Ui_Form
@@ -31,13 +32,13 @@ class DraggableWidget(QWidget):
         self.image_label = QLabel()
         self.image_label.setFixedSize(260, 135)
         
+        #이미지 라벨에 QMovie로 gif 넣기
         self.movie = QMovie(image_path)
         self.image_label.setMovie(self.movie)
 
         self.movie.setScaledSize(QSize(260,135))
 
-        self.movie.start()
-        self.movie.jumpToFrame(30)
+        self.movie.start() #창이 열릴 때 gif 실행하고 바로 pause
         self.movie.setPaused(True)
 
         layout.addWidget(self.image_label)
@@ -52,20 +53,14 @@ class DraggableWidget(QWidget):
         self.file_path = file_path
         self.mov_file = os.path.basename(file_path)
         self.mov_name, self.ext_type = os.path.splitext(self.mov_file)
-        self.selected_format = None
  
-    def enterEvent(self, event):
+    def enterEvent(self, event): #위젯에 마우스를 올렸을 때, gif pause 해제
         self.movie.setPaused(False)
         super().enterEvent(event)
 
-    def leaveEvent(self, event):
+    def leaveEvent(self, event): #마우스가 떠나면, 다시 gif pause
         self.movie.setPaused(True)
-        super().enterEvent(event)
-
-    # def leaveEvent(self, event):
-    #     if self.movie.isRunning():
-    #         self.movie.stop()
-    #     super().leaveEvent(event)
+        super().leaveEvent(event)
 
     def mousePressEvent(self, event):
         if event.buttons() & Qt.LeftButton:
@@ -82,35 +77,61 @@ class DraggableWidget(QWidget):
             self.show_menubar(event)
 
     def show_menubar(self, event):
-        menubar = QMenu(self)
+        main_menu = QMenu(self)
+        sub_menu = QMenu(self)
+        sub_menu.setTitle("resolution")
 
-        header = QAction("Format")
-        header.setEnabled(False)
-        menubar.addAction(header)
+        main_header = QAction(self.mov_file)
+        main_header.setEnabled(False)
+        main_menu.addAction(main_header)
         
-        action1 = menubar.addAction("1280x720")
-        action2 = menubar.addAction("1920x1080")
-        action3 = menubar.addAction("3840x2160")
+        main_menu.addMenu(sub_menu)
+
+        action1 = main_menu.addAction("open folder")
+
+        main_menu.addAction(action1)
+
+        sub_action_1 = sub_menu.addAction("1280x720")
+        sub_action_2 = sub_menu.addAction("1920x1080")
+        sub_action_3 = sub_menu.addAction("3840x2160")
+
+        sub_menu.addAction(sub_action_1)
+        sub_menu.addAction(sub_action_2)
+        sub_menu.addAction(sub_action_3)
 
         action1.triggered.connect(self.handle_action1)
-        action2.triggered.connect(self.handle_action2)
-        action3.triggered.connect(self.handle_action3)
+        sub_action_1.triggered.connect(self.handle_subAction1)
+        sub_action_2.triggered.connect(self.handle_subAction2)
+        sub_action_3.triggered.connect(self.handle_subAction3)
 
-        menubar.exec(event.globalPos())
+        main_menu.exec(event.globalPos())
 
-    # def contextMenuEvent(self, event: QContextMenuEvent) -> None:
-    #     print (event.globalPos())
-    #     self.show_menubar(event)
-    #     return super().contextMenuEvent(event)
-    
     def handle_action1(self):
+        folder_path = os.path.dirname(self.file_path)
+
+        if os.path.isdir(folder_path):
+            subprocess.run(["xdg-open", folder_path])
+    
+    def handle_subAction1(self):
         self.selected_format = "HD_720"
+        self.emit_mimedata()
 
-    def handle_action2(self):
+    def handle_subAction2(self):
         self.selected_format = "HD_1080"
+        self.emit_mimedata()
 
-    def handle_action3(self):
+    def handle_subAction3(self):
         self.selected_format = "UHD_4K"
+        self.emit_mimedata()
+
+    def emit_mimedata(self):
+        mime_data = QMimeData()
+        data = f"file_path:{self.file_path},resolution:{self.selected_format or 'none'}"
+        mime_data.setText(data)
+
+        drag = QDrag(self)
+        drag.setMimeData(mime_data)
+        drag.exec(Qt.MoveAction | Qt.CopyAction)
 
     def mouseDoubleClickEvent(self, event): #마우스 더블 클릭 이벤트로 rv실행
         if event.button() == Qt.LeftButton:
@@ -161,27 +182,54 @@ class DroppableTableWidget(QTableWidget):
 
     def dropEvent(self, event):
         if event.mimeData().hasText():
-            file_path = event.mimeData().text()
+            data = event.mimeData().text()
+            file_path, resolution = self.parse_mimedata(data)
+
             if nuke:
-                self.apply_to_nuke(file_path)
+                # 파일 경로를 설정하고 Read 노드를 반환
+                read_node = self.apply_file_path_to_nuke(file_path)
+                
+                # 반환된 Read 노드에 해상도를 설정
+                if read_node:
+                    self.apply_resolution_to_nuke(read_node, resolution)
+
             event.acceptProposedAction()
         else:
             event.ignore()
 
-    def apply_to_nuke(self, file_path):
-        if nuke:
-            # 누크에서 리드 노드를 찾아서 추가, 리드 노드가 없다면 만들기
-            read_nodes = []
-            
-            for node in nuke.allNodes():
-                if node.Class() == "Read":
-                    read_nodes.append(node)    
+    # def parse_mimedata(self, data):
+    #     """
+    #     문자열 데이터에서 파일 경로와 해상도를 파싱합니다.
+    #     """
+    #     file_path = None
+    #     resolution = None
 
+    #     # 문자열 데이터를 ','로 나누고 각 부분을 검사
+    #     parts = data.split(',')
+    #     for part in parts:
+    #         if part.startswith("file_path:"):
+    #             file_path = part[len("file_path:"):]
+    #         elif part.startswith("resolution:"):
+    #             resolution = part[len("resolution:"):]
+
+    #     return file_path, resolution
+
+    def apply_file_path_to_nuke(self, file_path):
+        if nuke:
+            # 모든 Read 노드 검색
+            read_nodes = [node for node in nuke.allNodes() if node.Class() == "Read"]
+
+            # 기존 Read 노드가 있으면 첫 번째 노드를 사용하고, 없으면 새로 생성
             if read_nodes:
+                read_node = read_nodes[0]
+            else:
                 read_node = nuke.createNode('Read')
 
-            # 리드 노드의 'file'에 mime 데이터로 넘어오는 파일 패스 전달
-            read_node['file'].setValue(file_path)
+            # 파일 경로 설정
+            if file_path:
+                read_node['file'].setValue(file_path)
+
+            # 새로 생성된 Read 노드가 있으면 확인 메시지 표시
             if not read_nodes:
                 nuke.message("A new Read node has been created")
 
@@ -209,6 +257,8 @@ class Libraryclip:
         "/home/rapa/YUMMY/project/YUMMIE/template/shot/clip_lib", 
         "/home/rapa/YUMMY/project/YUMMIE/template/shot/clip_lib/clip_thumbnail"
         )
+
+        # self.start_webhooks_monitor()
 
     def load_mov_and_image_files(self, mov_path, image_path):
         """
@@ -270,6 +320,7 @@ class Libraryclip:
     def set_up(self):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+
 
     def file_info(self, mov_file, ext_type):
         self.ui.label_clip_filename.clear()
