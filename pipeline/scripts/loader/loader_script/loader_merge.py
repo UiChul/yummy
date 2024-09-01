@@ -18,8 +18,14 @@ import json
 class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libraryasset):
     def __init__(self,info):
         super().__init__()
-        self.set_up(info)
+        self.set_up()
         self.tab_enable(info)
+        self.set_main_loader(info)
+        
+        info = project_data.__init__(self,info)
+        self.write_project_json(info)
+        
+        self.connect_script()
         
     def set_main_loader(self,info):
         
@@ -40,36 +46,28 @@ class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libra
             self.ui.tabWidget_all.removeTab(3)
             
     def center_window(self):
-        # 화면의 중심 좌표를 얻음
         screen = QGuiApplication.primaryScreen()
-        screen_geometry = screen.geometry()  # 화면의 전체 지오메트리 얻기
-        screen_center = screen_geometry.center()  # 화면의 중심점 얻기
-        # 현재 창의 크기 및 중심 좌표 계산
-        window_geometry = self.frameGeometry()  # 현재 창의 프레임 지오메트리 얻기
-        window_geometry.moveCenter(screen_center)  # 창의 중심을 화면의 중심으로 이동
-        # 최종적으로 계산된 좌표로 창 이동 
+        screen_geometry = screen.geometry() 
+        screen_center = screen_geometry.center() 
+        window_geometry = self.frameGeometry()  
+        window_geometry.moveCenter(screen_center)  
         adjusted_position = window_geometry.topLeft()
-        # 최종적으로 계산된 좌표로 창 이동
         self.move(adjusted_position)
     
-    def set_up(self,info):
+    def set_up(self):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.center_window()
-        self.set_main_loader(info)
-        info = project_data.__init__(self,info,self.ui)
-        self.write_project_json(info)
+
+    def connect_script(self):
         Libraryclip.__init__(self,self.ui)
         Libraryasset.__init__(self,self.ui)
         My_task.__init__(self,self.ui)
         Loader_pub.__init__(self,self.ui)
         Mainloader.__init__(self,self.ui)
 
-info = {"project": "YUMMIE",
+info = {"project": "YUMMIE", "name": "UICHUL SHIN", "rank": "Admin"}
 
-"name": "UICHUL SHIN",
-
-"rank": "Admin"} 
 if __name__ == "__main__":
     app  = QApplication()
     my = Merge(info)

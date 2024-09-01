@@ -19,6 +19,8 @@ class Slate:
         
     def start_exr(self,exr_path,output):
         
+        # exr_path = /home/rapa/OPN_010_mm_v001_test001
+        
         exr_file_name = exr_path.split("/")[-1]
         
         slate_dic = self.set_slate_info(exr_path)

@@ -7,10 +7,9 @@
 import json
 
 class project_data:
-    def __init__(self,info,Ui_Form):
-        self.resolution = ""
+    def __init__(self,info):
         
-        self.ui = Ui_Form
+        self.resolution = ""
         
         self.open_json()
         

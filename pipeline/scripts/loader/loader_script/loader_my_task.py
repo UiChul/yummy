@@ -16,7 +16,6 @@ from PySide6.QtGui import QPixmap
 from pipeline.scripts.loader.loader_module.ffmpeg_module import change_to_png
 from pipeline.scripts.loader.loader_module.find_time_size import File_data
 
-
 class My_task:
     def __init__(self,Ui_Form):
         self.ui = Ui_Form
@@ -26,7 +25,7 @@ class My_task:
         
         self.make_json_dic()
         self.set_click_thumbnail_mov()
-        self.set_recent_file()
+        # self.set_recent_file()
         self.set_description_list()
         self.set_status_table()     
         self.set_mytask_table()
@@ -57,7 +56,6 @@ class My_task:
                 info = self.table.item(index,col)
                 file_info.append(info.text())
         
-        
         self.status_table.clearContents()
         my_task_list = self.set_mytask_status(file_info)
         self.input_status_table(my_task_list)
@@ -66,12 +64,10 @@ class My_task:
           
     def set_img(self,file_info):
         file_name = file_info[0]
-        temp , ext=os.path.splitext(file_name)
-        img_path = temp.split("_")
+        temp,ext  = os.path.splitext(file_name)
+        img_path  = temp.split("_")
         
         self.mov_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/mov/{temp}.mov"
-        
-
         image_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/exr/{temp}/{temp}.1001.exr"
         
         if not os.path.isdir(f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/"):

@@ -12,6 +12,7 @@ from loader_script.get_datas_for_login import Signinfo
 from loader_script.get_datas_for_user import OpenLoaderData
 
 class Sg_json(QObject):
+    
     finished = Signal()
     finished_first = Signal(dict)
     
@@ -36,25 +37,62 @@ class Sg_json(QObject):
         Signinfo(self.project)
         self.finished.emit()
 
+class Shotgrid_connect:
+    
+    def __init__(self,user_email):
+        
+        self.user_email = user_email
+        # self.connect_sg()
+        # self.get_user_by_email()
+        
+    def connect_sg(self):
+        URL = "https://4thacademy.shotgrid.autodesk.com"
+        SCRIPT_NAME = "test_hyo"
+        API_KEY = "ljbgffxqg@cejveci5dQebhdx"
+        """
+        샷그리드 연결
+        """
+        self.sg = shotgun.Shotgun(URL, SCRIPT_NAME, API_KEY)
+
+        # return sg
+
+    def get_user_by_email(self):
+        """
+        입력된 이메일 정보로 유저 정보 가져오기
+        """
+        filters = [["email", "is", self.user_email]]
+        fields = ["id", "name", "email", "permission_rule_set"]
+        users = self.sg.find("HumanUser", filters=filters, fields=fields)
+        if users:
+            return users[0]
+        else:
+            return users
+
 class Signin(QWidget):
     
     def __init__(self):
         super().__init__()
         self.set_up()
-        self.put_login_gif()
+        self.put_loader_gif()
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.email_vaildate = 0
         self.ui.lineEdit_email.returnPressed.connect(self.check_login)
         
-        
-    def put_login_gif(self):
+    def put_loader_gif(self):
         self.gif_index = 0  # 현재 재생 중인 GIF 인덱스
         self.gif_paths = [  # 변경할 GIF 경로 목록
-            "/home/rapa/xgen/run1.gif",
+            "/home/rapa/xgen/run0010.gif",
             "/home/rapa/xgen/run002.gif",
             "/home/rapa/xgen/run003.gif",
             "/home/rapa/xgen/run004.gif"
         ]
+    
+    def set_first_login_gif(self):
+        gif_movie = QMovie("/home/rapa/xgen/run003.gif")
+        gif_movie.setScaledSize(QSize(150,150))
+        self.ui.label_qmovie.setMovie(gif_movie)
+        gif_movie.start()
+        self.ui.label_qmovie.setAlignment(Qt.AlignCenter)   
         
     def input_project(self):
         with open("/home/rapa/yummy/pipeline/json/login_user_data.json","rt",encoding="utf-8") as r:
@@ -70,15 +108,7 @@ class Signin(QWidget):
         msg_box = QMessageBox()
         msg_box.setWindowTitle(title)
         msg_box.setText(text)
-        # main_window_center = self.geometry().center()
-        # offset = QPoint(0, -50)  # 50 픽셀 위로
-        # msg_box.move_to_position(main_window_center + offset)
         msg_box.exec()
-        
-    # def connect_shotgrid(self):
-    #     user_email = self.ui.lineEdit_email.text()
-    #     sg = self.connect_sg()
-    #     user= self.get_user_by_email(sg, user_email)
         
     def connect_shotgrid_thread(self):
         # self.set_login_buffering_img()
@@ -97,14 +127,7 @@ class Signin(QWidget):
         
         self.worker.finished_first.connect(self.connect_shotgird_finished)
         self.thread_json.start()
-    
-    def set_first_login_gif(self):
-        gif_movie = QMovie("/home/rapa/xgen/run003.gif")
-        gif_movie.setScaledSize(QSize(150,150))
-        self.ui.label_qmovie.setMovie(gif_movie)
-        gif_movie.start()
-        self.ui.label_qmovie.setAlignment(Qt.AlignCenter)    
-        
+     
     def connect_shotgird_finished(self,user):
         if not user:
             gif_movie = QMovie("/home/rapa/xgen/slip1.gif")
@@ -125,18 +148,19 @@ class Signin(QWidget):
         self.thread_json = QThread()
         self.worker.moveToThread(self.thread_json)
         self.thread_json.started.connect(self.worker.open_project_login)
-        self.worker.finished.connect(self.make_user_json_finished)
+        self.worker.finished.connect(self.make_user_finished)
         self.worker.finished.connect(self.thread_json.quit)
         self.worker.finished.connect(self.worker.deleteLater)
         self.thread_json.finished.connect(self.thread_json.deleteLater)
         self.thread_json.start()
         
-    def make_user_json_finished(self):
+    def make_user_finished(self):
         self.set_messagebox("프로젝트를 선택해주세요.","이메일 인증 성공")
         self.input_project()
         
         self.ui.lineEdit_email.setEnabled(False)
         self.ui.label.setEnabled(False)
+        
         
         self.ui.comboBox_project_name.setVisible(True)
         self.ui.label_2.setVisible(True)
@@ -155,19 +179,21 @@ class Signin(QWidget):
         self.connect_shotgrid_thread()
         
     def keyPressEvent(self, event):
-        if self.email_vaildate >= 1:
+        if self.email_vaildate == 1:
             if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:    
-                # if not self.thread_json.isRunning():                              
-                self.login_start()
+                # if not self.thread_json.isRunning():      
+                self.open_loader()
+                self.email_vaildate +=1                        
         else:
             print("no vaildate")
     
-    def login_start(self):
+    def open_loader(self):
         self.set_login_buffering_img()
         self.ui.stackedWidget.setCurrentIndex(1)  
         project = self.ui.comboBox_project_name.currentText()
         if project == "-":
-            return
+            self.email_vaildate -= 1
+            
         
         self.worker = Sg_json(project)
         self.thread_json = QThread()
@@ -212,32 +238,7 @@ class Signin(QWidget):
         self.load = Merge(info)
         self.load.show()       
         self.close()     
-        
-    #=====================================================================================
-        
-    # def connect_sg(self):
-    #     URL = "https://4thacademy.shotgrid.autodesk.com"
-    #     SCRIPT_NAME = "test_hyo"
-    #     API_KEY = "ljbgffxqg@cejveci5dQebhdx"
-    #     """
-    #     샷그리드 연결
-    #     """
-    #     sg = shotgun.Shotgun(URL, SCRIPT_NAME, API_KEY)
 
-    #     return sg
-
-    # def get_user_by_email(self,sg, email):
-    #     """
-    #     입력된 이메일 정보로 유저 정보 가져오기
-    #     """
-    #     filters = [["email", "is", email]]
-    #     fields = ["id", "name", "email", "permission_rule_set"]
-    #     users = sg.find("HumanUser", filters=filters, fields=fields)
-    #     if users:
-    #         return users[0]
-    #     else:
-    #         return users
-    
     def center_window(self):
         # 화면의 중심 좌표를 얻음
         screen = QGuiApplication.primaryScreen()
@@ -260,38 +261,6 @@ class Signin(QWidget):
         self.center_window()
         self.ui.comboBox_project_name.setVisible(False)
         self.ui.label_2.setVisible(False)
-
-class Shotgrid_connect:
-    
-    def __init__(self,user_email):
-        
-        self.user_email = user_email
-        # self.connect_sg()
-        # self.get_user_by_email()
-        
-    def connect_sg(self):
-        URL = "https://4thacademy.shotgrid.autodesk.com"
-        SCRIPT_NAME = "test_hyo"
-        API_KEY = "ljbgffxqg@cejveci5dQebhdx"
-        """
-        샷그리드 연결
-        """
-        self.sg = shotgun.Shotgun(URL, SCRIPT_NAME, API_KEY)
-
-        # return sg
-
-    def get_user_by_email(self):
-        """
-        입력된 이메일 정보로 유저 정보 가져오기
-        """
-        filters = [["email", "is", self.user_email]]
-        fields = ["id", "name", "email", "permission_rule_set"]
-        users = self.sg.find("HumanUser", filters=filters, fields=fields)
-        if users:
-            return users[0]
-        else:
-            return users
-    
 
 if __name__ == "__main__":
     app = QApplication()
