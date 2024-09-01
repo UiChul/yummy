@@ -1,10 +1,6 @@
 # MODI
-### making error&pass code when already ver number in it -- 목
 ### render/publish setting in nuke -- 목
-### find maximum version in Local_path -- 금
 ### complete ALL process (open nuke > use ui > shotgrid upload/publish) -- 금
-### 금요일 퇴근전 의철님께 넘기기★
-### 주말 코드 수정/레쥬메/등등
 
 # self
 # return, pass, continue
@@ -12,16 +8,16 @@
 
 try:
     from PySide6.QtWidgets import QApplication, QWidget, QTableWidgetItem
-    from PySide6.QtWidgets import QListWidgetItem, QListWidget, QHBoxLayout
-    from PySide6.QtWidgets import QVBoxLayout, QFileDialog, QMessageBox, QGroupBox
+    from PySide6.QtWidgets import QListWidgetItem, QListWidget, QVBoxLayout
+    from PySide6.QtWidgets import QFileDialog, QMessageBox
     from PySide6.QtUiTools import QUiLoader
     from PySide6.QtCore import QFile, QSize
     from PySide6.QtGui import  Qt, QPixmap, QIcon
 
 except:
     from PySide2.QtWidgets import QApplication, QWidget, QTableWidgetItem
-    from PySide2.QtWidgets import QListWidgetItem, QListWidget, QHBoxLayout
-    from PySide2.QtWidgets import QVBoxLayout, QFileDialog, QMessageBox, QGroupBox
+    from PySide2.QtWidgets import QListWidgetItem, QListWidget, QVBoxLayout
+    from PySide2.QtWidgets import QFileDialog, QMessageBox
     from PySide2.QtUiTools import QUiLoader
     from PySide2.QtCore import QFile, QSize
     from PySide2.QtGui import  Qt, QPixmap, QIcon
@@ -30,10 +26,8 @@ import os
 import re
 import nuke
 import json
-import glob
 import ffmpeg
 import shutil
-# import functools
 
 
 class PathFinder:
@@ -197,21 +191,6 @@ class MainPublish(QWidget):
         self.dev_path = self.work_path.split("work")[0]
         self.exr_folder_path = f"{self.dev_path}exr/"
         self.mov_file_path = f"{self.dev_path}mov/"
-
-    # def test(self):
-
-    #     pattern = "v[0-9][0-9][0-9]"
-    #     search_pattern = os.path.join(os.path.dirname(self.current_nk_file_path), pattern)
-    #     # search_pattern = os.path.join(self.exr_folder_path, pattern)
-    #     # search_pattern = os.path.join(self.mov_file_path, pattern)
-    #     file_paths = glob.glob(search_pattern)
-    #     for i in file_paths:
-    #         print(i)
-    #     #     a = i.split("v")[-1]
-    #     #     b = a.split(".")[0]
-    #     # print(b)
-
-    #     # return file_paths
 
     #===================================================================
 
@@ -386,7 +365,7 @@ class MainPublish(QWidget):
         return origin_local_path
     
     def _get_highest_version_number(self, path, version_pattern):
-
+        
         highest_version = 0
         for filename in os.listdir(path):
             match = version_pattern.search(filename)
@@ -394,12 +373,13 @@ class MainPublish(QWidget):
                 version_number = int(match.group(0)[1:])
                 if version_number > highest_version:
                     highest_version = version_number
+     
         return highest_version
     
     def version_up_in_Local(self):
         """Take the file_path, version it up and Save it"""
 
-        local_paths = self._find_Local_path()
+        local_paths = self._find_Local_path() # nk, mov는 파일까지 포함된 풀패스, exr은 버전폴더까지만
 
         version_pattern = re.compile("v\d{3}")
         
@@ -407,12 +387,14 @@ class MainPublish(QWidget):
         for local_path in local_paths:
             base, ext = os.path.splitext(local_path)
             base_dir = os.path.dirname(local_path)
+            # nk : dev/work/opn_0010_mm_v010.nknc
+            # mov : dev/mov/opn_0010_mm_v010.mov
+            # exr : dev/exr/v010
 
-            highest_version = self._get_highest_version_number(base_dir, version_pattern)
+            highest_version = self._get_highest_version_number(base_dir, version_pattern) # nk, mov는 아이템에서 버전패턴 검색, exr은 폴더에서 버전패턴 검색
             new_version = f"v{highest_version + 1:03}"
 
-            # Create new base path with incremented version
-            new_base = base.replace(version_pattern.search(base).group(0), new_version) if version_pattern.search(base) else f"{base}_{new_version}"
+            new_base = base.replace(version_pattern.search(base).group(0), new_version)
 
             if ext == ".nknc":
                 nk_version_up_path = f"{new_base}{ext}"
@@ -428,44 +410,23 @@ class MainPublish(QWidget):
                 shutil.copy2(local_path, mov_version_up_path)
                 print("mov file이 version-up 되었습니다.")
 
-            elif os.path.isdir(local_path):
-                new_ver_folder = new_base
+            elif os.path.isdir(local_path):      #local_path = 폴더까지 있는 오리진 폴더 경로
+                new_ver_folder = new_base        #버전업된 폴더경로
                 os.makedirs(new_ver_folder, exist_ok=True)
 
                 for exr_file in os.listdir(local_path):
                     current_path = os.path.join(local_path, exr_file)
-                    new_exr_path = os.path.join(new_ver_folder, exr_file)
-                    # print(new_exr_path)
-                    if version_pattern.search(exr_file):
-                        exr_current_version = version_pattern.search(exr_file).group(0)
-                        exr_new_number = int(exr_current_version[1:]) + 1
-                        exr_new_version = f"v{exr_new_number:03}"
-                        new_exr_path = new_exr_path.replace(exr_current_version, exr_new_version)
-                        print(new_exr_path)
-                    
-                    shutil.copy2(current_path, new_exr_path)
-                    new_local_paths.append(new_exr_path)
-                    print(f"exr file이 version-up 되었습니다: {new_exr_path}")
+                    match = version_pattern.search(exr_file)
+                    if match:
+                        current_version_in_file = match.group(0)
+                        print(f"{current_version_in_file}:파일 버전")
+                        new_exr_file = exr_file.replace(current_version_in_file, new_version)
+                        new_exr_path = os.path.join(new_ver_folder, new_exr_file)
+                        
+                        shutil.copy2(current_path, new_exr_path)
+                        new_local_paths.append(new_exr_path)
+                        print(f"exr file이 version-up 되었습니다: {new_exr_path}")
 
-            # else:
-            #     new_ver_folder = new_base
-            #     os.makedirs(new_ver_folder)
-            #     # print(base)
-            #     exr_files = os.listdir(base)
-            #     # print(exr_files)
-            #     for exr_file in exr_files:
-            #         current_path = f"{base}/{exr_file}"
-            #         # print(current_path)
-            #         new_ver_folder_path = f"{new_ver_folder}/{exr_file}"
-            #         # print(new_ver_folder_path)
-            #         match = version_pattern.search(exr_file)
-            #         exr_current_version = match.group(0)
-            #         exr_new_number = int(exr_current_version[1:]) + 1
-            #         exr_new_version = f"v{exr_new_number:03}"   # 현재 버전 번호가 존재하면 버전 번호를 증가
-            #         exr_version_up_path = new_ver_folder_path.replace(exr_current_version, exr_new_version)
-            #         new_local_paths.append(exr_version_up_path)
-            #         # print(exr_version_up_path)
-            #         shutil.copy2(current_path, exr_version_up_path)
         return new_local_paths
 
     def _find_Server_seq_path(self):
@@ -479,7 +440,6 @@ class MainPublish(QWidget):
         # Get the new path
         server_project_path = path_finder.append_project_to_path(start_path)
         server_seq_path = f"{server_project_path}seq/"
-        # print(server_seq_path)
 
         return server_seq_path
     
