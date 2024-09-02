@@ -5,7 +5,7 @@ from PySide6.QtCore import Qt, QSize
 
 import os,sys
 sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
-from loader_ui.main_window_v002_ui import Ui_Form
+from loader_ui.main_window_v003_ui import Ui_Form
 from loader_script.loader_shot import Mainloader
 from loader_script.loader_my_task import My_task
 from loader_script.loader_clip_v002 import Libraryclip
