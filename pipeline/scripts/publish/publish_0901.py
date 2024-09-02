@@ -19,12 +19,15 @@ except:
     from PySide2.QtUiTools import QUiLoader
     from PySide2.QtCore import QFile, QSize
     from PySide2.QtGui import  Qt, QPixmap, QIcon
+    import nuke
+try:
+    import ffmpeg
+except:
+    pass
 
 import os
 import re
-import nuke
 import json
-import ffmpeg
 import shutil
 
 
@@ -60,7 +63,7 @@ class MainPublish(QWidget):
     def __init__(self):
         super().__init__()         
 
-        ui_file_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/publish_ver6.ui"
+        ui_file_path = "/home/rapa/yummy/pipeline/scripts/publish/publish_ver6.ui"
         ui_file = QFile(ui_file_path)
         ui_file.open(QFile.ReadOnly)
         loader = QUiLoader()                                      
@@ -459,10 +462,10 @@ class MainPublish(QWidget):
     def _find_Server_seq_path(self):
         """Find matching folder from Json and make Server path until 'seq' """
 
-        json_file_path = 'C:/home/rapa/YUMMY/pipeline/json/project_data.json'
+        json_file_path = '/home/rapa/YUMMY/pipeline/json/project_data.json'
         path_finder = PathFinder(json_file_path)
 
-        start_path = 'C:/home/rapa/YUMMY/project'
+        start_path = '/home/rapa/YUMMY/project'
 
         # Get the new path
         server_project_path = path_finder.append_project_to_path(start_path)
@@ -778,9 +781,9 @@ class MainPublish(QWidget):
         """set the trashbin_icon"""
 
         if self.ui.pushButton_delete.isChecked():
-            image_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/delete_icon.png"
+            image_path = "/home/rapa/yummy/pipeline/scripts/publish/delete_icon.png"
         else:
-            image_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/delete_icon.png"
+            image_path = "/home/rapa/yummy/pipeline/scripts/publish/delete_icon.png"
 
         # use QPixmap for image load and convert to QIcon
         pixmap = QPixmap(image_path)
@@ -807,6 +810,18 @@ class MainPublish(QWidget):
 
         else:
             print("validate again")
+
+def test_func():
+    from importlib import reload
+    import sys
+    global win
+    sys.path.append("/home/rapa/yummy/pipeline/scripts/publish")
+    import publish_0901
+    reload(publish_0901)
+    print("Hello")
+    win = publish_0901.MainPublish()
+    win.show()
+
 
 
 #===============================================================
