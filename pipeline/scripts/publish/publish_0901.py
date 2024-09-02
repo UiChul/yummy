@@ -52,7 +52,6 @@ class PathFinder:
         project_value = self.json_data[self.key]
         start_path = start_path.rstrip(os.sep)
         new_path = f"{start_path}/{project_value}/"
-        #프로젝트 데이터만 효기님,,,,, 해협
         
         return new_path
 
@@ -75,14 +74,19 @@ class MainPublish(QWidget):
         self.set_delete_icon()
 
         self._collect_path()
+        # self.test()
 
         # Signal
         self.ui.pushButton_add_to_basket.clicked.connect(self.on_add_button_clicked)
+
         self.ui.pushButton_version.clicked.connect(self.copy_to_Server_from_Local)
-        # self.ui.pushButton_publish.clicked.connect(self.)
+        self.ui.pushButton_version.clicked.connect(self.make_message_for_upload)
+
         self.ui.pushButton_publish.clicked.connect(self.copy_to_pub_from_dev_in_Server)
+        self.ui.pushButton_publish.clicked.connect(self.make_message_for_upload)
+        
         self.ui.pushButton_delete.clicked.connect(self.delete_tablewidget_item)
-    
+
     def on_add_button_clicked(self):
         self.add_nk_item_tablewidget_basket()
         self.add_exr_item_tablewidget_basket()
@@ -309,7 +313,6 @@ class MainPublish(QWidget):
             # print(file_validation_info_dict)
             return file_validation_info_dict
     
-
     def _get_mov_validation_info(self, file_path):
 
             file_validation_info_dict = {}
@@ -518,7 +521,6 @@ class MainPublish(QWidget):
 
         return ver_up_server_dev_paths
     
-
     def copy_to_Server_from_Local(self):
 
         QMessageBox.information(self, "Folder Selected", "Please select 'Folder' for exr")
@@ -780,208 +782,230 @@ class MainPublish(QWidget):
         else:
             image_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/delete_icon.png"
 
-        # QPixmap을 사용하여 이미지를 로드하고 QIcon으로 변환
+        # use QPixmap for image load and convert to QIcon
         pixmap = QPixmap(image_path)
 
         button_size = self.ui.pushButton_delete.size()
         scaled_pixmap = pixmap.scaled(button_size, Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
 
-        # QIcon으로 변환 후 버튼 아이콘으로 설정
+        # After converting, set the icon as button
         icon = QIcon(scaled_pixmap)
         self.ui.pushButton_delete.setIcon(icon)
         icon_size = QSize(button_size.width() -12, button_size.height() - 12)
-        self.ui.pushButton_delete.setIconSize(icon_size)  # 아이콘 크기 설정
+        self.ui.pushButton_delete.setIconSize(icon_size)
+
+
+    def make_message_for_upload(self):
+        msg_box = QMessageBox()
+        msg_box.setWindowTitle("Warning")
+        msg_box.setText("notValid in validateForm \n \nDo you still want to proceed?")
+        msg_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msg_box.setIcon(QMessageBox.Warning)
+        result = msg_box.exec()                               
+        if result == QMessageBox.Yes:
+            print("upload")
+
+        else:
+            print("validate again")
+
+
 #===============================================================
-class Data(Set): 
-    def data_sg(self, project_id): 
-        # 프로젝트의 versions 데이터 가져오기
-        Set.connect_sg(self)
-        ver_datas = []
-        if project_id:
-            filters = [["project", "is", {"type": "Project", "id": project_id}]]
-            # filters = (["user", "is", {"type" : "HumanUser", "name" : username}])
-            fields = ["code", "entity", "sg_version_type", "sg_status_list", "user"]
-            versions = self.sg.find("Version", filters=filters, fields=fields)
+# class Data(Set): 
+#     """ shotgrid에 업로드 할 데이터 모으는 클래스"""
 
-            for version in versions:
-                sgdata_version_name = version.get("code", "N/A")                            #이름
-                # sgdata_sg_status = version.get("sg_status_list", "N/A")                   #status   
-                #status : pub이면 손 못대게? 아닌가?
-                sgdata_path = version.get("sg_path", "N/A")                                 #nuke path
-                sgdata_extend = version.get("sg_version_file_type", "N/A")                  #extension
-                sgdata_colorspace = version.get("sg_colorspace_1", "N/A")                   #color space
-                sgdata_nk_version = version.get("sg_nk_version", "N/A")
-                # codecname ; 확인
-                # resolution ; project랑 확인? / 1차로 공란 확인 할 것
-                # frame ; 확인
+#     def data_sg(self, project_id): 
+#         # 프로젝트의 versions 데이터 가져오기
+#         Set.connect_sg(self)
+#         ver_datas = []
+#         if project_id:
+#             filters = [["project", "is", {"type": "Project", "id": project_id}]]
+#             # filters = (["user", "is", {"type" : "HumanUser", "name" : username}])
+#             fields = ["code", "entity", "sg_version_type", "sg_status_list", "user"]
+#             versions = self.sg.find("Version", filters=filters, fields=fields)
 
-                ver_datas.append({
-                    "version_name": sgdata_version_name,
-                    "file_path" : sgdata_path, 
-                    "extend" : sgdata_extend,
-                    "colorspace" : sgdata_colorspace,
-                    "nuke_version": sgdata_nk_version
-                    })
-        print (ver_datas)
-        return ver_datas
+#             for version in versions:
+#                 sgdata_version_name = version.get("code", "N/A")                            #이름
+#                 # sgdata_sg_status = version.get("sg_status_list", "N/A")                   #status   
+#                 #status : pub이면 손 못대게? 아닌가?
+#                 sgdata_path = version.get("sg_path", "N/A")                                 #nuke path
+#                 sgdata_extend = version.get("sg_version_file_type", "N/A")                  #extension
+#                 sgdata_colorspace = version.get("sg_colorspace_1", "N/A")                   #color space
+#                 sgdata_nk_version = version.get("sg_nk_version", "N/A")
+#                 # codecname ; 확인
+#                 # resolution ; project랑 확인? / 1차로 공란 확인 할 것
+#                 # frame ; 확인
+
+#                 ver_datas.append({
+#                     "version_name": sgdata_version_name,
+#                     "file_path" : sgdata_path, 
+#                     "extend" : sgdata_extend,
+#                     "colorspace" : sgdata_colorspace,
+#                     "nuke_version": sgdata_nk_version
+#                     })
+#         print (ver_datas)
+#         return ver_datas
     
-    def data_nk(self):
-        nk_datas = {}
-        root = nuke.root()
-        path = root["name"].value()                     # file path
-        extend = path.split(".")[-1]                    # extendation
-        colorspace = root["colorManagement"].value()    # colorspace
-        nuke_version = nuke.NUKE_VERSION_STRING         # nk version
+#     def data_nk(self):
+#         nk_datas = {}
+#         root = nuke.root()
+#         path = root["name"].value()                     # file path
+#         extend = path.split(".")[-1]                    # extendation
+#         colorspace = root["colorManagement"].value()    # colorspace
+#         nuke_version = nuke.NUKE_VERSION_STRING         # nk version
         
-        nk_datas = {
-            "file_path" : path,
-            "extend" : extend,
-            "colorspace" : colorspace,
-            "nuke_version" : nuke_version
-            }
+#         nk_datas = {
+#             "file_path" : path,
+#             "extend" : extend,
+#             "colorspace" : colorspace,
+#             "nuke_version" : nuke_version
+#             }
 
-        return nk_datas
+#         return nk_datas
 
-    def data_exr_mov(self, file_path):
-        exr_datas = {}
-        mov_datas = {}
-        probe = ffmpeg.probe(file_path)
+#     def data_exr_mov(self, file_path):
+#         exr_datas = {}
+#         mov_datas = {}
+#         probe = ffmpeg.probe(file_path)
 
-        # extract video_stream
-        video_stream = next((stream for stream in probe['streams']if stream['codec_type'] == 'video'),None)
-        codec_name = video_stream['codec_name']
-        colorspace = video_stream.get('color_space', "N/A")
-        width = int(video_stream['width'])
-        height = int(video_stream['height'])
-        # a = video_stream.keys()
-        # print(a)
+#         # extract video_stream
+#         video_stream = next((stream for stream in probe['streams']if stream['codec_type'] == 'video'),None)
+#         codec_name = video_stream['codec_name']
+#         colorspace = video_stream.get('color_space', "N/A")
+#         width = int(video_stream['width'])
+#         height = int(video_stream['height'])
+#         # a = video_stream.keys()
+#         # print(a)
 
-        resolution = f"{width}x{height}"
+#         resolution = f"{width}x{height}"
 
-        if file_path.split(".")[-1] == "mov":
-            frame = int(video_stream['nb_frames'])
+#         if file_path.split(".")[-1] == "mov":
+#             frame = int(video_stream['nb_frames'])
 
-            mov_datas = {
-            "file_path": file_path,
-            "codec_name": codec_name,
-            "colorspace": colorspace,
-            "resolution": resolution,
-            "frame": frame
-            }
+#             mov_datas = {
+#             "file_path": file_path,
+#             "codec_name": codec_name,
+#             "colorspace": colorspace,
+#             "resolution": resolution,
+#             "frame": frame
+#             }
 
-            return mov_datas
+#             return mov_datas
         
-        elif file_path.split(".")[-1] == "exr":
-            frame = 1
-            exr_datas = {
-            "file_path": file_path,
-            "codec_name": codec_name,
-            "colorspace": colorspace,
-            "resolution": resolution,
-            "frame": frame
-            }
-            return exr_datas
-#===============================================================
+#         elif file_path.split(".")[-1] == "exr":
+#             frame = 1
+#             exr_datas = {
+#             "file_path": file_path,
+#             "codec_name": codec_name,
+#             "colorspace": colorspace,
+#             "resolution": resolution,
+#             "frame": frame
+#             }
+#             return exr_datas
+# #===============================================================
 
-class Validate():
-    def val_nk(self, ver, nk): 
-        for k in nk.keys() : 
-            if ver.get(k) == nk.get(k): 
-                pass
-                # return True
-            else : 
-                print(k, "is non valid, check again the values")
-                return False
+# class Validate():
+#     """ validation 비교하는? 클래스"""
+#     def val_nk(self, ver, nk): 
+#         for k in nk.keys() : 
+#             if ver.get(k) == nk.get(k): 
+#                 pass
+#                 # return True
+#             else : 
+#                 print(k, "is non valid, check again the values")
+#                 return False
 
-    def val_exr(self, exr):
-        for k in exr.keys():
-            if exr.get(k):
-                pass
-            else : 
-                print ("value ", k, " in exr is now empty, check again.")
-                return False
+#     def val_exr(self, exr):
+#         for k in exr.keys():
+#             if exr.get(k):
+#                 pass
+#             else : 
+#                 print ("value ", k, " in exr is now empty, check again.")
+#                 return False
 
-    def val_mov(self, mov):
-        for k in mov.keys():
-            if mov.get(k):
-                pass
-            else : 
-                print ("value ", k, " in mov is now empty, check again.")
-                return False
-# nk exr mov all right -> Pub 
-# one wrong -> print wrong
+#     def val_mov(self, mov):
+#         for k in mov.keys():
+#             if mov.get(k):
+#                 pass
+#             else : 
+#                 print ("value ", k, " in mov is now empty, check again.")
+#                 return False
+# # nk exr mov all right -> Pub 
+# # one wrong -> print wrong
 
-class Act(): 
-    def ask(self, bool):
-        QMessageBox.information(self, "Asking", "Wanna Modify?")
-        bool = input("change or force?")    # Qmessage ; 수정할래 force 할래? 
-        return bool 
-        # if 수정 : modify == 1
-        #     return True                   #프로그램 창 닫히도록
-        # else :    force == 0              #force
-        #     return False                  #Pub으로 뜁니다
+# class Act(): 
+#     """ 수정할지 말지 물어보는 클래스 """
+#     def ask(self, bool):
 
-class Pub(): 
-    def server_upload(self):
-        pass
-        """
-        버전 업
-        폴더 이동
-        """
+#         QMessageBox.information(self, "Asking", "Wanna Modify?")
+#         bool = input("change or force?")    # Qmessage ; 수정할래 force 할래? 
+#         return bool 
+#         # if 수정 : modify == 1
+#         #     return True                   #프로그램 창 닫히도록
+#         # else :    force == 0              #force
+#         #     return False                  #Pub으로 뜁니다
 
-    def make_data_upload(self, path):
+# class Pub(): 
+#     """ shotgrid에 업로드하는 클래스"""
+#     def server_upload(self):
+#         pass
+#         """
+#         버전 업
+#         폴더 이동
+#         """
+
+#     def make_data_upload(self, path):
         
-        #썸네일도 업로드 가능하게
-        pass
+#         #썸네일도 업로드 가능하게
+#         pass
 
-    def sg_version_upload(self, sg, data): 
-        upload = sg.create('Version', data)
-        if not upload == 1 :
-            print("version 업로드 되었습니다.")
+#     def sg_version_upload(self, sg, data): 
+#         upload = sg.create('Version', data)
+#         if not upload == 1 :
+#             print("version 업로드 되었습니다.")
 
-    def sg_publish_upload(self): 
-        upload = sg.create('Publish', data)
-        if not upload == 1 :
-            print("publish 업로드 되었습니다.")
+#     def sg_publish_upload(self): 
+#         upload = sg.create('Publish', data)
+#         if not upload == 1 :
+#             print("publish 업로드 되었습니다.")
     
-setting = Set()
-sg = setting.connect_sg()
-# shotgrid_data = shotgrid.get_versions_data(222)
-# shotgrid.save_to_json(shotgrid_data)
+# setting = Set()
+# sg = setting.connect_sg()
+# # shotgrid_data = shotgrid.get_versions_data(222)
+# # shotgrid.save_to_json(shotgrid_data)
 
-data = Data()
-# 222 : project 불러오기 연결      
-dict_ver = data.data_sg(222)
-dict_nk = data.data_nk(222)
-dict_exr = data.data_exr(222)
-dict_mov = data.data_mov(222)
-# exr, mov 파일 따로 나올 수 있도록
+# data = Data()
+# # 222 : project 불러오기 연결      
+# dict_ver = data.data_sg(222)
+# dict_nk = data.data_nk(222)
+# dict_exr = data.data_exr(222)
+# dict_mov = data.data_mov(222)
+# # exr, mov 파일 따로 나올 수 있도록
 
-val = Validate()
-val_nk = val.val_nk(dict_ver, dict_nk)
-val_exr = val.val_exr(dict_exr)
-val_mov = val.val_mov(dict_mov)
+# val = Validate()
+# val_nk = val.val_nk(dict_ver, dict_nk)
+# val_exr = val.val_exr(dict_exr)
+# val_mov = val.val_mov(dict_mov)
 
-pub = Pub()
-if val_nk & val_exr & val_mov :                     #모두 True 일 때 
-    server_upload = pub.server_upload
-    ver_upload = pub.sg_version_upload
-    if button_pub == 1:                             #pub버튼이 눌렸을 때
-        pub_upload = pub.sg_publish_upload
+# pub = Pub()
+# if val_nk & val_exr & val_mov :                     #모두 True 일 때 
+#     server_upload = pub.server_upload
+#     ver_upload = pub.sg_version_upload
+#     if button_pub == 1:                             #pub버튼이 눌렸을 때
+#         pub_upload = pub.sg_publish_upload
 
-else :                                              #False가 하나라도 뜨면
-    act = Act()
-    ask = act.ask
-    if ask == 0:                                    #Pub으로 뜁니다. 
-        if 처음 button_ver == 1 :                    #처음에 version을 눌렀을 경우
-            server_upload = pub.server_upload       #서버랑 버전 업데이트
-            ver_upload = pub.sg_version_upload
-            tmb_upload = pub.sg_thumbnail_upload
-        elif 처음 button_pub == 1:                   #처음에 pub버튼으로 시작했을 경우
-            server_upload = pub.server_upload       #서버, 버전, 퍼블리시 업데이트
-            ver_upload = pub.sg_version_upload
-            pub_upload = pub.sg_publish_upload
-            tmb_upload = pub.sg_thumbnail_upload
+# else :                                              #False가 하나라도 뜨면
+#     act = Act()
+#     ask = act.ask
+#     if ask == 0:                                    #Pub으로 뜁니다. 
+#         if 처음 button_ver == 1 :                    #처음에 version을 눌렀을 경우
+#             server_upload = pub.server_upload       #서버랑 버전 업데이트
+#             ver_upload = pub.sg_version_upload
+#             tmb_upload = pub.sg_thumbnail_upload
+#         elif 처음 button_pub == 1:                   #처음에 pub버튼으로 시작했을 경우
+#             server_upload = pub.server_upload       #서버, 버전, 퍼블리시 업데이트
+#             ver_upload = pub.sg_version_upload
+#             pub_upload = pub.sg_publish_upload
+#             tmb_upload = pub.sg_thumbnail_upload
 
 
 
