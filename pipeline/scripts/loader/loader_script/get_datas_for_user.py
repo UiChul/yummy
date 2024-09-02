@@ -107,9 +107,10 @@ class OpenLoaderData():
                     ["project", "is", {"type": "Project", "id": project_id}],
                     ["entity.Asset.code", "in", asset_names]  # 어셋 이름에 맞는 버전 필터링
                     ]
+            
             fields = ["code", "sg_status_list", "user", "description", "updated_at", "entity"]
             versions = self.sg.find("Version", filters=filters, fields=fields)
-          
+
             for version in versions:
                 code = version.get("code", "N/A")
                 sg_status_list = version.get("sg_status_list", "N/A")
@@ -134,6 +135,7 @@ class OpenLoaderData():
                     "artist": user_name,
                     "linked_asset": linked_asset_name
                 })
+                
         print (asset_ver_datas)
         return asset_ver_datas
 

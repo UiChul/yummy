@@ -21,18 +21,14 @@ class My_task:
         self.ui = Ui_Form
         self.table = self.ui.tableWidget_recent_files
         self.status_table = self.ui.tableWidget_mytask_status
-        # self.set_up()
         
         self.make_json_dic()
         self.set_click_thumbnail_mov()
-        # self.set_recent_file()
         self.set_description_list()
         self.set_status_table()     
         self.set_mytask_table()
         
-        
         self.table.itemClicked.connect(self.check_file_info)
-        
         self.ui.pushButton_mytask_selectedopen.clicked.connect(self.set_open_btn)
         self.ui.pushButton_mytask_newfileopen.clicked.connect(self.set_new_btn)
         
@@ -275,8 +271,8 @@ class My_task:
                 if col == 4:
                     if info == "wip":
                         label = QLabel()
-                        gif_movie = QMovie("/home/rapa/xgen/wip001.gif")
-                        gif_movie.setScaledSize(QSize(120,90))# GIF 파일 경로 설정
+                        gif_movie = QMovie("//home/rapa/YUMMY/pipeline/source/wip001.gif")
+                        gif_movie.setScaledSize(QSize(80,60))# GIF 파일 경로 설정
                         label.setMovie(gif_movie)
                         gif_movie.start() 
                         label.setAlignment(Qt.AlignCenter)
@@ -284,7 +280,7 @@ class My_task:
                         
                     elif info == "pub":
                         label = QLabel()
-                        gif_movie = QMovie("/home/rapa/xgen/pub003.gif")
+                        gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/pub003.gif")
                         gif_movie.setScaledSize(QSize(100,50))# GIF 파일 경로 설정
                         label.setMovie(gif_movie)
                         gif_movie.start() 
@@ -293,7 +289,7 @@ class My_task:
                         
                     elif info == "fin" or info == "sc":
                         label = QLabel()
-                        gif_movie = QMovie("/home/rapa/xgen/pub002.gif")
+                        gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/pub002.gif")
                         gif_movie.setScaledSize(QSize(120,90))# GIF 파일 경로 설정
                         label.setMovie(gif_movie)
                         gif_movie.start() 

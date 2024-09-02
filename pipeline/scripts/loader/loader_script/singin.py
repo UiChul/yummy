@@ -2,11 +2,13 @@ from PySide6.QtCore import Qt,Signal,QSize
 from PySide6.QtCore import QObject,QThread,QTimer
 from PySide6.QtWidgets import QWidget,QApplication,QMessageBox
 from PySide6.QtGui import QMovie,QGuiApplication
+from PySide6.QtGui import QPalette,QColor
 from shotgun_api3 import shotgun
-
 import json
 import sys
+
 sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
+
 from loader_ui.singin_window_ui import Ui_Form
 from loader_script.get_datas_for_login import Signinfo
 from loader_script.get_datas_for_user import OpenLoaderData
@@ -226,13 +228,30 @@ class Signin(QWidget):
         
         self.gif_index = (self.gif_index + 1) % len(self.gif_paths)
            
+    def find_project_info(self,project):
+        with open("/home/rapa/yummy/pipeline/json/login_user_data.json","rt",encoding="utf-8") as r:
+            user_dic = json.load(r)
+            
+            project_id = ""
+            resolution_width  =  ""
+            resolution_height =  ""
+        
+            for project_info in user_dic["projects"]:
+                if project == project_info["name"]:
+                    project_id = project_info["id"]
+                    resolution_width = project_info["resolution_width"]
+                    resolution_height = project_info["resolution_height"]
+                    
+        return project_id,resolution_width,resolution_height
+    
     def connect_loader(self):
         project = self.ui.comboBox_project_name.currentText()
         
         if project == "-":
             return
+        project_id,resolution_width,resolution_height = self.find_project_info(project)
         
-        info = {"project" : project , "name" : self.user_name,"rank": self.rank}
+        info = {"project" : project ,"project_id" : project_id ,"name" : self.user_name,"rank": self.rank, "resolution_width" : resolution_width, "resolution_height":resolution_height}
         from loader_script.loader_merge import Merge
         self.load = Merge(info)
         self.load.show()       
@@ -254,12 +273,37 @@ class Signin(QWidget):
         # 최종적으로 계산된 좌표로 창 이동
         self.move(adjusted_position)
 
+    def get_darkModePalette(self) :
+        darkPalette = self.palette()
+        darkPalette.setColor( QPalette.Window, QColor( 53, 53, 53 ) )
+        darkPalette.setColor( QPalette.WindowText, QColor(211, 215, 207))
+        darkPalette.setColor( QPalette.Disabled, QPalette.WindowText, QColor( 127, 127, 127 ) )
+        darkPalette.setColor( QPalette.Base, QColor( 42, 42, 42 ) )
+        darkPalette.setColor( QPalette.AlternateBase, QColor( 66, 66, 66 ) )
+        darkPalette.setColor( QPalette.ToolTipBase, QColor( 53, 53, 53 ) )
+        darkPalette.setColor( QPalette.ToolTipText, QColor(211, 215, 207) )
+        darkPalette.setColor( QPalette.Text, QColor(211, 215, 207) )
+        darkPalette.setColor( QPalette.Disabled, QPalette.Text, QColor( 127, 127, 127 ) )
+        darkPalette.setColor( QPalette.Dark, QColor( 35, 35, 35 ) )
+        darkPalette.setColor( QPalette.Shadow, QColor( 20, 20, 20 ) )
+        darkPalette.setColor( QPalette.Button, QColor( 53, 53, 53 ) )
+        darkPalette.setColor( QPalette.ButtonText, QColor(211, 215, 207) )
+        darkPalette.setColor( QPalette.Disabled, QPalette.ButtonText, QColor( 127, 127, 127 ) )
+        darkPalette.setColor( QPalette.BrightText, Qt.red )
+        darkPalette.setColor( QPalette.Link, QColor( 42, 130, 218 ) )
+        darkPalette.setColor( QPalette.Highlight, QColor( 42, 130, 218 ) )
+        darkPalette.setColor( QPalette.Disabled, QPalette.Highlight, QColor( 80, 80, 80 ) )
+        darkPalette.setColor( QPalette.HighlightedText, QColor(211, 215, 207) )
+        darkPalette.setColor( QPalette.Disabled, QPalette.HighlightedText, QColor( 127, 127, 127 ), )
+        return darkPalette
+
     def set_up(self):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.center_window()
         self.ui.comboBox_project_name.setVisible(False)
         self.ui.label_2.setVisible(False)
+        self.setPalette(self.get_darkModePalette())
 
 if __name__ == "__main__":
     app = QApplication()

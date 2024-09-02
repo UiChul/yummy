@@ -141,7 +141,7 @@ class Mainloader:
             parent_item = QTreeWidgetItem(self.shot_treeWidget)
             if shot_code in task_shot_code:
                 parent_item.setText(0, shot_code)
-                parent_item.setForeground(0,QColor("Green"))
+                parent_item.setForeground(0,QColor(0,251,236))
                 
                 task_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{seq}/{shot_code}"
                 tasks = os.listdir(task_path)
@@ -156,7 +156,7 @@ class Mainloader:
                     task_item = QTreeWidgetItem(parent_item)
                     if task in my_task:
                         task_item.setText(0,task)
-                        task_item.setForeground(0,QColor("Green"))
+                        task_item.setForeground(0,QColor(0,251,236))
                         my_task_dict = {}
                         my_task_dict[task] = shot_code
                         self.my_dev_list.append(my_task_dict)
@@ -165,7 +165,7 @@ class Mainloader:
                         pub_list = os.listdir(f"{task_path}/{task}/pub/work")
                         if pub_list:
                             task_item.setText(0,task)
-                            task_item.setForeground(0,QColor("YellowGreen"))
+                            task_item.setForeground(0,QColor("Skyblue"))
                            
                         else:
                             task_item.setText(0,task)
@@ -182,8 +182,8 @@ class Mainloader:
                     pub_list = os.listdir(f"{task_path}/{task}/pub/work")
                     if pub_list:
                         task_item.setText(0,task)
-                        task_item.setForeground(0,QColor("Blue"))
-                        parent_item.setForeground(0,QColor("Blue"))
+                        task_item.setForeground(0,QColor(122, 181, 181))
+                        parent_item.setForeground(0,QColor(122, 181, 181))
                     else:
                         task_item.setText(0,task)
                         task_item.setForeground(0,QColor("lightgray"))
@@ -341,7 +341,7 @@ class Mainloader:
             layout = QVBoxLayout()
 
             label_img = QLabel()
-            pixmap = QPixmap("/home/rapa/xgen/images1.png")
+            pixmap = QPixmap("/home/rapa/YUMMY/pipeline/source/images1.png")
             label_img.setPixmap(pixmap) 
             label_img.setAlignment(Qt.AlignCenter)
             label_img.setScaledContents(True)
@@ -349,7 +349,7 @@ class Mainloader:
             label_text = QLabel()
             label_text.setText(work)
             label_text.setAlignment(Qt.AlignCenter)
-            label_text.setStyleSheet(''' font-size: 11px; ''')
+            label_text.setStyleSheet('font-size: 11px;color:rgb(211, 215, 207);')
             label_text.setWordWrap(True)
             
             layout.addWidget(label_img)
@@ -463,7 +463,8 @@ class Mainloader:
             label_text = QLabel()
             label_text.setText(exr)
             label_text.setAlignment(Qt.AlignCenter)
-            label_text.setStyleSheet(''' font-size: 11px; ''')
+            label_text.setStyleSheet('font-size: 11px;color:rgb(211, 215, 207);')
+            # label_text.setStyleSheet('color:rgb(211, 215, 207);')
             label_text.setWordWrap(True)
             
             layout.addWidget(label_img)
@@ -572,7 +573,7 @@ class Mainloader:
             label_text = QLabel()
             label_text.setText(mov)
             label_text.setAlignment(Qt.AlignCenter)
-            label_text.setStyleSheet(''' font-size: 11px; ''')
+            label_text.setStyleSheet('font-size: 11px; color:rgb(211, 215, 207);')
             label_text.setWordWrap(True)
             
             layout.addWidget(label_img)
@@ -782,7 +783,6 @@ class Mainloader:
         """
         shot_tableWidget에서 클릭한 파일 path 획득
         """
-        
         front_path = self.ui.label_shot_filepath.text()
         split_front_path = front_path.split("  ")[1]
          
@@ -873,7 +873,7 @@ class Mainloader:
     def set_status_table_list(self):
         tablename = ["ani","cmp","lgt","mm","ly"]
         self.task_table_widget = [getattr(self.ui, f"tableWidget_shot_{task}") for task in tablename]
-        self.sort_status_task()
+        # self.sort_status_task()
         
     def sort_status_task(self):
         user_dic = self.open_loader_json()
@@ -898,6 +898,8 @@ class Mainloader:
                 self.status_dic[task].append(shot_dic)
         
     def get_task_tab_name(self,tabindex):
+        self.sort_status_task()
+        
         if tabindex == 0 :
             self.st_tab_name = "ani"
             task_table = self.task_table_widget[0]
@@ -966,7 +968,7 @@ class Mainloader:
                         # pixmap = QPixmap("/home/rapa/xgen/wip.png")
                         # scaled_pixmap = pixmap.scaled(20,20)
                         # label.setPixmap(scaled_pixmap)
-                        gif_movie = QMovie("/home/rapa/xgen/wip001.gif")
+                        gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/wip001.gif")
                         gif_movie.setScaledSize(QSize(80,60))# GIF 파일 경로 설정
                         label.setMovie(gif_movie)
                         gif_movie.start() 
@@ -978,7 +980,7 @@ class Mainloader:
                         # pixmap = QPixmap("/home/rapa/xgen/wip.png")
                         # scaled_pixmap = pixmap.scaled(20,20)
                         # label.setPixmap(scaled_pixmap)
-                        gif_movie = QMovie("/home/rapa/xgen/pub003.gif")
+                        gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/pub003.gif")
                         gif_movie.setScaledSize(QSize(100,50))# GIF 파일 경로 설정
                         label.setMovie(gif_movie)
                         gif_movie.start() 
@@ -987,7 +989,7 @@ class Mainloader:
                         
                     elif info == "fin" or info == "sc":
                         label = QLabel()
-                        gif_movie = QMovie("/home/rapa/xgen/pub002.gif")
+                        gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/pub002.gif")
                         gif_movie.setScaledSize(QSize(120,90))# GIF 파일 경로 설정
                         label.setMovie(gif_movie)
                         gif_movie.start() 

@@ -23,8 +23,10 @@ except ImportError:
     nuke = None 
 
 class DraggableWidget(QWidget):
+    
     widgetClicked = Signal(str, str)
     buttonClicked  = Signal(str)
+    
     def __init__(self, file_path, image_path, *args, **kwargs):
         super().__init__(*args, **kwargs)
         

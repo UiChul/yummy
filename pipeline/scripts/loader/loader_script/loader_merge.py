@@ -56,7 +56,6 @@ class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libra
         self.move(adjusted_position)
 
     def get_darkModePalette(self) :
-
         darkPalette = self.palette()
         darkPalette.setColor( QPalette.Window, QColor( 53, 53, 53 ) )
         darkPalette.setColor( QPalette.WindowText, QColor(211, 215, 207))
@@ -78,10 +77,8 @@ class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libra
         darkPalette.setColor( QPalette.Disabled, QPalette.Highlight, QColor( 80, 80, 80 ) )
         darkPalette.setColor( QPalette.HighlightedText, QColor(211, 215, 207) )
         darkPalette.setColor( QPalette.Disabled, QPalette.HighlightedText, QColor( 127, 127, 127 ), )
-
         return darkPalette
     
-
     def set_up(self):
         self.ui = Ui_Form()
         self.ui.setupUi(self)

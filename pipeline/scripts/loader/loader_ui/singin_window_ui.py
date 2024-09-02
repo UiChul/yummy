@@ -24,7 +24,7 @@ class Ui_Form(object):
         if not Form.objectName():
             Form.setObjectName(u"Form")
         Form.resize(363, 227)
-        Form.setStyleSheet(u"background-color: rgb(46, 52, 54);")
+        Form.setStyleSheet(u"")
         self.stackedWidget = QStackedWidget(Form)
         self.stackedWidget.setObjectName(u"stackedWidget")
         self.stackedWidget.setGeometry(QRect(10, 10, 341, 201))
@@ -43,32 +43,32 @@ class Ui_Form(object):
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.label = QLabel(self.gridLayoutWidget)
         self.label.setObjectName(u"label")
-        self.label.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.label.setStyleSheet(u"")
 
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
 
         self.lineEdit_email = QLineEdit(self.gridLayoutWidget)
         self.lineEdit_email.setObjectName(u"lineEdit_email")
-        self.lineEdit_email.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.lineEdit_email.setStyleSheet(u"")
 
         self.gridLayout.addWidget(self.lineEdit_email, 0, 1, 1, 1)
 
         self.label_2 = QLabel(self.gridLayoutWidget)
         self.label_2.setObjectName(u"label_2")
-        self.label_2.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.label_2.setStyleSheet(u"")
 
         self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
 
         self.comboBox_project_name = QComboBox(self.gridLayoutWidget)
         self.comboBox_project_name.setObjectName(u"comboBox_project_name")
-        self.comboBox_project_name.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.comboBox_project_name.setStyleSheet(u"")
 
         self.gridLayout.addWidget(self.comboBox_project_name, 1, 1, 1, 1)
 
         self.label_3 = QLabel(self.frame)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setGeometry(QRect(110, 20, 91, 41))
-        self.label_3.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.label_3.setStyleSheet(u"")
         self.label_3.setTextFormat(Qt.AutoText)
         self.stackedWidget.addWidget(self.page)
         self.page_2 = QWidget()

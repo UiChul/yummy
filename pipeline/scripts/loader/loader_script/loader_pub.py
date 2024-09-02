@@ -110,7 +110,9 @@ class Loader_pub:
             img_path = nuke_name.split("_")
             
             open_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/"
+            
             w,h,frame = find_resolution_frame(open_path+"mov"+f"/{nuke_name}.mov")
+            print(open_path+"mov"+f"/{nuke_name}.mov")
             if ext == ".nknc":
                 nuke_path = open_path + f"work/{pub_name}"
                 size,time=File_data.file_info(nuke_path)

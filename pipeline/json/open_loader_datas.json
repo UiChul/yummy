@@ -392,27 +392,27 @@
             "version_id": 7302,
             "version_type": "mov",
             "description": "test",
-            "sg_status_list": "wip",
+            "sg_status_list": "fin",
             "artist": "지연 이",
-            "updated_at": "2024-08-28 10:34:39"
+            "updated_at": "2024-09-02 12:15:42"
         },
         {
             "version_code": "PKG_030_mm_v002",
             "version_id": 7303,
             "version_type": null,
             "description": "test",
-            "sg_status_list": "pub",
+            "sg_status_list": "fin",
             "artist": "지연 이",
-            "updated_at": "2024-08-28 11:56:55"
+            "updated_at": "2024-09-02 12:15:41"
         },
         {
             "version_code": "PKG_030_mm_v003",
             "version_id": 7304,
             "version_type": null,
             "description": "test",
-            "sg_status_list": "fin",
+            "sg_status_list": "sc",
             "artist": "지연 이",
-            "updated_at": "2024-08-28 10:38:28"
+            "updated_at": "2024-09-02 12:15:37"
         },
         {
             "version_code": "BRK_010_lgt_v001",
@@ -701,6 +701,24 @@
             "sg_status_list": null,
             "artist": "수연 박",
             "updated_at": "2024-08-30 15:22:10"
+        },
+        {
+            "version_code": "BRK_020_ani_v002",
+            "version_id": 8488,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "pub",
+            "artist": "hyogi lee",
+            "updated_at": "2024-09-02 11:41:53"
+        },
+        {
+            "version_code": "BRK_020_ani_v003",
+            "version_id": 8491,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "hyogi lee",
+            "updated_at": "2024-09-02 15:44:55"
         }
     ]
 }

@@ -341,7 +341,7 @@ class Ui_Form(object):
         font8.setPointSize(10)
         font8.setBold(True)
         self.tableWidget_recent_files.setFont(font8)
-        self.tableWidget_recent_files.horizontalHeader().setVisible(False)
+        self.tableWidget_recent_files.horizontalHeader().setVisible(True)
         self.tableWidget_recent_files.verticalHeader().setVisible(False)
         self.groupBox_shot_comment_3 = QGroupBox(self.tab_my_task)
         self.groupBox_shot_comment_3.setObjectName(u"groupBox_shot_comment_3")
@@ -981,7 +981,7 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
 
-        self.tabWidget_all.setCurrentIndex(2)
+        self.tabWidget_all.setCurrentIndex(1)
         self.tabWidget_shot_task.setCurrentIndex(0)
         self.tabWidget_shot_status.setCurrentIndex(2)
         self.tabWidget_template.setCurrentIndex(0)
