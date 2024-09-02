@@ -1,9 +1,7 @@
 # MODI
-### render/publish setting in nuke -- 목
-### complete ALL process (open nuke > use ui > shotgrid upload/publish) -- 금
+### render/publish setting in nuke
+### complete ALL process (open nuke > use ui > shotgrid upload/publish)
 
-# self
-# return, pass, continue
 
 
 try:
@@ -749,9 +747,9 @@ class MainPublish(QWidget):
         """set the trashbin_icon"""
 
         if self.ui.pushButton_delete.isChecked():
-            image_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/delete_icon2.png"
+            image_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/delete_icon.png"
         else:
-            image_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/delete_icon2.png"
+            image_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/delete_icon.png"
 
         # QPixmap을 사용하여 이미지를 로드하고 QIcon으로 변환
         pixmap = QPixmap(image_path)
