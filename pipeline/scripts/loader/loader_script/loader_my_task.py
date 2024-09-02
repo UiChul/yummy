@@ -29,6 +29,7 @@ class My_task:
         self.set_mytask_table()
         
         self.table.itemClicked.connect(self.check_file_info)
+        self.status_table.itemDoubleClicked.connect(self.set_status_vlc)
         self.ui.pushButton_mytask_selectedopen.clicked.connect(self.set_open_btn)
         self.ui.pushButton_mytask_newfileopen.clicked.connect(self.set_new_btn)
         
@@ -40,6 +41,22 @@ class My_task:
         self.user    = info["name"]
         self.rank    = info["rank"]
         self.resolution = info["resolution"]
+        
+    def set_status_vlc(self,item):
+        index = item.row()
+        file_info = []
+        for col in range(1,4):
+            info = self.status_table.item(index,col)
+            file_info.append(info.text())
+            
+        shot_code = file_info[0].split("_")[0]
+        
+        mov_name = "_".join(file_info)
+        vlc_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{shot_code}/{file_info[0]}/{file_info[1]}/dev/mov/{mov_name}.mov"
+        
+        subprocess.Popen(f"vlc --repeat {vlc_path}", shell=True,executable="/bin/bash")
+        
+        
         
     def check_file_info(self,item):
         
