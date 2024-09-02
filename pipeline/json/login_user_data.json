@@ -1,9 +1,28 @@
 {
-    "user_id": 93,
-    "name": "UICHUL SHIN",
-    "email": "suc708@naver.com",
+    "user_id": 102,
+    "name": "hyogi lee",
+    "email": "dlgyrl5759@gmail.com",
     "permission_group": "Admin",
     "projects": [
+        {
+            "id": 122,
+            "name": "Marvelous",
+            "resolution_width": "1920",
+            "resolution_height": "1080",
+            "status": "Active",
+            "shot_code": {
+                "hyo_020": {
+                    "steps": [
+                        "cmp"
+                    ]
+                },
+                "hyo_010": {
+                    "steps": [
+                        "lgt"
+                    ]
+                }
+            }
+        },
         {
             "id": 192,
             "name": "Yummy",
@@ -13,7 +32,67 @@
             "shot_code": {
                 "Dogs": {
                     "steps": [
-                        "mod"
+                        "rig",
+                        "lkd"
+                    ]
+                }
+            }
+        },
+        {
+            "id": 254,
+            "name": "Test_phoenix",
+            "resolution_width": "1080",
+            "resolution_height": "1920",
+            "status": null,
+            "shot_code": {
+                "SHOT_500": {
+                    "steps": [
+                        "lgt"
+                    ]
+                },
+                "SHOT_1200": {
+                    "steps": [
+                        "lgt"
+                    ]
+                },
+                "OPN_100": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "OPN_200": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "OPN_300": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "OPN_400": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "OPN_500": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "END_100": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "END_200": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "END_300": {
+                    "steps": [
+                        "mm"
                     ]
                 }
             }
@@ -25,54 +104,148 @@
             "resolution_height": "1080",
             "status": "Active",
             "shot_code": {
-                "INS_020": {
-                    "steps": [
-                        "lgt"
-                    ]
-                },
-                "INS_010": {
-                    "steps": [
-                        "lgt"
-                    ]
-                },
                 "BRK_010": {
                     "steps": [
-                        "lgt"
+                        "ani"
                     ]
                 },
                 "BRK_020": {
                     "steps": [
-                        "lgt"
-                    ]
-                },
-                "FLB_010": {
-                    "steps": [
-                        "lgt"
+                        "ani"
                     ]
                 },
                 "FLB_020": {
                     "steps": [
-                        "lgt"
+                        "ani"
+                    ]
+                },
+                "FLB_010": {
+                    "steps": [
+                        "ani"
+                    ]
+                },
+                "INS_010": {
+                    "steps": [
+                        "ani"
+                    ]
+                },
+                "INS_020": {
+                    "steps": [
+                        "ani"
                     ]
                 },
                 "PKG_010": {
                     "steps": [
-                        "lgt"
+                        "ani"
                     ]
                 },
                 "PKG_020": {
                     "steps": [
-                        "lgt"
+                        "ani"
                     ]
                 },
                 "PKG_030": {
                     "steps": [
-                        "lgt"
+                        "ani"
                     ]
                 },
-                "FNL_010": {
+                "Unknown Entity": {
                     "steps": [
-                        "lgt"
+                        "mm"
+                    ]
+                }
+            }
+        },
+        {
+            "id": 188,
+            "name": "Moomins",
+            "resolution_width": "1920",
+            "resolution_height": "1080",
+            "status": "Active",
+            "shot_code": {
+                "AFT_0010": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "BRK_0010": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "BRK_0020": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "FIN_0010": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "FIN_0020": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "KLL_0010": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "KLL_0020": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "MAD_0010": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "MSK_0010": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "OPN_0010": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "OPN_0020": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "OPN_0030": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "RST_0010": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "RVL_0010": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "STG_0010": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "STG_0020": {
+                    "steps": [
+                        "mm"
+                    ]
+                },
+                "TRS_0010": {
+                    "steps": [
+                        "mm"
                     ]
                 }
             }

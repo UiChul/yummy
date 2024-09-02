@@ -81,14 +81,14 @@ class Signin(QWidget):
     def put_loader_gif(self):
         self.gif_index = 0  # 현재 재생 중인 GIF 인덱스
         self.gif_paths = [  # 변경할 GIF 경로 목록
-            "/home/rapa/xgen/run001.gif",
-            "/home/rapa/xgen/run002.gif",
-            "/home/rapa/xgen/run003.gif",
-            "/home/rapa/xgen/run004.gif"
+            "/home/rapa/YUMMY/pipeline/source/run001.gif",
+            "/home/rapa/YUMMY/pipeline/source/run002.gif",
+            "/home/rapa/YUMMY/pipeline/source/run003.gif",
+            "/home/rapa/YUMMY/pipeline/source/run004.gif"
         ]
     
     def set_first_login_gif(self):
-        gif_movie = QMovie("/home/rapa/xgen/run003.gif")
+        gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/run003.gif")
         gif_movie.setScaledSize(QSize(150,150))
         self.ui.label_qmovie.setMovie(gif_movie)
         gif_movie.start()
@@ -130,7 +130,7 @@ class Signin(QWidget):
      
     def connect_shotgird_finished(self,user):
         if not user:
-            gif_movie = QMovie("/home/rapa/xgen/slip001.gif")
+            gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/slip001.gif")
             gif_movie.setScaledSize(QSize(150,150))
             self.ui.label_qmovie.setMovie(gif_movie)
             gif_movie.start()
@@ -144,10 +144,12 @@ class Signin(QWidget):
         self.set_first_login_gif()
         self.ui.stackedWidget.setCurrentIndex(1) 
         user_email = self.ui.lineEdit_email.text()
+
         self.worker = Sg_json(user_email)
         self.thread_json = QThread()
         self.worker.moveToThread(self.thread_json)
         self.thread_json.started.connect(self.worker.open_project_login)
+        
         self.worker.finished.connect(self.make_user_finished)
         self.worker.finished.connect(self.thread_json.quit)
         self.worker.finished.connect(self.worker.deleteLater)

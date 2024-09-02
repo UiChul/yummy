@@ -275,7 +275,7 @@ class My_task:
                 if col == 4:
                     if info == "wip":
                         label = QLabel()
-                        gif_movie = QMovie("/home/rapa/xgen/wip001.gif")
+                        gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/wip001.gif")
                         gif_movie.setScaledSize(QSize(120,90))# GIF 파일 경로 설정
                         label.setMovie(gif_movie)
                         gif_movie.start() 
@@ -284,7 +284,7 @@ class My_task:
                         
                     elif info == "pub":
                         label = QLabel()
-                        gif_movie = QMovie("/home/rapa/xgen/pub003.gif")
+                        gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/pub003.gif")
                         gif_movie.setScaledSize(QSize(100,50))# GIF 파일 경로 설정
                         label.setMovie(gif_movie)
                         gif_movie.start() 
@@ -293,7 +293,7 @@ class My_task:
                         
                     elif info == "fin" or info == "sc":
                         label = QLabel()
-                        gif_movie = QMovie("/home/rapa/xgen/pub002.gif")
+                        gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/pub002.gif")
                         gif_movie.setScaledSize(QSize(120,90))# GIF 파일 경로 설정
                         label.setMovie(gif_movie)
                         gif_movie.start() 

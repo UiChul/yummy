@@ -12,8 +12,10 @@ from loader_script.loader_clip_v002 import Libraryclip
 from loader_script.loader_asset import Libraryasset
 from loader_module.project_data import project_data
 from loader_script.loader_pub import Loader_pub
+import subprocess
 import json
-
+import threading
+from monitor_daemon import MonitorDaemon
 # class Merge(QWidget,Mainloader,project_data,Loader_pub):
 class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libraryasset):
     def __init__(self,info):
@@ -27,6 +29,11 @@ class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libra
         self.write_project_json(info)
         
         self.connect_script()
+
+        monitor_script = "/home/rapa/yummy/pipeline/scripts/loader/loader_script/status_monitor.py"
+        log_file = "/home/rapa/yummy/pipeline/scripts/loader/monitor_log.txt"
+        self.status_monitor = MonitorDaemon(monitor_script, log_file)
+        self.status_monitor.start_monitoring()
         
     def set_main_loader(self,info):
         
@@ -81,6 +88,8 @@ class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libra
 
         return darkPalette
     
+    def pass_handle(self):
+        pass
 
     def set_up(self):
         self.ui = Ui_Form()
@@ -93,6 +102,7 @@ class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libra
         My_task.__init__(self,self.ui)
         Loader_pub.__init__(self,self.ui)
         Mainloader.__init__(self,self.ui)
+
 
 info = {"project": "YUMMIE", "name": "UICHUL SHIN", "rank": "Admin"}
 

@@ -341,7 +341,7 @@ class Mainloader:
             layout = QVBoxLayout()
 
             label_img = QLabel()
-            pixmap = QPixmap("/home/rapa/xgen/images1.png")
+            pixmap = QPixmap("/home/rapa/YUMMY/pipeline/source/images1.png")
             label_img.setPixmap(pixmap) 
             label_img.setAlignment(Qt.AlignCenter)
             label_img.setScaledContents(True)
@@ -898,6 +898,7 @@ class Mainloader:
                 self.status_dic[task].append(shot_dic)
         
     def get_task_tab_name(self,tabindex):
+        self.sort_status_task()
         if tabindex == 0 :
             self.st_tab_name = "ani"
             task_table = self.task_table_widget[0]
@@ -963,10 +964,10 @@ class Mainloader:
                 if col == 3:
                     if info == "wip":
                         label = QLabel()
-                        # pixmap = QPixmap("/home/rapa/xgen/wip.png")
+                        # pixmap = QPixmap("/home/rapa/YUMMY/pipeline/source/wip.png")
                         # scaled_pixmap = pixmap.scaled(20,20)
                         # label.setPixmap(scaled_pixmap)
-                        gif_movie = QMovie("/home/rapa/xgen/wip001.gif")
+                        gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/wip001.gif")
                         gif_movie.setScaledSize(QSize(80,60))# GIF 파일 경로 설정
                         label.setMovie(gif_movie)
                         gif_movie.start() 
@@ -975,10 +976,10 @@ class Mainloader:
                         
                     elif info == "pub":
                         label = QLabel()
-                        # pixmap = QPixmap("/home/rapa/xgen/wip.png")
+                        # pixmap = QPixmap("/home/rapa/YUMMY/pipeline/source/wip.png")
                         # scaled_pixmap = pixmap.scaled(20,20)
                         # label.setPixmap(scaled_pixmap)
-                        gif_movie = QMovie("/home/rapa/xgen/pub003.gif")
+                        gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/pub003.gif")
                         gif_movie.setScaledSize(QSize(100,50))# GIF 파일 경로 설정
                         label.setMovie(gif_movie)
                         gif_movie.start() 
@@ -987,7 +988,7 @@ class Mainloader:
                         
                     elif info == "fin" or info == "sc":
                         label = QLabel()
-                        gif_movie = QMovie("/home/rapa/xgen/pub002.gif")
+                        gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/pub002.gif")
                         gif_movie.setScaledSize(QSize(120,90))# GIF 파일 경로 설정
                         label.setMovie(gif_movie)
                         gif_movie.start() 

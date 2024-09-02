@@ -83,9 +83,9 @@ class DraggableWidget(QWidget):
 
         # 이미지 경로 설정
         if self.button.isChecked():
-            image_path = "/home/rapa/xgen/selected.png"
+            image_path = "/home/rapa/YUMMY/pipeline/source/selected.png"
         else:
-            image_path = "/home/rapa/xgen/unselected.png"
+            image_path = "/home/rapa/YUMMY/pipeline/source/unselected.png"
 
         # QPixmap을 사용하여 이미지를 로드하고 QIcon으로 변환
         pixmap = QPixmap(image_path)
@@ -459,7 +459,7 @@ class LibraryLoader(QWidget):
 
 
         # 이미지 경로 설정
-        image_path = "/home/rapa/xgen/reset.png"
+        image_path = "/home/rapa/YUMMY/pipeline/source/reset.png"
 
         # QPixmap을 사용하여 이미지를 로드하고 QIcon으로 변환
         pixmap = QPixmap(image_path)

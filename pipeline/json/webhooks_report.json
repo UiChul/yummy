@@ -1,0 +1,1628 @@
+[
+    {
+        "data": {
+            "id": "9544.1101.0",
+            "event_log_entry_id": 517486,
+            "event_type": "Shotgun_Version_Retirement",
+            "operation": "delete",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8478
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "entity_type": "Version",
+                "class_name": "Version",
+                "entity_id": 8478,
+                "id": 8478,
+                "type": "entity_retirement",
+                "retirement_date": "2024-09-02 01:03:15 UTC",
+                "display_name": "PKG_030_mm_v005"
+            },
+            "created_at": "2024-09-02 01:03:15.204783",
+            "attribute_name": null,
+            "session_uuid": null,
+            "delivery_id": "bc3b8ec1-291e-4360-8577-bcdfc1cb8b9f"
+        },
+        "timestamp": "2024-09-02T01:03:16Z"
+    },
+    {
+        "data": {
+            "id": "9550.1102.0",
+            "event_log_entry_id": 517495,
+            "event_type": "Shotgun_Task_New",
+            "operation": "create",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Task",
+                "id": 7312
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "new_entity",
+                "entity_type": "Task",
+                "entity_id": 7312
+            },
+            "created_at": "2024-09-02 01:06:53.487043",
+            "attribute_name": null,
+            "session_uuid": "6a3b1718-68c7-11ef-9cfb-0a58a9feac02",
+            "delivery_id": "9b708f12-47c9-42b1-94e3-376f92a18402"
+        },
+        "timestamp": "2024-09-02T01:06:55Z"
+    },
+    {
+        "data": {
+            "id": "9554.1103.0",
+            "event_log_entry_id": 517524,
+            "event_type": "Shotgun_Task_Retirement",
+            "operation": "delete",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Task",
+                "id": 7312
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "entity_type": "Task",
+                "class_name": "Task",
+                "entity_id": 7312,
+                "id": 7312,
+                "type": "entity_retirement",
+                "retirement_date": "2024-09-02 01:13:45 UTC",
+                "display_name": "test"
+            },
+            "created_at": "2024-09-02 01:13:45.09313",
+            "attribute_name": null,
+            "session_uuid": null,
+            "delivery_id": "15ed474a-00a1-400f-814a-30ae1a1af076"
+        },
+        "timestamp": "2024-09-02T01:13:47Z"
+    },
+    {
+        "data": {
+            "id": "9556.1104.0",
+            "event_log_entry_id": 517527,
+            "event_type": "Shotgun_Task_New",
+            "operation": "create",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Task",
+                "id": 7313
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "new_entity",
+                "entity_type": "Task",
+                "entity_id": 7313
+            },
+            "created_at": "2024-09-02 01:19:25.227255",
+            "attribute_name": null,
+            "session_uuid": "024c2c22-68c8-11ef-93c9-0a58a9feac02",
+            "delivery_id": "120273f8-6795-4f26-9b28-9f609cb7b0f7"
+        },
+        "timestamp": "2024-09-02T01:19:26Z"
+    },
+    {
+        "data": {
+            "id": "9562.1105.0",
+            "event_log_entry_id": 517549,
+            "event_type": "Shotgun_Task_Retirement",
+            "operation": "delete",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Task",
+                "id": 7313
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "entity_type": "Task",
+                "class_name": "Task",
+                "entity_id": 7313,
+                "id": 7313,
+                "type": "entity_retirement",
+                "retirement_date": "2024-09-02 01:21:23 UTC",
+                "display_name": "test"
+            },
+            "created_at": "2024-09-02 01:21:23.232047",
+            "attribute_name": null,
+            "session_uuid": null,
+            "delivery_id": "c891e6fe-9395-47af-82e5-8f04b1ab6a3d"
+        },
+        "timestamp": "2024-09-02T01:21:25Z"
+    },
+    {
+        "data": {
+            "id": "9563.1106.0",
+            "event_log_entry_id": 517550,
+            "event_type": "Shotgun_Task_New",
+            "operation": "create",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Task",
+                "id": 7314
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "new_entity",
+                "entity_type": "Task",
+                "entity_id": 7314
+            },
+            "created_at": "2024-09-02 01:22:39.885201",
+            "attribute_name": null,
+            "session_uuid": "a6754198-68c9-11ef-9656-0a58a9feac02",
+            "delivery_id": "aae53b77-16df-4d2d-bcc2-1617ecba6abe"
+        },
+        "timestamp": "2024-09-02T01:22:41Z"
+    },
+    {
+        "data": {
+            "id": "9564.1107.0",
+            "event_log_entry_id": 517561,
+            "event_type": "Shotgun_Task_New",
+            "operation": "create",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Task",
+                "id": 7315
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "new_entity",
+                "entity_type": "Task",
+                "entity_id": 7315
+            },
+            "created_at": "2024-09-02 01:23:16.190035",
+            "attribute_name": null,
+            "session_uuid": "a6754198-68c9-11ef-9656-0a58a9feac02",
+            "delivery_id": "69662496-d3da-4f27-9108-87c1094c1a63"
+        },
+        "timestamp": "2024-09-02T01:23:17Z"
+    },
+    {
+        "data": {
+            "id": "9565.1108.0",
+            "event_log_entry_id": 517575,
+            "event_type": "Shotgun_Task_Retirement",
+            "operation": "delete",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Task",
+                "id": 7314
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "entity_type": "Task",
+                "class_name": "Task",
+                "entity_id": 7314,
+                "id": 7314,
+                "type": "entity_retirement",
+                "retirement_date": "2024-09-02 01:23:36 UTC",
+                "display_name": "test"
+            },
+            "created_at": "2024-09-02 01:23:36.872285",
+            "attribute_name": null,
+            "session_uuid": null,
+            "delivery_id": "5eeddf82-732e-413a-b42c-5f9ad0e562d1"
+        },
+        "timestamp": "2024-09-02T01:23:38Z"
+    },
+    {
+        "data": {
+            "id": "9566.1109.0",
+            "event_log_entry_id": 517577,
+            "event_type": "Shotgun_Task_Retirement",
+            "operation": "delete",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Task",
+                "id": 7315
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "entity_type": "Task",
+                "class_name": "Task",
+                "entity_id": 7315,
+                "id": 7315,
+                "type": "entity_retirement",
+                "retirement_date": "2024-09-02 01:23:59 UTC",
+                "display_name": "test (Copy)"
+            },
+            "created_at": "2024-09-02 01:23:59.186149",
+            "attribute_name": null,
+            "session_uuid": null,
+            "delivery_id": "4e257c08-7873-4a2e-9d2b-b6c2c8e0d697"
+        },
+        "timestamp": "2024-09-02T01:24:00Z"
+    },
+    {
+        "data": {
+            "id": "9568.1110.0",
+            "event_log_entry_id": 517581,
+            "event_type": "Shotgun_Task_New",
+            "operation": "create",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Task",
+                "id": 7316
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "new_entity",
+                "entity_type": "Task",
+                "entity_id": 7316
+            },
+            "created_at": "2024-09-02 01:25:05.683383",
+            "attribute_name": null,
+            "session_uuid": "a6754198-68c9-11ef-9656-0a58a9feac02",
+            "delivery_id": "6106b152-c3c1-4f64-94f9-d3fe530f76e9"
+        },
+        "timestamp": "2024-09-02T01:25:06Z"
+    },
+    {
+        "data": {
+            "id": "9569.1111.0",
+            "event_log_entry_id": 517593,
+            "event_type": "Shotgun_Task_Retirement",
+            "operation": "delete",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Task",
+                "id": 7316
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "entity_type": "Task",
+                "class_name": "Task",
+                "entity_id": 7316,
+                "id": 7316,
+                "type": "entity_retirement",
+                "retirement_date": "2024-09-02 01:25:16 UTC",
+                "display_name": "test"
+            },
+            "created_at": "2024-09-02 01:25:16.919877",
+            "attribute_name": null,
+            "session_uuid": null,
+            "delivery_id": "a6895a57-817c-4fbf-a506-ec16f84317cb"
+        },
+        "timestamp": "2024-09-02T01:25:18Z"
+    },
+    {
+        "data": {
+            "id": "9571.1112.0",
+            "event_log_entry_id": 517602,
+            "event_type": "Shotgun_Version_New",
+            "operation": "create",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8488
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "new_entity",
+                "entity_type": "Version",
+                "entity_id": 8488
+            },
+            "created_at": "2024-09-02 01:42:35.332479",
+            "attribute_name": null,
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "c930b496-e3e8-474c-adee-6c07f5453fb7"
+        },
+        "timestamp": "2024-09-02T01:42:36Z"
+    },
+    {
+        "data": {
+            "id": "9573.1113.0",
+            "event_log_entry_id": 517612,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8488
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "code",
+                "entity_type": "Version",
+                "entity_id": 8488,
+                "field_data_type": "text",
+                "old_value": "test",
+                "new_value": "BRK_020_ani_v002"
+            },
+            "created_at": "2024-09-02 01:43:46.423059",
+            "attribute_name": "code",
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "0a404c03-d94f-47da-ab47-da718b391971"
+        },
+        "timestamp": "2024-09-02T01:43:47Z"
+    },
+    {
+        "data": {
+            "id": "9605.1114.0",
+            "event_log_entry_id": 517660,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8488
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8488,
+                "field_data_type": "status_list",
+                "old_value": "pub",
+                "new_value": "re"
+            },
+            "created_at": "2024-09-02 02:13:36.014727",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "6dc3cfed-3846-4f31-aabb-d1df3988965d"
+        },
+        "timestamp": "2024-09-02T02:13:37Z"
+    },
+    {
+        "data": {
+            "id": "9606.1115.0",
+            "event_log_entry_id": 517661,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8488
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8488,
+                "field_data_type": "status_list",
+                "old_value": "re",
+                "new_value": "pub"
+            },
+            "created_at": "2024-09-02 02:13:46.398114",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "be655eda-b604-4b39-a271-f2deda8f80a9"
+        },
+        "timestamp": "2024-09-02T02:13:47Z"
+    },
+    {
+        "data": {
+            "id": "9607.1116.0",
+            "event_log_entry_id": 517662,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8488
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8488,
+                "field_data_type": "status_list",
+                "old_value": "pub",
+                "new_value": "wip"
+            },
+            "created_at": "2024-09-02 02:13:59.580201",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "a9b63236-feca-4ef7-8a57-a7fced44d7f7"
+        },
+        "timestamp": "2024-09-02T02:14:00Z"
+    },
+    {
+        "data": {
+            "id": "9608.1117.0",
+            "event_log_entry_id": 517663,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8488
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8488,
+                "field_data_type": "status_list",
+                "old_value": "wip",
+                "new_value": "pub"
+            },
+            "created_at": "2024-09-02 02:14:10.033332",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "61d02c35-b4f7-4406-898a-49db30fcc341"
+        },
+        "timestamp": "2024-09-02T02:14:10Z"
+    },
+    {
+        "data": {
+            "id": "9609.1118.0",
+            "event_log_entry_id": 517664,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8488
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8488,
+                "field_data_type": "status_list",
+                "old_value": "pub",
+                "new_value": "re"
+            },
+            "created_at": "2024-09-02 02:15:05.440013",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "421e7722-99bd-420d-be84-bb0a1c34f5e3"
+        },
+        "timestamp": "2024-09-02T02:15:06Z"
+    },
+    {
+        "data": {
+            "id": "9610.1119.0",
+            "event_log_entry_id": 517667,
+            "event_type": "Shotgun_Version_New",
+            "operation": "create",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "new_entity",
+                "entity_type": "Version",
+                "entity_id": 8491
+            },
+            "created_at": "2024-09-02 02:24:30.662133",
+            "attribute_name": null,
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "7b00076a-cb9b-4250-8193-325bc0f260cf"
+        },
+        "timestamp": "2024-09-02T02:24:32Z"
+    },
+    {
+        "data": {
+            "id": "9611.1120.0",
+            "event_log_entry_id": 517674,
+            "event_type": "Shotgun_Version_New",
+            "operation": "create",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8492
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "new_entity",
+                "entity_type": "Version",
+                "entity_id": 8492
+            },
+            "created_at": "2024-09-02 02:25:00.873959",
+            "attribute_name": null,
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "48e1ffa4-4fe1-40f4-a683-8efe557dfaa4"
+        },
+        "timestamp": "2024-09-02T02:25:02Z"
+    },
+    {
+        "data": {
+            "id": "9612.1121.0",
+            "event_log_entry_id": 517680,
+            "event_type": "Shotgun_Version_Retirement",
+            "operation": "delete",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8492
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "entity_type": "Version",
+                "class_name": "Version",
+                "entity_id": 8492,
+                "id": 8492,
+                "type": "entity_retirement",
+                "retirement_date": "2024-09-02 02:25:41 UTC",
+                "display_name": "BRK_020_ani_v004"
+            },
+            "created_at": "2024-09-02 02:25:41.945126",
+            "attribute_name": null,
+            "session_uuid": null,
+            "delivery_id": "c23dd969-994a-4f6f-85e5-02fe10408f56"
+        },
+        "timestamp": "2024-09-02T02:25:43Z"
+    },
+    {
+        "data": {
+            "id": "9613.1122.0",
+            "event_log_entry_id": 517681,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8491,
+                "field_data_type": "status_list",
+                "old_value": null,
+                "new_value": "pub"
+            },
+            "created_at": "2024-09-02 02:25:54.47778",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "7ca8c130-af64-46af-a551-3239525450fe"
+        },
+        "timestamp": "2024-09-02T02:25:56Z"
+    },
+    {
+        "data": {
+            "id": "9614.1123.0",
+            "event_log_entry_id": 517684,
+            "event_type": "Shotgun_Version_New",
+            "operation": "create",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8493
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "new_entity",
+                "entity_type": "Version",
+                "entity_id": 8493
+            },
+            "created_at": "2024-09-02 02:27:40.140119",
+            "attribute_name": null,
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "8b6ea959-86c4-4b27-be3f-3e238767a9fc"
+        },
+        "timestamp": "2024-09-02T02:27:42Z"
+    },
+    {
+        "data": {
+            "id": "9615.1124.0",
+            "event_log_entry_id": 517689,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8493
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8493,
+                "field_data_type": "status_list",
+                "old_value": null,
+                "new_value": "wip"
+            },
+            "created_at": "2024-09-02 02:28:10.409924",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "c2c73329-cd09-49fd-89f6-220af1f72598"
+        },
+        "timestamp": "2024-09-02T02:28:11Z"
+    },
+    {
+        "data": {
+            "id": "9616.1125.0",
+            "event_log_entry_id": 517690,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8491,
+                "field_data_type": "status_list",
+                "old_value": "pub",
+                "new_value": "wip"
+            },
+            "created_at": "2024-09-02 02:28:12.579596",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "71af6897-0222-4fc7-9cd2-53aadce24501"
+        },
+        "timestamp": "2024-09-02T02:28:13Z"
+    },
+    {
+        "data": {
+            "id": "9617.1126.0",
+            "event_log_entry_id": 517692,
+            "event_type": "Shotgun_Version_New",
+            "operation": "create",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8494
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "new_entity",
+                "entity_type": "Version",
+                "entity_id": 8494
+            },
+            "created_at": "2024-09-02 02:32:57.280038",
+            "attribute_name": null,
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "6de6fa71-c1ed-484f-a384-e723c79dea28"
+        },
+        "timestamp": "2024-09-02T02:32:58Z"
+    },
+    {
+        "data": {
+            "id": "9618.1127.0",
+            "event_log_entry_id": 517698,
+            "event_type": "Shotgun_Version_Retirement",
+            "operation": "delete",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8494
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "entity_type": "Version",
+                "class_name": "Version",
+                "entity_id": 8494,
+                "id": 8494,
+                "type": "entity_retirement",
+                "retirement_date": "2024-09-02 02:41:25 UTC",
+                "display_name": "BRK_020_ani_v005"
+            },
+            "created_at": "2024-09-02 02:41:25.461554",
+            "attribute_name": null,
+            "session_uuid": null,
+            "delivery_id": "66bccfbf-4c8e-43c7-9119-ee29c2303996"
+        },
+        "timestamp": "2024-09-02T02:41:26Z"
+    },
+    {
+        "data": {
+            "id": "9619.1128.0",
+            "event_log_entry_id": 517699,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8488
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8488,
+                "field_data_type": "status_list",
+                "old_value": "re",
+                "new_value": "pub"
+            },
+            "created_at": "2024-09-02 02:41:53.127559",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "4dee94ef-7999-4551-b34a-6c238c962115"
+        },
+        "timestamp": "2024-09-02T02:41:54Z"
+    },
+    {
+        "data": {
+            "id": "9620.1129.0",
+            "event_log_entry_id": 517700,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8491,
+                "field_data_type": "status_list",
+                "old_value": "wip",
+                "new_value": "pub"
+            },
+            "created_at": "2024-09-02 02:42:20.394654",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "6cfd355b-6eba-4025-a628-8051c7dfc95e"
+        },
+        "timestamp": "2024-09-02T02:42:21Z"
+    },
+    {
+        "data": {
+            "id": "9621.1130.0",
+            "event_log_entry_id": 517701,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8491,
+                "field_data_type": "status_list",
+                "old_value": "pub",
+                "new_value": "wip"
+            },
+            "created_at": "2024-09-02 02:42:49.881705",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "8b3d971c-cb83-42c0-9305-047b23d2a749"
+        },
+        "timestamp": "2024-09-02T02:42:50Z"
+    },
+    {
+        "data": {
+            "id": "9624.1131.0",
+            "event_log_entry_id": 517706,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8491,
+                "field_data_type": "status_list",
+                "old_value": "wip",
+                "new_value": "pub"
+            },
+            "created_at": "2024-09-02 02:52:58.551161",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "7e0b9da8-68cc-11ef-9656-0a58a9feac02",
+            "delivery_id": "a4c9b8cf-834d-49e1-a96e-042c2b24bcd7"
+        },
+        "timestamp": "2024-09-02T02:52:59Z"
+    },
+    {
+        "data": {
+            "id": "9626.1132.0",
+            "event_log_entry_id": 517708,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8491,
+                "field_data_type": "status_list",
+                "old_value": "pub",
+                "new_value": "wip"
+            },
+            "created_at": "2024-09-02 02:55:33.913573",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "cd9251fa-68d6-11ef-ad7b-0a58a9feac02",
+            "delivery_id": "6b057668-5451-436c-b544-f37ed678c0cb"
+        },
+        "timestamp": "2024-09-02T02:55:35Z"
+    },
+    {
+        "data": {
+            "id": "9627.1133.0",
+            "event_log_entry_id": 517709,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8491,
+                "field_data_type": "status_list",
+                "old_value": "wip",
+                "new_value": "pub"
+            },
+            "created_at": "2024-09-02 02:56:28.001993",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "cd9251fa-68d6-11ef-ad7b-0a58a9feac02",
+            "delivery_id": "66008057-8477-4d96-b065-f49935d561ab"
+        },
+        "timestamp": "2024-09-02T02:56:29Z"
+    },
+    {
+        "data": {
+            "id": "9632.1134.0",
+            "event_log_entry_id": 517717,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8491,
+                "field_data_type": "status_list",
+                "old_value": "pub",
+                "new_value": "wip"
+            },
+            "created_at": "2024-09-02 02:59:00.499698",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "cd9251fa-68d6-11ef-ad7b-0a58a9feac02",
+            "delivery_id": "c621a8d2-5d26-4a41-bad7-6d9117a32d3d"
+        },
+        "timestamp": "2024-09-02T03:00:00Z"
+    },
+    {
+        "data": {
+            "id": "9633.1135.0",
+            "event_log_entry_id": 517719,
+            "event_type": "Shotgun_Version_Retirement",
+            "operation": "delete",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8493
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "entity_type": "Version",
+                "class_name": "Version",
+                "entity_id": 8493,
+                "id": 8493,
+                "type": "entity_retirement",
+                "retirement_date": "2024-09-02 02:59:12 UTC",
+                "display_name": "BRK_020_ani_v004"
+            },
+            "created_at": "2024-09-02 02:59:12.974669",
+            "attribute_name": null,
+            "session_uuid": null,
+            "delivery_id": "271f8423-651b-4eec-999e-24217dca3586"
+        },
+        "timestamp": "2024-09-02T03:00:02Z"
+    },
+    {
+        "data": {
+            "id": "9634.1136.0",
+            "event_log_entry_id": 517722,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8491,
+                "field_data_type": "status_list",
+                "old_value": "wip",
+                "new_value": "pub"
+            },
+            "created_at": "2024-09-02 03:00:15.669417",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "cd9251fa-68d6-11ef-ad7b-0a58a9feac02",
+            "delivery_id": "e878dd0e-bb1e-4899-b1de-ce9177a6cb62"
+        },
+        "timestamp": "2024-09-02T03:00:17Z"
+    },
+    {
+        "data": {
+            "id": "9635.1137.0",
+            "event_log_entry_id": 517727,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8491,
+                "field_data_type": "status_list",
+                "old_value": "pub",
+                "new_value": "wip"
+            },
+            "created_at": "2024-09-02 03:00:36.558024",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "cd9251fa-68d6-11ef-ad7b-0a58a9feac02",
+            "delivery_id": "95eb78a1-98d3-4d54-879a-016e260dcdee"
+        },
+        "timestamp": "2024-09-02T03:00:38Z"
+    },
+    {
+        "data": {
+            "id": "9639.1138.0",
+            "event_log_entry_id": 517743,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 93
+            },
+            "entity": {
+                "type": "Version",
+                "id": 7304
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 7304,
+                "field_data_type": "status_list",
+                "old_value": "fin",
+                "new_value": "sc"
+            },
+            "created_at": "2024-09-02 03:15:37.128339",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "768976e2-68d9-11ef-92ff-0a58a9feac02",
+            "delivery_id": "b0b79368-5fb6-4827-b9a4-efd9706ab928"
+        },
+        "timestamp": "2024-09-02T03:15:38Z"
+    },
+    {
+        "data": {
+            "id": "9640.1139.0",
+            "event_log_entry_id": 517744,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 93
+            },
+            "entity": {
+                "type": "Version",
+                "id": 7303
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 7303,
+                "field_data_type": "status_list",
+                "old_value": "pub",
+                "new_value": "fin"
+            },
+            "created_at": "2024-09-02 03:15:41.677122",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "768976e2-68d9-11ef-92ff-0a58a9feac02",
+            "delivery_id": "d7f3f506-ff58-4e5e-8a41-2ec1fbcb34b0"
+        },
+        "timestamp": "2024-09-02T03:15:43Z"
+    },
+    {
+        "data": {
+            "id": "9641.1140.0",
+            "event_log_entry_id": 517745,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 93
+            },
+            "entity": {
+                "type": "Version",
+                "id": 7302
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 7302,
+                "field_data_type": "status_list",
+                "old_value": "wip",
+                "new_value": "fin"
+            },
+            "created_at": "2024-09-02 03:15:42.485048",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "768976e2-68d9-11ef-92ff-0a58a9feac02",
+            "delivery_id": "620e9bef-9642-4260-9f16-18dd54e2e929"
+        },
+        "timestamp": "2024-09-02T03:15:44Z"
+    },
+    {
+        "data": {
+            "id": "9645.1141.0",
+            "event_log_entry_id": 517759,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8491,
+                "field_data_type": "status_list",
+                "old_value": "wip",
+                "new_value": "pub"
+            },
+            "created_at": "2024-09-02 05:08:08.554263",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "cd9251fa-68d6-11ef-ad7b-0a58a9feac02",
+            "delivery_id": "6182fd0d-46a9-4b1f-9241-919ac3bf7ce2"
+        },
+        "timestamp": "2024-09-02T05:09:09Z"
+    },
+    {
+        "data": {
+            "id": "9647.1142.0",
+            "event_log_entry_id": 517770,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8491,
+                "field_data_type": "status_list",
+                "old_value": "pub",
+                "new_value": "wip"
+            },
+            "created_at": "2024-09-02 05:57:42.697076",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "cd9251fa-68d6-11ef-ad7b-0a58a9feac02",
+            "delivery_id": "881f1a64-e8ed-4dfb-b367-49aa75bffba3"
+        },
+        "timestamp": "2024-09-02T05:57:44Z"
+    },
+    {
+        "data": {
+            "id": "9648.1143.0",
+            "event_log_entry_id": 517771,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8491,
+                "field_data_type": "status_list",
+                "old_value": "wip",
+                "new_value": "pub"
+            },
+            "created_at": "2024-09-02 06:32:53.050658",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "cd9251fa-68d6-11ef-ad7b-0a58a9feac02",
+            "delivery_id": "6e1af3be-1ce4-4a5d-93db-f61cb396616d"
+        },
+        "timestamp": "2024-09-02T06:32:54Z"
+    },
+    {
+        "data": {
+            "id": "9649.1144.0",
+            "event_log_entry_id": 517774,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8491,
+                "field_data_type": "status_list",
+                "old_value": "pub",
+                "new_value": "wip"
+            },
+            "created_at": "2024-09-02 06:38:51.253201",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "cd9251fa-68d6-11ef-ad7b-0a58a9feac02",
+            "delivery_id": "82767b1f-b6c7-4c30-9954-983082a8ddfe"
+        },
+        "timestamp": "2024-09-02T06:38:52Z"
+    },
+    {
+        "data": {
+            "id": "9651.1145.0",
+            "event_log_entry_id": 517778,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8491,
+                "field_data_type": "status_list",
+                "old_value": "wip",
+                "new_value": "pub"
+            },
+            "created_at": "2024-09-02 06:41:26.553615",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "cd9251fa-68d6-11ef-ad7b-0a58a9feac02",
+            "delivery_id": "d9d3b502-4720-4e9e-aa85-e3036d88d4ba"
+        },
+        "timestamp": "2024-09-02T06:41:27Z"
+    },
+    {
+        "data": {
+            "id": "9652.1146.0",
+            "event_log_entry_id": 517780,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8491,
+                "field_data_type": "status_list",
+                "old_value": "pub",
+                "new_value": "wip"
+            },
+            "created_at": "2024-09-02 06:44:55.573049",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "cd9251fa-68d6-11ef-ad7b-0a58a9feac02",
+            "delivery_id": "cad4aa12-df18-4653-97eb-28a243abe67c"
+        },
+        "timestamp": "2024-09-02T06:44:57Z"
+    },
+    {
+        "data": {
+            "id": "9653.1147.0",
+            "event_log_entry_id": 517781,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8491
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8491,
+                "field_data_type": "status_list",
+                "old_value": "wip",
+                "new_value": "pub"
+            },
+            "created_at": "2024-09-02 06:49:13.265892",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "cd9251fa-68d6-11ef-ad7b-0a58a9feac02",
+            "delivery_id": "5adc324c-df05-448d-8df7-113b5c7ea139"
+        },
+        "timestamp": "2024-09-02T06:49:14Z"
+    },
+    {
+        "data": {
+            "id": "9654.1148.0",
+            "event_log_entry_id": 517785,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8488
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8488,
+                "field_data_type": "status_list",
+                "old_value": "pub",
+                "new_value": "wip"
+            },
+            "created_at": "2024-09-02 07:01:46.704699",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "cd9251fa-68d6-11ef-ad7b-0a58a9feac02",
+            "delivery_id": "034912be-33ec-4df1-af0e-877fdf57fbae"
+        },
+        "timestamp": "2024-09-02T07:01:48Z"
+    },
+    {
+        "data": {
+            "id": "9655.1149.0",
+            "event_log_entry_id": 517786,
+            "event_type": "Shotgun_Version_Change",
+            "operation": "update",
+            "user": {
+                "type": "HumanUser",
+                "id": 102
+            },
+            "entity": {
+                "type": "Version",
+                "id": 8488
+            },
+            "project": {
+                "type": "Project",
+                "id": 222
+            },
+            "meta": {
+                "type": "attribute_change",
+                "attribute_name": "sg_status_list",
+                "entity_type": "Version",
+                "entity_id": 8488,
+                "field_data_type": "status_list",
+                "old_value": "wip",
+                "new_value": "pub"
+            },
+            "created_at": "2024-09-02 07:04:53.401973",
+            "attribute_name": "sg_status_list",
+            "session_uuid": "cd9251fa-68d6-11ef-ad7b-0a58a9feac02",
+            "delivery_id": "660d673c-4022-49cd-99e2-04eb747a1ee5"
+        },
+        "timestamp": "2024-09-02T07:04:55Z"
+    }
+]
