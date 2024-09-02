@@ -30,9 +30,9 @@ class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libra
         
     def set_main_loader(self,info):
         
-        project = info["project"]
-        user    = info["name"]
-        rank    = info["rank"]
+        project   = info["project"]
+        user      = info["name"]
+        rank      = info["rank"]
         
         self.ui.label_projectname.setText(f"{project}")
         self.ui.label_username.setText(f"{user}")
@@ -54,6 +54,10 @@ class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libra
         window_geometry.moveCenter(screen_center)  
         adjusted_position = window_geometry.topLeft()
         self.move(adjusted_position)
+
+        user = info["name"]
+        self.setWindowTitle(f"{user} Loader")
+        self.setFixedSize(1150,920)
 
     def get_darkModePalette(self) :
 

@@ -51,6 +51,7 @@ class DraggableWidget_mod(QWidget):
         self.draggable_label.setStyleSheet(
                                            "font: 10pt;"
                                            )
+        self.draggable_label.setStyleSheet('color:rgb(211, 215, 207)')
         layout.addWidget(self.draggable_label)
 
         self.file_path = file_path
@@ -168,6 +169,7 @@ class DraggableWidget_rig(QWidget):
         self.draggable_label.setStyleSheet(
                                            "font: 10pt;"
                                            )
+        self.draggable_label.setStyleSheet('color:rgb(211, 215, 207)')
         layout.addWidget(self.draggable_label)
 
         self.file_path = file_path
