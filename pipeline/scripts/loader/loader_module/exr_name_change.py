@@ -2,9 +2,9 @@ import os
 
 # 변경할 폴더 경로를 입력하세요
 
-def exr_name_change(folder_path):
+def exr_name_change():
 
-    folder_path = "/home/rapa/YUMMY/project/YUMMIE/seq/PKG/PKG_030/mm/dev/exr/PKG_030_mm_v003"
+    folder_path = "/home/rapa/다운로드/ABC_0020_LGT_v001"
 
     folder_name = folder_path.split("/")[-1]
     print(folder_name)
@@ -16,7 +16,7 @@ def exr_name_change(folder_path):
     for filename in files:
         file_path = os.path.join(folder_path, filename)
 
-        if filename.startswith('INS_010_lgt_v003.') and filename.endswith('.exr'):
+        if filename.startswith('rs_pSuperShape2.') and filename.endswith('.exr'):
             # 기존 파일 번호 추출
             file_number = filename.split('.')[1]
             new_filename = f'{folder_name}.{file_number}.exr'
@@ -32,7 +32,7 @@ def exr_name_change(folder_path):
             os.remove(file_path)
 
 
-
+exr_name_change()
        
 import ffmpeg
 

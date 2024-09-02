@@ -22,7 +22,6 @@ class Slate:
         # exr_path = /home/rapa/OPN_010_mm_v001_test001
         
         exr_file_name = exr_path.split("/")[-1]
-        
         slate_dic = self.set_slate_info(exr_path)
         self.input_slate(slate_dic)
         
@@ -63,7 +62,8 @@ class Slate:
         # 디렉토리에서 EXR 파일 목록 가져오기
         exr_files = [f for f in os.listdir(directory) if f.endswith('.exr')]
         exr_files.sort()
-
+        self.find_exr_frame(f"{directory}/{exr_files[0]}")
+        
         start_frame = int(exr_files[0].split(".")[-2])
         end_frame   = int(exr_files[-1].split(".")[-2])
 
@@ -71,6 +71,15 @@ class Slate:
         frame_count = end_frame - start_frame + 1
 
         return start_frame,end_frame,frame_count
+    
+    def find_exr_frame(self,input):
+        probe = ffmpeg.probe(input)
+
+        video_stream = next((stream for stream in probe['streams']if stream['codec_type'] == 'video'),None)
+        self.width = int(video_stream['width'])
+        self.height = int(video_stream['height'])
+
+    
     
     def render_exr_slate(self,input,output):
         (
@@ -90,8 +99,7 @@ class Slate:
         slate_dic = self.set_mov_slate_info(mov_path)
         self.input_slate(slate_dic)
         self.render_mov_slate(mov_path,output)
-        
-        
+           
     def set_mov_slate_info(self,mov_path):
         
         import datetime
@@ -123,7 +131,10 @@ class Slate:
 
     def find_mov_frame(self,input):
         probe = ffmpeg.probe(input)
+
         video_stream = next((stream for stream in probe['streams']if stream['codec_type'] == 'video'),None)
+        self.width = int(video_stream['width'])
+        self.height = int(video_stream['height'])
         frame = int(video_stream['nb_frames'])
         return frame
         
@@ -140,7 +151,7 @@ class Slate:
     #===========================================================================================
 
     def input_slate(self,slate_dic):
-        print(slate_dic)
+        
         shot_num = slate_dic["ShotNum"]
         project = slate_dic["Project"]
         date = slate_dic["Date"]
@@ -154,16 +165,17 @@ class Slate:
         self.bot_Left = f"drawtext=fontfile=Arial.ttf:text   = '{task}': : x=5:y=h-th        :fontcolor=white@0.7:fontsize=50"
         self.bot_Middle = f"drawtext=fontfile=Arial.ttf:text = '{version}': : x=(w-tw)/2:y=h-th :fontcolor=white@0.7:fontsize=50"
         self.bot_Right = f"drawtext=fontfile=Arial.ttf: text = '{frame}':start_number = 1001 : x=w-tw-5:y=h-th     :fontcolor=white@0.7:fontsize=50"
-        self.box = f"drawbox = x=0: y=0: w=1920: h=60: color = black: t=fill,drawbox = x=0: y=1020: w=1920: h=1080: color = black: t=fill,"
+        self.box = f"drawbox = x=0: y=0: w={self.width}: h=60: color = black: t=fill,drawbox = x=0: y={self.height-60}: w={self.width}: h={self.height}: color = black: t=fill,"
+       
        
 if __name__ == "__main__": 
-    exr_path = "/home/rapa/YUMMY/project/YUMMIE/seq/FNL/FNL_010/lgt/dev/exr/FNL_010_lgt_v002"  
-    exr_output = "/home/rapa/YUMMY/project/YUMMIE/seq/FNL/FNL_010/lgt/dev/mov/FNL_010_lgt_v002.mov"     
+    exr_path = "/home/rapa/다운로드/ABC_0020_LGT_v001"  
+    exr_output = "/home/rapa/다운로드/test002.mov"     
     render = Slate()
-    # render.start_exr(exr_path,exr_output)
+    render.start_exr(exr_path,exr_output)
     
-    mov_path = "/home/rapa/YUMMY/project/YUMMIE/seq/FNL/FNL_010/lgt/dev/mov/FNL_010_lgt_v002.mov"  
-    mov_output = "/home/rapa/다운로드/FNL_010_lgt_v001.mov"     
+    # mov_path = "/home/rapa/YUMMY/project/YUMMIE/seq/FNL/FNL_010/lgt/dev/mov/FNL_010_lgt_v002.mov"  
+    # mov_output = "/home/rapa/다운로드/FNL_010_lgt_v005.mov"     
     
-    render.start_mov(mov_path,mov_output)
+    # render.start_mov(mov_path,mov_output)
     

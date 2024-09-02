@@ -12,6 +12,7 @@ import subprocess
 import os
 import sys
 import json
+from functools import partial
 from datetime import datetime
 
 sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
@@ -874,7 +875,28 @@ class Mainloader:
         tablename = ["ani","cmp","lgt","mm","ly"]
         self.task_table_widget = [getattr(self.ui, f"tableWidget_shot_{task}") for task in tablename]
         # self.sort_status_task()
+        for task_table in self.task_table_widget:
+            task_table.itemDoubleClicked.connect(partial(self.set_status_vlc,task_table))
+    
+    
+    
+    # 스터이스창 더블클릭시 mov 파일 실행되게
+    def set_status_vlc(self,task_table,item):
+        index = item.row()
+        file_info = []
+        for col in range(1,3):
+            info = task_table.item(index,col)
+            file_info.append(info.text())
+        file_info.insert(1,self.st_tab_name)
         
+        shot_code = file_info[0].split("_")[0]
+        
+        mov_name = "_".join(file_info)
+        vlc_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{shot_code}/{file_info[0]}/{file_info[1]}/dev/mov/{mov_name}.mov"
+        
+        subprocess.Popen(f"vlc --repeat {vlc_path}", shell=True,executable="/bin/bash")
+    
+    
     def sort_status_task(self):
         user_dic = self.open_loader_json()
         

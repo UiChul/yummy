@@ -49,10 +49,12 @@ class OpenLoaderData():
         """
         asset_datas = []
 
-        if project_id:
-            filters = [["project", "is", {"type": "Project", "id": project_id}]]
-            fields = ["code", "sg_asset_type", "sg_asset_path", "tasks", "description"]
-            assets = self.sg.find("Asset", filters=filters, fields=fields)
+        if not project_id:
+            return
+            
+        filters = [["project", "is", {"type": "Project", "id": project_id}]]
+        fields = ["code", "sg_asset_type", "sg_asset_path", "tasks", "description"]
+        assets = self.sg.find("Asset", filters=filters, fields=fields)
 
             
         for asset in assets:
@@ -69,22 +71,23 @@ class OpenLoaderData():
                 # 태스크 데이터 가져오기
                 task_data = self.sg.find_one("Task", [["id", "is", task_id]], ["content", "task_assignees", "step"])
 
-                if task_data:
-                    # 태스크 디테일
-                    task_content = task_data.get("content", "N/A")
-                    task_assignees_data = task_data.get("task_assignees", [])
-                    task_step = task_data.get("step", {})
+                if not task_data:
+                    continue
+                # 태스크 디테일
+                task_content = task_data.get("content", "N/A")
+                task_assignees_data = task_data.get("task_assignees", [])
+                task_step = task_data.get("step", {})
 
-                    # assignee 이름
-                    assignee_names = [assignee.get("name", "Unknown") for assignee in task_assignees_data]
+                # assignee 이름
+                assignee_names = [assignee.get("name", "Unknown") for assignee in task_assignees_data]
 
-                    # assigee 마다 태스크 디테일
-                    for assignee_name in assignee_names:
-                        task_details.append({
-                            "assignee_name": assignee_name,
-                            "task_content": task_content,
-                            "task_step": task_step.get("name", "N/A")
-                        })
+                # assigee 마다 태스크 디테일
+                for assignee_name in assignee_names:
+                    task_details.append({
+                        "assignee_name": assignee_name,
+                        "task_content": task_content,
+                        "task_step": task_step.get("name", "N/A")
+                    })
 
             asset_datas.append({
                 "asset_name": asset_name,

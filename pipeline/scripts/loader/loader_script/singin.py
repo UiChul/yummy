@@ -232,26 +232,28 @@ class Signin(QWidget):
         with open("/home/rapa/yummy/pipeline/json/login_user_data.json","rt",encoding="utf-8") as r:
             user_dic = json.load(r)
             
+            user_id = user_dic["user_id"]
             project_id = ""
             resolution_width  =  ""
             resolution_height =  ""
-        
+
+            
             for project_info in user_dic["projects"]:
                 if project == project_info["name"]:
                     project_id = project_info["id"]
                     resolution_width = project_info["resolution_width"]
                     resolution_height = project_info["resolution_height"]
                     
-        return project_id,resolution_width,resolution_height
+        return project_id,user_id,resolution_width,resolution_height
     
     def connect_loader(self):
         project = self.ui.comboBox_project_name.currentText()
         
         if project == "-":
             return
-        project_id,resolution_width,resolution_height = self.find_project_info(project)
+        project_id,user_id,resolution_width,resolution_height = self.find_project_info(project)
         
-        info = {"project" : project ,"project_id" : project_id ,"name" : self.user_name,"rank": self.rank, "resolution_width" : resolution_width, "resolution_height":resolution_height}
+        info = {"project" : project , "project_id" : project_id , "name" : self.user_name, "user_id" : user_id, "rank": self.rank, "resolution_width" : resolution_width, "resolution_height":resolution_height}
         from loader_script.loader_merge import Merge
         self.load = Merge(info)
         self.load.show()       
