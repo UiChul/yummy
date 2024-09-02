@@ -1,0 +1,20 @@
+Executing script: /home/rapa/yummy/pipeline/scripts/loader/loader_script/status_monitor.py
+오류 발생: Traceback (most recent call last):
+  File "/home/rapa/.vscode/extensions/ms-python.debugpy-2024.8.0-linux-x64/bundled/libs/debugpy/_vendored/pydevd/pydevd.py", line 3489, in <module>
+    main()
+  File "/home/rapa/.vscode/extensions/ms-python.debugpy-2024.8.0-linux-x64/bundled/libs/debugpy/_vendored/pydevd/pydevd.py", line 3482, in main
+    globals = debugger.run(setup['file'], None, None, is_module)
+  File "/home/rapa/.vscode/extensions/ms-python.debugpy-2024.8.0-linux-x64/bundled/libs/debugpy/_vendored/pydevd/pydevd.py", line 2510, in run
+    return self._exec(is_module, entry_point_fn, module_name, file, globals, locals)
+  File "/home/rapa/.vscode/extensions/ms-python.debugpy-2024.8.0-linux-x64/bundled/libs/debugpy/_vendored/pydevd/pydevd.py", line 2517, in _exec
+    globals = pydevd_runpy.run_path(file, globals, '__main__')
+  File "/home/rapa/.vscode/extensions/ms-python.debugpy-2024.8.0-linux-x64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 321, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/home/rapa/.vscode/extensions/ms-python.debugpy-2024.8.0-linux-x64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 135, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/home/rapa/.vscode/extensions/ms-python.debugpy-2024.8.0-linux-x64/bundled/libs/debugpy/_vendored/pydevd/_pydevd_bundle/pydevd_runpy.py", line 124, in _run_code
+    exec(code, run_globals)
+  File "/home/rapa/yummy/pipeline/scripts/loader/loader_script/status_monitor.py", line 2, in <module>
+    from watchdog.observers import Observer
+ModuleNotFoundError: No module named 'watchdog'
+
