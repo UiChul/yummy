@@ -32,7 +32,6 @@ os.system("ffmpeg")
 sys.path.append("/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages")
 from shotgun_api3 import shotgun
 
-
 link = "https://4thacademy.shotgrid.autodesk.com/"
 script_name = "test_park"
 script_key = "snljjtxjfyfdxQfpnh7lgyf!f"
@@ -80,7 +79,8 @@ class MainPublish(QWidget):
     def __init__(self):
         super().__init__()         
         loader = QUiLoader()
-        ui_file_path = "/Users/lucia/Downloads/publish7.ui"
+        # ui_file_path = "/Users/lucia/Downloads/publish7.ui"
+        ui_file_path = "/home/rapa/yummy/pipeline/scripts/publish/publish_ver6.ui"
         ui_file = QFile(ui_file_path)
         ui_file.open(QFile.ReadOnly)
         loader = QUiLoader()                                      
@@ -1019,6 +1019,17 @@ class MainPublish(QWidget):
 
     def sg_thumbnail_upload():
         pass
+
+def open_ui_in_nuke():
+    from importlib import reload
+    # import sys
+    global win
+    # sys.path.append("/home/rapa/yummy/pipeline/scripts/publish")
+    import publish_0901
+    reload(publish_0901)
+    win = publish_0901.MainPublish()
+    win.show()
+
 
 
 if __name__ == "__main__":
