@@ -19,17 +19,27 @@ except:
     from PySide2.QtUiTools import QUiLoader
     from PySide2.QtCore import QFile, QSize
     from PySide2.QtGui import  Qt, QPixmap, QIcon
-    import nuke
-try:
-    import ffmpeg
-except:
-    pass
 
 import os
+import sys
 import re
+import nuke
 import json
+# import ffmpeg
 import shutil
 
+os.system("ffmpeg")
+sys.path.append("/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages")
+from shotgun_api3 import shotgun
+
+link = "https://4thacademy.shotgrid.autodesk.com/"
+script_name = "test_park"
+script_key = "snljjtxjfyfdxQfpnh7lgyf!f"
+
+def connect_sg(self):
+# 샷그리드 연결
+    sg = shotgun(link, script_name, script_key) #Shotgun 다시 불러와야?
+    return sg
 
 class PathFinder:
     """
@@ -44,25 +54,32 @@ class PathFinder:
 
     def _read_paths_from_json(self):
         """Read Json file and data return"""
-
         with open(self.json_file_path, 'r', encoding='utf-8') as file:
             data = json.load(file)
         return data
-
+    
     def append_project_to_path(self, start_path):
         """Find data that matches key(project_name) in Json data"""
-
         project_value = self.json_data[self.key]
         start_path = start_path.rstrip(os.sep)
         new_path = f"{start_path}/{project_value}/"
-        
         return new_path
+    
+    def data_needed(self, data_json): 
+        self.project_name= data_json[self.key]
+        self.project_id = data_json['id']
+        self.user_name = data_json['name']
+        self.project_res_width = data_json['resolution_width']
+        self.project_res_height = data_json['resolution_height']
+        # print(self.user_id, self.ㅋ, self.project_id, self.project_name, self.project_res_width, self.project_res_height)
+        list_needed = [self.project_name, self.project_id, self.user_name, self.project_res_width, self.project_res_height]
+        return list_needed
 
 class MainPublish(QWidget):
-
     def __init__(self):
         super().__init__()         
-
+        loader = QUiLoader()
+        # ui_file_path = "/Users/lucia/Downloads/publish7.ui"
         ui_file_path = "/home/rapa/yummy/pipeline/scripts/publish/publish_ver6.ui"
         ui_file = QFile(ui_file_path)
         ui_file.open(QFile.ReadOnly)
@@ -75,24 +92,18 @@ class MainPublish(QWidget):
         self.setup_top_bar()
         self.setup_tablewidget_basket()
         self.set_delete_icon()
-
         self._collect_path()
-
-        """
-        ★ 버튼 연결 
-        """
 
         # Signal
         self.ui.pushButton_add_to_basket.clicked.connect(self.on_add_button_clicked)
-
-        self.ui.pushButton_version.clicked.connect(self.copy_to_Server_from_Local)
-        self.ui.pushButton_version.clicked.connect(self.make_message_for_upload)
-
-        self.ui.pushButton_publish.clicked.connect(self.copy_to_pub_from_dev_in_Server)
-        self.ui.pushButton_publish.clicked.connect(self.make_message_for_upload)
-        
+        self.ui.pushButton_version.clicked.connect(self.val_all_together_ver)            #validate 실행 되게
+        # self.ui.pushButton_version.clicked.connect(self.make_message_for_upload)            #validate 실행 되게
+        # self.ui.pushButton_version.clicked.connect(self.copy_to_Server_from_Local)
+        self.ui.pushButton_publish.clicked.connect(self.val_all_together_pub)
+        # self.ui.pushButton_publish.clicked.connect(self.make_message_for_upload)
+        # self.ui.pushButton_publish.clicked.connect(self.copy_to_pub_from_dev_in_Server)
         self.ui.pushButton_delete.clicked.connect(self.delete_tablewidget_item)
-
+    
     def on_add_button_clicked(self):
         self.add_nk_item_tablewidget_basket()
         self.add_exr_item_tablewidget_basket()
@@ -181,7 +192,7 @@ class MainPublish(QWidget):
             item = QListWidgetItem(self.folder_name)
             self.exr_folder_listwidget.addItem(item)
             self.exr_folder_listwidget.setCurrentItem(item)
-      
+        
     def setup_top_bar(self):
 
         # self.nk_file_path = nuke.scriptName()
@@ -249,7 +260,7 @@ class MainPublish(QWidget):
             for file in exr_files:
                 self.exr_full_path = f"{exr_file_path}/{file}"
 
-                exr_validation_info_dict = self._get_exr_validation_info(self.exr_full_path)
+                exr_validation_info_dict = self._get_exr_and_mov_validation_info(self.exr_full_path)
                 exr_info_text = "\n".join(f"{key} : {value}" for key, value in exr_validation_info_dict.items())
                 exr_validation_info = QTableWidgetItem(exr_info_text)
                 exr_validation_info.setTextAlignment(Qt.AlignLeft | Qt.AlignTop) # 왼쪽 정렬, 위쪽 정렬
@@ -267,12 +278,42 @@ class MainPublish(QWidget):
 
             mov_new_path = f"{self.mov_file_path}{mov_selected_file}"
         
-            mov_validation_info_dict = self._get_mov_validation_info(mov_new_path)
+            mov_validation_info_dict = self._get_exr_and_mov_validation_info(mov_new_path)
             mov_info_item = "\n".join(f"{key} : {value}" for key, value in mov_validation_info_dict.items())
             mov_validation_info = QTableWidgetItem(mov_info_item)
             mov_validation_info.setTextAlignment(Qt.AlignLeft | Qt.AlignTop) # 왼쪽 정렬, 위쪽 정렬
             self.ui.tableWidget_basket.setItem(2, 1, mov_validation_info)
-    
+
+    #===================================================================
+
+    def _get_versions_data(self, project_id):
+        """
+        프로젝트의 versions 데이터 가져오기
+        """
+        ver_datas = []
+
+        if project_id:
+            filters = [["project", "is", {"type": "Project", "id": project_id}]]
+            fields = ["code", "entity", "sg_version_type", "description", "sg_status_list", "user"]
+            versions = self.sg.find("Version", filters=filters, fields=fields)
+
+            for version in versions:
+                code = version.get("code", "N/A")                           #이름
+                # sg_status_list = version.get("sg_status_list", "N/A")       #status   
+                extension = version.get("sg_version_type", "N/A")        #type
+                color = version.get("sg_colorspace", "N/A")                 #color space
+                nuke_ver = version.get("sg_nk_version", "N/A")
+
+
+                ver_datas.append({
+                    "version_name": code,          # 위치가 맞아야만?
+                    "extension" : extension,
+                    "colorspace" : color,
+                    "nuke_ver" : nuke_ver
+                    })
+
+        return ver_datas
+
     def _get_nk_validation_info(self):
 
         ######### 사실 마지막 아이템을 publish하지 중간껄 publish할 일이 있을까??
@@ -280,25 +321,21 @@ class MainPublish(QWidget):
         nk_file_validation_dict = {}
         root = nuke.root()
         path = root["name"].value()                     # file path
-        extend = path.split(".")[-1]                    # extendation
+        extension = path.split(".")[-1]                    # extension
         colorspace = root["colorManagement"].value()    # colorspace
         nuke_version = nuke.NUKE_VERSION_STRING         # nk version
         
-        nk_file_validation_dict["file_path"] = path
-        nk_file_validation_dict["extend"] = extend
-        nk_file_validation_dict["colorspace"] = colorspace
-        nk_file_validation_dict["nuke_version"] = nuke_version
+        nk_file_validation_dict = {
+        # "file_path" : path,
+        "extend" : extension,
+        "colorspace" : colorspace,
+        "nuke_version" : nuke_version
+        }
 
         return nk_file_validation_dict
 
- 
-    """
-    ★ exr이랑 mov info 찾는거 나눔
-    """
-
     def _get_exr_validation_info(self, file_path):
-
-            file_validation_info_dict = {}
+            exr_file_validation_dict = {}
             probe = ffmpeg.probe(file_path)
 
             # extract video_stream
@@ -314,19 +351,19 @@ class MainPublish(QWidget):
             resolution = f"{width}x{height}"
 
             # file_validation dictionary
-            file_validation_info_dict = {
-                "file_path": file_path,
+            exr_file_validation_dict = {
+                # "file_path": file_path,
                 "codec_name": codec_name,
                 "colorspace": colorspace,
                 "resolution": resolution,
                 "frame": frame
             }
             # print(file_validation_info_dict)
-            return file_validation_info_dict
+            return exr_file_validation_dict
     
     def _get_mov_validation_info(self, file_path):
 
-            file_validation_info_dict = {}
+            mov_file_validation_dict = {}
             probe = ffmpeg.probe(file_path)
 
             # extract video_stream
@@ -342,15 +379,67 @@ class MainPublish(QWidget):
             resolution = f"{width}x{height}"
 
             # file_validation dictionary
-            file_validation_info_dict = {
-                "file_path": file_path,
+            mov_file_validation_dict = {
+                # "file_path": file_path,
                 "codec_name": codec_name,
                 "colorspace": colorspace,
                 "resolution": resolution,
                 "frame": frame
             }
             # print(file_validation_info_dict)
-            return file_validation_info_dict
+            return mov_file_validation_dict
+
+    def val_nk(self, ver, nk): 
+        ver = self._get_versions_data                  #dict
+        nk = self._get_nk_validation_info              #dict
+        for k in nk.keys() : 
+            if ver.get(k) == nk.get(k):                #file path도 같을 수 있나?
+                return True
+            else : 
+                return (k, "is non valid, check again the values")
+
+    def val_exr(self):
+        exr = self._get_exr_validation_info
+        for k in exr.keys():
+            if exr.get(k):
+                return True
+            else : 
+                return("value ", k, " in exr is now empty, check again.")
+
+    def val_mov(self, mov):
+        mov = self._get_mov_validation_info
+        for k in mov.keys():
+            if mov.get(k):
+                return True
+            else : 
+                return("value ", k, " in mov is now empty, check again.")
+
+    def val_all_together_ver(self) : 
+        TF_nk = self.val_nk()
+        TF_exr = self.val_exr()
+        TF_mov = self.val_mov()
+        if TF_nk & TF_exr & TF_mov == True :              #validate 통과
+            self.copy_to_Server_from_Local 
+            self.sg_upload_data_ver()
+            self.sg_create_ver
+            self.sg_thumbnail_upload
+        else :                                            #validate 실패
+            self.make_message_for_upload_ver
+
+    def val_all_together_pub(self) : 
+        TF_nk = self.val_nk()
+        TF_exr = self.val_exr()
+        TF_mov = self.val_mov()
+        if TF_nk & TF_exr & TF_mov == True :              #validate 통과
+            self.copy_to_Server_from_Local 
+            self.sg_upload_data_pub
+            self.sg_create_ver
+            self.sg_create_pub
+            self.sg_thumbnail_upload
+        else :                                            #validate 실패
+            self.make_message_for_upload_pub
+
+    #==================================================================
 
     def count_tablewidget_item(self):
 
@@ -376,7 +465,7 @@ class MainPublish(QWidget):
         for row in rows_to_clear:
             self.ui.tableWidget_basket.setItem(row, 0, None)
             self.ui.tableWidget_basket.setItem(row, 1, None)
-            
+
     #==================================================================
 
     def _find_Local_path(self):
@@ -401,7 +490,7 @@ class MainPublish(QWidget):
         origin_local_path.extend([nk_local_path, exr_local_path, mov_local_path])
 
         return origin_local_path
-    
+
     def _get_highest_version_number(self, path, version_pattern):
         
         highest_version = 0
@@ -413,7 +502,7 @@ class MainPublish(QWidget):
                     highest_version = version_number
      
         return highest_version
-    
+
     def version_up_in_Local(self):
         """Take the file_path, version it up and Save it"""
 
@@ -470,17 +559,17 @@ class MainPublish(QWidget):
     def _find_Server_seq_path(self):
         """Find matching folder from Json and make Server path until 'seq' """
 
-        json_file_path = '/home/rapa/YUMMY/pipeline/json/project_data.json'
+        json_file_path = '/Users/lucia/Downloads/project_data.json'
         path_finder = PathFinder(json_file_path)
 
-        start_path = '/home/rapa/YUMMY/project'
+        start_path = 'C:/home/rapa/YUMMY/project'
 
         # Get the new path
         server_project_path = path_finder.append_project_to_path(start_path)
         server_seq_path = f"{server_project_path}seq/"
 
         return server_seq_path
-    
+
     def _find_Server_dev_path(self):
         """Get material item in tablewidget and append into seq_path""" 
 
@@ -531,9 +620,8 @@ class MainPublish(QWidget):
         ver_up_server_dev_paths.extend([nk_ver_up_server_path, exr_ver_up_server_path, mov_ver_up_server_path])
 
         return ver_up_server_dev_paths
-    
-    def copy_to_Server_from_Local(self):
 
+    def copy_to_Server_from_Local(self):
         QMessageBox.information(self, "Folder Selected", "Please select 'Folder' for exr")
 
         ver_up_local_paths = self.version_up_in_Local()
@@ -637,7 +725,7 @@ class MainPublish(QWidget):
 
             if origin_ext == "mov":
                 self.ui.label_thumbnail_mov.setPixmap(scaled_pixmap)
-    
+
     #=================================================================    
 
     def _create_nk_thumbnail(self, file_path, frame_number):
@@ -738,7 +826,7 @@ class MainPublish(QWidget):
             self.display_thumbnail_in_ui(exr_png_path)
 
         return exr_png_path
-            
+
     #=================================================================
     
     def _create_mov_thumbnail(self, input_path, output_path, frame_number=1):
@@ -748,7 +836,7 @@ class MainPublish(QWidget):
         .output(output_path, vframes=1)
         .run()
         )
-        
+
     def generate_mov_thumbnail_from_file(self):
 
         mov_path = f"{self.mov_file_path}{self.mov_file_names[0]}"
@@ -784,47 +872,153 @@ class MainPublish(QWidget):
         description_list.append(nk_description, exr_description, mov_description)
 
         return description_list
-    
+
     def set_delete_icon(self):
         """set the trashbin_icon"""
 
         if self.ui.pushButton_delete.isChecked():
-            image_path = "/home/rapa/yummy/pipeline/scripts/publish/delete_icon.png"
+            image_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/delete_icon.png"
         else:
-            image_path = "/home/rapa/yummy/pipeline/scripts/publish/delete_icon.png"
+            image_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/delete_icon.png"
 
-        # use QPixmap for image load and convert to QIcon
+        # QPixmap을 사용하여 이미지를 로드하고 QIcon으로 변환
         pixmap = QPixmap(image_path)
 
         button_size = self.ui.pushButton_delete.size()
         scaled_pixmap = pixmap.scaled(button_size, Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
 
-        # After converting, set the icon as button
+        # QIcon으로 변환 후 버튼 아이콘으로 설정
         icon = QIcon(scaled_pixmap)
         self.ui.pushButton_delete.setIcon(icon)
         icon_size = QSize(button_size.width() -12, button_size.height() - 12)
-        self.ui.pushButton_delete.setIconSize(icon_size)
-    
-    """
-    ★ 메세지 함수
-    """
+        self.ui.pushButton_delete.setIconSize(icon_size)  # 아이콘 크기 설정
 
-    def make_message_for_upload(self):
+#===============================================================     
+    def make_message_for_upload_ver(self):
         msg_box = QMessageBox()
         msg_box.setWindowTitle("Warning")
-        msg_box.setText("notValid in validateForm \n \nDo you still want to proceed?")
+        msg_box.setText("notValid in validateForm. \n",
+                        self.val_nk(), 
+                        self.val_exr(), 
+                        self.val_mov(), 
+                        "\n Do you still want to proceed?")
         msg_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         msg_box.setIcon(QMessageBox.Warning)
         result = msg_box.exec()                               
-        if result == QMessageBox.Yes:
-            print("upload")
+        if result == QMessageBox.Yes:       #force
+            self.copy_to_Server_from_Local 
+            self.sg_upload_data_ver
+            self.sg_create_ver
+            self.sg_thumbnail_upload
+        else:                              #validate again
+            msg_box.setText("Please validate again.")
 
-        else:
-            print("validate again")
+    def make_message_for_upload_pub(self):
+        msg_box = QMessageBox()
+        msg_box.setWindowTitle("Warning")
+        msg_box.setText("notValid in validateForm. \n",
+                        self.val_nk(), 
+                        self.val_exr(), 
+                        self.val_mov(), 
+                        "\n Do you still want to proceed?")
+        msg_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msg_box.setIcon(QMessageBox.Warning)
+        result = msg_box.exec()                               
+        if result == QMessageBox.Yes:       #force
+            self.copy_to_Server_from_Local 
+            self.sg_upload_data_pub
+            self.sg_create_ver
+            self.sg_create_pub
+            self.sg_thumbnail_upload
+        else:                              #validate again
+            msg_box.setText("Please validate again.")
 
-    """
-    ★ 누크 환경설정 함수 
-    """
+#===============================================================     
+
+    def sg_upload_data_ver(self): 
+        sg = connect_sg
+        PF = PathFinder()
+        project_id = PF.data_needed[1]
+        user_name = PF.data_needed[2]
+        ver_data  =[]
+        if project_id:
+            filters = [["project", "is", {"type": "Project", "id": project_id}]]
+            fields = ["code", "entity", "sg_version_type", "sg_status_list", "user"]
+            sg.find("Version", filters=filters, fields=fields)
+
+            #code, shot, shot_id빼서 정리
+            shot = "PKG_030"
+            code = shot + "_mm_v006"
+            file_type = ".mov"
+            file_path = '/Users/lucia/Desktop/4Codes/1Project/test_v001.mov'
+            version_nk = "15v2"
+            colorspace = "sRGB"
+
+            ver_data = {
+                "project" : {"type": "Project", "id" : project_id},
+                "code" : code,
+                # "image" : , =preview ; 썸네일, mov 올라갈 수 있도록
+                "sg_status_list" : "wip",           #pub, sc
+                "user": {"type" : "HumanUser", "name" : user_name, "id" : user_id},
+                "description" : "testing",
+                "sg_extension" : file_type,         #exr, mov, nk
+                "sg_path" : file_path,
+                "sg_nk_version" : version_nk,
+                "sg_colorspace_1" : colorspace
+            }
+            # sg.upload('Version', entity_id = "")
+            # mov_file = '/Users/lucia/Desktop/4Codes/1Project/test_v001.mov'
+            # sg.upload('Version', entity_id = "Content", path = mov_file, field_name = "sg_ddd", display_name = None)
+            print(ver_data)
+            return ver_data
+
+    def sg_create_ver(self, sg, ver_data):
+        sg.create('Version', ver_data)
+        print ("version 생성이 완료되었습니다.")
+
+    def sg_upload_data_pub(self): 
+        sg = connect_sg
+        PF = PathFinder()
+        project_id = PF.data_needed[1]
+        user_name = PF.data_needed[2]
+        pub_data  =[]
+        if project_id:
+            filters = [["project", "is", {"type": "Project", "id": project_id}]]
+            fields = ["code", "entity", "sg_version_type", "sg_status_list", "user"]
+            sg.find("Version", filters=filters, fields=fields)
+
+            #code, shot, shot_id빼서 정리
+            shot = "PKG_030"
+            code = shot + "_mm_v007"
+            file_type = ".mov"
+            file_path = '/Users/lucia/Desktop/4Codes/1Project/test_v001.mov'
+            version_nk = "15v2"
+            colorspace = "sRGB"
+
+            pub_data = {
+                "project" : {"type": "Project", "id" : project_id},
+                "code" : code,
+                # "image" : , =preview ; 썸네일, mov 올라갈 수 있도록
+                "sg_status_list" : "wip",           #pub, sc
+                "user": {"type" : "HumanUser", "name" : user_name, "id" : user_id},
+                "description" : "testing",
+                "published_file_type" : file_type,         #exr, mov, nk
+                "version" : self.ver_data[self.code],
+                "sg_nk_version" : version_nk,
+                "sg_colorspace_1" : colorspace
+            }
+            # sg.upload('Version', entity_id = "")
+            # mov_file = '/Users/lucia/Desktop/4Codes/1Project/test_v001.mov'
+            # sg.upload('Version', entity_id = "Content", path = mov_file, field_name = "sg_ddd", display_name = None)
+            print(pub_data)
+            return pub_data
+
+    def sg_create_pub(self, sg, ver_data) : 
+        sg.create('Publish', ver_data)
+        print ("Publish 생성이 완료되었습니다.")
+
+    def sg_thumbnail_upload():
+        pass
 
 def open_ui_in_nuke():
     from importlib import reload
@@ -838,209 +1032,20 @@ def open_ui_in_nuke():
 
 
 
-#===============================================================
-# class Data(Set): 
-#     """ shotgrid에 업로드 할 데이터 모으는 클래스"""
-
-#     def data_sg(self, project_id): 
-#         # 프로젝트의 versions 데이터 가져오기
-#         Set.connect_sg(self)
-#         ver_datas = []
-#         if project_id:
-#             filters = [["project", "is", {"type": "Project", "id": project_id}]]
-#             # filters = (["user", "is", {"type" : "HumanUser", "name" : username}])
-#             fields = ["code", "entity", "sg_version_type", "sg_status_list", "user"]
-#             versions = self.sg.find("Version", filters=filters, fields=fields)
-
-#             for version in versions:
-#                 sgdata_version_name = version.get("code", "N/A")                            #이름
-#                 # sgdata_sg_status = version.get("sg_status_list", "N/A")                   #status   
-#                 #status : pub이면 손 못대게? 아닌가?
-#                 sgdata_path = version.get("sg_path", "N/A")                                 #nuke path
-#                 sgdata_extend = version.get("sg_version_file_type", "N/A")                  #extension
-#                 sgdata_colorspace = version.get("sg_colorspace_1", "N/A")                   #color space
-#                 sgdata_nk_version = version.get("sg_nk_version", "N/A")
-#                 # codecname ; 확인
-#                 # resolution ; project랑 확인? / 1차로 공란 확인 할 것
-#                 # frame ; 확인
-
-#                 ver_datas.append({
-#                     "version_name": sgdata_version_name,
-#                     "file_path" : sgdata_path, 
-#                     "extend" : sgdata_extend,
-#                     "colorspace" : sgdata_colorspace,
-#                     "nuke_version": sgdata_nk_version
-#                     })
-#         print (ver_datas)
-#         return ver_datas
-    
-#     def data_nk(self):
-#         nk_datas = {}
-#         root = nuke.root()
-#         path = root["name"].value()                     # file path
-#         extend = path.split(".")[-1]                    # extendation
-#         colorspace = root["colorManagement"].value()    # colorspace
-#         nuke_version = nuke.NUKE_VERSION_STRING         # nk version
-        
-#         nk_datas = {
-#             "file_path" : path,
-#             "extend" : extend,
-#             "colorspace" : colorspace,
-#             "nuke_version" : nuke_version
-#             }
-
-#         return nk_datas
-
-#     def data_exr_mov(self, file_path):
-#         exr_datas = {}
-#         mov_datas = {}
-#         probe = ffmpeg.probe(file_path)
-
-#         # extract video_stream
-#         video_stream = next((stream for stream in probe['streams']if stream['codec_type'] == 'video'),None)
-#         codec_name = video_stream['codec_name']
-#         colorspace = video_stream.get('color_space', "N/A")
-#         width = int(video_stream['width'])
-#         height = int(video_stream['height'])
-#         # a = video_stream.keys()
-#         # print(a)
-
-#         resolution = f"{width}x{height}"
-
-#         if file_path.split(".")[-1] == "mov":
-#             frame = int(video_stream['nb_frames'])
-
-#             mov_datas = {
-#             "file_path": file_path,
-#             "codec_name": codec_name,
-#             "colorspace": colorspace,
-#             "resolution": resolution,
-#             "frame": frame
-#             }
-
-#             return mov_datas
-        
-#         elif file_path.split(".")[-1] == "exr":
-#             frame = 1
-#             exr_datas = {
-#             "file_path": file_path,
-#             "codec_name": codec_name,
-#             "colorspace": colorspace,
-#             "resolution": resolution,
-#             "frame": frame
-#             }
-#             return exr_datas
-# #===============================================================
-
-# class Validate():
-#     """ validation 비교하는? 클래스"""
-#     def val_nk(self, ver, nk): 
-#         for k in nk.keys() : 
-#             if ver.get(k) == nk.get(k): 
-#                 pass
-#                 # return True
-#             else : 
-#                 print(k, "is non valid, check again the values")
-#                 return False
-
-#     def val_exr(self, exr):
-#         for k in exr.keys():
-#             if exr.get(k):
-#                 pass
-#             else : 
-#                 print ("value ", k, " in exr is now empty, check again.")
-#                 return False
-
-#     def val_mov(self, mov):
-#         for k in mov.keys():
-#             if mov.get(k):
-#                 pass
-#             else : 
-#                 print ("value ", k, " in mov is now empty, check again.")
-#                 return False
-# # nk exr mov all right -> Pub 
-# # one wrong -> print wrong
-
-# class Act(): 
-#     """ 수정할지 말지 물어보는 클래스 """
-#     def ask(self, bool):
-
-#         QMessageBox.information(self, "Asking", "Wanna Modify?")
-#         bool = input("change or force?")    # Qmessage ; 수정할래 force 할래? 
-#         return bool 
-#         # if 수정 : modify == 1
-#         #     return True                   #프로그램 창 닫히도록
-#         # else :    force == 0              #force
-#         #     return False                  #Pub으로 뜁니다
-
-# class Pub(): 
-#     """ shotgrid에 업로드하는 클래스"""
-#     def server_upload(self):
-#         pass
-#         """
-#         버전 업
-#         폴더 이동
-#         """
-
-#     def make_data_upload(self, path):
-        
-#         #썸네일도 업로드 가능하게
-#         pass
-
-#     def sg_version_upload(self, sg, data): 
-#         upload = sg.create('Version', data)
-#         if not upload == 1 :
-#             print("version 업로드 되었습니다.")
-
-#     def sg_publish_upload(self): 
-#         upload = sg.create('Publish', data)
-#         if not upload == 1 :
-#             print("publish 업로드 되었습니다.")
-    
-# setting = Set()
-# sg = setting.connect_sg()
-# # shotgrid_data = shotgrid.get_versions_data(222)
-# # shotgrid.save_to_json(shotgrid_data)
-
-# data = Data()
-# # 222 : project 불러오기 연결      
-# dict_ver = data.data_sg(222)
-# dict_nk = data.data_nk(222)
-# dict_exr = data.data_exr(222)
-# dict_mov = data.data_mov(222)
-# # exr, mov 파일 따로 나올 수 있도록
-
-# val = Validate()
-# val_nk = val.val_nk(dict_ver, dict_nk)
-# val_exr = val.val_exr(dict_exr)
-# val_mov = val.val_mov(dict_mov)
-
-# pub = Pub()
-# if val_nk & val_exr & val_mov :                     #모두 True 일 때 
-#     server_upload = pub.server_upload
-#     ver_upload = pub.sg_version_upload
-#     if button_pub == 1:                             #pub버튼이 눌렸을 때
-#         pub_upload = pub.sg_publish_upload
-
-# else :                                              #False가 하나라도 뜨면
-#     act = Act()
-#     ask = act.ask
-#     if ask == 0:                                    #Pub으로 뜁니다. 
-#         if 처음 button_ver == 1 :                    #처음에 version을 눌렀을 경우
-#             server_upload = pub.server_upload       #서버랑 버전 업데이트
-#             ver_upload = pub.sg_version_upload
-#             tmb_upload = pub.sg_thumbnail_upload
-#         elif 처음 button_pub == 1:                   #처음에 pub버튼으로 시작했을 경우
-#             server_upload = pub.server_upload       #서버, 버전, 퍼블리시 업데이트
-#             ver_upload = pub.sg_version_upload
-#             pub_upload = pub.sg_publish_upload
-#             tmb_upload = pub.sg_thumbnail_upload
-
-
-
 if __name__ == "__main__":
     app = QApplication()
     win = MainPublish()
     win.show()
-    app.exec()
+    # sys.exit(app.exec())
 
+
+
+
+
+
+
+
+# issue : 
+# 1. 0 -> 1 ? validate 할 것이 없는데?
+# 2. version data 가져올 때 pub (final) 된 것이면 가져올 수 없게?
+# 3. ver_data 가변적으로 앞 변수 가져올 수 있도록
