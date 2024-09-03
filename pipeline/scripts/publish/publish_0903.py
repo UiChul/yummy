@@ -25,11 +25,11 @@ import sys
 import re
 import nuke
 import json
-# import ffmpeg
+import ffmpeg
 import shutil
 
 os.system("ffmpeg")
-sys.path.append("/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages")
+# sys.path.append("/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages")
 from shotgun_api3 import shotgun
 
 link = "https://4thacademy.shotgrid.autodesk.com/"
@@ -65,14 +65,15 @@ class PathFinder:
         new_path = f"{start_path}/{project_value}/"
         return new_path
     
-    def data_needed(self, data_json): 
-        self.project_name= data_json[self.key]
-        self.project_id = data_json['id']
-        self.user_name = data_json['name']
-        self.project_res_width = data_json['resolution_width']
-        self.project_res_height = data_json['resolution_height']
-        # print(self.user_id, self.ㅋ, self.project_id, self.project_name, self.project_res_width, self.project_res_height)
-        list_needed = [self.project_name, self.project_id, self.user_name, self.project_res_width, self.project_res_height]
+    def data_needed(self):
+        data_json = self._read_paths_from_json() 
+        project_name= data_json[self.key]
+        project_id = data_json['id']
+        user_name = data_json['name']
+        project_res_width = data_json['resolution_width']
+        project_res_height = data_json['resolution_height']
+        # print(self.user_id, self.ㅋ, project_id, project_name, project_res_width, project_res_height)
+        list_needed = [project_name, project_id, user_name, project_res_width, project_res_height]
         return list_needed
 
 class MainPublish(QWidget):
@@ -260,7 +261,7 @@ class MainPublish(QWidget):
             for file in exr_files:
                 self.exr_full_path = f"{exr_file_path}/{file}"
 
-                exr_validation_info_dict = self._get_exr_and_mov_validation_info(self.exr_full_path)
+                exr_validation_info_dict = self._get_exr_validation_info(self.exr_full_path)
                 exr_info_text = "\n".join(f"{key} : {value}" for key, value in exr_validation_info_dict.items())
                 exr_validation_info = QTableWidgetItem(exr_info_text)
                 exr_validation_info.setTextAlignment(Qt.AlignLeft | Qt.AlignTop) # 왼쪽 정렬, 위쪽 정렬
@@ -278,7 +279,7 @@ class MainPublish(QWidget):
 
             mov_new_path = f"{self.mov_file_path}{mov_selected_file}"
         
-            mov_validation_info_dict = self._get_exr_and_mov_validation_info(mov_new_path)
+            mov_validation_info_dict = self._get_mov_validation_info(mov_new_path)
             mov_info_item = "\n".join(f"{key} : {value}" for key, value in mov_validation_info_dict.items())
             mov_validation_info = QTableWidgetItem(mov_info_item)
             mov_validation_info.setTextAlignment(Qt.AlignLeft | Qt.AlignTop) # 왼쪽 정렬, 위쪽 정렬
@@ -286,10 +287,14 @@ class MainPublish(QWidget):
 
     #===================================================================
 
-    def _get_versions_data(self, project_id):
+    def _get_versions_data(self):
         """
         프로젝트의 versions 데이터 가져오기
         """
+        json_file_path = '/home/rapa/YUMMY/pipeline/json/project_data.json'
+        PF = PathFinder(json_file_path)
+        data_making = PF.data_needed()
+        project_id = data_making[1]
         ver_datas = []
 
         if project_id:
@@ -389,9 +394,9 @@ class MainPublish(QWidget):
             # print(file_validation_info_dict)
             return mov_file_validation_dict
 
-    def val_nk(self, ver, nk): 
-        ver = self._get_versions_data                  #dict
-        nk = self._get_nk_validation_info              #dict
+    def val_nk(self): 
+        ver = self._get_versions_data()                  #dict
+        nk = self._get_nk_validation_info()              #dict
         for k in nk.keys() : 
             if ver.get(k) == nk.get(k):                #file path도 같을 수 있나?
                 return True
@@ -399,15 +404,15 @@ class MainPublish(QWidget):
                 return (k, "is non valid, check again the values")
 
     def val_exr(self):
-        exr = self._get_exr_validation_info
+        exr = self._get_exr_validation_info()
         for k in exr.keys():
             if exr.get(k):
                 return True
             else : 
                 return("value ", k, " in exr is now empty, check again.")
 
-    def val_mov(self, mov):
-        mov = self._get_mov_validation_info
+    def val_mov(self):
+        mov = self._get_mov_validation_info()
         for k in mov.keys():
             if mov.get(k):
                 return True
@@ -559,10 +564,10 @@ class MainPublish(QWidget):
     def _find_Server_seq_path(self):
         """Find matching folder from Json and make Server path until 'seq' """
 
-        json_file_path = '/Users/lucia/Downloads/project_data.json'
+        json_file_path = '/home/rapa/YUMMY/pipeline/json/project_data.json'
         path_finder = PathFinder(json_file_path)
 
-        start_path = 'C:/home/rapa/YUMMY/project'
+        start_path = '/home/rapa/YUMMY/project'
 
         # Get the new path
         server_project_path = path_finder.append_project_to_path(start_path)
@@ -877,9 +882,9 @@ class MainPublish(QWidget):
         """set the trashbin_icon"""
 
         if self.ui.pushButton_delete.isChecked():
-            image_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/delete_icon.png"
+            image_path = "/home/rapa/yummy/pipeline/scripts/publish/delete_icon2.png"
         else:
-            image_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/delete_icon.png"
+            image_path = "/home/rapa/yummy/pipeline/scripts/publish/delete_icon2.png"
 
         # QPixmap을 사용하여 이미지를 로드하고 QIcon으로 변환
         pixmap = QPixmap(image_path)
@@ -933,33 +938,41 @@ class MainPublish(QWidget):
         else:                              #validate again
             msg_box.setText("Please validate again.")
 
-#===============================================================     
-
+#===============================================================  
     def sg_upload_data_ver(self): 
         sg = connect_sg
-        PF = PathFinder()
-        project_id = PF.data_needed[1]
-        user_name = PF.data_needed[2]
-        ver_data  =[]
+        json_file_path = '/home/rapa/YUMMY/pipeline/json/project_data.json'
+        PF = PathFinder(json_file_path)
+
+        data_making = PF.data_needed()
+        print(f"{data_making}: 데이타 메이킹")
+
+        project_id = data_making[1]
+        print(f"{project_id}: 데이타 메이킹")
+
+        self.user_name = data_making[2]
+        user_name = self.user_name
+        # ver_data  =[]
         if project_id:
             filters = [["project", "is", {"type": "Project", "id": project_id}]]
-            fields = ["code", "entity", "sg_version_type", "sg_status_list", "user"]
-            sg.find("Version", filters=filters, fields=fields)
-
+            # fields = ["code", "entity", "sg_version_type", "sg_status_list", "user"]
+            to_use= sg.find("Version", filters = filters)
+        if to_use : 
             #code, shot, shot_id빼서 정리
             shot = "PKG_030"
-            code = shot + "_mm_v006"
+            code = shot + "_mm_v007"
             file_type = ".mov"
-            file_path = '/Users/lucia/Desktop/4Codes/1Project/test_v001.mov'
+            file_path = '/home/rapa/YUMMY/project/Marvelous/seq/OPN/OPN_0010/cmp/dev/mov/OPN_0010_cmp_v001.mov'
             version_nk = "15v2"
             colorspace = "sRGB"
+            user_name = "UICHUL SHIN"
 
             ver_data = {
                 "project" : {"type": "Project", "id" : project_id},
                 "code" : code,
                 # "image" : , =preview ; 썸네일, mov 올라갈 수 있도록
                 "sg_status_list" : "wip",           #pub, sc
-                "user": {"type" : "HumanUser", "name" : user_name, "id" : user_id},
+                "user": {"type" : "HumanUser", "name" : user_name, "id" : 93},
                 "description" : "testing",
                 "sg_extension" : file_type,         #exr, mov, nk
                 "sg_path" : file_path,
@@ -978,23 +991,28 @@ class MainPublish(QWidget):
 
     def sg_upload_data_pub(self): 
         sg = connect_sg
-        PF = PathFinder()
-        project_id = PF.data_needed[1]
-        user_name = PF.data_needed[2]
+        
+        json_file_path = '/home/rapa/YUMMY/pipeline/json/project_data.json'
+        PF = PathFinder(json_file_path)
+
+        data_making = PF.data_needed()
+        project_id = data_making[1]
+        user_name = data_making[2]
+
         pub_data  =[]
         if project_id:
             filters = [["project", "is", {"type": "Project", "id": project_id}]]
             fields = ["code", "entity", "sg_version_type", "sg_status_list", "user"]
-            sg.find("Version", filters=filters, fields=fields)
+            find = sg.find("Version", filters=filters, fields=fields)
 
             #code, shot, shot_id빼서 정리
             shot = "PKG_030"
             code = shot + "_mm_v007"
             file_type = ".mov"
-            file_path = '/Users/lucia/Desktop/4Codes/1Project/test_v001.mov'
+            file_path = '/home/rapa/YUMMY/project/Marvelous/seq/OPN/OPN_0010/cmp/dev/mov/OPN_0010_cmp_v001.mov'
             version_nk = "15v2"
             colorspace = "sRGB"
-
+        if find : 
             pub_data = {
                 "project" : {"type": "Project", "id" : project_id},
                 "code" : code,
@@ -1025,9 +1043,9 @@ def open_ui_in_nuke():
     # import sys
     global win
     # sys.path.append("/home/rapa/yummy/pipeline/scripts/publish")
-    import publish_0901
-    reload(publish_0901)
-    win = publish_0901.MainPublish()
+    import publish_0903
+    reload(publish_0903)
+    win = publish_0903.MainPublish()
     win.show()
 
 
