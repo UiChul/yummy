@@ -74,7 +74,6 @@ class MainPublish(QWidget):
         self.set_delete_icon()
 
         self._collect_path()
-        # self.test()
 
         # Signal
         self.ui.pushButton_add_to_basket.clicked.connect(self.on_add_button_clicked)
@@ -84,7 +83,7 @@ class MainPublish(QWidget):
 
         self.ui.pushButton_publish.clicked.connect(self.copy_to_pub_from_dev_in_Server)
         self.ui.pushButton_publish.clicked.connect(self.make_message_for_upload)
-        
+
         self.ui.pushButton_delete.clicked.connect(self.delete_tablewidget_item)
 
     def on_add_button_clicked(self):
@@ -707,19 +706,17 @@ class MainPublish(QWidget):
         exr_name = f"{shot_code}_{team_name}_{ver}.1001.exr"
         image_name = f"{shot_code}_{team_name}_{ver}.1001_exr.png"
         
-        # thumbnail_folder_path = f"{self.exr_folder_path.split("dev")[0]}/.thumbnail"
         thumbnail_path = self._make_thumbnail_path()
-        # print(thumbnail_path)
 
         if not os.path.isdir(thumbnail_path):
             os.makedirs(thumbnail_path)
 
         exr_path = f"{self.exr_folder_path}{ver}/{exr_name}"
-        # print(f"{exr_path}:이엑스알")
         exr_png_path = f"{thumbnail_path}/{image_name}"
-        # print(f"{exr_png_path}:이엑스알피엔지")
 
         if not os.path.isfile(exr_png_path):
+            # print(f"{exr_path}:이엑스알패스")
+            # print(f"{exr_png_path}:이엑스알피앤지")
             self._create_exr_thumbnail(exr_path, exr_png_path)
             self.display_thumbnail_in_ui(exr_png_path)
             print("exr이 png가 되었습니다.")
@@ -778,9 +775,9 @@ class MainPublish(QWidget):
         """set the trashbin_icon"""
 
         if self.ui.pushButton_delete.isChecked():
-            image_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/delete_icon.png"
+            image_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/delete_icon2.png"
         else:
-            image_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/delete_icon.png"
+            image_path = "C:/Users/LEE JIYEON/yummy/pipeline/scripts/publish/delete_icon2.png"
 
         # use QPixmap for image load and convert to QIcon
         pixmap = QPixmap(image_path)
