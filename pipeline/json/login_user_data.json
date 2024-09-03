@@ -1,7 +1,7 @@
 {
-    "user_id": 93,
-    "name": "UICHUL SHIN",
-    "email": "suc708@naver.com",
+    "user_id": 155,
+    "name": "Wooin JUNG",
+    "email": "wooin092633@gmail.com",
     "permission_group": "Admin",
     "projects": [
         {
@@ -11,9 +11,9 @@
             "resolution_height": "1920",
             "status": null,
             "shot_code": {
-                "Dogs": {
+                "gamja": {
                     "steps": [
-                        "mod"
+                        "lgt"
                     ]
                 }
             }
@@ -25,54 +25,59 @@
             "resolution_height": "1080",
             "status": "Active",
             "shot_code": {
-                "INS_020": {
-                    "steps": [
-                        "lgt"
-                    ]
-                },
-                "INS_010": {
-                    "steps": [
-                        "lgt"
-                    ]
-                },
                 "BRK_010": {
                     "steps": [
-                        "lgt"
+                        "cmp"
                     ]
                 },
                 "BRK_020": {
                     "steps": [
-                        "lgt"
+                        "cmp"
                     ]
                 },
                 "FLB_010": {
                     "steps": [
-                        "lgt"
+                        "cmp"
                     ]
                 },
                 "FLB_020": {
                     "steps": [
-                        "lgt"
+                        "cmp"
+                    ]
+                },
+                "INS_010": {
+                    "steps": [
+                        "cmp"
+                    ]
+                },
+                "INS_020": {
+                    "steps": [
+                        "cmp"
                     ]
                 },
                 "PKG_010": {
                     "steps": [
-                        "lgt"
+                        "cmp"
                     ]
                 },
                 "PKG_020": {
                     "steps": [
-                        "lgt"
+                        "cmp"
                     ]
                 },
                 "PKG_030": {
                     "steps": [
-                        "lgt"
+                        "cmp"
                     ]
                 },
                 "FNL_010": {
                     "steps": [
-                        "lgt"
+                        "cmp"
+                    ]
+                },
+                "FNL_020": {
+                    "steps": [
+                        "cmp"
                     ]
                 }
             }

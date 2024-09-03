@@ -1,11 +1,11 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QGuiApplication,QPalette,QColor
-from PySide6.QtWidgets import QWidget,QApplication,QSizePolicy
+from PySide6.QtWidgets import QMainWindow,QApplication,QSizePolicy
 from PySide6.QtCore import Qt, QSize
 
 import os,sys
 sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
-from loader_ui.main_window_v003_ui import Ui_Form
+from loader_ui.main_window_v005_ui import Ui_MainWindow
 from loader_script.loader_shot import Mainloader
 from loader_script.loader_my_task import My_task
 from loader_script.loader_clip_v002 import Libraryclip
@@ -13,21 +13,25 @@ from loader_script.loader_asset import Libraryasset
 from loader_module.project_data import project_data
 from loader_script.loader_pub import Loader_pub
 import json
+import subprocess
 
 # class Merge(QWidget,Mainloader,project_data,Loader_pub):
-class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libraryasset):
+class Merge(QMainWindow,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libraryasset):
     def __init__(self,info):
         super().__init__()
         self.set_up()
         self.setPalette(self.get_darkModePalette())
         self.tab_enable(info)
         self.set_main_loader(info)
+
         
         info = project_data.__init__(self,info)
         self.write_project_json(info)
         
         self.connect_script()
-        
+        self.ui.pushButton_reset.clicked.connect(self.reset_ui)
+
+
     def set_main_loader(self,info):
         
         project   = info["project"]
@@ -45,7 +49,15 @@ class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libra
     def tab_enable(self,info):
         if not info["rank"] == "Admin":
             self.ui.tabWidget_all.removeTab(3)
-            
+
+    def reset_ui(self):
+        print("0000000000")
+        login_path = "python3.9 /home/rapa/yummy/pipeline/scripts/loader/loader_script/singin.py"
+        subprocess.Popen(login_path, shell=True,executable="/bin/bash")
+
+        sys.exit()
+
+
     def center_window(self):
         screen = QGuiApplication.primaryScreen()
         screen_geometry = screen.geometry() 
@@ -56,8 +68,9 @@ class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libra
         self.move(adjusted_position)
 
         user = info["name"]
+        # self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.setWindowTitle(f"{user} Loader")
-        self.setFixedSize(1150,920)
+
 
     def get_darkModePalette(self) :
 
@@ -84,10 +97,9 @@ class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libra
         darkPalette.setColor( QPalette.Disabled, QPalette.HighlightedText, QColor( 127, 127, 127 ), )
 
         return darkPalette
-    
 
     def set_up(self):
-        self.ui = Ui_Form()
+        self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.center_window()
 

@@ -1,10 +1,10 @@
 from PySide6.QtCore import Qt, QUrl
 from PySide6.QtWidgets import QWidget,QApplication,QHeaderView
 from PySide6.QtWidgets import QTreeWidgetItem, QTableWidgetItem, QLabel,QTableWidget
-from PySide6.QtWidgets import QAbstractItemView, QVBoxLayout
+from PySide6.QtWidgets import QAbstractItemView, QVBoxLayout, QSizePolicy
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile,QSize
-from PySide6.QtGui import QPixmap, QColor,QFont,QMovie
+from PySide6.QtGui import QPixmap, QColor,QFont,QMovie, QBrush
 from PySide6.QtMultimedia import QMediaPlayer
 from PySide6.QtMultimediaWidgets import QVideoWidget
 import threading
@@ -69,7 +69,8 @@ class Mainloader:
     # ==============================================================================================    
     # json 연결
     # ==============================================================================================    
-    
+
+
     # project 기본 세팅 설정
     
     def set_project_info(self):
@@ -141,7 +142,7 @@ class Mainloader:
             parent_item = QTreeWidgetItem(self.shot_treeWidget)
             if shot_code in task_shot_code:
                 parent_item.setText(0, shot_code)
-                parent_item.setForeground(0,QColor("Green"))
+                parent_item.setForeground(0,QColor(0,251,236))
                 
                 task_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{seq}/{shot_code}"
                 tasks = os.listdir(task_path)
@@ -155,8 +156,9 @@ class Mainloader:
                 for task in tasks :
                     task_item = QTreeWidgetItem(parent_item)
                     if task in my_task:
-                        task_item.setText(0,task)
-                        task_item.setForeground(0,QColor("Green"))
+                        task_item.setText(0,f"{task}/dev")
+
+                        task_item.setForeground(0,QColor(0,251,236))
                         my_task_dict = {}
                         my_task_dict[task] = shot_code
                         self.my_dev_list.append(my_task_dict)
@@ -165,14 +167,14 @@ class Mainloader:
                         pub_list = os.listdir(f"{task_path}/{task}/pub/work")
                         if pub_list:
                             task_item.setText(0,task)
-                            task_item.setForeground(0,QColor("YellowGreen"))
+                            task_item.setForeground(0,QColor("lightgray"))
                            
                         else:
                             task_item.setText(0,task)
-                            task_item.setForeground(0,QColor("lightgray"))                                      
+                            task_item.setForeground(0,QColor(85, 87, 83))                                      
             else:
                 parent_item.setText(0, shot_code)
-                parent_item.setForeground(0,QColor("lightgray"))
+                parent_item.setForeground(0,QColor(85, 87, 83))
                 
                 task_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{seq}/{shot_code}"
                 tasks = os.listdir(task_path)
@@ -186,7 +188,7 @@ class Mainloader:
                         parent_item.setForeground(0,QColor("Blue"))
                     else:
                         task_item.setText(0,task)
-                        task_item.setForeground(0,QColor("lightgray"))
+                        task_item.setForeground(0,QColor(85, 87, 83))
                 
     def get_clicked_treeWidget_shot_item (self,item,column):
         """
@@ -194,6 +196,7 @@ class Mainloader:
         """
         
         selected_task = item.text(column)
+        selected_task = selected_task.split("/")[0]
 
         # 선택한 task의 부모인 shot_code 가져오기 
         parent_item = item.parent()
@@ -350,9 +353,8 @@ class Mainloader:
             label_text = QLabel()
             label_text.setText(work)
             label_text.setAlignment(Qt.AlignCenter)
-            label_text.setStyleSheet(''' font-size: 11px; ''')
             label_text.setWordWrap(True)
-            
+            label_text.setStyleSheet('font-size: 11px;color:rgb(211, 215, 207);')
             layout.addWidget(label_img)
             layout.addWidget(label_text)
             layout.setContentsMargins(0,0,0,10)
@@ -361,12 +363,18 @@ class Mainloader:
             
             item = QTableWidgetItem()
             item.setText(work)
+            # item text 색상 투명하게 조정
+            brush = QBrush(QColor(0,0,0,0))
+            item.setForeground(brush)
+            item.setTextAlignment(Qt.AlignRight)
+            font = QFont()
+            font.setPointSize(1)
+            item.setFont(font)
+            
             self.work_table.setItem(row, col, item)
             self.work_table.setCellWidget(row,col,cell_widget)
             
             col +=1
-            
-            # self.reduce_item_visibility_in_tableWidget(row, col)
             
             # 갯수 맞춰서 다다음줄로
             if col >= self.work_table.columnCount():            
@@ -464,7 +472,7 @@ class Mainloader:
             label_text = QLabel()
             label_text.setText(exr)
             label_text.setAlignment(Qt.AlignCenter)
-            label_text.setStyleSheet(''' font-size: 11px; ''')
+            label_text.setStyleSheet('font-size: 11px;color:rgb(211, 215, 207);')
             label_text.setWordWrap(True)
             
             layout.addWidget(label_img)
@@ -573,7 +581,7 @@ class Mainloader:
             label_text = QLabel()
             label_text.setText(mov)
             label_text.setAlignment(Qt.AlignCenter)
-            label_text.setStyleSheet(''' font-size: 11px; ''')
+            label_text.setStyleSheet('font-size: 11px;color:rgb(211, 215, 207);')
             label_text.setWordWrap(True)
             
             layout.addWidget(label_img)
@@ -783,10 +791,12 @@ class Mainloader:
         """
         shot_tableWidget에서 클릭한 파일 path 획득
         """
-        
+
         front_path = self.ui.label_shot_filepath.text()
         split_front_path = front_path.split("  ")[1]
          
+        print("우인우인우인우인",split_front_path)
+
         self.nuke_file_path = "/home/rapa/" + split_front_path + "/dev/" + self.tab_name + "/" + selected_file
         return self.nuke_file_path
 

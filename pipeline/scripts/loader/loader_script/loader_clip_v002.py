@@ -595,8 +595,7 @@ class Libraryclip:
         # shotgird load button
         self.ui.commandLinkButton_shotgrid.clicked.connect(self.link_to_shotgrid)
 
-        self.ui.pushButton_reset.clicked.connect(self.reset_ui)
-
+        
 
         # 이미지 경로 설정
         image_path = "/home/rapa/YUMMY/pipeline/source/reset.png"

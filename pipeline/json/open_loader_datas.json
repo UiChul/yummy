@@ -565,7 +565,7 @@
             "description": null,
             "sg_status_list": "wip",
             "artist": "hyogi lee",
-            "updated_at": "2024-08-30 11:30:37"
+            "updated_at": "2024-09-02 18:03:13"
         },
         {
             "version_code": "BRK_020_ly_v001",
@@ -689,18 +689,18 @@
             "version_id": 8189,
             "version_type": null,
             "description": null,
-            "sg_status_list": null,
+            "sg_status_list": "wip",
             "artist": "수연 박",
-            "updated_at": "2024-08-30 15:12:30"
+            "updated_at": "2024-09-03 11:39:02"
         },
         {
             "version_code": "test_v001",
             "version_id": 8190,
             "version_type": null,
             "description": null,
-            "sg_status_list": null,
+            "sg_status_list": "pub",
             "artist": "수연 박",
-            "updated_at": "2024-08-30 15:22:10"
+            "updated_at": "2024-09-03 11:39:05"
         }
     ]
 }
