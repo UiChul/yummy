@@ -83,7 +83,7 @@ class Merge(QMainWindow,Libraryclip,project_data,My_task,Loader_pub,Mainloader,L
 
         self.pub.resize_pub(new_size)
 
-        
+        self.asset.resize_aaset(new_size)
         
 
         # print (new_size, old_size)
@@ -126,10 +126,11 @@ class Merge(QMainWindow,Libraryclip,project_data,My_task,Loader_pub,Mainloader,L
         self.my_task = My_task(self.ui)
         self.shot = Mainloader(self.ui)
         self.pub = Loader_pub(self.ui)
-        # self.pub = 
+        self.asset = Libraryasset(self.ui)
+
 
         Libraryclip.__init__(self,self.ui)
-        Libraryasset.__init__(self,self.ui)
+        # Libraryasset.__init__(self,self.ui)
         # self.my_task.__init__(self,self.ui)
         # Loader_pub.__init__(self,self.ui)
         # Mainloader.__init__(self,self.ui)

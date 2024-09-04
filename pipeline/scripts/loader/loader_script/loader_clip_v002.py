@@ -793,9 +793,9 @@ class Libraryclip:
         sys.exit()
 
 
-    def set_up(self):
-        self.ui = Ui_Form()
-        self.ui.setupUi(self)
+    # def set_up(self):
+    #     self.ui = Ui_Form()
+    #     self.ui.setupUi(self)
 
 
     def file_info(self, mov_file, ext_type):

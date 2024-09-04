@@ -3,10 +3,11 @@
 from PySide6.QtWidgets import QApplication, QTableWidget, QLabel
 from PySide6.QtWidgets import  QVBoxLayout, QWidget, QHeaderView
 from PySide6.QtWidgets import QTableWidgetItem, QAbstractItemView, QSizePolicy
-from PySide6.QtCore import Qt, QMimeData, QSize,Signal
+from PySide6.QtCore import Qt, QMimeData, QSize,Signal, QRect
 from PySide6.QtGui import QDrag, QPixmap, QCursor
 import os
 import sys
+import json
 sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
 from loader_module.ffmpeg_module import find_resolution_frame
 from loader_module.find_time_size import File_data
@@ -15,9 +16,6 @@ try:
     import nuke
 except ImportError:
     nuke = None  # Nuke가 import되지 않은 경우를 대비
-sys.path.append("/usr/autodesk/maya2023/lib/python3.9/site-packages/maya")
-import cmds
-import json
 
 # mod
 class DraggableWidget_mod(QWidget):
@@ -97,6 +95,7 @@ class DroppableTableWidget_mod(QTableWidget):
             self.setRowHeight(row, cell_height)
 
         self.setSizeAdjustPolicy(QTableWidget.AdjustToContents)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.horizontalHeader().setVisible(False)
@@ -112,13 +111,8 @@ class DroppableTableWidget_mod(QTableWidget):
     def dropEvent(self, event):
         if event.mimeData().hasText():
             file_path = event.mimeData().text()
-            file_name = os.path.basename(file_path)
-            name = file_name.split(".")[0]
-
             if nuke:
                 self.apply_to_nuke(file_path)
-            if cmds:
-                self.apply_to_maya(file_path, file_name, name)
             event.acceptProposedAction()
         else:
             event.ignore()
@@ -129,24 +123,6 @@ class DroppableTableWidget_mod(QTableWidget):
             read_node['file'].setValue(file_path)
             nuke.message("A new Read node has been created")
 
-    def apply_to_maya(self, file_path, file_name, name):
-        print(f"Attempting to apply file to Maya: {file_path}")
-
-        if cmds:
-            try:
-                cmds.file(file_path, 
-                        i=True,
-                        type="Alembic", 
-                        ignoreVersion=True, 
-                        ra=True, 
-                        namespace=name, 
-                        importFrameRate=True, 
-                        importTimeRange="override")
-                print(f"Successfully imported {file_path} into Maya.")
-            except Exception as e:
-                print(f"Failed to import {file_path} into Maya. Error: {e}")
-        else:
-            print("Maya cmds is not available.")
 # rig
 class DraggableWidget_rig(QWidget):
     widgetClicked_rig = Signal(str)
@@ -270,20 +246,20 @@ class Libraryasset():
         self.ui = Ui_Form
 
         # Main layout setup
-        layout = QVBoxLayout()
-        layout.setAlignment(Qt.AlignCenter)
-        self.setLayout(layout)
+        # layout = QVBoxLayout()
+        # layout.setAlignment(Qt.AlignCenter)
+        # self.setLayout(layout)
 
         self.make_json_dic()
         # Create QTableWidget
-        self.table_widget_mod = DroppableTableWidget_mod(3,3)  # Initial size, will adjust dynamically
+        self.table_widget_mod = DroppableTableWidget_mod(3,3)  
         self.table_widget_rig = DroppableTableWidget_rig(3,3)
 
         # Add QTableWidget to gridLayout_test
         if hasattr(self.ui, 'gridLayout_mod'):
-            self.ui.gridLayout_mod.addWidget(self.table_widget_mod, 0, 0)  # Add at position (0, 0)
+            self.ui.gridLayout_mod.addWidget(self.table_widget_mod, 0, 0)  
         if hasattr(self.ui, 'gridLayout_rig'):
-            self.ui.gridLayout_rig.addWidget(self.table_widget_rig, 0, 0)  # Add at position (0, 0)
+            self.ui.gridLayout_rig.addWidget(self.table_widget_rig, 0, 0)  
 
         self.set_asset_listWidget("character")
         # Load asset json files into the table
@@ -299,6 +275,9 @@ class Libraryasset():
         
         self.table_widget_mod.itemClicked.connect(self.set_asset_information)
         
+
+
+
 
     def open_json_file (self):
         json_file_path = '/home/rapa/yummy/pipeline/json/open_loader_datas.json'
@@ -584,12 +563,38 @@ class Libraryasset():
         self.ui.label_asset_version.clear()
         self.ui.label_asset_savedtime.clear()
         self.ui.label_asset_filesize.clear()
+
+
+    def resize_aaset(self, new_size):
+        # print (new_size)
+        window_width = new_size.width()
+        window_height = new_size.height()
+        self.ui.tabWidget_template.resize(window_width - 42, window_height - 220)
+
+        self.ui.toolBox_asset_task.resize(window_width - 295, window_height - 320)
+
+        self.ui.groupBox_asset_file_info.setGeometry(QRect((window_width - 275), 30, 220, 191))
+        self.ui.groupBox_asset_comment.setGeometry(QRect((window_width - 275), 230, 220, 191))
+        
+        self.ui.listWidget_mod.resize(231, window_height)
+        self.ui.listWidget_rig.resize(231, window_height + 1000)
+        
+        #mod
+
+        self.table_widget_mod.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.table_widget_mod.resize(window_width - 295, window_height - 320)
+
+
+        # self.table_widget_mod.setColumnCount(int(window_width/362))
         
 
-    def set_up(self):
-        from loader_ui.main_window_v002_ui import Ui_Form
-        self.ui = Ui_Form()
-        self.ui.setupUi(self)
+        #rig 
+
+
+    # def set_up(self):
+        # from loader_ui.main_window_v005_ui import Ui_Form
+        # self.ui = Ui_Form()
+        # self.ui.setupUi(self)
 
 
 if __name__ == '__main__':

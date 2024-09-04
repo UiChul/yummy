@@ -636,7 +636,7 @@ class Ui_MainWindow(object):
         self.label_asset_comment.setGeometry(QRect(10, 30, 211, 141))
         self.plainTextEdit_clip_comment_2 = QPlainTextEdit(self.groupBox_asset_comment)
         self.plainTextEdit_clip_comment_2.setObjectName(u"plainTextEdit_clip_comment_2")
-        self.plainTextEdit_clip_comment_2.setGeometry(QRect(10, 30, 208, 141))
+        self.plainTextEdit_clip_comment_2.setGeometry(QRect(10, 30, 201, 141))
         self.groupBox_asset_file_info = QGroupBox(self.tab_asset)
         self.groupBox_asset_file_info.setObjectName(u"groupBox_asset_file_info")
         self.groupBox_asset_file_info.setGeometry(QRect(810, 30, 227, 191))
@@ -793,7 +793,7 @@ class Ui_MainWindow(object):
         self.tab_clip_2.setObjectName(u"tab_clip_2")
         self.groupBox_asset_file_info_2 = QGroupBox(self.tab_clip_2)
         self.groupBox_asset_file_info_2.setObjectName(u"groupBox_asset_file_info_2")
-        self.groupBox_asset_file_info_2.setGeometry(QRect(810, 30, 227, 191))
+        self.groupBox_asset_file_info_2.setGeometry(QRect(810, 30, 221, 191))
         self.groupBox_asset_file_info_2.setFont(font6)
         self.groupBox_asset_file_info_2.setFlat(False)
         self.groupBox_asset_file_info_2.setCheckable(False)
@@ -1043,11 +1043,11 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget_all.setCurrentIndex(3)
+        self.tabWidget_all.setCurrentIndex(2)
         self.tabWidget_shot_status.setCurrentIndex(2)
         self.tabWidget_shot_task.setCurrentIndex(3)
         self.tabWidget_template.setCurrentIndex(0)
-        self.toolBox_asset_task.setCurrentIndex(0)
+        self.toolBox_asset_task.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
