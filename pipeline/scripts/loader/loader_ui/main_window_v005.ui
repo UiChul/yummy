@@ -36,8 +36,36 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <spacer name="horizontalSpacer_4">
+      <item row="1" column="3">
+       <widget class="QFrame" name="frame_3">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLabel" name="label_rank">
+         <property name="geometry">
+          <rect>
+           <x>5</x>
+           <y>0</y>
+           <width>250</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string> </string>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -48,6 +76,34 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item row="2" column="3">
+       <widget class="QFrame" name="frame_2">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLabel" name="label_projectname">
+         <property name="geometry">
+          <rect>
+           <x>5</x>
+           <y>0</y>
+           <width>151</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </widget>
       </item>
       <item row="0" column="1">
        <widget class="QLabel" name="label_7">
@@ -81,74 +137,6 @@
         </property>
        </spacer>
       </item>
-      <item row="1" column="3">
-       <widget class="QFrame" name="frame_3">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <widget class="QLabel" name="label_rank">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>191</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QFrame" name="frame">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>200</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <widget class="QLabel" name="label_username">
-         <property name="geometry">
-          <rect>
-           <x>5</x>
-           <y>1</y>
-           <width>300</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>8</pointsize>
-          </font>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </widget>
-      </item>
       <item row="2" column="1">
        <widget class="QLabel" name="label_8">
         <property name="sizePolicy">
@@ -168,21 +156,46 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="3">
-       <widget class="QFrame" name="frame_2">
+      <item row="2" column="0">
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="3">
+       <widget class="QFrame" name="frame">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>150</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QLabel" name="label_projectname">
+        <widget class="QLabel" name="label_username">
          <property name="geometry">
           <rect>
            <x>5</x>
            <y>0</y>
-           <width>151</width>
-           <height>21</height>
+           <width>300</width>
+           <height>20</height>
           </rect>
          </property>
          <property name="font">
@@ -196,36 +209,10 @@
         </widget>
        </widget>
       </item>
-      <item row="1" column="0">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
      </layout>
     </item>
     <item row="0" column="1">
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <spacer name="horizontalSpacer_6">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="0" column="3">
        <widget class="QPushButton" name="pushButton_reset">
         <property name="sizePolicy">
@@ -270,7 +257,7 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>160</width>
+          <width>110</width>
           <height>34</height>
          </size>
         </property>
@@ -310,6 +297,19 @@ background-color: rgb(85, 87, 83);</string>
          <bool>false</bool>
         </property>
        </widget>
+      </item>
+      <item row="0" column="0">
+       <spacer name="horizontalSpacer_6">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </item>
@@ -380,7 +380,7 @@ background-color: rgb(85, 87, 83);</string>
          <enum>QTabWidget::Rounded</enum>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="usesScrollButtons">
          <bool>true</bool>
@@ -401,229 +401,6 @@ background-color: rgb(85, 87, 83);</string>
          <attribute name="title">
           <string>SHOT</string>
          </attribute>
-         <widget class="QWidget" name="gridLayoutWidget">
-          <property name="geometry">
-           <rect>
-            <x>290</x>
-            <y>50</y>
-            <width>521</width>
-            <height>431</height>
-           </rect>
-          </property>
-          <layout class="QGridLayout" name="gridLayout">
-           <item row="0" column="0">
-            <widget class="QTabWidget" name="tabWidget_shot_task">
-             <property name="font">
-              <font>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="currentIndex">
-              <number>3</number>
-             </property>
-             <property name="movable">
-              <bool>false</bool>
-             </property>
-             <widget class="QWidget" name="tab_work">
-              <attribute name="title">
-               <string>WORK</string>
-              </attribute>
-              <widget class="QTableWidget" name="tableWidget_shot_work">
-               <property name="geometry">
-                <rect>
-                 <x>10</x>
-                 <y>10</y>
-                 <width>496</width>
-                 <height>378</height>
-                </rect>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>9</pointsize>
-                 <bold>false</bold>
-                </font>
-               </property>
-               <property name="mouseTracking">
-                <bool>false</bool>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <attribute name="horizontalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <attribute name="horizontalHeaderCascadingSectionResizes">
-                <bool>false</bool>
-               </attribute>
-               <attribute name="horizontalHeaderMinimumSectionSize">
-                <number>20</number>
-               </attribute>
-               <attribute name="horizontalHeaderDefaultSectionSize">
-                <number>160</number>
-               </attribute>
-               <attribute name="horizontalHeaderHighlightSections">
-                <bool>false</bool>
-               </attribute>
-               <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-                <bool>false</bool>
-               </attribute>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <attribute name="verticalHeaderDefaultSectionSize">
-                <number>160</number>
-               </attribute>
-              </widget>
-             </widget>
-             <widget class="QWidget" name="tab_exr">
-              <attribute name="title">
-               <string>EXR</string>
-              </attribute>
-              <widget class="QTableWidget" name="tableWidget_shot_exr">
-               <property name="geometry">
-                <rect>
-                 <x>10</x>
-                 <y>10</y>
-                 <width>496</width>
-                 <height>378</height>
-                </rect>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>9</pointsize>
-                 <bold>false</bold>
-                </font>
-               </property>
-               <attribute name="horizontalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <attribute name="horizontalHeaderDefaultSectionSize">
-                <number>160</number>
-               </attribute>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <attribute name="verticalHeaderDefaultSectionSize">
-                <number>90</number>
-               </attribute>
-              </widget>
-             </widget>
-             <widget class="QWidget" name="tab_5">
-              <attribute name="title">
-               <string>MOV</string>
-              </attribute>
-              <widget class="QTableWidget" name="tableWidget_shot_mov">
-               <property name="geometry">
-                <rect>
-                 <x>10</x>
-                 <y>10</y>
-                 <width>496</width>
-                 <height>378</height>
-                </rect>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>9</pointsize>
-                 <bold>false</bold>
-                </font>
-               </property>
-               <attribute name="horizontalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <attribute name="horizontalHeaderDefaultSectionSize">
-                <number>160</number>
-               </attribute>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <attribute name="verticalHeaderDefaultSectionSize">
-                <number>90</number>
-               </attribute>
-              </widget>
-             </widget>
-             <widget class="QWidget" name="tab_all">
-              <attribute name="title">
-               <string>ALL</string>
-              </attribute>
-              <widget class="QListWidget" name="listWidget_shot_allfile">
-               <property name="geometry">
-                <rect>
-                 <x>10</x>
-                 <y>47</y>
-                 <width>496</width>
-                 <height>341</height>
-                </rect>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>13</pointsize>
-                 <bold>false</bold>
-                </font>
-               </property>
-               <property name="frameShape">
-                <enum>QFrame::HLine</enum>
-               </property>
-               <property name="midLineWidth">
-                <number>0</number>
-               </property>
-               <property name="dragEnabled">
-                <bool>false</bool>
-               </property>
-               <property name="defaultDropAction">
-                <enum>Qt::MoveAction</enum>
-               </property>
-               <property name="movement">
-                <enum>QListView::Static</enum>
-               </property>
-               <property name="isWrapping" stdset="0">
-                <bool>false</bool>
-               </property>
-               <property name="layoutMode">
-                <enum>QListView::SinglePass</enum>
-               </property>
-               <property name="viewMode">
-                <enum>QListView::ListMode</enum>
-               </property>
-               <property name="modelColumn">
-                <number>0</number>
-               </property>
-               <property name="sortingEnabled">
-                <bool>true</bool>
-               </property>
-              </widget>
-              <widget class="QLineEdit" name="lineEdit_alllist_search">
-               <property name="geometry">
-                <rect>
-                 <x>10</x>
-                 <y>10</y>
-                 <width>401</width>
-                 <height>26</height>
-                </rect>
-               </property>
-               <property name="font">
-                <font>
-                 <bold>false</bold>
-                </font>
-               </property>
-              </widget>
-              <widget class="QPushButton" name="pushButton_search">
-               <property name="geometry">
-                <rect>
-                 <x>420</x>
-                 <y>10</y>
-                 <width>84</width>
-                 <height>27</height>
-                </rect>
-               </property>
-               <property name="text">
-                <string>search</string>
-               </property>
-              </widget>
-             </widget>
-            </widget>
-           </item>
-          </layout>
-         </widget>
          <widget class="QLabel" name="label_shot_filepath">
           <property name="geometry">
            <rect>
@@ -959,160 +736,395 @@ background-color: rgb(85, 87, 83);</string>
            <string>NEW</string>
           </property>
          </widget>
-         <widget class="QWidget" name="gridLayoutWidget_9">
+         <widget class="QTabWidget" name="tabWidget_shot_status">
           <property name="geometry">
            <rect>
             <x>10</x>
             <y>490</y>
-            <width>1041</width>
-            <height>211</height>
+            <width>1039</width>
+            <height>201</height>
            </rect>
           </property>
-          <layout class="QGridLayout" name="gridLayout_5">
-           <item row="0" column="0">
-            <widget class="QTabWidget" name="tabWidget_shot_status">
-             <property name="currentIndex">
-              <number>0</number>
-             </property>
-             <property name="usesScrollButtons">
-              <bool>true</bool>
-             </property>
-             <property name="documentMode">
-              <bool>true</bool>
-             </property>
-             <property name="tabsClosable">
-              <bool>false</bool>
-             </property>
-             <property name="movable">
-              <bool>true</bool>
-             </property>
-             <property name="tabBarAutoHide">
-              <bool>false</bool>
-             </property>
-             <widget class="QWidget" name="tab_shot_fx">
-              <attribute name="title">
-               <string>ANI</string>
-              </attribute>
-              <widget class="QTableWidget" name="tableWidget_shot_ani">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>10</y>
-                 <width>1041</width>
-                 <height>171</height>
-                </rect>
-               </property>
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="font">
-                <font>
-                 <bold>false</bold>
-                </font>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-              </widget>
-             </widget>
-             <widget class="QWidget" name="tab_shot_comp">
-              <attribute name="title">
-               <string>COMP</string>
-              </attribute>
-              <widget class="QTableWidget" name="tableWidget_shot_cmp">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>10</y>
-                 <width>1041</width>
-                 <height>181</height>
-                </rect>
-               </property>
-               <property name="font">
-                <font>
-                 <bold>false</bold>
-                </font>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-              </widget>
-             </widget>
-             <widget class="QWidget" name="tab_shot_lit">
-              <attribute name="title">
-               <string>LGT</string>
-              </attribute>
-              <widget class="QTableWidget" name="tableWidget_shot_lgt">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>10</y>
-                 <width>1041</width>
-                 <height>181</height>
-                </rect>
-               </property>
-               <property name="font">
-                <font>
-                 <bold>false</bold>
-                </font>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-              </widget>
-             </widget>
-             <widget class="QWidget" name="tab_shot_ldv">
-              <attribute name="title">
-               <string>LY</string>
-              </attribute>
-              <widget class="QTableWidget" name="tableWidget_shot_ly">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>10</y>
-                 <width>1041</width>
-                 <height>181</height>
-                </rect>
-               </property>
-               <property name="font">
-                <font>
-                 <bold>false</bold>
-                </font>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-              </widget>
-             </widget>
-             <widget class="QWidget" name="tab_shot_mm">
-              <attribute name="title">
-               <string>MM</string>
-              </attribute>
-              <widget class="QTableWidget" name="tableWidget_shot_mm">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>10</y>
-                 <width>1041</width>
-                 <height>181</height>
-                </rect>
-               </property>
-               <property name="font">
-                <font>
-                 <bold>false</bold>
-                </font>
-               </property>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-              </widget>
-             </widget>
-            </widget>
-           </item>
-          </layout>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="tabletTracking">
+           <bool>false</bool>
+          </property>
+          <property name="currentIndex">
+           <number>2</number>
+          </property>
+          <property name="usesScrollButtons">
+           <bool>true</bool>
+          </property>
+          <property name="documentMode">
+           <bool>true</bool>
+          </property>
+          <property name="tabsClosable">
+           <bool>false</bool>
+          </property>
+          <property name="movable">
+           <bool>true</bool>
+          </property>
+          <property name="tabBarAutoHide">
+           <bool>false</bool>
+          </property>
+          <widget class="QWidget" name="tab_shot_fx">
+           <attribute name="title">
+            <string>ANI</string>
+           </attribute>
+           <widget class="QTableWidget" name="tableWidget_shot_ani">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>10</y>
+              <width>1041</width>
+              <height>171</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <bold>false</bold>
+             </font>
+            </property>
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+           </widget>
+          </widget>
+          <widget class="QWidget" name="tab_shot_comp">
+           <attribute name="title">
+            <string>COMP</string>
+           </attribute>
+           <widget class="QTableWidget" name="tableWidget_shot_cmp">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>10</y>
+              <width>1041</width>
+              <height>171</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <bold>false</bold>
+             </font>
+            </property>
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+           </widget>
+          </widget>
+          <widget class="QWidget" name="tab_shot_lit">
+           <attribute name="title">
+            <string>LGT</string>
+           </attribute>
+           <widget class="QTableWidget" name="tableWidget_shot_lgt">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>10</y>
+              <width>1041</width>
+              <height>171</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <bold>false</bold>
+             </font>
+            </property>
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+           </widget>
+          </widget>
+          <widget class="QWidget" name="tab_shot_ldv">
+           <attribute name="title">
+            <string>LY</string>
+           </attribute>
+           <widget class="QTableWidget" name="tableWidget_shot_ly">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>10</y>
+              <width>1041</width>
+              <height>171</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <bold>false</bold>
+             </font>
+            </property>
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+           </widget>
+          </widget>
+          <widget class="QWidget" name="tab_shot_mm">
+           <attribute name="title">
+            <string>MM</string>
+           </attribute>
+           <widget class="QTableWidget" name="tableWidget_shot_mm">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>10</y>
+              <width>1041</width>
+              <height>171</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <bold>false</bold>
+             </font>
+            </property>
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+           </widget>
+          </widget>
+         </widget>
+         <widget class="QTabWidget" name="tabWidget_shot_task">
+          <property name="geometry">
+           <rect>
+            <x>290</x>
+            <y>50</y>
+            <width>519</width>
+            <height>429</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="currentIndex">
+           <number>3</number>
+          </property>
+          <property name="movable">
+           <bool>false</bool>
+          </property>
+          <widget class="QWidget" name="tab_work">
+           <attribute name="title">
+            <string>WORK</string>
+           </attribute>
+           <widget class="QTableWidget" name="tableWidget_shot_work">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>496</width>
+              <height>378</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>9</pointsize>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="mouseTracking">
+             <bool>false</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <attribute name="horizontalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="horizontalHeaderCascadingSectionResizes">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="horizontalHeaderMinimumSectionSize">
+             <number>20</number>
+            </attribute>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>160</number>
+            </attribute>
+            <attribute name="horizontalHeaderHighlightSections">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderDefaultSectionSize">
+             <number>160</number>
+            </attribute>
+           </widget>
+          </widget>
+          <widget class="QWidget" name="tab_exr">
+           <attribute name="title">
+            <string>EXR</string>
+           </attribute>
+           <widget class="QTableWidget" name="tableWidget_shot_exr">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>496</width>
+              <height>378</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>9</pointsize>
+              <bold>false</bold>
+             </font>
+            </property>
+            <attribute name="horizontalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>160</number>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderDefaultSectionSize">
+             <number>90</number>
+            </attribute>
+           </widget>
+          </widget>
+          <widget class="QWidget" name="tab_5">
+           <attribute name="title">
+            <string>MOV</string>
+           </attribute>
+           <widget class="QTableWidget" name="tableWidget_shot_mov">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>496</width>
+              <height>378</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>9</pointsize>
+              <bold>false</bold>
+             </font>
+            </property>
+            <attribute name="horizontalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="horizontalHeaderDefaultSectionSize">
+             <number>160</number>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderDefaultSectionSize">
+             <number>90</number>
+            </attribute>
+           </widget>
+          </widget>
+          <widget class="QWidget" name="tab_all">
+           <attribute name="title">
+            <string>ALL</string>
+           </attribute>
+           <widget class="QListWidget" name="listWidget_shot_allfile">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>47</y>
+              <width>496</width>
+              <height>341</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>13</pointsize>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::HLine</enum>
+            </property>
+            <property name="midLineWidth">
+             <number>0</number>
+            </property>
+            <property name="dragEnabled">
+             <bool>false</bool>
+            </property>
+            <property name="defaultDropAction">
+             <enum>Qt::MoveAction</enum>
+            </property>
+            <property name="movement">
+             <enum>QListView::Static</enum>
+            </property>
+            <property name="isWrapping" stdset="0">
+             <bool>false</bool>
+            </property>
+            <property name="layoutMode">
+             <enum>QListView::SinglePass</enum>
+            </property>
+            <property name="viewMode">
+             <enum>QListView::ListMode</enum>
+            </property>
+            <property name="modelColumn">
+             <number>0</number>
+            </property>
+            <property name="sortingEnabled">
+             <bool>true</bool>
+            </property>
+           </widget>
+           <widget class="QLineEdit" name="lineEdit_alllist_search">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>401</width>
+              <height>26</height>
+             </rect>
+            </property>
+            <property name="font">
+             <font>
+              <bold>false</bold>
+             </font>
+            </property>
+           </widget>
+           <widget class="QPushButton" name="pushButton_search">
+            <property name="geometry">
+             <rect>
+              <x>420</x>
+              <y>10</y>
+              <width>84</width>
+              <height>27</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>search</string>
+            </property>
+           </widget>
+          </widget>
          </widget>
         </widget>
         <widget class="QWidget" name="tab_my_task">
@@ -1219,13 +1231,16 @@ background-color: rgb(85, 87, 83);</string>
            </font>
           </property>
           <attribute name="horizontalHeaderVisible">
-           <bool>false</bool>
+           <bool>true</bool>
+          </attribute>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>true</bool>
           </attribute>
           <attribute name="verticalHeaderVisible">
            <bool>false</bool>
           </attribute>
          </widget>
-         <widget class="QGroupBox" name="groupBox_shot_comment_3">
+         <widget class="QGroupBox" name="groupBox_mytask_thumbnail">
           <property name="geometry">
            <rect>
             <x>530</x>
@@ -1266,9 +1281,9 @@ background-color: rgb(85, 87, 83);</string>
           <widget class="QLabel" name="label_mytask_thumbnail">
            <property name="geometry">
             <rect>
-             <x>-1</x>
-             <y>19</y>
-             <width>271</width>
+             <x>10</x>
+             <y>20</y>
+             <width>257</width>
              <height>201</height>
             </rect>
            </property>
@@ -1277,7 +1292,7 @@ background-color: rgb(85, 87, 83);</string>
            </property>
           </widget>
          </widget>
-         <widget class="QGroupBox" name="groupBox_shot_file_info_2">
+         <widget class="QGroupBox" name="groupBox_mytask_file_info">
           <property name="geometry">
            <rect>
             <x>530</x>
@@ -1506,7 +1521,7 @@ background-color: rgb(85, 87, 83);</string>
            </rect>
           </property>
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -1516,6 +1531,12 @@ background-color: rgb(85, 87, 83);</string>
             <bold>false</bold>
            </font>
           </property>
+          <attribute name="horizontalHeaderCascadingSectionResizes">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>true</bool>
+          </attribute>
           <attribute name="verticalHeaderVisible">
            <bool>false</bool>
           </attribute>
@@ -1874,15 +1895,15 @@ background-color: rgb(85, 87, 83);</string>
              </font>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="page_mod">
              <property name="geometry">
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>100</width>
-               <height>30</height>
+               <width>791</width>
+               <height>545</height>
               </rect>
              </property>
              <attribute name="label">
@@ -2619,10 +2640,10 @@ background-color: rgb(85, 87, 83);</string>
          <widget class="QLabel" name="label_mytask_filepath_2">
           <property name="geometry">
            <rect>
-            <x>10</x>
+            <x>11</x>
             <y>8</y>
             <width>521</width>
-            <height>41</height>
+            <height>61</height>
            </rect>
           </property>
           <property name="font">

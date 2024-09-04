@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QWidget,QApplication,QHeaderView
 from PySide6.QtWidgets import QTreeWidgetItem, QTableWidgetItem, QLabel,QTableWidget
 from PySide6.QtWidgets import QAbstractItemView, QVBoxLayout, QSizePolicy
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile,QSize
+from PySide6.QtCore import QFile,QSize, QRect
 from PySide6.QtGui import QPixmap, QColor,QFont,QMovie, QBrush
 from PySide6.QtMultimedia import QMediaPlayer
 from PySide6.QtMultimediaWidgets import QVideoWidget
@@ -27,6 +27,7 @@ class Mainloader:
         # super().__init__()
         self.ui = Ui_Form
         # self.set_up()
+        self.window_width = 1020
         
         self.set_project_info()
         self.set_shot_tableWidgets()
@@ -65,7 +66,14 @@ class Mainloader:
         self.mov_table.itemDoubleClicked.connect(self.set_mov_files)
         self.all_list.itemClicked.connect(self.set_all_file_information)
 
-    
+
+    # def resize_tab (self, new_size) :
+    #     width = new_size.width()
+    #     self.ui.gridLayout_status.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+    #     self.ui.gridLayout_status.setGeometry(width, 1000,200,200)
+
+
+
     # ==============================================================================================    
     # json 연결
     # ==============================================================================================    
@@ -250,10 +258,13 @@ class Mainloader:
         h_header = table_widget.horizontalHeader()
         h_header.setSectionResizeMode(QHeaderView.ResizeToContents)
         h_header.setSectionResizeMode(QHeaderView.Stretch)
-        table_widget.setEditTriggers(QAbstractItemView.NoEditTriggers) 
+        table_widget.setEditTriggers(QAbstractItemView.NoEditTriggers)
+
         table_widget.setColumnCount(3)
         table_widget.setRowCount(8)
         table_widget.setShowGrid(False)
+
+        self.table = table_widget
                  
     def get_tab_name (self,tabIndex):
         if tabIndex == 0 :
@@ -283,8 +294,10 @@ class Mainloader:
         self.clear_file_info()
         self.set_shot_table("work")
         
+        height = self.ww/6.41025
+
         for row in range(self.work_table.rowCount()):
-            self.work_table.setRowHeight(row,195)
+            self.work_table.setRowHeight(row,height)
             
         self.work_table.setShowGrid(True)
         
@@ -346,7 +359,8 @@ class Mainloader:
 
             label_img = QLabel()
             pixmap = QPixmap("/home/rapa/YUMMY/pipeline/source/images1.png")
-            label_img.setPixmap(pixmap) 
+            scaled_image = pixmap.scaled(120,120, Qt.KeepAspectRatio)
+            label_img.setPixmap(scaled_image) 
             label_img.setAlignment(Qt.AlignCenter)
             label_img.setScaledContents(True)
             
@@ -398,8 +412,12 @@ class Mainloader:
         self.clear_file_info()
         self.set_shot_table("exr")
         
+        
+        x = self.ww/120
+        height = self.ww/x
+
         for row in range(self.work_table.rowCount()):
-            self.exr_table.setRowHeight(row,120)
+            self.exr_table.setRowHeight(row,height)
         
         self.exr_table.setShowGrid(True)
         
@@ -436,6 +454,7 @@ class Mainloader:
                 font.setPointSize(40)
                 item.setFont(font)
                 
+                
                 # 아이템 클릭할 수 없게 만들기
                 item.setFlags(Qt.NoItemFlags)
                 self.exr_table.setItem(0,0,item)
@@ -465,7 +484,8 @@ class Mainloader:
             
             label_img = QLabel()
             pixmap = QPixmap(png_path)
-            label_img.setPixmap(pixmap) 
+            scaled_image = pixmap.scaled(170 ,170, Qt.KeepAspectRatio)
+            label_img.setPixmap(scaled_image) 
             label_img.setAlignment(Qt.AlignCenter)
             label_img.setScaledContents(True)
             
@@ -483,6 +503,12 @@ class Mainloader:
 
             item = QTableWidgetItem()
             item.setText(exr)
+            brush = QBrush(QColor(0,0,0,0))
+            item.setForeground(brush)
+            item.setTextAlignment(Qt.AlignRight)
+            font = QFont()
+            font.setPointSize(1)
+            item.setFont(font)
             self.exr_table.setItem(row, col, item)
             self.exr_table.setCellWidget(row,col,cell_widget)
             
@@ -574,7 +600,8 @@ class Mainloader:
             
             label_img = QLabel()
             pixmap = QPixmap(png_path)
-            label_img.setPixmap(pixmap) 
+            scaled_image = pixmap.scaled(170,170, Qt.KeepAspectRatio)
+            label_img.setPixmap(scaled_image) 
             label_img.setAlignment(Qt.AlignCenter)
             label_img.setScaledContents(True)
             
@@ -592,6 +619,12 @@ class Mainloader:
             
             item = QTableWidgetItem()
             item.setText(mov)
+            brush = QBrush(QColor(0,0,0,0))
+            item.setForeground(brush)
+            item.setTextAlignment(Qt.AlignRight)
+            font = QFont()
+            font.setPointSize(1)
+            item.setFont(font)
             self.mov_table.setItem(row, col, item)
             self.mov_table.setCellWidget(row,col,cell_widget)      
         
@@ -884,6 +917,10 @@ class Mainloader:
     def set_status_table_list(self):
         tablename = ["ani","cmp","lgt","mm","ly"]
         self.task_table_widget = [getattr(self.ui, f"tableWidget_shot_{task}") for task in tablename]
+        
+        for task_table in self.task_table_widget:
+            self.set_status_table_1(task_table)
+            
         self.sort_status_task()
         
     def sort_status_task(self):
@@ -911,45 +948,46 @@ class Mainloader:
     def get_task_tab_name(self,tabindex):
         if tabindex == 0 :
             self.st_tab_name = "ani"
-            task_table = self.task_table_widget[0]
+            self.task_table = self.task_table_widget[0]
             status_list = self.status_dic["ani"]
                 
         elif tabindex == 1 :
             self.st_tab_name = "cmp"
-            task_table = self.task_table_widget[1]
+            self.task_table = self.task_table_widget[1]
             status_list = self.status_dic["cmp"]            
 
         elif tabindex == 2 :
             self.st_tab_name = "lgt"
-            task_table = self.task_table_widget[2]
+            self.task_table = self.task_table_widget[2]
             status_list = self.status_dic["lgt"]
             
         elif tabindex == 4 :
             self.st_tab_name = "mm"
-            task_table = self.task_table_widget[3]
+            self.task_table = self.task_table_widget[3]
             status_list = self.status_dic["mm"]
             
         elif tabindex == 3 :
             self.st_tab_name = "ly"
-            task_table = self.task_table_widget[4]
+            self.task_table = self.task_table_widget[4]
             status_list = self.status_dic["ly"]
             
-        self.set_status_table_1(task_table)
-        self.input_status_table_1(status_list,task_table)
+        self.set_status_table_1(self.task_table, self.window_width)
+        self.input_status_table_1(status_list,self.task_table)
         
-    def set_status_table_1(self,task_table):
+    def set_status_table_1(self, task_table, window_width = 1015):
+
         
         task_table.setColumnCount(6)
         task_table.setRowCount(8)
         
         task_table.setHorizontalHeaderLabels(["Artist","ShotCode", "Version","Status","Upadate Data" ,"Description"])
         
-        task_table.setColumnWidth(0, 1020 * 0.14)
-        task_table.setColumnWidth(1, 1020 * 0.13)
-        task_table.setColumnWidth(2, 1020 * 0.1)
-        task_table.setColumnWidth(3, 1020 * 0.05)
-        task_table.setColumnWidth(4, 1020*  0.23)
-        task_table.setColumnWidth(5, 1030 * 0.35)
+        task_table.setColumnWidth(0, window_width * 0.14)
+        task_table.setColumnWidth(1, window_width * 0.13)
+        task_table.setColumnWidth(2, window_width * 0.1)
+        task_table.setColumnWidth(3, window_width * 0.05)
+        task_table.setColumnWidth(4, window_width * 0.23)
+        task_table.setColumnWidth(5, window_width * 0.29)
         
         task_table.setSelectionBehavior(QTableWidget.SelectRows)
         
@@ -959,6 +997,47 @@ class Mainloader:
         
         task_table.setEditTriggers(QAbstractItemView.NoEditTriggers) 
         task_table.setShowGrid(True)
+    
+    def resize_shot_status(self,new_size):
+
+        window_width = new_size.width()
+        self.ww = window_width
+        self.set_status_table_1(self.task_table, window_width)
+
+        self.ui.tabWidget_shot_status.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.ui.tabWidget_shot_status.resize(window_width - 45, 260)
+
+        self.ui.tableWidget_shot_lgt.resize(window_width - 45, 171)
+        self.ui.tableWidget_shot_ani.resize(window_width - 45, 171)
+        self.ui.tableWidget_shot_cmp.resize(window_width - 45, 171)
+        self.ui.tableWidget_shot_ly.resize(window_width - 45, 171)
+        self.ui.tableWidget_shot_mm.resize(window_width - 45, 171)
+
+        self.ui.pushButton_shot_open.setGeometry(int(window_width - 266), 440, 231, 41)
+        self.ui.pushButton_shot_new.setGeometry(int(window_width - 266), 390, 231, 41)
+        self.ui.groupBox_shot_comment.setGeometry(int(window_width - 266), 250, 231, 231)
+        self.ui.groupBox_shot_file_info.setGeometry(int(window_width - 266), 50, 231, 191)
+        
+        self.ui.tabWidget_shot_task.resize(window_width - 565, 432)
+
+        self.ui.tableWidget_shot_work.resize(window_width - 590, 378)
+        self.ui.tableWidget_shot_exr.resize(window_width - 590, 378)
+        self.ui.tableWidget_shot_mov.resize(window_width - 590, 378)
+
+
+        self.ui.listWidget_shot_allfile.resize(window_width - 590, 378)
+        self.ui.lineEdit_alllist_search.resize(window_width - 685, 26)
+        self.ui.pushButton_search.setGeometry(int(window_width - 666), 10, 84, 27)
+
+        self.table.setColumnCount(int(window_width/362))
+
+        
+
+        
+
+
+
+
     
     def input_status_table_1(self,status_list,task_table):
         
@@ -1016,9 +1095,12 @@ class Mainloader:
     
     def extract_time_shot(self,item):
         return datetime.strptime(item['Update Date'], '%Y-%m-%d %H:%M:%S')
-           
+    
+
+
+
     def set_up(self):
-        from loader_ui.main_window_v002_ui import Ui_Form
+        from loader_ui.main_window_v005_ui import Ui_Form
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 

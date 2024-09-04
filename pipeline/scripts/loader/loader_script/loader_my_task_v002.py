@@ -1,9 +1,9 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication,QTableWidgetItem,QTableWidget
 from PySide6.QtWidgets import QTableWidgetItem,QMessageBox,QLabel, QSpacerItem
-from PySide6.QtWidgets import QWidget,QAbstractItemView, QSizePolicy, QHBoxLayout
-from PySide6.QtCore import QFile,QSize
-from PySide6.QtGui import QPixmap,QMovie
+from PySide6.QtWidgets import QWidget,QAbstractItemView, QSizePolicy, QHBoxLayout, QMainWindow
+from PySide6.QtCore import QFile,QSize, QRect
+from PySide6.QtGui import QPixmap,QMovie, QResizeEvent
 import os
 import json
 import sys
@@ -21,7 +21,7 @@ class My_task:
         self.ui = Ui_Form
         self.table = self.ui.tableWidget_recent_files
         self.status_table = self.ui.tableWidget_mytask_status
-        # self.set_up()
+        self.set_up()
         
         self.make_json_dic()
         self.set_click_thumbnail_mov()
@@ -80,7 +80,7 @@ class My_task:
             change_to_png(image_path,png_path)
             
         pixmap = QPixmap(png_path)
-        scaled_pixmap = pixmap.scaled(270,152)
+        scaled_pixmap = pixmap.scaled(296, 180)
         self.ui.label_mytask_thumbnail.setPixmap(scaled_pixmap)
         
         file_size,save_time  =  File_data.file_info(nuke_path)
@@ -121,16 +121,27 @@ class My_task:
     def set_mytask_table(self):
         self.table.setColumnCount(2)
         self.table.setRowCount(10)
+
+        
         
         self.table.setHorizontalHeaderLabels(["Name", "Update_time"])
         
-        self.table.setColumnWidth(0, 495 * 0.6)
-        self.table.setColumnWidth(1, 500 * 0.4)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
         
         
         self.input_mytask_table()
-        
+
+    def resize_mytask_table(self, new_size):
+        window_width_size = new_size.width()
+        # print (window_width_size)
+
+        table_width = int(window_width_size / 2.2)
+        self.table.resize(window_width_size - 580, 431)
+
+        self.table.setColumnWidth(0, table_width * 0.6)
+        self.table.setColumnWidth(1, table_width * 0.4)
+
+
     def set_recent_file(self):
         
         user_dic = self.open_loader_json()
@@ -310,28 +321,33 @@ class My_task:
     
     # def extract_time(self,item):
     #     return datetime.strptime(item['UpdateDate'], '%Y-%m-%d %H:%M:%S')
+
     def set_status_table(self):
+
         
         self.hbox_layout = QHBoxLayout()
 
         self.hbox_layout.addStretch()
         self.hbox_layout.addWidget(self.status_table)
-        self.hbox_layout.addSpacerItem(QSpacerItem(50,20, QSizePolicy.Minimum, QSizePolicy.Minimum))
+        self.hbox_layout.addSpacerItem(QSpacerItem( QSizePolicy.Minimum, QSizePolicy.Fixed))
 
         self.status_table.setColumnCount(7)
         self.status_table.setRowCount(8)
         self.status_table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.status_table.setHorizontalHeaderLabels(["Artist","ShotCode","Task","Version","Status","Upadate Data" ,"Description"])
         
-        
+    def resize_my_task_status(self, new_size):
+        #loader_merge 에서 sizeEvent 불러오기
+        window_width_size = new_size.width()
+        window_height_size = new_size.height()
+        # print (window_height_size)
 
-    def resizeEvent(self, event):
-        super (My_task, self).resixeEvent(event)
-        
-        table_width = self.status_table.viewport().width()
-        self.status_table.setColumnWidth(0, int(table_width * 0.13))
+        self.status_table.resize(window_width_size - 40, window_height_size - 730)
+
+        table_width = window_width_size
+        self.status_table.setColumnWidth(0, int(table_width * 0.18))
         self.status_table.setColumnWidth(1, int(table_width * 0.12))
-        self.status_table.setColumnWidth(2, int(table_width * 0.1))
+        self.status_table.setColumnWidth(2, int(table_width * 0.05))
         self.status_table.setColumnWidth(3, int(table_width * 0.1))
         self.status_table.setColumnWidth(4, int(table_width * 0.05))
         self.status_table.setColumnWidth(5, int(table_width * 0.20))
@@ -339,13 +355,23 @@ class My_task:
         self.status_table.setSelectionBehavior(QTableWidget.SelectRows)    
         self.status_table.setEditTriggers(QAbstractItemView.NoEditTriggers) 
 
-           
+    def resize_mytask_object(self, new_size):
+        window_width_size = new_size.width()
+        # print (window_width_size)
+        self.ui.groupBox_shot_comment_2.setGeometry(QRect((window_width_size - 265), 50, 231, 331))
+        self.ui.groupBox_mytask_thumbnail.setGeometry(QRect((window_width_size - 556), 50, 277, 220))
+        self.ui.groupBox_mytask_file_info.setGeometry(QRect((window_width_size - 556), 290, 277, 191))
+        self.ui.pushButton_mytask_newfileopen.setGeometry(QRect((window_width_size - 265), 390, 231, 41))
+        self.ui.pushButton_mytask_selectedopen.setGeometry(QRect((window_width_size - 265), 440, 231, 41))
+
+
     def set_up(self):
-        from pipeline.scripts.loader.loader_ui.main_window_v005_ui import Ui_Form
-        self.ui = Ui_Form()
-        self.ui.setupUi(self)
+        # from pipeline.scripts.loader.loader_ui.main_window_v005_ui import Ui_Form
+        # self.ui = Ui_Form()
+        # self.ui.setupUi(self)
         self.table = self.ui.tableWidget_recent_files
         self.status_table = self.ui.tableWidget_mytask_status
+        self.groupBox_comment_2 = self.ui.groupBox_shot_comment_2
 
 info = {"project" : "YUMMIE" , "name" : "UICHUL SHIN","rank":"Artist","resolution" : "1920 X 1080"}
 if __name__ == "__main__":

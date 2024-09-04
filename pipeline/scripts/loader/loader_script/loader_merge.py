@@ -1,13 +1,13 @@
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QGuiApplication,QPalette,QColor
-from PySide6.QtWidgets import QMainWindow,QApplication,QSizePolicy
+from PySide6.QtGui import QGuiApplication,QPalette,QColor, QResizeEvent
+from PySide6.QtWidgets import QMainWindow,QApplication, QSizePolicy
 from PySide6.QtCore import Qt, QSize
 
 import os,sys
 sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
 from loader_ui.main_window_v005_ui import Ui_MainWindow
 from loader_script.loader_shot import Mainloader
-from loader_script.loader_my_task import My_task
+from loader_script.loader_my_task_v002 import My_task
 from loader_script.loader_clip_v002 import Libraryclip
 from loader_script.loader_asset import Libraryasset
 from loader_module.project_data import project_data
@@ -71,6 +71,24 @@ class Merge(QMainWindow,Libraryclip,project_data,My_task,Loader_pub,Mainloader,L
         # self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.setWindowTitle(f"{user} Loader")
 
+    def resizeEvent(self, event):
+        new_size = event.size()
+        old_size = event.oldSize()
+        
+        self.shot.resize_shot_status(new_size)
+        # self.shot.resize_tab(new_size)
+        # self.shot.set_status_table_1(new_size)
+        
+        self.my_task.resize_my_task_status(new_size)
+        self.my_task.resize_mytask_table(new_size)
+        self.my_task.resize_mytask_object(new_size)
+        
+        
+
+        # print (new_size, old_size)
+
+
+
 
     def get_darkModePalette(self) :
 
@@ -104,11 +122,15 @@ class Merge(QMainWindow,Libraryclip,project_data,My_task,Loader_pub,Mainloader,L
         self.center_window()
 
     def connect_script(self):
+        self.my_task = My_task(self.ui)
+        self.shot = Mainloader(self.ui)
+        # self.pub = 
+
         Libraryclip.__init__(self,self.ui)
         Libraryasset.__init__(self,self.ui)
-        My_task.__init__(self,self.ui)
+        # self.my_task.__init__(self,self.ui)
         Loader_pub.__init__(self,self.ui)
-        Mainloader.__init__(self,self.ui)
+        # Mainloader.__init__(self,self.ui)
 
 info = {"project": "YUMMIE", "name": "UICHUL SHIN", "rank": "Admin"}
 
