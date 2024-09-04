@@ -1,23 +1,24 @@
-from PySide6.QtWidgets import QWidget,QApplication,QTreeWidgetItem
-from PySide6.QtGui import QFont,QPixmap
+from PySide6.QtWidgets import QWidget,QLabel, QApplication,QTreeWidgetItem, QVBoxLayout
+from PySide6.QtGui import QFont,QPixmap, Qt
+from PySide6.QtCore import QRect, QPoint
 import subprocess
 import multiprocessing
 import threading
 import os
 import json
 import sys
-sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
+sys.path.append("/home/rapa/yummy/pipeline/scripts/loader/loader_ui")
 
 from loader_module.ffmpeg_module import change_to_png,find_resolution_frame
 from loader_module.find_time_size import File_data
 class Loader_pub:
     def __init__(self,Ui_Form):
-        # super().__init__()
+        super().__init__()
         self.ui = Ui_Form
         self.tree = self.ui.treeWidget_pub_list
-        self.ui.groupBox_shot_file_info_3.setVisible(False)
+
         
-        # self.set_up()
+        self.set_up()
         
         self.make_json_dic()
         self.find_pub_list()
@@ -93,15 +94,28 @@ class Loader_pub:
         if not os.path.isfile(png_path):
             change_to_png(image_path,png_path)
         
+        thumbnail = QLabel()
         pixmap = QPixmap(png_path)
-        scaled_pixmap = pixmap.scaled(630,350)
+        scaled_pixmap = pixmap.scaled(630,350, Qt.KeepAspectRatio)
+        thumbnail.setPixmap(scaled_pixmap)
+        thumbnail.setAlignment(Qt.AlignBottom)
+        thumbnail.setScaledContents(True)
         self.ui.label_pub_thumbnail.setPixmap(scaled_pixmap)
-                  
+        self.ui.label_pub_thumbnail.setAlignment(Qt.AlignCenter)
+
+        layout = QVBoxLayout(self.ui.groupBox_pub_thumbnail)
+        layout.addWidget(self.ui.label_pub_thumbnail)
+        layout.setAlignment(self.ui.label_pub_thumbnail, Qt.AlignCenter)
+
+        self.ui.groupBox_pub_thumbnail.setLayout(layout)
+
+
+
     def set_file_info(self,pub_name):
         pub_len = pub_name.split(".")
         
         if len(pub_len) == 1:
-            self.ui.groupBox_shot_file_info_3.setVisible(False)
+            # self.ui.groupBox_shot_file_info_3.setVisible(False)
             return
         
         if len(pub_len) == 2:
@@ -167,13 +181,35 @@ class Loader_pub:
             elif ext == ".exr":
                 exr_path = "xdg-open " + open_path + "/exr"
                 os.system(exr_path)
-                                 
+
+    def resize_pub (self, new_size):
+
+        window_width = new_size.width()
+        window_height = new_size.height()
+        # print (window_height)
+        
+        self.tree.resize(window_width - 688, window_height - 287)
+        self.ui.pushButton_pub_publish.setGeometry(QRect((window_width - 165), (window_height - 258), 131, 41))
+        self.ui.pushButton_pub_retake.setGeometry(QRect((window_width - 300), (window_height - 258), 131, 41))
+        self.ui.groupBox_shot_file_info_3.setGeometry(QRect((window_width - 665), (window_height - 458), 355, 241))
+        self.ui.groupBox_pub_thumbnail.setGeometry(QRect((window_width - 665), 50, 631, (window_height - 520)))
+        
+        # rect = QRect((window_width - 665), 20, 611, 391)
+        # self.ui.label_pub_thumbnail.setGeometry(rect.center())
+        # self.ui.label_pub_thumbnail.setAlignment(Qt.AlignCenter)
+
+
+
+
+
+
+    
     def set_up(self):
-        from loader_ui.main_window_v002_ui import Ui_Form
-        self.ui = Ui_Form()
-        self.ui.setupUi(self)
+        # from loader_ui.main_window_v005_ui import Ui_Form
+        # self.ui = Ui_Form()
+        # self.ui.setupUi(self)
         self.tree = self.ui.treeWidget_pub_list
-        self.ui.groupBox_shot_file_info_3.setVisible(False)
+
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)

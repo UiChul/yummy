@@ -39,6 +39,8 @@ class Mainloader:
         self.get_task_tab_name(2)
         
         self.shot_treeWidget = self.ui.treeWidget
+        self.table = self.ui.tableWidget_shot_work
+
         self.work_table = self.ui.tableWidget_shot_work
         self.exr_table = self.ui.tableWidget_shot_exr
         self.mov_table = self.ui.tableWidget_shot_mov

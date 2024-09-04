@@ -437,7 +437,7 @@ background-color: rgb(85, 87, 83);</string>
            </font>
           </property>
           <property name="title">
-           <string>Comment</string>
+           <string> Comment</string>
           </property>
           <property name="flat">
            <bool>false</bool>
@@ -473,7 +473,7 @@ background-color: rgb(85, 87, 83);</string>
            </font>
           </property>
           <property name="title">
-           <string>File information</string>
+           <string> File information</string>
           </property>
           <property name="flat">
            <bool>false</bool>
@@ -1148,7 +1148,7 @@ background-color: rgb(85, 87, 83);</string>
            </font>
           </property>
           <property name="title">
-           <string>Comment</string>
+           <string> Comment</string>
           </property>
           <property name="flat">
            <bool>false</bool>
@@ -1257,7 +1257,7 @@ background-color: rgb(85, 87, 83);</string>
            </font>
           </property>
           <property name="title">
-           <string>Thumbnail</string>
+           <string> Thumbnail</string>
           </property>
           <property name="flat">
            <bool>false</bool>
@@ -1309,7 +1309,7 @@ background-color: rgb(85, 87, 83);</string>
            </font>
           </property>
           <property name="title">
-           <string>File information</string>
+           <string> File information</string>
           </property>
           <property name="flat">
            <bool>false</bool>
@@ -1508,7 +1508,7 @@ background-color: rgb(85, 87, 83);</string>
            </font>
           </property>
           <property name="text">
-           <string>My Team Status</string>
+           <string> My Team Status</string>
           </property>
          </widget>
          <widget class="QTableWidget" name="tableWidget_mytask_status">
@@ -2306,10 +2306,10 @@ background-color: rgb(85, 87, 83);</string>
          <widget class="QGroupBox" name="groupBox_shot_file_info_3">
           <property name="geometry">
            <rect>
-            <x>780</x>
+            <x>420</x>
             <y>470</y>
-            <width>271</width>
-            <height>191</height>
+            <width>351</width>
+            <height>241</height>
            </rect>
           </property>
           <property name="font">
@@ -2320,7 +2320,7 @@ background-color: rgb(85, 87, 83);</string>
            </font>
           </property>
           <property name="title">
-           <string>File information</string>
+           <string> File information</string>
           </property>
           <property name="flat">
            <bool>false</bool>
@@ -2435,7 +2435,7 @@ background-color: rgb(85, 87, 83);</string>
             <rect>
              <x>90</x>
              <y>30</y>
-             <width>171</width>
+             <width>251</width>
              <height>151</height>
             </rect>
            </property>
@@ -2546,46 +2546,7 @@ background-color: rgb(85, 87, 83);</string>
            <string>Publish</string>
           </property>
          </widget>
-         <widget class="QGroupBox" name="groupBox_shot_comment_4">
-          <property name="geometry">
-           <rect>
-            <x>420</x>
-            <y>470</y>
-            <width>341</width>
-            <height>241</height>
-           </rect>
-          </property>
-          <property name="font">
-           <font>
-            <bold>true</bold>
-            <underline>false</underline>
-            <strikeout>false</strikeout>
-           </font>
-          </property>
-          <property name="title">
-           <string>Comment</string>
-          </property>
-          <property name="flat">
-           <bool>false</bool>
-          </property>
-          <property name="checkable">
-           <bool>false</bool>
-          </property>
-          <widget class="QPlainTextEdit" name="plainTextEdit_pub_comment">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>20</y>
-             <width>341</width>
-             <height>221</height>
-            </rect>
-           </property>
-           <property name="plainText">
-            <string/>
-           </property>
-          </widget>
-         </widget>
-         <widget class="QGroupBox" name="groupBox_shot_comment_5">
+         <widget class="QGroupBox" name="groupBox_pub_thumbnail">
           <property name="geometry">
            <rect>
             <x>420</x>
@@ -2602,7 +2563,7 @@ background-color: rgb(85, 87, 83);</string>
            </font>
           </property>
           <property name="title">
-           <string>Thumbnail</string>
+           <string> Thumbnail</string>
           </property>
           <property name="flat">
            <bool>false</bool>
@@ -2610,30 +2571,20 @@ background-color: rgb(85, 87, 83);</string>
           <property name="checkable">
            <bool>false</bool>
           </property>
-          <widget class="QLabel" name="label_shot_comment_4">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>30</y>
-             <width>211</width>
-             <height>141</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
           <widget class="QLabel" name="label_pub_thumbnail">
            <property name="geometry">
             <rect>
-             <x>0</x>
+             <x>11</x>
              <y>20</y>
-             <width>631</width>
+             <width>611</width>
              <height>391</height>
             </rect>
            </property>
            <property name="text">
             <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </widget>
@@ -2642,7 +2593,7 @@ background-color: rgb(85, 87, 83);</string>
            <rect>
             <x>11</x>
             <y>8</y>
-            <width>521</width>
+            <width>261</width>
             <height>61</height>
            </rect>
           </property>

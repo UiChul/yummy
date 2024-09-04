@@ -73,15 +73,16 @@ class Merge(QMainWindow,Libraryclip,project_data,My_task,Loader_pub,Mainloader,L
 
     def resizeEvent(self, event):
         new_size = event.size()
-        old_size = event.oldSize()
+        # old_size = event.oldSize()
         
         self.shot.resize_shot_status(new_size)
-        # self.shot.resize_tab(new_size)
-        # self.shot.set_status_table_1(new_size)
         
         self.my_task.resize_my_task_status(new_size)
         self.my_task.resize_mytask_table(new_size)
         self.my_task.resize_mytask_object(new_size)
+
+        self.pub.resize_pub(new_size)
+
         
         
 
@@ -124,12 +125,13 @@ class Merge(QMainWindow,Libraryclip,project_data,My_task,Loader_pub,Mainloader,L
     def connect_script(self):
         self.my_task = My_task(self.ui)
         self.shot = Mainloader(self.ui)
+        self.pub = Loader_pub(self.ui)
         # self.pub = 
 
         Libraryclip.__init__(self,self.ui)
         Libraryasset.__init__(self,self.ui)
         # self.my_task.__init__(self,self.ui)
-        Loader_pub.__init__(self,self.ui)
+        # Loader_pub.__init__(self,self.ui)
         # Mainloader.__init__(self,self.ui)
 
 info = {"project": "YUMMIE", "name": "UICHUL SHIN", "rank": "Admin"}
