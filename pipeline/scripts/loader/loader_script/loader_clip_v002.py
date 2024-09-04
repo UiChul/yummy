@@ -11,6 +11,7 @@ from PySide6.QtGui import QPalette, QColor
 import os
 import sys
 import subprocess
+import json
 sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
 
 from loader_ui.main_window_v002_ui import Ui_Form
@@ -23,13 +24,16 @@ except ImportError:
     nuke = None 
 
 class DraggableWidget(QWidget):
-    
     widgetClicked = Signal(str, str)
     buttonClicked  = Signal(str)
-    
     def __init__(self, file_path, image_path, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
+        self.file_path = file_path
+        self.mov_file = os.path.basename(file_path)
+        self.mov_name, self.ext_type = os.path.splitext(self.mov_file)
+        self.selected_format = None
+
         # 이미지와 라벨이 들어갈 레이아웃
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
@@ -64,9 +68,10 @@ class DraggableWidget(QWidget):
         self.button.setFixedSize(25,25) 
         self.button.setCheckable(True)
         
-        self.set_button_icon()
+        self.set_json_clip()
         self.button.clicked.connect(self.set_button_icon)
         self.button.clicked.connect(self.save_favorite_clips)
+        # self.button.clicked.connect(self.import_clicked_button)
         label_layout.addWidget(self.button)
 
         label_widget = QWidget()
@@ -74,18 +79,82 @@ class DraggableWidget(QWidget):
 
         layout.addWidget(label_widget)
 
-        self.file_path = file_path
-        self.mov_file = os.path.basename(file_path)
-        self.mov_name, self.ext_type = os.path.splitext(self.mov_file)
-        self.selected_format = None
-    
-    def set_button_icon(self):
 
-        # 이미지 경로 설정
-        if self.button.isChecked():
-            image_path = "/home/rapa/xgen/selected.png"
+    def open_project_json(self):
+        json_path = "/home/rapa/yummy/pipeline/json/project_data.json"
+        with open (json_path, "r") as f:
+            json_data = json.load(f)
+        self.username = json_data["name"]
+
+    def load_clip_fav_json (self):
+        self.open_project_json()
+
+        clip_fav_json_path = "/home/rapa/yummy/pipeline/json/clip_favorite.json"
+        with open (clip_fav_json_path, "r") as f:
+            json_data = json.load(f)
+        
+        if self.username not in json_data.keys():
+            json_data[self.username] = []
+
+        values = json_data[self.username]
+        return values
+
+    def set_json_clip (self):
+
+        values = self.load_clip_fav_json()
+        """
+        만약에 json 파일에 클릭한 이미지 파일이 이미 value 값에 있으면, 
+        """
+        self.selected_true = False
+        # clip = 
+        if self.mov_name in values :
+            image_path = "/home/rapa/server/pipeline/source/selected.png"
+            self.selected_true = True
         else:
-            image_path = "/home/rapa/xgen/unselected.png"
+            image_path = "/home/rapa/server/pipeline/source/unselected.png"
+            self.selected_true = False
+
+        # QPixmap을 사용하여 이미지를 로드하고 QIcon으로 변환
+        pixmap = QPixmap(image_path)
+        
+        # 버튼 크기에 맞게 이미지 크기 조정 (비율 유지)
+        button_size = self.button.size()
+        scaled_pixmap = pixmap.scaled(button_size, Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
+
+        # QIcon으로 변환 후 버튼 아이콘으로 설정
+        icon = QIcon(scaled_pixmap)
+        self.button.setIcon(icon)
+        icon_size = QSize(button_size.width() -12, button_size.height() - 12)
+        self.button.setIconSize(icon_size)  # 아이콘 크기 설정
+
+        # 스타일시트 설정
+        self.button.setStyleSheet(
+            """
+            QPushButton {
+                padding: 0px; /* 버튼 내부 여백 제거 */
+                margin: 0px; /* 버튼 외부 여백 제거 */
+                border: none; /* 버튼 테두리 제거 */
+                background: none; /* 버튼 배경 제거 */
+                text-align: center; /* 텍스트 중앙 정렬 */
+            }
+            """
+        )
+
+    def set_button_icon(self):
+        
+        if self.selected_true:
+            # 이미지 경로 설정
+            if self.button.isChecked() :
+                image_path = "/home/rapa/server/pipeline/source/unselected.png"
+            else:
+                image_path = "/home/rapa/server/pipeline/source/selected.png"
+
+        else:
+            if self.button.isChecked() :
+                image_path = "/home/rapa/server/pipeline/source/selected.png"
+            else:
+                image_path = "/home/rapa/server/pipeline/source/unselected.png"
+
 
         # QPixmap을 사용하여 이미지를 로드하고 QIcon으로 변환
         pixmap = QPixmap(image_path)
@@ -322,7 +391,7 @@ class DraggableWidgetFav(QWidget):
 
         # 드래그 가능한 라벨(이미지 라벨과 함께 동작함)
         self.draggable_label = QLabel(os.path.basename(file_path))
-        self.draggable_label.setAlignment(Qt.AlignCenter | Qt.AlignBottom)
+        self.draggable_label.setAlignment(Qt.AlignCenter)
         self.draggable_label.setFixedSize(260, 20)
         self.draggable_label.setStyleSheet("font: 6pt;")
         self.draggable_label.setStyleSheet('color:rgb(211, 215, 207)')
@@ -353,7 +422,7 @@ class DraggableWidgetFav(QWidget):
             # Q드래그 오브젝트 만들고 Mimedata 세팅
             drag = QDrag(self)
             mime_data = QMimeData()
-            mime_data.setText(self.file_path)
+            mime_data.setText(self.file_path+".mov")
             drag.setMimeData(mime_data)
             drag.exec(Qt.MoveAction | Qt.CopyAction)
 
@@ -504,11 +573,6 @@ class Libraryclip:
 
         self.clip_fav_list = []
 
-        # Main layout setup
-        # layout = QVBoxLayout()
-        # layout.setAlignment(Qt.AlignCenter)
-        # self.setLayout(layout)
-
         # clip 테이블 위젯을 드래그&드랍 테이블 위젯으로 지정
         self.table_widget = DroppableTableWidget(3, 3)  # Initial size, will adjust dynamically
         self.table_widget.setMinimumSize(500, 400)
@@ -528,14 +592,13 @@ class Libraryclip:
         "/home/rapa/server/project/YUMMIE/template/shot/clip_lib/clip_thumbnail"
         )
 
-     # shotgird load button
+        # shotgird load button
         self.ui.commandLinkButton_shotgrid.clicked.connect(self.link_to_shotgrid)
 
-        self.ui.pushButton_reset.clicked.connect(self.reset_ui)
-
+        
 
         # 이미지 경로 설정
-        image_path = "/home/rapa/xgen/reset.png"
+        image_path = "/home/rapa/server/pipeline/source/reset.png"
 
         # QPixmap을 사용하여 이미지를 로드하고 QIcon으로 변환
         pixmap = QPixmap(image_path)
@@ -552,11 +615,12 @@ class Libraryclip:
         self.ui.pushButton_reset.setIconSize(icon_size)  # 아이콘 크기 설정
 
 
-        
-    def reset_ui(self):
-        print("0000000000")
-        self.ui.comboBox_seq.clear()
+        self.set_json_fav_clips_in_tableWidget()
+        self.set_new_clicked_fav_clips_in_tableWidget(        
+        "/home/rapa/server/project/YUMMIE/template/shot/clip_lib", 
+        "/home/rapa/server/project/YUMMIE/template/shot/clip_lib/clip_thumbnail")
 
+        
 
     def link_to_shotgrid(self):
         url = QUrl("https://4thacademy.shotgrid.autodesk.com/projects/#Project_222")
@@ -617,10 +681,30 @@ class Libraryclip:
             image_file_path = os.path.join(image_path, image_file)
 
             # 셀 위젯 만들기
+            print(file_path)
             draggable_widget = DraggableWidget(file_path, image_file_path)
             draggable_widget.widgetClicked.connect(self.file_info)
             draggable_widget.buttonClicked.connect(self.load_emited_button_list)
+            draggable_widget.buttonClicked.connect(self.save_fav_items_in_json)
             self.table_widget.setCellWidget(row, col, draggable_widget)
+
+
+    def set_json_fav_clips_in_tableWidget(self):
+    ### json 에서 끌고온 json_data, fav_clips 를 loader 가 실행됐을때, 바로 넣어지게 
+    # 
+        username = self.ui.label_username.text()
+
+        self.json_data = self.load_fav_items_in_json()
+
+        if username not in self.json_data.keys():
+            self.json_data[username] = []
+
+        clip_favs_json = self.json_data[username]
+        clip_favs_json.sort()
+
+        self.clip_fav_list = clip_favs_json
+        return self.clip_fav_list
+
 
     def load_emited_button_list(self,item):
 
@@ -629,18 +713,16 @@ class Libraryclip:
         else:
             self.clip_fav_list.append(item)
 
-        print(self.clip_fav_list)
-
-        self.set_fav_items_in_tableWidget(        
+        self.set_new_clicked_fav_clips_in_tableWidget(        
         "/home/rapa/server/project/YUMMIE/template/shot/clip_lib", 
         "/home/rapa/server/project/YUMMIE/template/shot/clip_lib/clip_thumbnail")
 
-    def set_fav_items_in_tableWidget(self, mov_path, image_path):
+    def set_new_clicked_fav_clips_in_tableWidget(self, mov_path, image_path):
         
         self.table_widget_fav.clear()
         # 리스트를 파일 이름 순으로 정렬
         self.clip_fav_list.sort(key=lambda x: x[0])
-        print ("457",self.clip_fav_list)
+        # print ("457",self.clip_fav_list)
 
         # 썸네일 이미지 파일 리스트를 딕셔너리로 저장
         images = {}
@@ -656,7 +738,7 @@ class Libraryclip:
         for base_name in self.clip_fav_list:
             if base_name in images:
                 fav_clip_existed_image_list.append(base_name)
-        print ("fav_clip_existed_image_list=" , fav_clip_existed_image_list)
+        # print ("fav_clip_existed_image_list=" , fav_clip_existed_image_list)
 
         # 불러오는 파일 갯수에 맞게 테이블 셋업
         self.table_widget_fav.setRowCount(4)
@@ -667,12 +749,6 @@ class Libraryclip:
             row = index // 4
             col = index % 4
             
-            # mov_file 찾기
-            # clip_fav_file = None
-            # for name, file in self.clip_fav_list:
-            #     if name == base_name:
-   
-            #         break
             
             # image_file 찾기
             image_file = images[base_name]
@@ -682,6 +758,34 @@ class Libraryclip:
 
             draggable_widget_fav = DraggableWidgetFav(file_path, image_file_path)
             self.table_widget_fav.setCellWidget(row,col,draggable_widget_fav)
+
+    def load_fav_items_in_json(self):
+        clip_fav_json_path = "/home/rapa/yummy/pipeline/json/clip_favorite.json"
+        with open (clip_fav_json_path, "r") as f:
+            json_data = json.load(f)
+
+        return json_data
+        
+    def save_fav_items_in_json(self):
+        fav_items_json_dict = self.json_data
+
+        username = self.ui.label_username.text()
+        # print ("username", username)
+        # print ("fav_items_json", self.clip_fav_list)
+        
+        fav_items_json_dict[username] = self.clip_fav_list
+        # print ("json", fav_items_json_dict)
+
+        clip_fav_json_path = "/home/rapa/yummy/pipeline/json/clip_favorite.json"
+        with open(clip_fav_json_path, "w") as f:
+            json.dump(fav_items_json_dict, f, indent=4)
+
+    def reset_ui(self):
+        print("0000000000")
+        login_path = "/home/rapa/yummy/pipeline/scripts/loader/loader_script/singin.py"
+        subprocess.Popen(['python3.9',login_path])
+        sys.exit()
+
 
     def set_up(self):
         self.ui = Ui_Form()

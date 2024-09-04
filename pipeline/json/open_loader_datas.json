@@ -563,9 +563,9 @@
             "version_id": 8156,
             "version_type": null,
             "description": null,
-            "sg_status_list": "wip",
+            "sg_status_list": "sc",
             "artist": "hyogi lee",
-            "updated_at": "2024-09-02 18:03:13"
+            "updated_at": "2024-09-04 20:30:32"
         },
         {
             "version_code": "BRK_020_ly_v001",
@@ -613,15 +613,6 @@
             "updated_at": "2024-08-30 12:02:19"
         },
         {
-            "version_code": "PKG_030_mm_v004",
-            "version_id": 8162,
-            "version_type": null,
-            "description": "lalala",
-            "sg_status_list": "wip",
-            "artist": "test_park 1.0",
-            "updated_at": "2024-08-30 11:59:00"
-        },
-        {
             "version_code": "FNL_010_lgt_v001",
             "version_id": 8163,
             "version_type": null,
@@ -656,33 +647,6 @@
             "sg_status_list": "sc",
             "artist": "지연 이",
             "updated_at": "2024-08-30 12:11:54"
-        },
-        {
-            "version_code": "PKG_030_mm_v004",
-            "version_id": 8173,
-            "version_type": null,
-            "description": "lalala",
-            "sg_status_list": "wip",
-            "artist": "test_park 1.0",
-            "updated_at": "2024-08-30 14:12:20"
-        },
-        {
-            "version_code": "PKG_030_mm_v004",
-            "version_id": 8181,
-            "version_type": null,
-            "description": "lalala",
-            "sg_status_list": "wip",
-            "artist": "지연 이",
-            "updated_at": "2024-08-30 14:39:19"
-        },
-        {
-            "version_code": "PKG_030_mm_v004",
-            "version_id": 8185,
-            "version_type": null,
-            "description": "lalala",
-            "sg_status_list": "wip",
-            "artist": "지연 이",
-            "updated_at": "2024-08-30 14:47:14"
         },
         {
             "version_code": "test_v001",

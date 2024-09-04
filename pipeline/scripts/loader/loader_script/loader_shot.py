@@ -1,10 +1,10 @@
 from PySide6.QtCore import Qt, QUrl
 from PySide6.QtWidgets import QWidget,QApplication,QHeaderView
 from PySide6.QtWidgets import QTreeWidgetItem, QTableWidgetItem, QLabel,QTableWidget
-from PySide6.QtWidgets import QAbstractItemView, QVBoxLayout
+from PySide6.QtWidgets import QAbstractItemView, QVBoxLayout, QSizePolicy
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile,QSize
-from PySide6.QtGui import QPixmap, QColor,QFont,QMovie
+from PySide6.QtCore import QFile,QSize, QRect
+from PySide6.QtGui import QPixmap, QColor,QFont,QMovie, QBrush
 from PySide6.QtMultimedia import QMediaPlayer
 from PySide6.QtMultimediaWidgets import QVideoWidget
 import threading
@@ -28,6 +28,8 @@ class Mainloader:
         # super().__init__()
         self.ui = Ui_Form
         # self.set_up()
+        self.window_width = 1020
+        self.current_gifs = [] 
         
         self.set_project_info()
         self.set_shot_tableWidgets()
@@ -37,6 +39,7 @@ class Mainloader:
         self.set_description_list()
         
         self.get_task_tab_name(2)
+        self.table = self.ui.tableWidget_shot_work
         
         self.shot_treeWidget = self.ui.treeWidget
         self.work_table = self.ui.tableWidget_shot_work
@@ -66,11 +69,16 @@ class Mainloader:
         self.mov_table.itemDoubleClicked.connect(self.set_mov_files)
         self.all_list.itemClicked.connect(self.set_all_file_information)
 
-    
+
+    # def resize_tab (self, new_size) :
+    #     width = new_size.width()
+    #     self.ui.gridLayout_status.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+    #     self.ui.gridLayout_status.setGeometry(width, 1000,200,200)
+
+
     # ==============================================================================================    
     # json 연결
     # ==============================================================================================    
-    
     # project 기본 세팅 설정
     
     def set_project_info(self):
@@ -86,7 +94,6 @@ class Mainloader:
     # tree 위젯 셋팅 추가
     # ==========================================================================================
     
-    
     def input_project(self):
         with open("/home/rapa/yummy/pipeline/json/login_user_data.json","rt",encoding="utf-8") as r:
             user_dic = json.load(r)
@@ -95,8 +102,8 @@ class Mainloader:
             if projects["name"] == self.project:
                 self.transform_json_data(projects["shot_code"])
 
+
     def transform_json_data(self,data):
-        
         self.transformed_data = {}
 
         for key, value in data.items():
@@ -156,7 +163,8 @@ class Mainloader:
                 for task in tasks :
                     task_item = QTreeWidgetItem(parent_item)
                     if task in my_task:
-                        task_item.setText(0,task)
+                        task_item.setText(0,f"{task}/dev")
+
                         task_item.setForeground(0,QColor(0,251,236))
                         my_task_dict = {}
                         my_task_dict[task] = shot_code
@@ -166,14 +174,14 @@ class Mainloader:
                         pub_list = os.listdir(f"{task_path}/{task}/pub/work")
                         if pub_list:
                             task_item.setText(0,task)
-                            task_item.setForeground(0,QColor("Skyblue"))
+                            task_item.setForeground(0,QColor("lightgray"))
                            
                         else:
                             task_item.setText(0,task)
-                            task_item.setForeground(0,QColor("lightgray"))                                      
+                            task_item.setForeground(0,QColor(85, 87, 83))                                      
             else:
                 parent_item.setText(0, shot_code)
-                parent_item.setForeground(0,QColor("lightgray"))
+                parent_item.setForeground(0,QColor(85, 87, 83))
                 
                 task_path = f"/home/rapa/server/project/{self.project}/seq/{seq}/{shot_code}"
                 tasks = os.listdir(task_path)
@@ -187,7 +195,7 @@ class Mainloader:
                         parent_item.setForeground(0,QColor(122, 181, 181))
                     else:
                         task_item.setText(0,task)
-                        task_item.setForeground(0,QColor("lightgray"))
+                        task_item.setForeground(0,QColor(85, 87, 83))
                 
     def get_clicked_treeWidget_shot_item (self,item,column):
         """
@@ -195,6 +203,7 @@ class Mainloader:
         """
         
         selected_task = item.text(column)
+        selected_task = selected_task.split("/")[0]
 
         # 선택한 task의 부모인 shot_code 가져오기 
         parent_item = item.parent()
@@ -248,10 +257,13 @@ class Mainloader:
         h_header = table_widget.horizontalHeader()
         h_header.setSectionResizeMode(QHeaderView.ResizeToContents)
         h_header.setSectionResizeMode(QHeaderView.Stretch)
-        table_widget.setEditTriggers(QAbstractItemView.NoEditTriggers) 
+        table_widget.setEditTriggers(QAbstractItemView.NoEditTriggers)
+
         table_widget.setColumnCount(3)
         table_widget.setRowCount(8)
         table_widget.setShowGrid(False)
+
+        self.table = table_widget
                  
     def get_tab_name (self,tabIndex):
         if tabIndex == 0 :
@@ -281,8 +293,10 @@ class Mainloader:
         self.clear_file_info()
         self.set_shot_table("work")
         
+        height = self.ww/6.41025
+
         for row in range(self.work_table.rowCount()):
-            self.work_table.setRowHeight(row,195)
+            self.work_table.setRowHeight(row,height)
             
         self.work_table.setShowGrid(True)
         
@@ -319,6 +333,7 @@ class Mainloader:
                 font  = QFont()
                 font.setPointSize(40)
                 item.setFont(font)
+
                 
                 # 아이템 클릭할 수 없게 만들기
                 item.setFlags(Qt.NoItemFlags)
@@ -342,7 +357,7 @@ class Mainloader:
             layout = QVBoxLayout()
 
             label_img = QLabel()
-            pixmap = QPixmap("/home/rapa/server/pipeline/source/images1.png")
+            pixmap = QPixmap("/home/rapa/server/pipeline/source/images001.png")
             label_img.setPixmap(pixmap) 
             label_img.setAlignment(Qt.AlignCenter)
             label_img.setScaledContents(True)
@@ -352,7 +367,7 @@ class Mainloader:
             label_text.setAlignment(Qt.AlignCenter)
             label_text.setStyleSheet('font-size: 11px;color:rgb(211, 215, 207);')
             label_text.setWordWrap(True)
-            
+            label_text.setStyleSheet('font-size: 11px;color:rgb(211, 215, 207);')
             layout.addWidget(label_img)
             layout.addWidget(label_text)
             layout.setContentsMargins(0,0,0,10)
@@ -361,12 +376,18 @@ class Mainloader:
             
             item = QTableWidgetItem()
             item.setText(work)
+            # item text 색상 투명하게 조정
+            brush = QBrush(QColor(0,0,0,0))
+            item.setForeground(brush)
+            item.setTextAlignment(Qt.AlignRight)
+            font = QFont()
+            font.setPointSize(1)
+            item.setFont(font)
+            
             self.work_table.setItem(row, col, item)
             self.work_table.setCellWidget(row,col,cell_widget)
             
             col +=1
-            
-            # self.reduce_item_visibility_in_tableWidget(row, col)
             
             # 갯수 맞춰서 다다음줄로
             if col >= self.work_table.columnCount():            
@@ -390,8 +411,12 @@ class Mainloader:
         self.clear_file_info()
         self.set_shot_table("exr")
         
+        
+        x = self.ww/120
+        height = self.ww/x
+
         for row in range(self.work_table.rowCount()):
-            self.exr_table.setRowHeight(row,120)
+            self.exr_table.setRowHeight(row,height)
         
         self.exr_table.setShowGrid(True)
         
@@ -428,6 +453,7 @@ class Mainloader:
                 font.setPointSize(40)
                 item.setFont(font)
                 
+                
                 # 아이템 클릭할 수 없게 만들기
                 item.setFlags(Qt.NoItemFlags)
                 self.exr_table.setItem(0,0,item)
@@ -457,7 +483,8 @@ class Mainloader:
             
             label_img = QLabel()
             pixmap = QPixmap(png_path)
-            label_img.setPixmap(pixmap) 
+            scaled_image = pixmap.scaled(170 ,170, Qt.KeepAspectRatio)
+            label_img.setPixmap(scaled_image) 
             label_img.setAlignment(Qt.AlignCenter)
             label_img.setScaledContents(True)
             
@@ -476,6 +503,12 @@ class Mainloader:
 
             item = QTableWidgetItem()
             item.setText(exr)
+            brush = QBrush(QColor(0,0,0,0))
+            item.setForeground(brush)
+            item.setTextAlignment(Qt.AlignRight)
+            font = QFont()
+            font.setPointSize(1)
+            item.setFont(font)
             self.exr_table.setItem(row, col, item)
             self.exr_table.setCellWidget(row,col,cell_widget)
             
@@ -567,7 +600,8 @@ class Mainloader:
             
             label_img = QLabel()
             pixmap = QPixmap(png_path)
-            label_img.setPixmap(pixmap) 
+            scaled_image = pixmap.scaled(170,170, Qt.KeepAspectRatio)
+            label_img.setPixmap(scaled_image) 
             label_img.setAlignment(Qt.AlignCenter)
             label_img.setScaledContents(True)
             
@@ -585,6 +619,12 @@ class Mainloader:
             
             item = QTableWidgetItem()
             item.setText(mov)
+            brush = QBrush(QColor(0,0,0,0))
+            item.setForeground(brush)
+            item.setTextAlignment(Qt.AlignRight)
+            font = QFont()
+            font.setPointSize(1)
+            item.setFont(font)
             self.mov_table.setItem(row, col, item)
             self.mov_table.setCellWidget(row,col,cell_widget)      
         
@@ -787,6 +827,8 @@ class Mainloader:
         front_path = self.ui.label_shot_filepath.text()
         split_front_path = front_path.split("  ")[1]
          
+        print("우인우인우인우인",split_front_path)
+
         self.nuke_file_path = "/home/rapa/" + split_front_path + "/dev/" + self.tab_name + "/" + selected_file
         return self.nuke_file_path
 
@@ -864,16 +906,20 @@ class Mainloader:
         
     def load_new_nuke(self):
         subprocess.Popen("source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc", shell=True,executable="/bin/bash")
-        
-
-     
+    
     #=========================================================================================
     # 스테이터스 창
     #==========================================================================================    
      
     def set_status_table_list(self):
-        tablename = ["ani","cmp","lgt","mm","ly"]
+        tablename = ["ani","cmp","lgt","ly","mm"]
         self.task_table_widget = [getattr(self.ui, f"tableWidget_shot_{task}") for task in tablename]
+        
+        for task_table in self.task_table_widget:
+            self.set_status_table_1(task_table)
+            
+        self.sort_status_task()
+        
         # self.sort_status_task()
         for task_table in self.task_table_widget:
             task_table.itemDoubleClicked.connect(partial(self.set_shot_status_vlc,task_table))
@@ -900,7 +946,7 @@ class Mainloader:
     def sort_status_task(self):
         user_dic = self.open_loader_json()
         
-        self.status_dic = {"ani":[],"cmp":[],"lgt":[],"mm":[],"ly":[]}
+        self.status_dic = {"ani":[],"cmp":[],"lgt":[],"ly":[],"mm":[]}
         
         task_list = user_dic["project_versions"]
         
@@ -924,45 +970,48 @@ class Mainloader:
         
         if tabindex == 0 :
             self.st_tab_name = "ani"
-            task_table = self.task_table_widget[0]
+            self.task_table = self.task_table_widget[0]
             status_list = self.status_dic["ani"]
                 
         elif tabindex == 1 :
             self.st_tab_name = "cmp"
-            task_table = self.task_table_widget[1]
+            self.task_table = self.task_table_widget[1]
             status_list = self.status_dic["cmp"]            
 
         elif tabindex == 2 :
             self.st_tab_name = "lgt"
-            task_table = self.task_table_widget[2]
+            self.task_table = self.task_table_widget[2]
             status_list = self.status_dic["lgt"]
-            
-        elif tabindex == 4 :
-            self.st_tab_name = "mm"
-            task_table = self.task_table_widget[3]
-            status_list = self.status_dic["mm"]
             
         elif tabindex == 3 :
             self.st_tab_name = "ly"
-            task_table = self.task_table_widget[4]
+            self.task_table = self.task_table_widget[3]
             status_list = self.status_dic["ly"]
             
-        self.set_status_table_1(task_table)
-        self.input_status_table_1(status_list,task_table)
+        elif tabindex == 4 :
+            self.st_tab_name = "mm"
+            self.task_table = self.task_table_widget[4]
+            status_list = self.status_dic["mm"]
+            # print("Hello")
+            
+
+        self.set_status_table_1(self.task_table,self.window_width)
+        self.input_status_table_1(status_list,self.task_table)
         
-    def set_status_table_1(self,task_table):
+    def set_status_table_1(self, task_table, window_width = 1015):
+
         
         task_table.setColumnCount(6)
         task_table.setRowCount(8)
         
         task_table.setHorizontalHeaderLabels(["Artist","ShotCode", "Version","Status","Upadate Data" ,"Description"])
         
-        task_table.setColumnWidth(0, 1020 * 0.14)
-        task_table.setColumnWidth(1, 1020 * 0.13)
-        task_table.setColumnWidth(2, 1020 * 0.1)
-        task_table.setColumnWidth(3, 1020 * 0.05)
-        task_table.setColumnWidth(4, 1020*  0.23)
-        task_table.setColumnWidth(5, 1030 * 0.35)
+        task_table.setColumnWidth(0, window_width * 0.14)
+        task_table.setColumnWidth(1, window_width * 0.13)
+        task_table.setColumnWidth(2, window_width * 0.1)
+        task_table.setColumnWidth(3, window_width * 0.05)
+        task_table.setColumnWidth(4, window_width * 0.23)
+        task_table.setColumnWidth(5, window_width * 0.29)
         
         task_table.setSelectionBehavior(QTableWidget.SelectRows)
         
@@ -973,36 +1022,82 @@ class Mainloader:
         task_table.setEditTriggers(QAbstractItemView.NoEditTriggers) 
         task_table.setShowGrid(True)
     
-    def input_status_table_1(self,status_list,task_table):
+    def resize_shot_status(self,new_size):
+
+        window_width = new_size.width()
+        window_height = new_size.height()
+        self.ww = window_width
+        self.set_status_table_1(self.task_table, window_width)
+
+        self.ui.tabWidget_shot_status.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.ui.tabWidget_shot_status.resize(window_width - 45, window_height - 710)
+
+        self.ui.tableWidget_shot_lgt.resize(window_width - 45, window_height - 710)
+        self.ui.tableWidget_shot_ani.resize(window_width - 45, window_height - 710)
+        self.ui.tableWidget_shot_cmp.resize(window_width - 45, window_height - 710)
+        self.ui.tableWidget_shot_ly.resize(window_width - 45, window_height - 710)
+        self.ui.tableWidget_shot_mm.resize(window_width - 45, window_height - 710)
+
+        self.ui.pushButton_shot_open.setGeometry(int(window_width - 266), 440, 231, 41)
+        self.ui.pushButton_shot_new.setGeometry(int(window_width - 266), 390, 231, 41)
+        self.ui.groupBox_shot_comment.setGeometry(int(window_width - 266), 250, 231, 231)
+        self.ui.groupBox_shot_file_info.setGeometry(int(window_width - 266), 50, 231, 191)
         
+        self.ui.tabWidget_shot_task.resize(window_width - 565, 432)
+
+        self.ui.tableWidget_shot_work.resize(window_width - 590, 378)
+        self.ui.tableWidget_shot_exr.resize(window_width - 590, 378)
+        self.ui.tableWidget_shot_mov.resize(window_width - 590, 378)
+
+
+        self.ui.listWidget_shot_allfile.resize(window_width - 590, 378)
+        self.ui.lineEdit_alllist_search.resize(window_width - 685, 26)
+        self.ui.pushButton_search.setGeometry(int(window_width - 666), 10, 84, 27)
+
+        self.table.setColumnCount(int(window_width/362))
+
+    
+    def input_status_table_1(self,status_list,task_table):
         if not status_list:
             return
+        
         status_list.sort(key=self.extract_time_shot,reverse = True)
         
+        # if self.current_gifs:
+        #     self.stop_all_gifs()
+        
         row = 0
+        
         for status_info in status_list:
+            
             col = 0
+            
             for info in status_info.values():
                 item = QTableWidgetItem()
+                
                 if col == 3:
+                    label = QLabel()
+                    gif_path = None
+                    
                     if info in ["wip","pub"]:
-                        label = QLabel()
-                        gif_movie = QMovie("/home/rapa/server/pipeline/source/wip001.gif")
-                        gif_movie.setScaledSize(QSize(80,60))# GIF 파일 경로 설정
-                        label.setMovie(gif_movie)
-                        gif_movie.start() 
-                        label.setAlignment(Qt.AlignCenter)
-                        task_table.setCellWidget(row, col, label)
+                        gif_path = "/home/rapa/xgen/wip001.gif"
+                        width = 80
+                        height = 60
                         
-                    elif info in ["fin","sc"]:
-                        label = QLabel()
-                        gif_movie = QMovie("/home/rapa/server/pipeline/source/pub002.gif")
-                        gif_movie.setScaledSize(QSize(120,90))# GIF 파일 경로 설정
-                        label.setMovie(gif_movie)
-                        gif_movie.start() 
-                        label.setAlignment(Qt.AlignCenter)
-                        task_table.setCellWidget(row, col, label)
-                                 
+                        
+                    elif info in ["fin", "sc"]:
+                        gif_path = "/home/rapa/xgen/pub002.gif"
+                        width = 120
+                        height = 90
+                    
+                    gif_movie = QMovie(gif_path)
+                    gif_movie.setScaledSize(QSize(width,height))# GIF 파일 경로 설정
+                    label.setMovie(gif_movie)
+                    gif_movie.start() 
+                    self.current_gifs.append(gif_movie)
+                    label.setAlignment(Qt.AlignCenter)
+                    task_table.setCellWidget(row, col, label)     
+                                
                 else:
                     if not info:
                         info = "No description"
@@ -1011,12 +1106,22 @@ class Mainloader:
                     task_table.setItem(row,col,item)
                 col += 1
             row += 1
-    
+        print("ddddd")
+        
     def extract_time_shot(self,item):
         return datetime.strptime(item['Update Date'], '%Y-%m-%d %H:%M:%S')
-           
+    
+    def stop_all_gifs(self):
+        # 현재 실행 중인 모든 GIF 애니메이션을 멈추고 리스트를 비웁니다.
+        for gif in self.current_gifs:
+            gif.stop()  # 애니메이션 멈춤
+        self.current_gifs.clear()
+    
+
+
+
     def set_up(self):
-        from loader_ui.main_window_v002_ui import Ui_Form
+        from loader_ui.main_window_v005_ui import Ui_Form
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 

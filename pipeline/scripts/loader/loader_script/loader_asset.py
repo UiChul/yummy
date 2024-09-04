@@ -15,7 +15,8 @@ try:
     import nuke
 except ImportError:
     nuke = None  # Nuke가 import되지 않은 경우를 대비
-
+sys.path.append("/usr/autodesk/maya2023/lib/python3.9/site-packages/maya")
+import cmds
 import json
 
 # mod
@@ -51,6 +52,7 @@ class DraggableWidget_mod(QWidget):
         self.draggable_label.setStyleSheet(
                                            "font: 10pt;"
                                            )
+        self.draggable_label.setStyleSheet('color:rgb(211, 215, 207)')
         layout.addWidget(self.draggable_label)
 
         self.file_path = file_path
@@ -109,32 +111,42 @@ class DroppableTableWidget_mod(QTableWidget):
 
     def dropEvent(self, event):
         if event.mimeData().hasText():
-            text = event.mimeData().text()
+            file_path = event.mimeData().text()
+            file_name = os.path.basename(file_path)
+            name = file_name.split(".")[0]
+
             if nuke:
-                self.apply_to_nuke(text)
+                self.apply_to_nuke(file_path)
+            if cmds:
+                self.apply_to_maya(file_path, file_name, name)
             event.acceptProposedAction()
         else:
             event.ignore()
 
-    def apply_to_nuke(self, text):
+    def apply_to_nuke(self, file_path):
         if nuke:
-            # Find or create a Read node
-            read_nodes = [node for node in nuke.allNodes() if node.Class() == "Read"]
-            if read_nodes:
-                read_node = read_nodes[0]  # Use the first Read node found
-            else:
-                read_node = nuke.createNode('Read')
+            read_node = nuke.createNode('Read')
+            read_node['file'].setValue(file_path)
+            nuke.message("A new Read node has been created")
 
-            # Set the 'file' path
-            read_node['file'].setValue(text)
+    def apply_to_maya(self, file_path, file_name, name):
+        print(f"Attempting to apply file to Maya: {file_path}")
 
-            # Optionally connect the Read node to the viewer
-            nuke.connectViewer(0, read_node)
-
-            # Provide feedback if no Read nodes were found initially
-            if not read_nodes:
-                nuke.message("A new Read node has been created and configured.")
-
+        if cmds:
+            try:
+                cmds.file(file_path, 
+                        i=True,
+                        type="Alembic", 
+                        ignoreVersion=True, 
+                        ra=True, 
+                        namespace=name, 
+                        importFrameRate=True, 
+                        importTimeRange="override")
+                print(f"Successfully imported {file_path} into Maya.")
+            except Exception as e:
+                print(f"Failed to import {file_path} into Maya. Error: {e}")
+        else:
+            print("Maya cmds is not available.")
 # rig
 class DraggableWidget_rig(QWidget):
     widgetClicked_rig = Signal(str)
@@ -168,6 +180,7 @@ class DraggableWidget_rig(QWidget):
         self.draggable_label.setStyleSheet(
                                            "font: 10pt;"
                                            )
+        self.draggable_label.setStyleSheet('color:rgb(211, 215, 207)')
         layout.addWidget(self.draggable_label)
 
         self.file_path = file_path

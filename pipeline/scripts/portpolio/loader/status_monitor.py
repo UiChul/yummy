@@ -16,7 +16,7 @@ class ChangeHandler(FileSystemEventHandler):
 
     def on_modified(self, event):
         #webhooks_report.json의 변화를 감지
-        if event.src_path == "/home/rapa/yummy/pipeline/json/webhooks_report.json":
+        if event.src_path == "/home/rapa/sub_server/pipeline/json/webhooks_report.json":
             print(f"{event.src_path}가 수정되었습니다.")
             if self.process:
                 # 프로세스가 이미 실행 중이면 종료
@@ -32,7 +32,7 @@ class ChangeHandler(FileSystemEventHandler):
 
 if __name__ == "__main__":
     #모니터링하는 폴더 패스
-    path = "/home/rapa/yummy/pipeline/json"
+    path = "/home/rapa/sub_server/pipeline/json"
 
     #변화가 있을 때, 실행하는 스크립트 설정
     event_handler = ChangeHandler(

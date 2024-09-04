@@ -45,6 +45,7 @@ class Shotgrid_connect:
         self.user_email = user_email
         # self.connect_sg()
         # self.get_user_by_email()
+        # wooin092633@gmail.com
         
     def connect_sg(self):
         URL = "https://4thacademy.shotgrid.autodesk.com"

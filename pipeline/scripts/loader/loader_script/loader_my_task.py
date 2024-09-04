@@ -1,8 +1,8 @@
 from PySide6.QtCore import Qt,QThread,Signal
 from PySide6.QtWidgets import QApplication,QTableWidgetItem,QTableWidget
-from PySide6.QtWidgets import QTableWidgetItem,QMessageBox,QLabel
-from PySide6.QtWidgets import QWidget,QAbstractItemView
-from PySide6.QtCore import QFile,QSize,QObject
+from PySide6.QtWidgets import QTableWidgetItem,QMessageBox,QLabel, QSpacerItem
+from PySide6.QtWidgets import QWidget,QAbstractItemView, QSizePolicy, QHBoxLayout
+from PySide6.QtCore import QFile,QSize
 from PySide6.QtGui import QPixmap,QMovie
 import os
 import json
@@ -423,23 +423,36 @@ class My_task:
     
     def set_status_table(self):
         
+        self.hbox_layout = QHBoxLayout()
+
+        self.hbox_layout.addStretch()
+        self.hbox_layout.addWidget(self.status_table)
+        self.hbox_layout.addSpacerItem(QSpacerItem(50,20, QSizePolicy.Minimum, QSizePolicy.Minimum))
+
         self.status_table.setColumnCount(7)
         self.status_table.setRowCount(8)
-        
+        self.status_table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.status_table.setHorizontalHeaderLabels(["Artist","ShotCode","Task","Version","Status","Upadate Data" ,"Description"])
         
-        self.status_table.setColumnWidth(0, 1020 * 0.13)
-        self.status_table.setColumnWidth(1, 1020 * 0.12)
-        self.status_table.setColumnWidth(2, 1020 * 0.1)
-        self.status_table.setColumnWidth(3, 1020 * 0.1)
-        self.status_table.setColumnWidth(4, 1020 * 0.05)
-        self.status_table.setColumnWidth(5, 1020*  0.20)
-        self.status_table.setColumnWidth(6, 1030 * 0.30)
+        
+
+    def resizeEvent(self, event):
+        super (My_task, self).resixeEvent(event)
+        
+        table_width = self.status_table.viewport().width()
+        self.status_table.setColumnWidth(0, int(table_width * 0.13))
+        self.status_table.setColumnWidth(1, int(table_width * 0.12))
+        self.status_table.setColumnWidth(2, int(table_width * 0.1))
+        self.status_table.setColumnWidth(3, int(table_width * 0.1))
+        self.status_table.setColumnWidth(4, int(table_width * 0.05))
+        self.status_table.setColumnWidth(5, int(table_width * 0.20))
+        self.status_table.setColumnWidth(6, (1030 * 0.30))
         self.status_table.setSelectionBehavior(QTableWidget.SelectRows)    
         self.status_table.setEditTriggers(QAbstractItemView.NoEditTriggers) 
+
            
     def set_up(self):
-        from pipeline.scripts.loader.loader_ui.main_window_v002_ui import Ui_Form
+        from pipeline.scripts.loader.loader_ui.main_window_v005_ui import Ui_Form
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.table = self.ui.tableWidget_recent_files
