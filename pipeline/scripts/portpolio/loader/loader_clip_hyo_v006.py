@@ -12,6 +12,14 @@ try:
 except ImportError:
     nuke = None 
 
+"""
+loader의 asset clip이 드래그&드랍 가능하게 만들어 
+아티스트가 loader에서 nuke로 mov 파일을 드래그하여 
+read node로 삽입 할 수 있게 한 스크립트입니다.
+mov 파일을 더블 클릭했을 때, RV로 mov실행이 가능하며
+마우스 우클릭으로 추가 메뉴를 선택할 수 있습니다.
+"""
+
 class DraggableWidget(QWidget):
     widgetClicked = Signal(str, str)
     

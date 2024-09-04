@@ -7,7 +7,9 @@ import uuid
 from datetime import datetime
 
 """
-스크립트로 샷그리드에 데이터 업로드를 했을 때, 웹훅이 반응하지 않는 이슈가 있어 만든 스크립트입니다.
+스크립트로 shotgrid에 데이터 업로드를 했을 때, 
+webhook이 반응하지 않는 이슈가 있어 만든 테스트 스크립트입니다.
+shotgrid와 webhook에 동시에 데이터를 전송하여 webhook이 반응되게 하였습니다.
 """
 
 class UploadToShotgun:
