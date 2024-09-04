@@ -10,7 +10,7 @@ sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
 try:
     import nuke
 except ImportError:
-    nuke = None 
+    nuke = None
 
 class DraggableWidget(QWidget):
     def __init__(self, file_path, image_path, *args, **kwargs):
@@ -91,6 +91,7 @@ class DraggableWidget(QWidget):
     def handle_finished(self):
         print("RV process finished")
 
+
 class DroppableTableWidget(QTableWidget):
     def __init__(self, rows, columns, *args, **kwargs):
         super().__init__(rows, columns, *args, **kwargs)
@@ -155,8 +156,8 @@ class Libraryclip:
 
         # mov와 썸네일 이미지 로드
         self.load_mov_and_image_files(
-        f"/home/rapa/YUMMY/project/{self.project}/template/shot/clip_lib", 
-        f"/home/rapa/YUMMY/project/{self.project}/template/shot/clip_lib/clip_thumbnail"
+        f"/home/rapa/sub_server/project/{self.project}/template/shot/clip_lib", 
+        f"/home/rapa/sub_server/project/{self.project}/template/shot/clip_lib/clip_thumbnail"
         )
 
     def make_json_dic(self):

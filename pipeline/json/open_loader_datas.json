@@ -4,7 +4,7 @@
             "asset_info": {
                 "asset_name": "box",
                 "asset_type": "prop",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/prop",
                 "task_details": [
                     {
                         "assignee_name": "다미 김",
@@ -54,7 +54,7 @@
             "asset_info": {
                 "asset_name": "lamp",
                 "asset_type": "prop",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/prop",
                 "task_details": [
                     {
                         "assignee_name": "다미 김",
@@ -96,7 +96,7 @@
             "asset_info": {
                 "asset_name": "car",
                 "asset_type": "vehicle",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/vehicle",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/vehicle",
                 "task_details": [
                     {
                         "assignee_name": "다미 김",
@@ -116,7 +116,7 @@
             "asset_info": {
                 "asset_name": "green",
                 "asset_type": "matt",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/matt",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/matt",
                 "task_details": [
                     {
                         "assignee_name": "다미 김",
@@ -136,7 +136,7 @@
             "asset_info": {
                 "asset_name": "man",
                 "asset_type": "character",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/character",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/character",
                 "task_details": [
                     {
                         "assignee_name": "다미 김",
@@ -156,7 +156,7 @@
             "asset_info": {
                 "asset_name": "tower",
                 "asset_type": "env",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/env",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/env",
                 "task_details": [
                     {
                         "assignee_name": "Gyeoul Kim",
@@ -176,7 +176,7 @@
             "asset_info": {
                 "asset_name": "armed_man",
                 "asset_type": "character",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/character",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/character",
                 "task_details": [
                     {
                         "assignee_name": "다미 김",
@@ -196,7 +196,7 @@
             "asset_info": {
                 "asset_name": "mat",
                 "asset_type": "character",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/character",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/character",
                 "task_details": [
                     {
                         "assignee_name": "다미 김",
@@ -216,7 +216,7 @@
             "asset_info": {
                 "asset_name": "minion",
                 "asset_type": "character",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/character",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/character",
                 "task_details": [
                     {
                         "assignee_name": "다미 김",
@@ -236,7 +236,7 @@
             "asset_info": {
                 "asset_name": "full_cg",
                 "asset_type": "env",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/env",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/env",
                 "task_details": [
                     {
                         "assignee_name": "다미 김",
@@ -256,7 +256,7 @@
             "asset_info": {
                 "asset_name": "FCG",
                 "asset_type": "env",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/env",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/env",
                 "task_details": [
                     {
                         "assignee_name": "Gyeoul Kim",
@@ -271,7 +271,7 @@
             "asset_info": {
                 "asset_name": "blue",
                 "asset_type": "matt",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/matt",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/matt",
                 "task_details": [
                     {
                         "assignee_name": "다미 김",
@@ -291,7 +291,7 @@
             "asset_info": {
                 "asset_name": "fountain",
                 "asset_type": "prop",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/prop",
                 "task_details": [
                     {
                         "assignee_name": "다미 김",
@@ -311,7 +311,7 @@
             "asset_info": {
                 "asset_name": "power_outlet",
                 "asset_type": "prop",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/prop",
                 "task_details": [
                     {
                         "assignee_name": "다미 김",
@@ -331,7 +331,7 @@
             "asset_info": {
                 "asset_name": "teapot",
                 "asset_type": "prop",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/prop",
                 "task_details": [
                     {
                         "assignee_name": "다미 김",
@@ -351,7 +351,7 @@
             "asset_info": {
                 "asset_name": "wall_tools",
                 "asset_type": "prop",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/prop",
                 "task_details": [
                     {
                         "assignee_name": "다미 김",
@@ -689,18 +689,18 @@
             "version_id": 8189,
             "version_type": null,
             "description": null,
-            "sg_status_list": null,
+            "sg_status_list": "wip",
             "artist": "수연 박",
-            "updated_at": "2024-08-30 15:12:30"
+            "updated_at": "2024-09-03 11:39:02"
         },
         {
             "version_code": "test_v001",
             "version_id": 8190,
             "version_type": null,
             "description": null,
-            "sg_status_list": null,
+            "sg_status_list": "pub",
             "artist": "수연 박",
-            "updated_at": "2024-08-30 15:22:10"
+            "updated_at": "2024-09-03 11:39:05"
         }
     ]
 }

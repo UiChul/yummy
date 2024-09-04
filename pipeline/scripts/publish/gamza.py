@@ -100,7 +100,7 @@ class Potato:
     #==================================================================================================================
     def start_jpg(self,jpg_path,output):
         
-        exr_file_name = exr_path.split("/")[-1]
+        # exr_file_name = exr_path.split("/")[-1]
         
         self.find_exr_frame(jpg_path)
         self.input_jpg_slate()
@@ -145,11 +145,11 @@ if __name__ == "__main__":
     # 샷_넘버_테스크_버전 맞춰주면 잘 들어감
     exr_path = "/home/rapa/다운로드/ABC_0010_LGT_v001"  
     exr_output = "/home/rapa/다운로드/gamza_001.mov"     
-    render.start_exr(exr_path,exr_output)
+    # render.start_exr(exr_path,exr_output)
     
     #===========================================
     # 여기는 jpg slate
-    jpg_path = "/home/rapa/xgen/gamza3.jpg"  
-    jpg_output = "/home/rapa/다운로드/gamza004.jpg"     
-    # render.start_jpg(jpg_path,jpg_output)
+    jpg_path = "/home/rapa/xgen/cat.jpg"  
+    jpg_output = "/home/rapa/다운로드/cat001.jpg"     
+    render.start_jpg(jpg_path,jpg_output)
     

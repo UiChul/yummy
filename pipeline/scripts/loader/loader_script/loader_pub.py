@@ -81,14 +81,14 @@ class Loader_pub:
             pub_name = pub_len[0]
             
         img_path = pub_name.split("_")
-        image_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/exr/{pub_name}/{pub_name}.1001.exr"
+        image_path = f"/home/rapa/server/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/exr/{pub_name}/{pub_name}.1001.exr"
         
-        if not os.path.isdir(f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/"):
-            os.makedirs(f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/")
+        if not os.path.isdir(f"/home/rapa/server/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/"):
+            os.makedirs(f"/home/rapa/server/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/")
         
-        png_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/{pub_name}.1001.png"
+        png_path = f"/home/rapa/server/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/{pub_name}.1001.png"
 
-        self.mov_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/mov/{pub_name}.mov"
+        self.mov_path = f"/home/rapa/server/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/mov/{pub_name}.mov"
         
         if not os.path.isfile(png_path):
             change_to_png(image_path,png_path)
@@ -109,7 +109,7 @@ class Loader_pub:
             nuke_name, ext = os.path.splitext(pub_name)
             img_path = nuke_name.split("_")
             
-            open_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/"
+            open_path = f"/home/rapa/server/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/"
             
             w,h,frame = find_resolution_frame(open_path+"mov"+f"/{nuke_name}.mov")
             print(open_path+"mov"+f"/{nuke_name}.mov")
@@ -155,7 +155,7 @@ class Loader_pub:
             nuke_name, ext = os.path.splitext(self.pub_name)
             img_path = nuke_name.split("_")
             
-            open_path = f" /home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/"
+            open_path = f" /home/rapa/server/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/"
             
             if ext == ".nknc":
                 nuke_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc' + open_path + f"/work/{self.pub_name}"       

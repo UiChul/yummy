@@ -13,7 +13,7 @@ from loader_script.loader_asset import Libraryasset
 from loader_module.project_data import project_data
 from loader_script.loader_pub import Loader_pub
 import json
-
+# from monitor_daemon import MonitorDaemon
 # class Merge(QWidget,Mainloader,project_data,Loader_pub):
 class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libraryasset):
     def __init__(self,info):
@@ -28,6 +28,11 @@ class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libra
         
         self.connect_script()
         
+        monitor_script = ""
+        log_file = ""
+        # self.status_monitor = MonitorDaemon(monitor_script, log_file)
+        # self.status_monitor.start_monitoring()
+        
     def set_main_loader(self,info):
         
         project = info["project"]
@@ -41,6 +46,7 @@ class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libra
     def write_project_json(self,info):
         with open("/home/rapa/yummy/pipeline/json/project_data.json", "w") as w:
             json.dump(info,w,indent = "\n")
+            
     
     def tab_enable(self,info):
         if not info["rank"] == "Admin":
@@ -74,6 +80,7 @@ class Merge(QWidget,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libra
         darkPalette.setColor( QPalette.BrightText, Qt.red )
         darkPalette.setColor( QPalette.Link, QColor( 42, 130, 218 ) )
         darkPalette.setColor( QPalette.Highlight, QColor( 42, 130, 218 ) )
+        
         darkPalette.setColor( QPalette.Disabled, QPalette.Highlight, QColor( 80, 80, 80 ) )
         darkPalette.setColor( QPalette.HighlightedText, QColor(211, 215, 207) )
         darkPalette.setColor( QPalette.Disabled, QPalette.HighlightedText, QColor( 127, 127, 127 ), )
@@ -98,3 +105,6 @@ if __name__ == "__main__":
     my = Merge(info)
     my.show()
     app.exec()
+    
+    
+    

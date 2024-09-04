@@ -524,8 +524,8 @@ class Libraryclip:
             self.ui.gridLayout_clip_fav.addWidget(self.table_widget_fav, 0, 0)  # Add at position (0, 0)
         # mov와 썸네일 이미지 로드
         self.load_mov_and_image_files(
-        "/home/rapa/YUMMY/project/YUMMIE/template/shot/clip_lib", 
-        "/home/rapa/YUMMY/project/YUMMIE/template/shot/clip_lib/clip_thumbnail"
+        "/home/rapa/server/project/YUMMIE/template/shot/clip_lib", 
+        "/home/rapa/server/project/YUMMIE/template/shot/clip_lib/clip_thumbnail"
         )
 
      # shotgird load button
@@ -632,8 +632,8 @@ class Libraryclip:
         print(self.clip_fav_list)
 
         self.set_fav_items_in_tableWidget(        
-        "/home/rapa/YUMMY/project/YUMMIE/template/shot/clip_lib", 
-        "/home/rapa/YUMMY/project/YUMMIE/template/shot/clip_lib/clip_thumbnail")
+        "/home/rapa/server/project/YUMMIE/template/shot/clip_lib", 
+        "/home/rapa/server/project/YUMMIE/template/shot/clip_lib/clip_thumbnail")
 
     def set_fav_items_in_tableWidget(self, mov_path, image_path):
         
@@ -696,7 +696,7 @@ class Libraryclip:
         self.ui.label_clip_savedtime.clear()
         self.ui.label_clip_filesize.clear()
         
-        mov_path = f"/home/rapa/YUMMY/project/YUMMIE/template/shot/clip_lib/{mov_file}{ext_type}"
+        mov_path = f"/home/rapa/server/project/YUMMIE/template/shot/clip_lib/{mov_file}{ext_type}"
         w,h,frame = find_resolution_frame(mov_path)
         size,time = File_data.file_info(mov_path)
         

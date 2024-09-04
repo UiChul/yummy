@@ -1,8 +1,8 @@
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt,QThread,Signal
 from PySide6.QtWidgets import QApplication,QTableWidgetItem,QTableWidget
 from PySide6.QtWidgets import QTableWidgetItem,QMessageBox,QLabel
 from PySide6.QtWidgets import QWidget,QAbstractItemView
-from PySide6.QtCore import QFile,QSize
+from PySide6.QtCore import QFile,QSize,QObject
 from PySide6.QtGui import QPixmap,QMovie
 import os
 import json
@@ -16,23 +16,95 @@ from PySide6.QtGui import QPixmap
 from pipeline.scripts.loader.loader_module.ffmpeg_module import change_to_png
 from pipeline.scripts.loader.loader_module.find_time_size import File_data
 
+
+class Status_table:
+    def __init__(self,Ui_Form,my_task_list):
+        self.ui = Ui_Form
+        self.status_table = self.ui.tableWidget_mytask_status
+        self.input_status_table(my_task_list)
+        
+    def input_status_table(self,my_task_list):
+        # my_task_list.sort(key=self.extract_time,reverse = True)
+        self.status_table.clearContents()
+        my_task_list.reverse()
+        row = 0
+        for status_info in my_task_list:
+            col = 0
+            for info in status_info.values():
+                item = QTableWidgetItem()
+                if col == 4:
+                    if info in ["wip","pub"]:
+                        label = QLabel()
+                        gif_movie = QMovie("//home/rapa/server/pipeline/source/wip001.gif")
+                        gif_movie.setScaledSize(QSize(80,60))# GIF 파일 경로 설정
+                        label.setMovie(gif_movie)
+                        gif_movie.start() 
+                        label.setAlignment(Qt.AlignCenter)
+                        self.status_table.setCellWidget(row, col,label)
+                        
+                    # elif info == "pub":
+                    #     label = QLabel()
+                    #     gif_movie = QMovie("/home/rapa/server/pipeline/source/pub003.gif")
+                    #     gif_movie.setScaledSize(QSize(100,50))# GIF 파일 경로 설정
+                    #     label.setMovie(gif_movie)
+                    #     gif_movie.start() 
+                    #     label.setAlignment(Qt.AlignCenter)
+                    #     self.status_table.setCellWidget(row, col, label)
+                        
+                    elif info in ["fin","sc"]:
+                        label = QLabel()
+                        gif_movie = QMovie("/home/rapa/server/pipeline/source/pub002.gif")
+                        gif_movie.setScaledSize(QSize(120,90))# GIF 파일 경로 설정
+                        label.setMovie(gif_movie)
+                        gif_movie.start() 
+                        label.setAlignment(Qt.AlignCenter)
+                        self.status_table.setCellWidget(row, col,label)
+                                 
+                else:
+                    if not info:
+                        info = "No description"
+                    item.setText(info)
+                    item.setTextAlignment(Qt.AlignCenter)
+                    self.status_table.setItem(row,col,item)
+                col += 1
+            row += 1
+        
+class Gif_Worker(QObject):
+    finished = Signal()
+    def __init__(self,Ui_Form,my_task_list):
+        super().__init__()
+        Status_table(Ui_Form,my_task_list)
+
+    def run(self):
+        self.finished.emit()
+        
+    
 class My_task:
     def __init__(self,Ui_Form):
         self.ui = Ui_Form
         self.table = self.ui.tableWidget_recent_files
         self.status_table = self.ui.tableWidget_mytask_status
-        
+        self.count_item = 0
         self.make_json_dic()
         self.set_click_thumbnail_mov()
         self.set_description_list()
         self.set_status_table()     
         self.set_mytask_table()
         
+        self.table.itemClicked.connect(self.finished_thread)
         self.table.itemClicked.connect(self.check_file_info)
         self.status_table.itemDoubleClicked.connect(self.set_status_vlc)
         self.ui.pushButton_mytask_selectedopen.clicked.connect(self.set_open_btn)
         self.ui.pushButton_mytask_newfileopen.clicked.connect(self.set_new_btn)
         
+    def finished_thread(self):
+        if self.thread_gif or self.thread_gif.isRunning():
+            self.thread_gif.quit()
+            self.thread_gif.wait()
+            print("Thread Stop")
+        else:
+            print("Thread is not running")
+            
     def make_json_dic(self):
         with open("/home/rapa/yummy/pipeline/json/project_data.json","rt",encoding="utf-8") as r:
             info = json.load(r)
@@ -52,7 +124,7 @@ class My_task:
         shot_code = file_info[0].split("_")[0]
         
         mov_name = "_".join(file_info)
-        vlc_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{shot_code}/{file_info[0]}/{file_info[1]}/dev/mov/{mov_name}.mov"
+        vlc_path = f"/home/rapa/server/project/{self.project}/seq/{shot_code}/{file_info[0]}/{file_info[1]}/dev/mov/{mov_name}.mov"
         
         subprocess.Popen(f"vlc --repeat {vlc_path}", shell=True,executable="/bin/bash")
         
@@ -69,7 +141,6 @@ class My_task:
                 info = self.table.item(index,col)
                 file_info.append(info.text())
         
-        self.status_table.clearContents()
         my_task_list = self.set_mytask_status(file_info)
         self.input_status_table(my_task_list)
         self.set_img(file_info)
@@ -80,15 +151,15 @@ class My_task:
         temp,ext  = os.path.splitext(file_name)
         img_path  = temp.split("_")
         
-        self.mov_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/mov/{temp}.mov"
-        image_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/exr/{temp}/{temp}.1001.exr"
+        self.mov_path = f"/home/rapa/server/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/mov/{temp}.mov"
+        image_path = f"/home/rapa/server/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/exr/{temp}/{temp}.1001.exr"
         
-        if not os.path.isdir(f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/"):
-            os.makedirs(f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/")
+        if not os.path.isdir(f"/home/rapa/server/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/"):
+            os.makedirs(f"/home/rapa/server/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/")
         
-        png_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/{temp}.1001.png"
+        png_path = f"/home/rapa/server/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/.thumbnail/{temp}.1001.png"
         
-        nuke_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/work/{file_name}"
+        nuke_path = f"/home/rapa/server/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/work/{file_name}"
         
         if not os.path.isfile(png_path):
             change_to_png(image_path,png_path)
@@ -116,7 +187,7 @@ class My_task:
         file_name = file_info[0]
         temp , ext=os.path.splitext(file_name)
         img_path = temp.split("_")    
-        self.nuke_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc' + f" /home/rapa/YUMMY/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/work/{file_name}"
+        self.nuke_path = 'source /home/rapa/env/nuke.env && /mnt/project/Nuke15.1v1/Nuke15.1 --nc' + f" /home/rapa/server/project/{self.project}/seq/{img_path[0]}/{img_path[0]}_{img_path[1]}/{img_path[2]}/dev/work/{file_name}"
       
     def set_open_btn(self):
         if self.nuke_path:
@@ -277,53 +348,79 @@ class My_task:
 
         
     def input_status_table(self,my_task_list):
-        # my_task_list.sort(key=self.extract_time,reverse = True)
+        # my_task_list.sort(key=self.extract_time,reverse = False)
         
-        my_task_list.reverse()
-        row = 0
-        for status_info in my_task_list:
-            col = 0
-            for info in status_info.values():
-                item = QTableWidgetItem()
-                if col == 4:
-                    if info == "wip":
-                        label = QLabel()
-                        gif_movie = QMovie("//home/rapa/YUMMY/pipeline/source/wip001.gif")
-                        gif_movie.setScaledSize(QSize(80,60))# GIF 파일 경로 설정
-                        label.setMovie(gif_movie)
-                        gif_movie.start() 
-                        label.setAlignment(Qt.AlignCenter)
-                        self.status_table.setCellWidget(row, col, label)
+        
+        # print(self.count_item)
+
+        # # gif_movie = None
+        # if self.count_item >= 1:
+        #     if self.gif_movie:
+        #         self.gif_movie.stop()
+        #         self.label.clear()
+        #         self.gif_movie.deleteLater()
+        #         self.gif_movie = None
+        
+        # self.count_item += 1
+        
+        self.worker = Gif_Worker(self.ui,my_task_list )
+        self.thread_gif = QThread()
+        self.worker.moveToThread(self.thread_gif)
+        
+        self.thread_gif.started.connect(self.worker.run)
+        self.worker.finished.connect(self.thread_gif.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread_gif.finished.connect(self.thread_gif.deleteLater)
+        
+        # self.thread_gif.finished.connect(self.thread_gif.deleteLater)
+        # self.worker.finished.connect(self.finished_thread)
+    #     self.thread_gif.start()
+    #     my_task_list.reverse()
+    #     row = 0
+    #     for status_info in my_task_list:
+    #         col = 0
+    #         for info in status_info.values():
+    #             item = QTableWidgetItem()
+    #             if col == 4:
+    #                 if info in ["wip","pub"]:
+    #                     self.label = QLabel()
+    #                     self.gif_movie = QMovie("//home/rapa/server/pipeline/source/wip001.gif")
+    #                     self.gif_movie.setScaledSize(QSize(80,60))# GIF 파일 경로 설정
+    #                     self.label.setMovie(self.gif_movie)
+    #                     self.gif_movie.start() 
+    #                     self.label.setAlignment(Qt.AlignCenter)
+    #                     self.status_table.setCellWidget(row, col, self.label)
                         
-                    elif info == "pub":
-                        label = QLabel()
-                        gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/pub003.gif")
-                        gif_movie.setScaledSize(QSize(100,50))# GIF 파일 경로 설정
-                        label.setMovie(gif_movie)
-                        gif_movie.start() 
-                        label.setAlignment(Qt.AlignCenter)
-                        self.status_table.setCellWidget(row, col, label)
+    #                 # elif info == "pub":
+    #                 #     label = QLabel()
+    #                 #     gif_movie = QMovie("/home/rapa/server/pipeline/source/pub003.gif")
+    #                 #     gif_movie.setScaledSize(QSize(100,50))# GIF 파일 경로 설정
+    #                 #     label.setMovie(gif_movie)
+    #                 #     gif_movie.start() 
+    #                 #     label.setAlignment(Qt.AlignCenter)
+    #                 #     self.status_table.setCellWidget(row, col, label)
                         
-                    elif info == "fin" or info == "sc":
-                        label = QLabel()
-                        gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/pub002.gif")
-                        gif_movie.setScaledSize(QSize(120,90))# GIF 파일 경로 설정
-                        label.setMovie(gif_movie)
-                        gif_movie.start() 
-                        label.setAlignment(Qt.AlignCenter)
-                        self.status_table.setCellWidget(row, col, label)
+    #                 elif info in ["fin","sc"]:
+    #                     self.label = QLabel()
+    #                     self.gif_movie = QMovie("/home/rapa/server/pipeline/source/pub002.gif")
+    #                     self.gif_movie.setScaledSize(QSize(120,90))# GIF 파일 경로 설정
+    #                     self.label.setMovie(self.gif_movie)
+    #                     self.gif_movie.start() 
+    #                     self.label.setAlignment(Qt.AlignCenter)
+    #                     self.status_table.setCellWidget(row, col, self.label)
                                  
-                else:
-                    if not info:
-                        info = "No description"
-                    item.setText(info)
-                    item.setTextAlignment(Qt.AlignCenter)
-                    self.status_table.setItem(row,col,item)
-                col += 1
-            row += 1
-    
+    #             else:
+    #                 if not info:
+    #                     info = "No description"
+    #                 item.setText(info)
+    #                 item.setTextAlignment(Qt.AlignCenter)
+    #                 self.status_table.setItem(row,col,item)
+    #             col += 1
+    #         row += 1
+            
     # def extract_time(self,item):
     #     return datetime.strptime(item['UpdateDate'], '%Y-%m-%d %H:%M:%S')
+    
     def set_status_table(self):
         
         self.status_table.setColumnCount(7)

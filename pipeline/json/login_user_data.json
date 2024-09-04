@@ -76,6 +76,20 @@
                     ]
                 }
             }
+        },
+        {
+            "id": 191,
+            "name": "phoenix",
+            "resolution_width": "2048",
+            "resolution_height": "858",
+            "status": null,
+            "shot_code": {
+                "Ruby": {
+                    "steps": [
+                        "lkd"
+                    ]
+                }
+            }
         }
     ]
 }

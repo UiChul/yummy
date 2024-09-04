@@ -242,7 +242,7 @@ class DroppableTableWidget_rig(QTableWidget):
                 read_node = nuke.createNode('Read')
 
             # Set the 'file' path
-            read_node['file'].setValue(text)
+            read_node['file'].setValsue(text)
 
             # Optionally connect the Read node to the viewer
             nuke.connectViewer(0, read_node)
@@ -378,7 +378,7 @@ class Libraryasset():
         for i in range(count_mod):
             item_text = self.ui.listWidget_mod.item(i).text()
             assets_in_listWidget.append(item_text)
-            thumbnail_path = f"/home/rapa/YUMMY/project/{self.project}/asset/.thumbnail/{current_asset_type}_rig_{item_text}_thumbnail.png"
+            thumbnail_path = f"/home/rapa/server/project/{self.project}/asset/.thumbnail/{current_asset_type}_rig_{item_text}_thumbnail.png"
             thumbnails_path.append(thumbnail_path)
 
         # print("assets_in_listWidget = ", assets_in_listWidget)
@@ -465,7 +465,7 @@ class Libraryasset():
         for i in range(count_rig):
             item_text = self.ui.listWidget_rig.item(i).text()
             assets_in_listWidget.append(item_text)
-            thumbnail_path = f"/home/rapa/YUMMY/project/{self.project}/asset/.thumbnail/{current_asset_type}_rig_{item_text}_thumbnail.png"
+            thumbnail_path = f"/home/rapa/server/project/{self.project}/asset/.thumbnail/{current_asset_type}_rig_{item_text}_thumbnail.png"
             thumbnails_path.append(thumbnail_path)
 
         # print (len(assets_in_listWidget))

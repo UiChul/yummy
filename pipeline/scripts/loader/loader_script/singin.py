@@ -40,7 +40,6 @@ class Sg_json(QObject):
         self.finished.emit()
 
 class Shotgrid_connect:
-    
     def __init__(self,user_email):
         
         self.user_email = user_email

@@ -112,7 +112,7 @@ class Mainloader:
     #==========================================================================================
         
     def set_comboBox_seq(self):
-        self.project_path = f"/home/rapa/YUMMY/project/{self.project}/seq"
+        self.project_path = f"/home/rapa/server/project/{self.project}/seq"
         self.seq_list = []
         
         for key in self.transformed_data.keys():
@@ -123,7 +123,7 @@ class Mainloader:
         if not seq:
             seq = self.ui.comboBox_seq.currentText()
         self.shot_treeWidget.clear()
-        self.file_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{seq}"
+        self.file_path = f"/home/rapa/server/project/{self.project}/seq/{seq}"
         shot_codes = os.listdir(self.file_path)
 
         # Headerlabel setting
@@ -144,7 +144,7 @@ class Mainloader:
                 parent_item.setText(0, shot_code)
                 parent_item.setForeground(0,QColor(0,251,236))
                 
-                task_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{seq}/{shot_code}"
+                task_path = f"/home/rapa/server/project/{self.project}/seq/{seq}/{shot_code}"
                 tasks = os.listdir(task_path)
                 tasks.sort()
                 my_task = []
@@ -175,7 +175,7 @@ class Mainloader:
                 parent_item.setText(0, shot_code)
                 parent_item.setForeground(0,QColor("lightgray"))
                 
-                task_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{seq}/{shot_code}"
+                task_path = f"/home/rapa/server/project/{self.project}/seq/{seq}/{shot_code}"
                 tasks = os.listdir(task_path)
                 tasks.sort()
                 for task in tasks : 
@@ -342,7 +342,7 @@ class Mainloader:
             layout = QVBoxLayout()
 
             label_img = QLabel()
-            pixmap = QPixmap("/home/rapa/YUMMY/pipeline/source/images1.png")
+            pixmap = QPixmap("/home/rapa/server/pipeline/source/images1.png")
             label_img.setPixmap(pixmap) 
             label_img.setAlignment(Qt.AlignCenter)
             label_img.setScaledContents(True)
@@ -876,12 +876,11 @@ class Mainloader:
         self.task_table_widget = [getattr(self.ui, f"tableWidget_shot_{task}") for task in tablename]
         # self.sort_status_task()
         for task_table in self.task_table_widget:
-            task_table.itemDoubleClicked.connect(partial(self.set_status_vlc,task_table))
-    
-    
+            task_table.itemDoubleClicked.connect(partial(self.set_shot_status_vlc,task_table))
     
     # 스터이스창 더블클릭시 mov 파일 실행되게
-    def set_status_vlc(self,task_table,item):
+    def set_shot_status_vlc(self,task_table,item):
+
         index = item.row()
         file_info = []
         for col in range(1,3):
@@ -889,10 +888,11 @@ class Mainloader:
             file_info.append(info.text())
         file_info.insert(1,self.st_tab_name)
         
+        print(file_info)
         shot_code = file_info[0].split("_")[0]
         
         mov_name = "_".join(file_info)
-        vlc_path = f"/home/rapa/YUMMY/project/{self.project}/seq/{shot_code}/{file_info[0]}/{file_info[1]}/dev/mov/{mov_name}.mov"
+        vlc_path = f"/home/rapa/server/project/{self.project}/seq/{shot_code}/{file_info[0]}/{file_info[1]}/dev/mov/{mov_name}.mov"
         
         subprocess.Popen(f"vlc --repeat {vlc_path}", shell=True,executable="/bin/bash")
     
@@ -985,33 +985,18 @@ class Mainloader:
             for info in status_info.values():
                 item = QTableWidgetItem()
                 if col == 3:
-                    if info == "wip":
+                    if info in ["wip","pub"]:
                         label = QLabel()
-                        # pixmap = QPixmap("/home/rapa/xgen/wip.png")
-                        # scaled_pixmap = pixmap.scaled(20,20)
-                        # label.setPixmap(scaled_pixmap)
-                        gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/wip001.gif")
+                        gif_movie = QMovie("/home/rapa/server/pipeline/source/wip001.gif")
                         gif_movie.setScaledSize(QSize(80,60))# GIF 파일 경로 설정
                         label.setMovie(gif_movie)
                         gif_movie.start() 
                         label.setAlignment(Qt.AlignCenter)
                         task_table.setCellWidget(row, col, label)
                         
-                    elif info == "pub":
+                    elif info in ["fin","sc"]:
                         label = QLabel()
-                        # pixmap = QPixmap("/home/rapa/xgen/wip.png")
-                        # scaled_pixmap = pixmap.scaled(20,20)
-                        # label.setPixmap(scaled_pixmap)
-                        gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/pub003.gif")
-                        gif_movie.setScaledSize(QSize(100,50))# GIF 파일 경로 설정
-                        label.setMovie(gif_movie)
-                        gif_movie.start() 
-                        label.setAlignment(Qt.AlignCenter)
-                        task_table.setCellWidget(row, col, label)
-                        
-                    elif info == "fin" or info == "sc":
-                        label = QLabel()
-                        gif_movie = QMovie("/home/rapa/YUMMY/pipeline/source/pub002.gif")
+                        gif_movie = QMovie("/home/rapa/server/pipeline/source/pub002.gif")
                         gif_movie.setScaledSize(QSize(120,90))# GIF 파일 경로 설정
                         label.setMovie(gif_movie)
                         gif_movie.start() 

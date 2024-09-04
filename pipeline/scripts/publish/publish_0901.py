@@ -2,8 +2,6 @@
 ### render/publish setting in nuke
 ### complete ALL process (open nuke > use ui > shotgrid upload/publish)
 
-
-
 try:
     from PySide6.QtWidgets import QApplication, QWidget, QTableWidgetItem
     from PySide6.QtWidgets import QListWidgetItem, QListWidget, QVBoxLayout
@@ -71,6 +69,7 @@ class MainPublish(QWidget):
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint) # UI 최상단 고정
         ui_file.close()
 
+        self.make_json_dic()
         self.setup_file_in_groubBox_from_Local()
         self.setup_top_bar()
         self.setup_tablewidget_basket()
@@ -98,11 +97,12 @@ class MainPublish(QWidget):
         self.get_description_text()
 
     def setup_file_in_groubBox_from_Local(self):
-
+        
         # nk_page
         nk_page = QWidget()
         layout1 = QVBoxLayout(nk_page)
-        self.nk_file_path = os.path.dirname(nuke.scriptName())
+        
+        self.nk_file_path = os.path.dirname(nuke.scriptName())  
         self.nk_file_listwidget = QListWidget()
         self.nk_file_listwidget.setObjectName("nk_file_listwidget")
         layout1.addWidget(self.nk_file_listwidget)
@@ -167,6 +167,7 @@ class MainPublish(QWidget):
             if items:
                 self.mov_file_listwidget.setCurrentItem(items[0])
 
+
     def open_exr_folder_dialog(self):
         QMessageBox.information(self, "Folder Selected", "Please select 'Folder' for exr")
 
@@ -178,19 +179,29 @@ class MainPublish(QWidget):
             item = QListWidgetItem(self.folder_name)
             self.exr_folder_listwidget.addItem(item)
             self.exr_folder_listwidget.setCurrentItem(item)
+    
       
     def setup_top_bar(self):
 
         # self.nk_file_path = nuke.scriptName()
-        split = self.nk_file_path.split("/")
+        split = self.file_name.split("_")
         # print(split)
-        project_name = split[-7]
-        shot_code = split[-4]
-        team_name = split[-3]
+        project_name = self.project
+        shot_code = "_".join([split[0],split[1]])
+        team_name = split[2]
         self.ui.label_project_name.setText(project_name)
         self.ui.label_shot_code.setText(shot_code)
         self.ui.label_team_name.setText(team_name)
-
+        
+    def make_json_dic(self):
+        with open("/home/rapa/yummy/pipeline/json/project_data.json","rt",encoding="utf-8") as r:
+            info = json.load(r)
+        
+        self.project = info["project"]
+        self.user    = info["name"]
+        self.rank    = info["rank"]
+        self.resolution = info["resolution"]
+    
     def _collect_path(self):
         
         self.current_nk_file_path = nuke.scriptName()
