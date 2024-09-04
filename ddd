@@ -1,0 +1,9 @@
+
+import sys
+sys.path.append("/home/rapa/server/pipeline/scripts")
+from importlib import reload
+global win
+import publish_0903
+reload(publish_0903)
+win = publish_0903.MainPublish()
+win.show()
