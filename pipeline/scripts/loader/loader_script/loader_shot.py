@@ -1001,17 +1001,18 @@ class Mainloader:
     def resize_shot_status(self,new_size):
 
         window_width = new_size.width()
+        window_height = new_size.height()
         self.ww = window_width
         self.set_status_table_1(self.task_table, window_width)
 
         self.ui.tabWidget_shot_status.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.ui.tabWidget_shot_status.resize(window_width - 45, 260)
+        self.ui.tabWidget_shot_status.resize(window_width - 45, window_height - 710)
 
-        self.ui.tableWidget_shot_lgt.resize(window_width - 45, 171)
-        self.ui.tableWidget_shot_ani.resize(window_width - 45, 171)
-        self.ui.tableWidget_shot_cmp.resize(window_width - 45, 171)
-        self.ui.tableWidget_shot_ly.resize(window_width - 45, 171)
-        self.ui.tableWidget_shot_mm.resize(window_width - 45, 171)
+        self.ui.tableWidget_shot_lgt.resize(window_width - 45, window_height - 710)
+        self.ui.tableWidget_shot_ani.resize(window_width - 45, window_height - 710)
+        self.ui.tableWidget_shot_cmp.resize(window_width - 45, window_height - 710)
+        self.ui.tableWidget_shot_ly.resize(window_width - 45, window_height - 710)
+        self.ui.tableWidget_shot_mm.resize(window_width - 45, window_height - 710)
 
         self.ui.pushButton_shot_open.setGeometry(int(window_width - 266), 440, 231, 41)
         self.ui.pushButton_shot_new.setGeometry(int(window_width - 266), 390, 231, 41)

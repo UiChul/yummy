@@ -1031,7 +1031,7 @@ class Ui_MainWindow(object):
         self.treeWidget_pub_list.setHeaderItem(__qtreewidgetitem1)
         self.treeWidget_pub_list.setObjectName(u"treeWidget_pub_list")
         self.treeWidget_pub_list.setGeometry(QRect(10, 70, 391, 641))
-        self.treeWidget_pub_list.setFont(font11)
+        self.treeWidget_pub_list.setFont(font8)
         self.treeWidget_pub_list.header().setVisible(False)
         self.pushButton_pub_retake = QPushButton(self.tab_pub)
         self.pushButton_pub_retake.setObjectName(u"pushButton_pub_retake")
@@ -1054,7 +1054,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget_all.setCurrentIndex(0)
+        self.tabWidget_all.setCurrentIndex(3)
         self.tabWidget_shot_status.setCurrentIndex(2)
         self.tabWidget_shot_task.setCurrentIndex(3)
         self.tabWidget_template.setCurrentIndex(0)
