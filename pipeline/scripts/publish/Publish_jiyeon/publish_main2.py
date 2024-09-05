@@ -90,12 +90,22 @@ class MainPublish(QWidget):
         self.count_tablewidget_item()
         self.get_description_text()
 
+    def make_path_material(self):
+        self.name_with_ext = nuke.scriptName()
+        base, _ = os.path.splitext(self.name_with_ext)
+        name_without_ext = base.split("/")[-1]
+        split = name_without_ext.split("_")
+        self.shot = split[0]
+        self.code = split[1]
+        self.team = split[2]
+        self.ver = split[3]
+
     def setup_file_in_groubBox_from_Local(self):
 
         # nk_page
         nk_page = QWidget()
         layout1 = QVBoxLayout(nk_page)
-        self.nk_file_path = os.path.dirname(nuke.scriptName())
+        self.nk_work_f_path = os.path.dirname(self.name_with_ext)
         self.nk_file_listwidget = QListWidget()
         self.nk_file_listwidget.setObjectName("nk_file_listwidget")
         layout1.addWidget(self.nk_file_listwidget)
@@ -107,7 +117,7 @@ class MainPublish(QWidget):
         # exr_page
         exr_page = QWidget()
         layout2 = QVBoxLayout(exr_page)
-        self.exr_folder_path = self.nk_file_path.split("work")[0]+"exr/"
+        self.exr_folder_path = self.nk_work_f_path.split("work")[0]+"exr/"
         self.exr_folder_listwidget = QListWidget()
         self.exr_folder_listwidget.addItem("Double-click here to add folder")
         self.exr_folder_listwidget.setObjectName("exr_file_listwidget")
@@ -119,7 +129,7 @@ class MainPublish(QWidget):
         # mov_page
         mov_page = QWidget()
         layout3 = QVBoxLayout(mov_page)
-        self.mov_file_path = self.nk_file_path.split("work")[0]+"mov/"
+        self.mov_file_path = self.nk_work_f_path.split("work")[0]+"mov/"
         self.mov_file_listwidget = QListWidget()
         self.mov_file_listwidget.setObjectName("mov_file_listwidget")
         layout3.addWidget(self.mov_file_listwidget)
@@ -129,7 +139,7 @@ class MainPublish(QWidget):
         self.mov_file_listwidget.itemDoubleClicked.connect(self.generate_mov_thumbnail_from_file)
 
     def open_nk_file_dialog(self):
-        file_dialog = QFileDialog.getOpenFileNames(self, "Select Files from Local", self.nk_file_path, "All Files (*)")
+        file_dialog = QFileDialog.getOpenFileNames(self, "Select Files from Local", self.nk_work_f_path, "All Files (*)")
         selected_files = file_dialog[0]
         if selected_files:
             self.nk_file_names = [os.path.basename(path) for path in selected_files]
