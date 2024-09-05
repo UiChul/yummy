@@ -77,6 +77,10 @@ class MainPublish(QWidget):
 
         self._collect_path()
 
+        """
+        ★ 버튼 연결 
+        """
+
         # Signal
         self.ui.pushButton_add_to_basket.clicked.connect(self.on_add_button_clicked)
 
@@ -458,9 +462,7 @@ class MainPublish(QWidget):
                         
                         shutil.copy2(current_path, new_exr_path)
                         new_local_paths.append(new_exr_path)
-                print(f"exr file이 version-up 되었습니다: {new_exr_path}")
-
-        nuke.message("version-up이 완료되었습니다.")
+                        print(f"exr file이 version-up 되었습니다: {new_exr_path}")
 
         return new_local_paths
 
@@ -531,6 +533,8 @@ class MainPublish(QWidget):
     
     def copy_to_Server_from_Local(self):
 
+        QMessageBox.information(self, "Folder Selected", "Please select 'Folder' for exr")
+
         ver_up_local_paths = self.version_up_in_Local()
         ver_up_server_dev_paths = self._find_Server_dev_path()
 
@@ -557,8 +561,6 @@ class MainPublish(QWidget):
                 # print(f"{ver_up_server_dev_paths[2]}:모브서버패스")
                 shutil.copy2(ver_up_local_path, ver_up_server_dev_paths[2])
                 print("mov version up file이 server로 이동되었습니다.")
-
-        nuke.message("main_server로 파일 이동이 완료되었습니다.")
 
     def _find_Server_pub_path(self):
         """Use Dev_folder_path to make Pub_folder_path"""
@@ -604,8 +606,6 @@ class MainPublish(QWidget):
                 shutil.copy2(ver_up_local_path, ver_up_server_dev_paths[2])
                 shutil.copy2(ver_up_server_dev_paths[2], ver_up_server_pub_paths[2])
                 print("mov version up file이 server로 이동되었습니다.")
-
-        nuke.message("main_server의 pub폴더로 파일 이동이 완료되었습니다.")
 
     #=================================================================
 
@@ -788,9 +788,9 @@ class MainPublish(QWidget):
         """set the trashbin_icon"""
 
         if self.ui.pushButton_delete.isChecked():
-            image_path = "/home/rapa/yummy/pipeline/scripts/publish/delete_icon2.png"
+            image_path = "/home/rapa/yummy/pipeline/scripts/publish/delete_icon.png"
         else:
-            image_path = "/home/rapa/yummy/pipeline/scripts/publish/delete_icon2.png"
+            image_path = "/home/rapa/yummy/pipeline/scripts/publish/delete_icon.png"
 
         # use QPixmap for image load and convert to QIcon
         pixmap = QPixmap(image_path)
@@ -830,9 +830,9 @@ def open_ui_in_nuke():
     # import sys
     global win
     # sys.path.append("/home/rapa/yummy/pipeline/scripts/publish")
-    import publish_main
-    reload(publish_main)
-    win = publish_main.MainPublish()
+    import publish_0901
+    reload(publish_0901)
+    win = publish_0901.MainPublish()
     win.show()
 
 

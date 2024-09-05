@@ -62,7 +62,7 @@ class MainPublish(QWidget):
     def __init__(self):
         super().__init__()         
 
-        ui_file_path = "/home/rapa/yummy/pipeline/scripts/publish/publish_ver6.ui"
+        ui_file_path = "/home/rapa/sub_server/pipeline/scripts/publish_ver6.ui"
         ui_file = QFile(ui_file_path)
         ui_file.open(QFile.ReadOnly)
         loader = QUiLoader()                                      
@@ -454,23 +454,24 @@ class MainPublish(QWidget):
                         current_version_in_file = match.group(0)
                         print(f"{current_version_in_file}:파일 버전")
                         new_exr_file = exr_file.replace(current_version_in_file, new_version)
+                        print(f"{new_version}:뉴 버전")
                         new_exr_path = os.path.join(new_ver_folder, new_exr_file)
                         
                         shutil.copy2(current_path, new_exr_path)
                         new_local_paths.append(new_exr_path)
                 print(f"exr file이 version-up 되었습니다: {new_exr_path}")
 
-        nuke.message("version-up이 완료되었습니다.")
+        nuke.message("sub_server에서 version-up이 완료되었습니다.")
 
         return new_local_paths
 
     def _find_Server_seq_path(self):
         """Find matching folder from Json and make Server path until 'seq' """
 
-        json_file_path = '/home/rapa/YUMMY/pipeline/json/project_data.json'
+        json_file_path = '/home/rapa/sub_server/pipeline/scripts/project_data.json'
         path_finder = PathFinder(json_file_path)
 
-        start_path = '/home/rapa/YUMMY/project'
+        start_path = '/home/rapa/sub_server/project'
 
         # Get the new path
         server_project_path = path_finder.append_project_to_path(start_path)
@@ -605,7 +606,7 @@ class MainPublish(QWidget):
                 shutil.copy2(ver_up_server_dev_paths[2], ver_up_server_pub_paths[2])
                 print("mov version up file이 server로 이동되었습니다.")
 
-        nuke.message("main_server의 pub폴더로 파일 이동이 완료되었습니다.")
+        nuke.message("main_server의 pub폴더에 파일이 저장되었습니다.")
 
     #=================================================================
 
@@ -713,9 +714,10 @@ class MainPublish(QWidget):
         split = self.exr_folder_path.split("/")   # exr_folder_path : local path의 exr 폴더임
         shot_code = split[-5]
         team_name = split[-4]
-        ver = self.folder_name
-        exr_name = f"{shot_code}_{team_name}_{ver}.1001.exr"
-        image_name = f"{shot_code}_{team_name}_{ver}.1001_exr.png"
+        exr_name = f"{self.folder_name}.1001.exr"
+        image_name = f"{self.folder_name}.1001_exr.png"
+        # exr_name = f"{shot_code}_{team_name}_{forder_name}.1001.exr"
+        # image_name = f"{shot_code}_{team_name}_{forder_name}.1001_exr.png"
         
         # thumbnail_folder_path = f"{self.exr_folder_path.split("dev")[0]}/.thumbnail"
         thumbnail_path = self._make_thumbnail_path()
@@ -724,7 +726,7 @@ class MainPublish(QWidget):
         if not os.path.isdir(thumbnail_path):
             os.makedirs(thumbnail_path)
 
-        exr_path = f"{self.exr_folder_path}{ver}/{exr_name}"
+        exr_path = f"{self.exr_folder_path}{self.folder_name}/{exr_name}"
         # print(f"{exr_path}:이엑스알")
         exr_png_path = f"{thumbnail_path}/{image_name}"
         # print(f"{exr_png_path}:이엑스알피엔지")
@@ -777,9 +779,9 @@ class MainPublish(QWidget):
 
     def get_description_text(self):
         description_list = []
-        nk_description = self.ui.lineEdit_description_nk.text()
-        exr_description = self.ui.lineEdit_description_exr.text()
-        mov_description = self.ui.lineEdit_description_mov.text()
+        nk_description = self.ui.lineEdit_description_nk.text() or ""
+        exr_description = self.ui.lineEdit_description_exr.text() or ""
+        mov_description = self.ui.lineEdit_description_mov.text() or ""
         description_list.append(nk_description, exr_description, mov_description)
 
         return description_list
@@ -788,9 +790,9 @@ class MainPublish(QWidget):
         """set the trashbin_icon"""
 
         if self.ui.pushButton_delete.isChecked():
-            image_path = "/home/rapa/yummy/pipeline/scripts/publish/delete_icon2.png"
+            image_path = "/home/rapa/sub_server/pipeline/scripts/delete_icon2.png"
         else:
-            image_path = "/home/rapa/yummy/pipeline/scripts/publish/delete_icon2.png"
+            image_path = "/home/rapa/sub_server/pipeline/scripts/delete_icon2.png"
 
         # use QPixmap for image load and convert to QIcon
         pixmap = QPixmap(image_path)
@@ -829,7 +831,7 @@ def open_ui_in_nuke():
     from importlib import reload
     # import sys
     global win
-    # sys.path.append("/home/rapa/yummy/pipeline/scripts/publish")
+    # sys.path.append("/home/rapa/sub_server/pipeline/scripts")
     import publish_main
     reload(publish_main)
     win = publish_main.MainPublish()
