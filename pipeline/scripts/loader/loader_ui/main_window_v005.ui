@@ -59,7 +59,7 @@
           </font>
          </property>
          <property name="text">
-          <string> </string>
+          <string/>
          </property>
         </widget>
        </widget>
@@ -279,7 +279,7 @@
 background-color: rgb(85, 87, 83);</string>
         </property>
         <property name="text">
-         <string> Shotgird</string>
+         <string>   Shotgird</string>
         </property>
         <property name="checkable">
          <bool>false</bool>
@@ -380,7 +380,7 @@ background-color: rgb(85, 87, 83);</string>
          <enum>QTabWidget::Rounded</enum>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>0</number>
         </property>
         <property name="usesScrollButtons">
          <bool>true</bool>
@@ -924,7 +924,7 @@ background-color: rgb(85, 87, 83);</string>
            </font>
           </property>
           <property name="currentIndex">
-           <number>3</number>
+           <number>0</number>
           </property>
           <property name="movable">
            <bool>false</bool>
@@ -1941,8 +1941,8 @@ background-color: rgb(85, 87, 83);</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>791</width>
-               <height>545</height>
+               <width>98</width>
+               <height>28</height>
               </rect>
              </property>
              <attribute name="label">

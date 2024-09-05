@@ -756,7 +756,7 @@ class Ui_MainWindow(object):
         self.toolBox_asset_task.addItem(self.page_mod, u"MOD")
         self.page_rig = QWidget()
         self.page_rig.setObjectName(u"page_rig")
-        self.page_rig.setGeometry(QRect(0, 0, 791, 545))
+        self.page_rig.setGeometry(QRect(0, 0, 98, 28))
         self.listWidget_rig = QListWidget(self.page_rig)
         self.listWidget_rig.setObjectName(u"listWidget_rig")
         self.listWidget_rig.setGeometry(QRect(0, 0, 231, 545))
@@ -1054,9 +1054,9 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget_all.setCurrentIndex(3)
+        self.tabWidget_all.setCurrentIndex(0)
         self.tabWidget_shot_status.setCurrentIndex(2)
-        self.tabWidget_shot_task.setCurrentIndex(3)
+        self.tabWidget_shot_task.setCurrentIndex(0)
         self.tabWidget_template.setCurrentIndex(0)
         self.toolBox_asset_task.setCurrentIndex(0)
 
@@ -1073,7 +1073,7 @@ class Ui_MainWindow(object):
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Project Name", None))
         self.label_username.setText("")
         self.pushButton_reset.setText("")
-        self.commandLinkButton_shotgrid.setText(QCoreApplication.translate("MainWindow", u" Shotgird", None))
+        self.commandLinkButton_shotgrid.setText(QCoreApplication.translate("MainWindow", u"   Shotgird", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"  SEQ ", None))
         self.label_shot_filepath.setText("")
         self.groupBox_shot_comment.setTitle(QCoreApplication.translate("MainWindow", u"Comment", None))

@@ -132,7 +132,7 @@ class Merge(QMainWindow,Libraryclip,project_data,My_task,Loader_pub,Mainloader,L
         Loader_pub.__init__(self,self.ui)
         # Mainloader.__init__(self,self.ui)
 
-info = {"project": "YUMMIE", "name": "UICHUL SHIN", "rank": "Admin"}
+info = {"project": "YUMMIE", "name": "Wooin JUNG", "rank": "Admin"}
 
 if __name__ == "__main__":
     app  = QApplication()

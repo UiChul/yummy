@@ -865,7 +865,7 @@ class Mainloader:
 
         for i in range(self.all_list.count()):
             item = self.all_list.item(i)
-            item.setBackground(QColor('#ffffff'))
+            item.setBackground(QColor(42, 42, 42))
 
         # 검색어가 비어있을때는 함수 종료 
         if not searching_item.strip():
@@ -874,7 +874,7 @@ class Mainloader:
         find_items = self.all_list.findItems(searching_item, Qt.MatchContains)
         
         for item in find_items:
-            item.setBackground(QColor('#f7e345'))
+            item.setBackground(QColor(0, 206, 209))
      
     #=========================================================================================
     # 버튼 연결
