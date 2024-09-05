@@ -6,12 +6,16 @@ from PySide6.QtGui import QPalette,QColor
 from shotgun_api3 import shotgun
 import json
 import sys
+import subprocess
+import os
 
 sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
 
 from loader_ui.singin_window_ui import Ui_Form
 from loader_script.get_datas_for_login import Signinfo
 from loader_script.get_datas_for_user import OpenLoaderData
+from loader_script.status_monitor import ChangeHandler
+from loader_script.webhook_app import WebhookServer
 
 class Sg_json(QObject):
     
@@ -38,6 +42,12 @@ class Sg_json(QObject):
     def open_project_login(self):
         Signinfo(self.project)
         self.finished.emit()
+    
+    def open_status_mon(self):
+        event_handler = ChangeHandler()
+        self.finished.emit()
+        
+        
 
 class Shotgrid_connect:
     def __init__(self,user_email):
@@ -74,11 +84,15 @@ class Signin(QWidget):
     
     def __init__(self):
         super().__init__()
+        self.open_status_monitor_thread()
         self.set_up()
         self.put_loader_gif()
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.email_vaildate = 0
         self.ui.lineEdit_email.returnPressed.connect(self.check_login)
+        
+        # event_handler = ChangeHandler()
+        
         
     def put_loader_gif(self):
         self.gif_index = 0  # 현재 재생 중인 GIF 인덱스
@@ -170,6 +184,23 @@ class Signin(QWidget):
                 
         self.email_vaildate += 1
         
+    def open_status_monitor_thread(self):
+
+        self.status_monitor = Sg_json()
+        self.thread_monitor = QThread()
+        self.status_monitor.moveToThread(self.thread_monitor)
+        self.thread_monitor.started.connect(self.status_monitor.open_status_mon)
+        self.status_monitor.finished.connect(self.finish_status_monitor_thread)
+        self.status_monitor.finished.connect(self.thread_monitor.quit)
+        self.status_monitor.finished.connect(self.status_monitor.deleteLater)
+        self.thread_monitor.finished.connect(self.thread_monitor.deleteLater)
+        self.thread_monitor.start()
+        
+    def finish_status_monitor_thread(self):
+        print("스테이터스 모니터 연결 ^^")
+        
+    
+        
     def check_login(self):
         
         user_email = self.ui.lineEdit_email.text()
@@ -196,7 +227,6 @@ class Signin(QWidget):
         if project == "-":
             self.email_vaildate -= 1
             
-        
         self.worker = Sg_json(project)
         self.thread_json = QThread()
         self.worker.moveToThread(self.thread_json)
@@ -306,9 +336,13 @@ class Signin(QWidget):
         self.ui.comboBox_project_name.setVisible(False)
         self.ui.label_2.setVisible(False)
         self.setPalette(self.get_darkModePalette())
+        # os.system("python3.9 /home/rapa/yummy/pipeline/scripts/loader/loader_script/status_monitor.py")
+        # self.process = subprocess.Popen(["python3.9","/home/rapa/yummy/pipeline/scripts/loader/loader_script/status_monitor.py"])
+        # self.process.wait()
 
 if __name__ == "__main__":
     app = QApplication()
     sign = Signin()
     sign.show()
     app.exec()
+    

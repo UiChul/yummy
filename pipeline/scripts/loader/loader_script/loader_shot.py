@@ -1063,8 +1063,8 @@ class Mainloader:
         
         status_list.sort(key=self.extract_time_shot,reverse = True)
         
-        # if self.current_gifs:
-        #     self.stop_all_gifs()
+        if self.current_gifs:
+            self.stop_all_gifs()
         
         row = 0
         
@@ -1083,19 +1083,24 @@ class Mainloader:
                         gif_path = "/home/rapa/xgen/wip001.gif"
                         width = 80
                         height = 60
-                        
+                        gif_movie = QMovie(gif_path)
+                        gif_movie.setScaledSize(QSize(width,height))# GIF 파일 경로 설정
+                        label.setMovie(gif_movie)
+                        gif_movie.start() 
+                        self.current_gifs.append(gif_movie)
+                        label.setAlignment(Qt.AlignCenter)
                         
                     elif info in ["fin", "sc"]:
                         gif_path = "/home/rapa/xgen/pub002.gif"
                         width = 120
                         height = 90
+                        gif_movie = QMovie(gif_path)
+                        gif_movie.setScaledSize(QSize(width,height))# GIF 파일 경로 설정
+                        label.setMovie(gif_movie)
+                        gif_movie.start() 
+                        self.current_gifs.append(gif_movie)
+                        label.setAlignment(Qt.AlignCenter)
                     
-                    gif_movie = QMovie(gif_path)
-                    gif_movie.setScaledSize(QSize(width,height))# GIF 파일 경로 설정
-                    label.setMovie(gif_movie)
-                    gif_movie.start() 
-                    self.current_gifs.append(gif_movie)
-                    label.setAlignment(Qt.AlignCenter)
                     task_table.setCellWidget(row, col, label)     
                                 
                 else:

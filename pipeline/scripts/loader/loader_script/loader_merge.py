@@ -12,9 +12,12 @@ from loader_script.loader_clip_v002 import Libraryclip
 from loader_script.loader_asset import Libraryasset
 from loader_module.project_data import project_data
 from loader_script.loader_pub import Loader_pub
+from loader_script.status_monitor import ChangeHandler
+from loader_script.webhook_app import WebhookServer
+
 import json
 import subprocess
-
+from monitor_daemon import MonitorDaemon
 # from monitor_daemon import MonitorDaemon
 # class Merge(QWidget,Mainloader,project_data,Loader_pub):
 class Merge(QMainWindow,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libraryasset):
@@ -29,14 +32,19 @@ class Merge(QMainWindow,Libraryclip,project_data,My_task,Loader_pub,Mainloader,L
         info = project_data.__init__(self,info)
         self.write_project_json(info)
         
-        self.connect_script()
+        self.connect_script() 
         
-        monitor_script = ""
-        log_file = ""
-        # self.status_monitor = MonitorDaemon(monitor_script, log_file)
-        # self.status_monitor.start_monitoring()
+        monitor_daemon_script = "/home/rapa/yummy/pipeline/scripts/portpolio/loader/monitor_daemon.py"
+        log_file = "/home/rapa/yummy/pipeline/scripts/loader/monitor_log.txt"
+        self.status_monitor = MonitorDaemon(monitor_daemon_script, log_file)
+        self.status_monitor.start_monitoring()
         
         self.ui.pushButton_reset.clicked.connect(self.reset_ui)
+        server = WebhookServer()
+        # if server:
+        #     event_handler = ChangeHandler()
+            
+        # event_handler = ChangeHandler()
 
 
     def set_main_loader(self,info):
@@ -145,6 +153,8 @@ if __name__ == "__main__":
     my = Merge(info)
     my.show()
     app.exec()
+    
+    
     
     
     

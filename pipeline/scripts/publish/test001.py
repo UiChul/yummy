@@ -1,15 +1,93 @@
-
+import os
+import nuke
 import ffmpeg
 import os
 import json
+from publish_module2 import PathFinder
 
-class Potato:
+
+class Render:
+    def __init__(self):
+        self.find_write_node()
+
+    def find_write_node(self):
+        select_nodes = nuke.selectedNodes()
+        if not select_nodes:
+            print("선택된 write노드가 없습니다.")
+            return
+        
+        for node in select_nodes:
+            if node.Class() == "Write":
+                self.write_node = node
+                if self.write_node.inputs() == 0:
+                    nuke.message("write노드를 렌더링할 노드에 연결해주세요.")
+                else:
+                    a = nuke.message("렌더링 하시겠습니까?")
+                    if a == 1:
+                        pass
+                    else:
+                        self.start_render()
+                        nuke.message("렌더링이 완료되었습니다.")
+                        self.put_the_slate_in_file()
+                        
+            else:
+                nuke.message("write노드를 선택해주세요.")
     
-    def __init__(self) -> None:
-            jpg_path = "/home/rapa/server/project/YUMMIE/seq/FLB/FLB_010/lgt/dev/exr/FLB_010_lgt_v001"  
-            jpg_output = "/home/rapa/다운로드/test.mov"     
-            self.start_exr(jpg_path,jpg_output)
+    def start_render(self):
+        self.render_exr()
+        print("Hello")
 
+    def render_exr(self):
+        exr_path = self.set_the_file_path()[0]
+        exr_folder_path = os.path.dirname(exr_path)
+        print(exr_path)
+
+        self.write_node["file"].setValue(exr_path)
+        self.write_node["file_type"].setValue("exr")
+
+        if os.path.exists(exr_folder_path):
+            nuke.execute(self.write_node)
+        else:
+            os.makedirs(exr_folder_path)
+            nuke.execute(self.write_node)
+
+    def set_the_file_path(self):
+        
+        json_file_path = '/home/rapa/다운로드/jiyeon/project_data.json'
+        path_finder = PathFinder(json_file_path)
+
+        start_path = '/home/rapa/sub_server/project'
+        project_path = path_finder.append_project_to_path(start_path)
+
+        seq_path = f"{project_path}seq/"
+
+        nuke_path = nuke.scriptName()
+        nuke_file_name = os.path.basename(nuke_path)
+        base, _ = os.path.splitext(nuke_file_name)
+        item = nuke_file_name.split("_")
+        shot = item[0]
+        code = item[1]
+        team_name = item[2]
+        
+        a = "%4d"
+        exr_file_path = f"{seq_path}{shot}/{shot}_{code}/{team_name}/dev/exr/{base}/{base}.{a}.exr"
+        mov_file_path = f"{seq_path}{shot}/{shot}_{code}/{team_name}/dev/mov/{base}.mov"
+       
+        return exr_file_path, mov_file_path
+    
+    def put_the_slate_in_file(self):
+        exr_file_path, mov_file_path = self.set_the_file_path()
+        exr_dir = os.path.dirname(exr_file_path)
+        mov_path = mov_file_path
+        print(f"{exr_dir}: 디렉토리")
+        print(f"{mov_path}: 모브패스패스")
+        # render = Slate()
+        # exr_path = "/home/rapa/server/project/YUMMIE/seq/FNL/FNL_010/cmp/pub/exr/FNL_010_cmp_v001"  
+        # exr_output = "/home/rapa/다운로드/test102.mov" 
+        print("ffmpeg 시작")
+        self.start_exr(exr_dir,mov_path)
+        # print(f"{mov_path}: 모브패스")
+        
     def start_exr(self,exr_path,output):
         
         exr_file_name = exr_path.split("/")[-1]
@@ -100,61 +178,3 @@ class Potato:
         self.bot_Right = f"drawtext=fontfile=Arial.ttf: text = '{frame}':start_number = 1001 : x=w-tw-5:y=h-th     :fontcolor=white@0.7:fontsize={font_size}"
         self.box = f"drawbox = x=0: y=0: w={self.width}: h={box_size}: color = black: t=fill,drawbox = x=0: y={self.height-box_size}: w={self.width}: h={self.height}: color = black: t=fill,"
       
-    #==================================================================================================================
-    # jpg에 slate 넣기
-    #==================================================================================================================
-    def start_jpg(self,jpg_path,output):
-        
-        # exr_file_name = exr_path.split("/")[-1]
-        
-        self.find_exr_frame(jpg_path)
-        self.input_jpg_slate()
-        
-        self.gamma = "eq=gamma=1.4,"
-        
-        self.render_jpg_slate(jpg_path,output)
-        
-    def find_exr_frame(self,input):
-        probe = ffmpeg.probe(input)
-        video_stream = next((stream for stream in probe['streams']if stream['codec_type'] == 'video'),None)
-        self.width = int(video_stream['width'])
-        self.height = int(video_stream['height'])
-    
-    def render_jpg_slate(self,input,output):
-        (
-            ffmpeg
-            .input(input)    
-            .output(output,vf=f"{self.box}"f"{self.gamma}"f"{self.top_Left},{self.top_Middel},{self.top_Right},{self.bot_Left},{self.bot_Middle},{self.bot_Right}")
-            .run()
-        )    
-
-    def input_jpg_slate(self):
-        
-        font_size = self.height/18 - 5
-        box_size = self.height/18
-        self.top_Left = f"drawtext=fontfile=Arial.ttf:text   = '감자': : x=5:y=2           :fontcolor=white@0.7:fontsize={font_size}"
-        self.top_Middel = f"drawtext=fontfile=Arial.ttf:text = '고구마': : x=(w-tw)/2:y=2   :fontcolor=white@0.7:fontsize={font_size}"
-        self.top_Right = f"drawtext=fontfile=Arial.ttf:text  = '구황작물': : x=w-tw-5:y=2      :fontcolor=white@0.7:fontsize={font_size}"
-        self.bot_Left = f"drawtext=fontfile=Arial.ttf:text   = '당근': : x=5:y=h-th        :fontcolor=white@0.7:fontsize={font_size}"
-        self.bot_Middle = f"drawtext=fontfile=Arial.ttf:text = '토끼': : x=(w-tw)/2:y=h-th :fontcolor=white@0.7:fontsize={font_size}"
-        self.bot_Right = f"drawtext=fontfile=Arial.ttf: text = '당끼?':start_number = 1001 : x=w-tw-5:y=h-th     :fontcolor=white@0.7:fontsize={font_size}"
-        self.box = f"drawbox = x=0: y=0: w={self.width}: h={box_size}: color = black: t=fill,drawbox = x=0: y={self.height-box_size}: w={self.width}: h={self.height}: color = black: t=fill,"
-      
-      
-        
-if __name__ == "__main__": 
-    render = Potato()
-    #===========================================
-    # 여기는 exr slate
-    # exr 경로에 ABC_0010_LGT_v001처럼
-    # 샷_넘버_테스크_버전 맞춰주면 잘 들어감
-    exr_path = "/home/rapa/다운로드/ABC_0010_LGT_v001"  
-    exr_output = "/home/rapa/다운로드/gamza_001.mov"     
-    # render.start_exr(exr_path,exr_output)
-    
-    #===========================================
-    # 여기는 jpg slate
-    jpg_path = "/home/rapa/xgen/cat.jpg"  
-    jpg_output = "/home/rapa/다운로드/cat001.jpg"     
-    render.start_jpg(jpg_path,jpg_output)
-    
