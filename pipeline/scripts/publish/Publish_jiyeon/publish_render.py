@@ -44,6 +44,7 @@ class Render:
 
         self.write_node["file"].setValue(exr_path)
         self.write_node["file_type"].setValue("exr")
+        self.write_node['first'].setValue(1000)
 
         if os.path.exists(exr_folder_path):
             nuke.execute(self.write_node)
@@ -53,10 +54,12 @@ class Render:
 
     def set_the_file_path(self):
         
-        json_file_path = '/home/rapa/sub_server/pipeline/scripts/project_data.json'
+        # json_file_path = '/home/rapa/sub_server/pipeline/scripts/project_data.json'
+        json_file_path = 'C:/Users/LEE JIYEON/Desktop/sub_server/pipeline/scripts/project_data.json'
         path_finder = PathFinder(json_file_path)
 
-        start_path = '/home/rapa/sub_server/project'
+        # start_path = '/home/rapa/sub_server/project'
+        start_path = 'C:/Users/LEE JIYEON/Desktop/sub_server/project'
         project_path = path_finder.append_project_to_path(start_path)
 
         seq_path = f"{project_path}seq/"
@@ -64,13 +67,13 @@ class Render:
         nuke_path = nuke.scriptName()
         nuke_file_name = os.path.basename(nuke_path)
         base, _ = os.path.splitext(nuke_file_name)
+        print(base)
         item = nuke_file_name.split("_")
         shot = item[0]
         code = item[1]
         team_name = item[2]
-        # ver_numb = item[3].split(".")[0]
         
-        a = "%4d"
+        a = "####"
         exr_file_path = f"{seq_path}{shot}/{shot}_{code}/{team_name}/dev/exr/{base}/{base}.{a}.exr"
         mov_file_path = f"{seq_path}{shot}/{shot}_{code}/{team_name}/dev/mov/{base}.mov"
        
@@ -80,14 +83,8 @@ class Render:
         exr_file_path, mov_file_path = self.set_the_file_path()
         exr_dir = os.path.dirname(exr_file_path)
         mov_path = mov_file_path
-        # print(f"{exr_dir}: 디렉토리")
-        # print(f"{mov_path}: 모브패스패스")
-        # render = Slate()
-        # exr_path = "/home/rapa/server/project/YUMMIE/seq/FNL/FNL_010/cmp/pub/exr/FNL_010_cmp_v001"  
-        # exr_output = "/home/rapa/다운로드/test102.mov" 
         print("ffmpeg 시작")
         self.start_exr(exr_dir,mov_path)
-        # print(f"{mov_path}: 모브패스")
         
     def start_exr(self,exr_path,output):
         

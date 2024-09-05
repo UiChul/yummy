@@ -19,50 +19,51 @@ except:
     from PySide2.QtUiTools import QUiLoader
     from PySide2.QtCore import QFile, QSize
     from PySide2.QtGui import  Qt, QPixmap, QIcon
-    import nuke
-    
+
+import nuke
 import ffmpeg
-
-
 import os
 import re
-import json
+# import json
 import shutil
+from publish_module2 import PathFinder
 
 
-class PathFinder:
-    """
-    Read Json File and find matching material (key:project_name)
-    and then find Local path
-    """
+# class PathFinder:
+#     """
+#     Read Json File and find matching material (key:project_name)
+#     and then find Local path
+#     """
 
-    def __init__(self, json_file_path):
-        self.json_file_path = json_file_path
-        self.key = 'project'
-        self.json_data = self._read_paths_from_json()
+#     def __init__(self, json_file_path):
+#         self.json_file_path = json_file_path
+#         self.key = 'project'
+#         self.json_data = self._read_paths_from_json()
 
-    def _read_paths_from_json(self):
-        """Read Json file and data return"""
+#     def _read_paths_from_json(self):
+#         """Read Json file and data return"""
 
-        with open(self.json_file_path, 'r', encoding='utf-8') as file:
-            data = json.load(file)
-        return data
+#         with open(self.json_file_path, 'r', encoding='utf-8') as file:
+#             data = json.load(file)
+#         return data
 
-    def append_project_to_path(self, start_path):
-        """Find data that matches key(project_name) in Json data"""
+#     def append_project_to_path(self, start_path):
+#         """Find data that matches key(project_name) in Json data"""
 
-        project_value = self.json_data[self.key]
-        start_path = start_path.rstrip(os.sep)
-        new_path = f"{start_path}/{project_value}/"
+#         project_value = self.json_data[self.key]
+#         start_path = start_path.rstrip(os.sep)
+#         new_path = f"{start_path}/{project_value}/"
         
-        return new_path
+#         return new_path
 
 class MainPublish(QWidget):
 
     def __init__(self):
         super().__init__()         
 
-        ui_file_path = "/home/rapa/sub_server/pipeline/scripts/publish_ver6.ui"
+        # ui_file_path = "/home/rapa/sub_server/pipeline/scripts/publish_ver6.ui"
+        ui_file_path = 'C:/Users/LEE JIYEON/Desktop/sub_server/pipeline/scripts/publish_ver6.ui'
+
         ui_file = QFile(ui_file_path)
         ui_file.open(QFile.ReadOnly)
         loader = QUiLoader()                                      
@@ -80,11 +81,11 @@ class MainPublish(QWidget):
         # Signal
         self.ui.pushButton_add_to_basket.clicked.connect(self.on_add_button_clicked)
 
+        # self.ui.pushButton_version.clicked.connect(self.make_message_for_upload)
         self.ui.pushButton_version.clicked.connect(self.copy_to_Server_from_Local)
-        self.ui.pushButton_version.clicked.connect(self.make_message_for_upload)
 
+        # self.ui.pushButton_publish.clicked.connect(self.make_message_for_upload)
         self.ui.pushButton_publish.clicked.connect(self.copy_to_pub_from_dev_in_Server)
-        self.ui.pushButton_publish.clicked.connect(self.make_message_for_upload)
         
         self.ui.pushButton_delete.clicked.connect(self.delete_tablewidget_item)
 
@@ -381,13 +382,17 @@ class MainPublish(QWidget):
         origin_local_path = []
         for item in table_items:
             if item:
-                nk_item_text = self.ui.tableWidget_basket.item(0, 0).text()
+                nk_item = self.ui.tableWidget_basket.item(0, 0)
+                exr_item = self.ui.tableWidget_basket.item(1, 0)
+                mov_item = self.ui.tableWidget_basket.item(2, 0)
+
+                nk_item_text = nk_item.text() if nk_item else ""
                 nk_local_path = f"{self.work_path}{nk_item_text}"
-                
-                exr_item_text = self.ui.tableWidget_basket.item(1, 0).text()
+
+                exr_item_text = exr_item.text() if exr_item else ""
                 exr_local_path = f"{self.exr_folder_path}{exr_item_text}"
-                
-                mov_item_text = self.ui.tableWidget_basket.item(2, 0).text()
+
+                mov_item_text = mov_item.text() if mov_item else ""
                 mov_local_path = f"{self.mov_file_path}{mov_item_text}"
                 
             else:
@@ -417,7 +422,7 @@ class MainPublish(QWidget):
         version_pattern = re.compile("v\d{3}")
         
         new_local_paths = []
-        for local_path in local_paths:
+        for local_path in local_paths:s
             base, ext = os.path.splitext(local_path)
             base_dir = os.path.dirname(local_path)
             # nk : dev/work/opn_0010_mm_v010.nknc
@@ -459,7 +464,7 @@ class MainPublish(QWidget):
                         
                         shutil.copy2(current_path, new_exr_path)
                         new_local_paths.append(new_exr_path)
-                print(f"exr file이 version-up 되었습니다: {new_exr_path}")
+                print("exr file이 version-up 되었습니다")
 
         nuke.message("sub_server에서 version-up이 완료되었습니다.")
 
@@ -468,10 +473,12 @@ class MainPublish(QWidget):
     def _find_Server_seq_path(self):
         """Find matching folder from Json and make Server path until 'seq' """
 
-        json_file_path = '/home/rapa/sub_server/pipeline/scripts/project_data.json'
+        # json_file_path = '/home/rapa/sub_server/pipeline/scripts/project_data.json'
+        json_file_path = 'C:/Users/LEE JIYEON/Desktop/sub_server/pipeline/scripts/project_data.json'
         path_finder = PathFinder(json_file_path)
 
-        start_path = '/home/rapa/sub_server/project'
+        # start_path = '/home/rapa/sub_server/project'
+        start_path = 'C:/Users/LEE JIYEON/Desktop/sub_server/project'
 
         # Get the new path
         server_project_path = path_finder.append_project_to_path(start_path)
@@ -716,10 +723,7 @@ class MainPublish(QWidget):
         team_name = split[-4]
         exr_name = f"{self.folder_name}.1001.exr"
         image_name = f"{self.folder_name}.1001_exr.png"
-        # exr_name = f"{shot_code}_{team_name}_{forder_name}.1001.exr"
-        # image_name = f"{shot_code}_{team_name}_{forder_name}.1001_exr.png"
         
-        # thumbnail_folder_path = f"{self.exr_folder_path.split("dev")[0]}/.thumbnail"
         thumbnail_path = self._make_thumbnail_path()
         # print(thumbnail_path)
 
@@ -782,7 +786,8 @@ class MainPublish(QWidget):
         nk_description = self.ui.lineEdit_description_nk.text() or ""
         exr_description = self.ui.lineEdit_description_exr.text() or ""
         mov_description = self.ui.lineEdit_description_mov.text() or ""
-        description_list.append(nk_description, exr_description, mov_description)
+  
+        description_list.extend([nk_description, exr_description, mov_description])
 
         return description_list
     
@@ -790,9 +795,11 @@ class MainPublish(QWidget):
         """set the trashbin_icon"""
 
         if self.ui.pushButton_delete.isChecked():
-            image_path = "/home/rapa/sub_server/pipeline/scripts/delete_icon2.png"
+            # image_path = "/home/rapa/sub_server/pipeline/scripts/delete_icon2.png"
+            image_path = "C:/Users/LEE JIYEON/Desktop/sub_server/pipeline/scripts/delete_icon2.png"
         else:
-            image_path = "/home/rapa/sub_server/pipeline/scripts/delete_icon2.png"
+            # image_path = "/home/rapa/sub_server/pipeline/scripts/delete_icon2.png"
+            image_path = "C:/Users/LEE JIYEON/Desktop/sub_server/pipeline/scripts/delete_icon2.png"
 
         # use QPixmap for image load and convert to QIcon
         pixmap = QPixmap(image_path)
@@ -813,7 +820,7 @@ class MainPublish(QWidget):
     def make_message_for_upload(self):
         msg_box = QMessageBox()
         msg_box.setWindowTitle("Warning")
-        msg_box.setText("notValid in validateForm \n \nDo you still want to proceed?")
+        msg_box.setText("notValid in validateForm\nDo you still want to proceed?")
         msg_box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         msg_box.setIcon(QMessageBox.Warning)
         result = msg_box.exec()                               
