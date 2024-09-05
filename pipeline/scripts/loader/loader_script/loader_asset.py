@@ -13,10 +13,12 @@ from loader_module.find_time_size import File_data
 
 try:
     import nuke
+    import cmds
+    
 except ImportError:
     nuke = None  # Nuke가 import되지 않은 경우를 대비
 sys.path.append("/usr/autodesk/maya2023/lib/python3.9/site-packages/maya")
-import cmds
+# import cmds
 import json
 
 # mod
