@@ -69,8 +69,6 @@ class DraggableWidget_mod(QWidget):
             drag.setPixmap(self.image_label.pixmap())
             drag.exec_(Qt.CopyAction | Qt.MoveAction)
 
-            # Change cursor shape to indicate drag operation
-            QApplication.setOverrideCursor(QCursor(Qt.DragCopyCursor))
         else:
             super().mousePressEvent(event)
             print("Mouse Click Signal")
@@ -117,9 +115,7 @@ class DroppableTableWidget_mod(QTableWidget):
 
             if nuke:
                 self.apply_to_nuke(file_path)
-            if cmds:
-                self.apply_to_maya(file_path, file_name, name)
-            event.acceptProposedAction()
+
         else:
             event.ignore()
 
@@ -129,24 +125,6 @@ class DroppableTableWidget_mod(QTableWidget):
             read_node['file'].setValue(file_path)
             nuke.message("A new Read node has been created")
 
-    def apply_to_maya(self, file_path, file_name, name):
-        print(f"Attempting to apply file to Maya: {file_path}")
-
-        if cmds:
-            try:
-                cmds.file(file_path, 
-                        i=True,
-                        type="Alembic", 
-                        ignoreVersion=True, 
-                        ra=True, 
-                        namespace=name, 
-                        importFrameRate=True, 
-                        importTimeRange="override")
-                print(f"Successfully imported {file_path} into Maya.")
-            except Exception as e:
-                print(f"Failed to import {file_path} into Maya. Error: {e}")
-        else:
-            print("Maya cmds is not available.")
 # rig
 class DraggableWidget_rig(QWidget):
     widgetClicked_rig = Signal(str)

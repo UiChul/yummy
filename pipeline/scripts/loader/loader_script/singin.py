@@ -233,7 +233,7 @@ class Signin(QWidget):
             return
         
         info = {"project" : project , "name" : self.user_name,"rank": self.rank}
-        from loader_script.loader_merge import Merge
+        from loader_script.loader_start import Merge
         self.load = Merge(info)
         self.load.show()       
         self.close()     

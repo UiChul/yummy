@@ -422,7 +422,7 @@ class DraggableWidgetFav(QWidget):
             # Q드래그 오브젝트 만들고 Mimedata 세팅
             drag = QDrag(self)
             mime_data = QMimeData()
-            mime_data.setText(self.file_path)
+            mime_data.setText(self.file_path + ".mov")
             drag.setMimeData(mime_data)
             drag.exec(Qt.MoveAction | Qt.CopyAction)
 

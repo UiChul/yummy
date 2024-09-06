@@ -4,15 +4,15 @@
             "asset_info": {
                 "asset_name": "box",
                 "asset_type": "prop",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/prop",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "modeling",
                         "task_step": "mod"
                     },
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "retopol",
                         "task_step": "mod"
                     },
@@ -28,7 +28,7 @@
                         "sg_status_list": "pub",
                         "description": "testing",
                         "updated_at": "2024-08-26 16:44:03",
-                        "artist": "다미 김",
+                        "artist": "Dami Kim",
                         "linked_asset": "box"
                     },
                     {
@@ -36,7 +36,7 @@
                         "sg_status_list": "pub",
                         "description": "modified mesh ver",
                         "updated_at": "2024-08-26 16:44:10",
-                        "artist": "다미 김",
+                        "artist": "Dami Kim",
                         "linked_asset": "box"
                     },
                     {
@@ -54,10 +54,10 @@
             "asset_info": {
                 "asset_name": "lamp",
                 "asset_type": "prop",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/prop",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "modeling",
                         "task_step": "mod"
                     },
@@ -86,7 +86,7 @@
                         "sg_status_list": null,
                         "description": null,
                         "updated_at": "2024-08-26 16:25:09",
-                        "artist": "다미 김",
+                        "artist": "Dami Kim",
                         "linked_asset": "lamp"
                     }
                 ]
@@ -96,10 +96,10 @@
             "asset_info": {
                 "asset_name": "car",
                 "asset_type": "vehicle",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/vehicle",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/vehicle",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "mod",
                         "task_step": "mod"
                     },
@@ -116,10 +116,10 @@
             "asset_info": {
                 "asset_name": "green",
                 "asset_type": "matt",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/matt",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/matt",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "mod",
                         "task_step": "mod"
                     },
@@ -136,10 +136,10 @@
             "asset_info": {
                 "asset_name": "man",
                 "asset_type": "character",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/character",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/character",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "basicShape",
                         "task_step": "mod"
                     },
@@ -156,7 +156,7 @@
             "asset_info": {
                 "asset_name": "tower",
                 "asset_type": "env",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/env",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/env",
                 "task_details": [
                     {
                         "assignee_name": "Gyeoul Kim",
@@ -164,7 +164,7 @@
                         "task_step": "rig"
                     },
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "texture",
                         "task_step": "mod"
                     }
@@ -176,10 +176,10 @@
             "asset_info": {
                 "asset_name": "armed_man",
                 "asset_type": "character",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/character",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/character",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "modeling",
                         "task_step": "mod"
                     },
@@ -196,10 +196,10 @@
             "asset_info": {
                 "asset_name": "mat",
                 "asset_type": "character",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/character",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/character",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "mod",
                         "task_step": "mod"
                     },
@@ -216,10 +216,10 @@
             "asset_info": {
                 "asset_name": "minion",
                 "asset_type": "character",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/character",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/character",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "modeling",
                         "task_step": "mod"
                     },
@@ -236,10 +236,10 @@
             "asset_info": {
                 "asset_name": "full_cg",
                 "asset_type": "env",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/env",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/env",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "modeling+",
                         "task_step": "mod"
                     },
@@ -256,7 +256,7 @@
             "asset_info": {
                 "asset_name": "FCG",
                 "asset_type": "env",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/env",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/env",
                 "task_details": [
                     {
                         "assignee_name": "Gyeoul Kim",
@@ -271,10 +271,10 @@
             "asset_info": {
                 "asset_name": "blue",
                 "asset_type": "matt",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/matt",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/matt",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "matt",
                         "task_step": "mod"
                     },
@@ -291,10 +291,10 @@
             "asset_info": {
                 "asset_name": "fountain",
                 "asset_type": "prop",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/prop",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "mod_prop",
                         "task_step": "mod"
                     },
@@ -311,10 +311,10 @@
             "asset_info": {
                 "asset_name": "power_outlet",
                 "asset_type": "prop",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/prop",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "mod_prop",
                         "task_step": "mod"
                     },
@@ -331,10 +331,10 @@
             "asset_info": {
                 "asset_name": "teapot",
                 "asset_type": "prop",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/prop",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "mod_prop",
                         "task_step": "mod"
                     },
@@ -351,10 +351,10 @@
             "asset_info": {
                 "asset_name": "wall_tools",
                 "asset_type": "prop",
-                "asset_path": "/home/rapa/YUMMY/project/YUMMIE/asset/prop",
+                "asset_path": "/home/rapa/sub_server/project/YUMMIE/asset/prop",
                 "task_details": [
                     {
-                        "assignee_name": "다미 김",
+                        "assignee_name": "Dami Kim",
                         "task_content": "mod_prop",
                         "task_step": "mod"
                     },
@@ -375,7 +375,7 @@
             "version_type": "abc",
             "description": "testing",
             "sg_status_list": "pub",
-            "artist": "다미 김",
+            "artist": "Dami Kim",
             "updated_at": "2024-08-26 16:44:03"
         },
         {
@@ -492,7 +492,7 @@
             "version_type": null,
             "description": "modified mesh ver",
             "sg_status_list": "pub",
-            "artist": "다미 김",
+            "artist": "Dami Kim",
             "updated_at": "2024-08-26 16:44:10"
         },
         {
@@ -501,7 +501,7 @@
             "version_type": null,
             "description": null,
             "sg_status_list": null,
-            "artist": "다미 김",
+            "artist": "Dami Kim",
             "updated_at": "2024-08-26 16:25:09"
         },
         {
@@ -563,9 +563,9 @@
             "version_id": 8156,
             "version_type": null,
             "description": null,
-            "sg_status_list": "wip",
+            "sg_status_list": "fin",
             "artist": "hyogi lee",
-            "updated_at": "2024-09-02 18:03:13"
+            "updated_at": "2024-09-06 14:12:54"
         },
         {
             "version_code": "BRK_020_ly_v001",
@@ -590,18 +590,18 @@
             "version_id": 8159,
             "version_type": null,
             "description": "FLB_010_cmp_v002",
-            "sg_status_list": "sc",
+            "sg_status_list": "pub",
             "artist": "Wooin JUNG",
-            "updated_at": "2024-08-30 11:47:47"
+            "updated_at": "2024-09-06 14:09:36"
         },
         {
             "version_code": "FLB_020_cmp_v001",
             "version_id": 8160,
             "version_type": null,
             "description": null,
-            "sg_status_list": "wip",
+            "sg_status_list": "fin",
             "artist": "Wooin JUNG",
-            "updated_at": "2024-08-30 12:00:26"
+            "updated_at": "2024-09-06 14:14:02"
         },
         {
             "version_code": "FLB_020_cmp_v002",
@@ -616,10 +616,10 @@
             "version_code": "PKG_030_mm_v004",
             "version_id": 8162,
             "version_type": null,
-            "description": "lalala",
+            "description": null,
             "sg_status_list": "wip",
             "artist": "test_park 1.0",
-            "updated_at": "2024-08-30 11:59:00"
+            "updated_at": "2024-09-06 08:21:41"
         },
         {
             "version_code": "FNL_010_lgt_v001",
@@ -658,33 +658,6 @@
             "updated_at": "2024-08-30 12:11:54"
         },
         {
-            "version_code": "PKG_030_mm_v004",
-            "version_id": 8173,
-            "version_type": null,
-            "description": "lalala",
-            "sg_status_list": "wip",
-            "artist": "test_park 1.0",
-            "updated_at": "2024-08-30 14:12:20"
-        },
-        {
-            "version_code": "PKG_030_mm_v004",
-            "version_id": 8181,
-            "version_type": null,
-            "description": "lalala",
-            "sg_status_list": "wip",
-            "artist": "지연 이",
-            "updated_at": "2024-08-30 14:39:19"
-        },
-        {
-            "version_code": "PKG_030_mm_v004",
-            "version_id": 8185,
-            "version_type": null,
-            "description": "lalala",
-            "sg_status_list": "wip",
-            "artist": "지연 이",
-            "updated_at": "2024-08-30 14:47:14"
-        },
-        {
             "version_code": "test_v001",
             "version_id": 8189,
             "version_type": null,
@@ -701,6 +674,240 @@
             "sg_status_list": "pub",
             "artist": "수연 박",
             "updated_at": "2024-09-03 11:39:05"
+        },
+        {
+            "version_code": "PKG_030_mm_v007",
+            "version_id": 8677,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-06 08:21:38"
+        },
+        {
+            "version_code": "PKG_030_mm_v007",
+            "version_id": 8682,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-06 08:21:37"
+        },
+        {
+            "version_code": "PKG_030_mm_v007",
+            "version_id": 8683,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-06 08:21:37"
+        },
+        {
+            "version_code": "PKG_030_mm_v007",
+            "version_id": 8684,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-06 08:21:37"
+        },
+        {
+            "version_code": "PKG_030_mm_v007",
+            "version_id": 8685,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-06 08:21:35"
+        },
+        {
+            "version_code": "PKG_030_mm_v007",
+            "version_id": 8686,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-06 08:21:24"
+        },
+        {
+            "version_code": "PKG_030_mm_v002",
+            "version_id": 8821,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 10:29:04"
+        },
+        {
+            "version_code": "PKG_030_mm_v007",
+            "version_id": 8824,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-06 08:21:27"
+        },
+        {
+            "version_code": "PKG_030_mm_v005",
+            "version_id": 8827,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 11:22:53"
+        },
+        {
+            "version_code": "PKG_030_mm_v005",
+            "version_id": 8828,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 11:24:07"
+        },
+        {
+            "version_code": "PKG_030_mm_v005",
+            "version_id": 8829,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 11:25:37"
+        },
+        {
+            "version_code": "PKG_030_mm_v005",
+            "version_id": 8830,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 11:26:22"
+        },
+        {
+            "version_code": "PKG_030_mm_v005",
+            "version_id": 8833,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 11:42:41"
+        },
+        {
+            "version_code": "PKG_030_mm_v005",
+            "version_id": 8837,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 11:45:10"
+        },
+        {
+            "version_code": "PKG_030_mm_v005",
+            "version_id": 8838,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 11:45:59"
+        },
+        {
+            "version_code": "PKG_030_mm_v005",
+            "version_id": 8840,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 11:46:01"
+        },
+        {
+            "version_code": "PKG_030_mm_v005",
+            "version_id": 8841,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 11:46:42"
+        },
+        {
+            "version_code": "PKG_030_mm_v006",
+            "version_id": 8843,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 11:56:25"
+        },
+        {
+            "version_code": "PKG_030_mm_v006",
+            "version_id": 8844,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 11:57:04"
+        },
+        {
+            "version_code": "PKG_030_mm_v006",
+            "version_id": 8845,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 11:57:49"
+        },
+        {
+            "version_code": "PKG_030_mm_v008",
+            "version_id": 8846,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 12:05:57"
+        },
+        {
+            "version_code": "PKG_030_mm_v008",
+            "version_id": 8847,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 12:06:40"
+        },
+        {
+            "version_code": "PKG_030_mm_v008",
+            "version_id": 8848,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 12:06:27"
+        },
+        {
+            "version_code": "PKG_030_mm_v008",
+            "version_id": 8849,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 12:07:08"
+        },
+        {
+            "version_code": "PKG_030_mm_v008",
+            "version_id": 8850,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 12:07:03"
+        },
+        {
+            "version_code": "PKG_030_mm_v008",
+            "version_id": 8851,
+            "version_type": null,
+            "description": null,
+            "sg_status_list": "wip",
+            "artist": "UICHUL SHIN",
+            "updated_at": "2024-09-05 12:07:48"
         }
     ]
 }

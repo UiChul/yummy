@@ -255,12 +255,14 @@ class Mainloader:
         elif tab == "exr":
             table_widget = self.table_widget[2]
 
+    def manufacture_shot_table(self,table_widget,row_count=3):
+
         h_header = table_widget.horizontalHeader()
         h_header.setSectionResizeMode(QHeaderView.ResizeToContents)
         h_header.setSectionResizeMode(QHeaderView.Stretch)
         table_widget.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
-        table_widget.setColumnCount(3)
+        table_widget.setColumnCount(row_count)
         table_widget.setRowCount(8)
         table_widget.setShowGrid(False)
 
@@ -285,10 +287,12 @@ class Mainloader:
             self.set_shot_all_files_listWidget()  
 
     # work 파일
-    def set_shot_work_files_tableWidget(self):
+    def set_shot_work_files_tableWidget(self, row_count= 3):
         """
         work file setting
         """
+        self.manufacture_shot_table(self.work_table, row_count)
+
         self.tab_name = "work"
             
         self.clear_file_info()
@@ -395,17 +399,16 @@ class Mainloader:
                 col = 0
                 row += 1
 
-        # # 홀수 row 행 높이 조절
-        # for i in range(1, self.work_table.rowCount(), 2):
-        #     self.work_table.setRowHeight(i,50)
         
     # exr 파일
-    def set_shot_exr_files_tableWidget(self):
+    def set_shot_exr_files_tableWidget(self, row_count= 3):
         """
         exr file setting
         """
         # 폴더안에 들어가서 v001.png 넣어야함.
         # table 에 image + text 삽입
+        self.manufacture_shot_table(self.exr_table, row_count)
+
         if not self.tab_name:
             self.tab_name = "exr" 
         
@@ -520,13 +523,13 @@ class Mainloader:
                 row += 1
  
     # mov 파일
-    def set_shot_mov_files_tableWidget(self):
+    def set_shot_mov_files_tableWidget(self, row_count= 3):
         """
         exr file setting
         """
         # 폴더안에 들어가서 v001.png 넣어야함.
         # table 에 image + text 삽입
-        
+        self.manufacture_shot_table(self.mov_table, row_count)
         if not self.tab_name:
             self.tab_name = "mov"
         
@@ -1025,14 +1028,19 @@ class Mainloader:
         self.ui.tableWidget_shot_exr.resize(window_width - 590, 378)
         self.ui.tableWidget_shot_mov.resize(window_width - 590, 378)
 
-
-        self.ui.listWidget_shot_allfile.resize(window_width - 590, 378)
+        self.ui.listWidget_shot_allfile.setGeometry(int(window_width - 1078), 47, 496, 341)
         self.ui.lineEdit_alllist_search.resize(window_width - 685, 26)
         self.ui.pushButton_search.setGeometry(int(window_width - 666), 10, 84, 27)
 
-        self.table.setColumnCount(int(window_width/362))
 
-        
+        row = int(window_width/362)
+
+        self.set_shot_work_files_tableWidget(row)
+        self.set_shot_exr_files_tableWidget(row)
+        self.set_shot_mov_files_tableWidget(row)
+
+
+
 
         
 
