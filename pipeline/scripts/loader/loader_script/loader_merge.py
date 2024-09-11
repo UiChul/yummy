@@ -1,9 +1,9 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QGuiApplication,QPalette,QColor, QResizeEvent
 from PySide6.QtWidgets import QMainWindow,QApplication, QSizePolicy
-from PySide6.QtCore import Qt, QSize
+from PySide6.QtCore import Qt, QSize,Signal,QObject,QThread
 
-import os,sys
+import sys
 sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
 from loader_ui.main_window_v005_ui import Ui_MainWindow
 from loader_script.loader_shot import Mainloader
@@ -20,6 +20,30 @@ import subprocess
 from monitor_daemon import MonitorDaemon
 # from monitor_daemon import MonitorDaemon
 # class Merge(QWidget,Mainloader,project_data,Loader_pub):
+
+class Thread_monitor(QObject):
+    
+    finished = Signal()
+    finished_first = Signal(dict)
+    
+    def __init__(self):
+        super().__init__()
+    
+    def open_monitor(self):
+        event_handler = ChangeHandler()
+        self.finished.emit()
+        
+    def open_webhook(self):
+        server = WebhookServer()
+        self.finished.emit()
+        
+    def open_demon(self):
+        monitor_daemon_script = "/home/rapa/yummy/pipeline/scripts/portpolio/loader/monitor_daemon.py"
+        log_file = "/home/rapa/yummy/pipeline/scripts/loader/monitor_log.txt"
+        self.demon_monitor = MonitorDaemon(monitor_daemon_script, log_file)
+        self.demon_monitor.start_monitoring()
+        self.finished.emit()
+        
 class Merge(QMainWindow,Libraryclip,project_data,My_task,Loader_pub,Mainloader,Libraryasset):
     def __init__(self,info):
         super().__init__()
@@ -34,19 +58,66 @@ class Merge(QMainWindow,Libraryclip,project_data,My_task,Loader_pub,Mainloader,L
         
         self.connect_script() 
         
-        monitor_daemon_script = "/home/rapa/yummy/pipeline/scripts/portpolio/loader/monitor_daemon.py"
-        log_file = "/home/rapa/yummy/pipeline/scripts/loader/monitor_log.txt"
-        self.status_monitor = MonitorDaemon(monitor_daemon_script, log_file)
-        self.status_monitor.start_monitoring()
+        # monitor_daemon_script = "/home/rapa/yummy/pipeline/scripts/portpolio/loader/monitor_daemon.py"
+        # log_file = "/home/rapa/yummy/pipeline/scripts/loader/monitor_log.txt"
+        # self.demon_monitor = MonitorDaemon(monitor_daemon_script, log_file)
+        # self.demon_monitor.start_monitoring()
         
         self.ui.pushButton_reset.clicked.connect(self.reset_ui)
-        server = WebhookServer()
+        # server = WebhookServer()
+        # self.open_status_monitor_thread()
         # if server:
         #     event_handler = ChangeHandler()
-            
-        # event_handler = ChangeHandler()
+        self.open_webhook_monitor_thread()
+        self.open_status_monitor_thread()
+        self.open_demon_monitor_thread()
 
+    def open_status_monitor_thread(self):
 
+        self.status_monitor = Thread_monitor()
+        self.thread_monitor = QThread()
+        self.status_monitor.moveToThread(self.thread_monitor)
+        self.thread_monitor.started.connect(self.status_monitor.open_monitor)
+        self.status_monitor.finished.connect(self.finish_status_monitor_thread)
+        self.status_monitor.finished.connect(self.thread_monitor.quit)
+        self.status_monitor.finished.connect(self.status_monitor.deleteLater)
+        self.thread_monitor.finished.connect(self.thread_monitor.deleteLater)
+        self.thread_monitor.start()
+        
+    def finish_status_monitor_thread(self):
+        print("스테이터스 모니터 연결 ^^")
+        
+    def open_webhook_monitor_thread(self):
+
+        self.webhook_monitor = Thread_monitor()
+        self.webhook_thread_monitor = QThread()
+        self.webhook_monitor.moveToThread(self.webhook_thread_monitor)
+        self.webhook_thread_monitor.started.connect(self.webhook_monitor.open_webhook)
+        self.webhook_monitor.finished.connect(self.finish_webhook_monitor_thread)
+        self.webhook_monitor.finished.connect(self.webhook_thread_monitor.quit)
+        self.webhook_monitor.finished.connect(self.webhook_monitor.deleteLater)
+        self.webhook_thread_monitor.finished.connect(self.webhook_thread_monitor.deleteLater)
+        self.webhook_thread_monitor.start()
+        
+    def finish_webhook_monitor_thread(self):
+        print("웹훅 모니터 연결 ^^")
+        
+        
+    def open_demon_monitor_thread(self):
+
+        self.demon_monitor = Thread_monitor()
+        self.demon_thread_monitor = QThread()
+        self.demon_monitor.moveToThread(self.demon_thread_monitor)
+        self.demon_thread_monitor.started.connect(self.demon_monitor.open_demon)
+        self.demon_monitor.finished.connect(self.finish_demon_monitor_thread)
+        self.demon_monitor.finished.connect(self.demon_thread_monitor.quit)
+        self.demon_monitor.finished.connect(self.demon_monitor.deleteLater)
+        self.demon_thread_monitor.finished.connect(self.demon_thread_monitor.deleteLater)
+        self.demon_thread_monitor.start()
+        
+    def finish_demon_monitor_thread(self):
+        print("웹훅 모니터 연결 ^^")
+    
     def set_main_loader(self,info):
         
         project   = info["project"]
@@ -133,9 +204,9 @@ class Merge(QMainWindow,Libraryclip,project_data,My_task,Loader_pub,Mainloader,L
     def connect_script(self):
         self.my_task = My_task(self.ui)
         self.shot = Mainloader(self.ui)
-        Libraryclip.__init__(self,self.ui)
-        Libraryasset.__init__(self,self.ui)
-        Loader_pub.__init__(self,self.ui)
+        self.lib_clip = Libraryclip(self.ui)
+        self.lib_asset = Libraryasset(self.ui)
+        self.pub = Loader_pub(self.ui)
 
 info = {
 "project": "YUMMIE",

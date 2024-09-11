@@ -8,14 +8,10 @@ import json
 import sys
 import subprocess
 import os
-
 sys.path.append("/home/rapa/yummy/pipeline/scripts/loader")
-
 from loader_ui.singin_window_ui import Ui_Form
 from loader_script.get_datas_for_login import Signinfo
 from loader_script.get_datas_for_user import OpenLoaderData
-from loader_script.status_monitor import ChangeHandler
-from loader_script.webhook_app import WebhookServer
 
 class Sg_json(QObject):
     
@@ -43,12 +39,7 @@ class Sg_json(QObject):
         Signinfo(self.project)
         self.finished.emit()
     
-    def open_status_mon(self):
-        event_handler = ChangeHandler()
-        self.finished.emit()
-        
-        
-
+    
 class Shotgrid_connect:
     def __init__(self,user_email):
         
@@ -84,15 +75,11 @@ class Signin(QWidget):
     
     def __init__(self):
         super().__init__()
-        self.open_status_monitor_thread()
         self.set_up()
         self.put_loader_gif()
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.email_vaildate = 0
         self.ui.lineEdit_email.returnPressed.connect(self.check_login)
-        
-        # event_handler = ChangeHandler()
-        
         
     def put_loader_gif(self):
         self.gif_index = 0  # 현재 재생 중인 GIF 인덱스
@@ -184,22 +171,6 @@ class Signin(QWidget):
                 
         self.email_vaildate += 1
         
-    def open_status_monitor_thread(self):
-
-        self.status_monitor = Sg_json()
-        self.thread_monitor = QThread()
-        self.status_monitor.moveToThread(self.thread_monitor)
-        self.thread_monitor.started.connect(self.status_monitor.open_status_mon)
-        self.status_monitor.finished.connect(self.finish_status_monitor_thread)
-        self.status_monitor.finished.connect(self.thread_monitor.quit)
-        self.status_monitor.finished.connect(self.status_monitor.deleteLater)
-        self.thread_monitor.finished.connect(self.thread_monitor.deleteLater)
-        self.thread_monitor.start()
-        
-    def finish_status_monitor_thread(self):
-        print("스테이터스 모니터 연결 ^^")
-        
-    
         
     def check_login(self):
         
@@ -290,19 +261,15 @@ class Signin(QWidget):
         self.close()     
 
     def center_window(self):
-        # 화면의 중심 좌표를 얻음
         screen = QGuiApplication.primaryScreen()
-        screen_geometry = screen.geometry()  # 화면의 전체 지오메트리 얻기
-        screen_center = screen_geometry.center()  # 화면의 중심점 얻기
-        # 현재 창의 크기 및 중심 좌표 계산
-        window_geometry = self.frameGeometry()  # 현재 창의 프레임 지오메트리 얻기
-        window_geometry.moveCenter(screen_center)  # 창의 중심을 화면의 중심으로 이동
-        # 최종적으로 계산된 좌표로 창 이동
-        offset_y = 200  # 화면 중심보다 50 픽셀 위로 이동
+        screen_geometry = screen.geometry()  
+        screen_center = screen_geometry.center()  
+        window_geometry = self.frameGeometry() 
+        window_geometry.moveCenter(screen_center)  
+        offset_y = 200  
         adjusted_position = window_geometry.topLeft()
-        adjusted_position.setY(adjusted_position.y() - offset_y)  # Y 좌표를 조정하여 위로 이동
+        adjusted_position.setY(adjusted_position.y() - offset_y) 
 
-        # 최종적으로 계산된 좌표로 창 이동
         self.move(adjusted_position)
 
     def get_darkModePalette(self) :

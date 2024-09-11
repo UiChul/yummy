@@ -274,7 +274,7 @@ class Libraryasset():
         # Main layout setup
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignCenter)
-        self.setLayout(layout)
+        # self.ui.setLayout(layout)
 
         self.make_json_dic()
         # Create QTableWidget
